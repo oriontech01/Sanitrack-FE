@@ -11,7 +11,7 @@ const NavigationStack = () => {
   const Stack  = createNativeStackNavigator()
   return (
     <NavigationContainer>
-        <Stack.Navigator defaultScreenOptions={WorkOrderLocations} screenOptions={{headerShown: false}}>
+        <Stack.Navigator defaultScreenOptions={Login} screenOptions={{headerShown: false}}>
            <Stack.Screen component={Login} name='Login'/>
            <Stack.Screen component={SignUp} name='Signup'/>
            <Stack.Screen component={WorkOrderSelection} name='WorkOrderSelection'/>

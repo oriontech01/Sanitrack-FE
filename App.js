@@ -1,17 +1,15 @@
 import { StyleSheet, Text, View, Button } from 'react-native';
 import NavigationStack from './util/NavigationStack';
+import {AuthContext} from './context/AuthContext';
+import { useState } from 'react';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 export default function App() {
+  const [username, setUserName] = useState("")
+  const [password, setPassword] = useState("")
   return (
-      <NavigationStack/>
+      <AuthContext.Provider value={{username,setUserName,password,setPassword}}>
+         <NavigationStack/>
+      </AuthContext.Provider>
   );
 }
 

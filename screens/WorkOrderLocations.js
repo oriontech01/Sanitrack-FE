@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
+import React, {useContext} from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
 import colors from '../util/colors';
-
+import Nav from '../components/Nav';
 
 const styles = StyleSheet.create({
     container: {
@@ -12,21 +13,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       padding: 20,
       gap: 50
-    },
-    userContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      width: '100%',
-      padding: 10,
-      borderRadius: 20,
-      justifyContent: 'space-between',
-      marginTop: 20,
-      alignItems: 'center',
-    },
-    userText: {
-      marginLeft: 10,
-      color: colors.white,
-      fontSize: 20,
     },
     button: {
       backgroundColor: '#9FA8DA',
@@ -49,6 +35,7 @@ const styles = StyleSheet.create({
     },
   });
 const WorkOrderLocations = ({navigation}) => {
+    const {username} = useContext(AuthContext)
     const rooms = ['ROOM A', 'ROOM B', 'ROOM C', 'ROOM D'];
     const navigateToRoom = (roomName) => {
       navigation.navigate('Room', { roomName });
@@ -56,13 +43,7 @@ const WorkOrderLocations = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.userContainer}>
-         <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-           <Icon name="account-circle-outline" size={40} color={colors.black}  />
-           <Text style={styles.userText}>HELLO USER!</Text>
-         </View>
-         <Icon name="bell-outline" size={22} color={colors.white} />
-      </View>
+      <Nav name={username}/>
       <View style={styles.roomContainer}>
       {
          rooms.map((room, index) => {

@@ -5,5 +5,7 @@ export default colors = {
     linkcolor: '#535695',
     palepurple: '#A1A3CD',
     bgColor:'#9FA8DA',
-    itemBgColor: '#D9D9D9'
+    itemBgColor: '#D9D9D9',
+    selectedColor: '#4630EB',
+    lightgray: '#D9D9D9'
 }

@@ -1,10 +1,10 @@
-import {React, useState} from 'react'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, List } from 'react-native';
+import {React, useState, useContext} from 'react'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import colors from '../util/colors';
-// import {Picker} from '@react-native-picker/picker';
+import { Dropdown } from 'react-native-element-dropdown';
+import {AuthContext} from '../context/AuthContext';
 
 const screen = Dimensions.get('window')
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -15,7 +15,9 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     marginBottom: 20,
+    paddingLeft: 5,
     alignSelf: 'stretch',
+    borderRadius: 10
   },
   dropdownText: {
     color: '#FFF',
@@ -55,16 +57,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   footer: {
-    marginTop: 20,
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'start',
     alignSelf: 'stretch',
     padding: 10,
   },
   footerText: {
-    color: colors.linkcolor,
+    color: colors.white,
     textDecorationLine: 'underline',
-    marginTop: 5,
-    fontSize: 20
+    fontSize: 15
   },
   label: {
     fontSize: 22,
@@ -73,37 +76,49 @@ const styles = StyleSheet.create({
   }
 });
 
-
 const Login = ({navigation}) => {
+  const {username, password, setPassword, setUserName} = useContext(AuthContext)
   const [value, setValue] = useState(null);
   const data = [
-  { label: 'Option 1', value: 'English' },
-  { label: 'Option 2', value: 'French' },
-  { label: 'Option 2', value: 'Spanish' },
-  { label: 'Option 2', value: 'German' },
-  { label: 'Option 2', value: 'Portuguese' },
-  { label: 'Option 2', value: 'Italian' },
-  { label: 'Option 2', value: 'Hindi' },
+  { label: 'English', value: 'English' },
+  { label: 'French', value: 'French' },
+  { label: 'Spanish', value: 'Spanish' },
+  { label: 'German', value: 'German' },
+  { label: 'Portuguese', value: 'Portuguese' },
+  { label: 'Italian', value: 'Italian' },
+  { label: 'Hindi', value: 'Hindi' },
 ];
-
   return (
     <View style={styles.container}>
-      <View style={styles.dropdown}>
-         <Text>Select Language</Text> 
-      </View>
-
+      <Dropdown
+        style={styles.dropdown}
+        data={data}
+        placeholder='Select Language'
+        labelField="label"
+        valueField="value"
+        iconColor={colors.black}
+        value={value}
+        placeholderStyle={{color: colors.white}}
+        onChange={item => {
+          setValue(item.value);
+        }}
+      />
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Username</Text>
         <TextInput
+          value={username}
+          onChangeText={(val) => setUserName(val)}
           style={styles.input}
         />
         <Text style={styles.label}>Password</Text>
         <TextInput
+          value={password}
+          onChangeText={(pass) => setPassword(pass)}
           style={styles.input}
           secureTextEntry
         />
         <TouchableOpacity onPress={() => {
-          navigation.navigate('WorkOrderSelection')
+          username ? navigation.navigate('WorkOrderSelection') : null
         }} style={styles.button}>
           <Text style={styles.buttonText}>PROCEED</Text>
         </TouchableOpacity>
@@ -120,6 +135,4 @@ const Login = ({navigation}) => {
     </View>
   );
 };
-
-
 export default Login;
