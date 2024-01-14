@@ -1,8 +1,10 @@
 import {React, useState, useContext} from 'react'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import colors from '../util/colors';
 import { Dropdown } from 'react-native-element-dropdown';
 import {AuthContext} from '../context/AuthContext';
+import {UserContext} from '../context/UserContext';
+import axios from 'axios'
 
 const screen = Dimensions.get('window')
 const styles = StyleSheet.create({
@@ -78,6 +80,7 @@ const styles = StyleSheet.create({
 
 const Login = ({navigation}) => {
   const {username, password, setPassword, setUserName} = useContext(AuthContext)
+  const {setUser} = useContext(UserContext)
   const [value, setValue] = useState(null);
   const data = [
   { label: 'English', value: 'English' },
@@ -88,6 +91,24 @@ const Login = ({navigation}) => {
   { label: 'Italian', value: 'Italian' },
   { label: 'Hindi', value: 'Hindi' },
 ];
+const handleLogin = async () => {
+  try {
+    const res = await axios.post('http://192.168.0.161:5000/api/login', { username, password });
+    if (res.status === 200) { // Check for status code 200
+      Alert.alert('Auth', 'Login successful, redirecting...');
+      setUser(res.data.data);
+      setPassword('')
+      setUserName('')
+      navigation.navigate('WorkOrderSelection') 
+    } else {
+      Alert.alert('Error', res.data.message);
+    }
+  } catch (error) {
+    // Handle error here. Use error.response if you want to access the response
+    const errorMessage = error.response ? error.response.data.message : error.message;
+    Alert.alert('Error', errorMessage);
+  }
+};
   return (
     <View style={styles.container}>
       <Dropdown
@@ -117,9 +138,7 @@ const Login = ({navigation}) => {
           style={styles.input}
           secureTextEntry
         />
-        <TouchableOpacity onPress={() => {
-          username ? navigation.navigate('WorkOrderSelection') : null
-        }} style={styles.button}>
+        <TouchableOpacity onPress={() => handleLogin() } style={styles.button}>
           <Text style={styles.buttonText}>PROCEED</Text>
         </TouchableOpacity>
 

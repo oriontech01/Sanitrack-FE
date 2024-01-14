@@ -1,12 +1,13 @@
-import {React, useContext} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Dimensions, PermissionsAndroid, Platform } from 'react-native';
+import {React, useContext, useState, useEffect, useRef} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Dimensions, ActivityIndicator, PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Ensure you have installed react-native-vector-icons
 import colors from '../util/colors';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import CheckBox from '../components/CheckBox';
 import Nav from '../components/Nav';
 import * as ImagePicker from 'expo-image-picker';
-
+import axios from 'axios';
+import { RoomContext } from '../context/RoomContext';
 const takePicture = async () => {
   // No options are needed by default, but you can specify them if necessary
   let result = await ImagePicker.launchCameraAsync({
@@ -16,9 +17,7 @@ const takePicture = async () => {
     aspect: [4, 3],
     quality: 1,
   });
-
   console.log(result);
-
   if (!result.cancelled) {
     // For this example, we're just logging the URI to the console
     console.log(result.uri);
@@ -37,6 +36,30 @@ const requestCameraPermission = async () => {
   }
 };
 
+const uploadFile = async () => {
+  console.log('Attempting to upload file'); // Debug log
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      {
+        title: 'External Storage Permission',
+        message: 'App needs access to your files',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('Storage permission granted');
+      // Code to pick and upload file
+      // Example: Upload a file using axios
+    } else {
+      console.log('Storage permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
 const screen = Dimensions.get('window')
 const styles = StyleSheet.create({
     container: {
@@ -169,27 +192,102 @@ const styles = StyleSheet.create({
         width: '100%', 
         alignItems: 'center', 
         justifyContent: 'space-between', 
+      },
+      uploadButton: {
+        marginLeft: 10,
       }
   });
-
-
 const Item = ({ label }) =>{
     return (
     <View style={styles.itemsContainer}>
      <View style={styles.item}>
          <Text style={styles.itemText}>{label}</Text>
-         <TouchableOpacity onPress={() => requestCameraPermission()}>
+         <TouchableOpacity style={styles.uploadButton} onPress={() => requestCameraPermission()}>
            <Icon name="cloud-upload" size={24} color={colors.black} />
+         </TouchableOpacity>
+         <TouchableOpacity onPress={() => uploadFile()} style={styles.uploadButton}>
+              <Icon name="file-upload" size={24} color={colors.black} />
          </TouchableOpacity>
      </View>
   </View>
   )
- } 
+} 
 const Room = ({route, navigation}) => {
-  const {username} = useContext(AuthContext)
+  const {user} = useContext(UserContext)
+  const [tasks, setTasks] = useState([])
+  const {roomID} = useContext(RoomContext)
+  const [timer, setTimer] = useState(0); // Implementation of timer feature
+  const [isActive, setIsActive] = useState(false); // Timer state variable
+  const countRef = useRef(null); 
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleStart = () => {
+    setIsActive(true);
+    countRef.current = setInterval(() => {
+      setTimer((timer) => timer + 1);
+    }, 1000);
+  };
+
+  const handleStop = () => {
+    clearInterval(countRef.current);
+    setIsActive(false);
+  };
+
+  const formatTime = () => {
+    const getSeconds = `0${(timer % 60)}`.slice(-2);
+    const minutes = `${Math.floor(timer / 60)}`;
+    const getMinutes = `0${minutes % 60}`.slice(-2);
+    const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
+
+    return `${getHours}:${getMinutes}:${getSeconds}`;
+  };
+
+  useEffect(() => {
+     // If user's role is cleaner, then make this network request
+     // Else make network request to get data for inspector dashboard
+     setIsLoading(true); // Start loading
+     const getTasks = async() =>{
+      try {
+        const res = await axios.get(`http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        });
+        if(res.status === 200){
+          setTasks(res.data.data.detail || [])
+          setIsLoading(false)
+        }
+      } catch (error) {
+        Alert.alert('Error', error.message)
+        setIsLoading(false)
+      }
+     }
+     const getInspectorRoomDetails = async() => {
+        try {
+          const res = await axios.get(`http://192.168.0.161:5000/api/inspector/room-details/${roomID}`, {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+          });
+          if(res.status === 200){
+            setRoomDetails(res.data.data);
+            setIsLoading(false)
+          }
+        } catch (error) {
+           Alert.alert('Error', error.message)
+           setIsLoading(false)
+        }
+     }
+    if(user.role === 'cleaner'){
+      getTasks()
+    }else{
+      getInspectorRoomDetails()
+    }
+  }, [user.token])
+
   return (
     <View style={styles.container}>
-       <Nav name={username}/>
+       <Nav name={user.username}/>
         <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backArrow}>
                 <Icon name="arrow-left" size={24} color={colors.black} />
@@ -199,7 +297,9 @@ const Room = ({route, navigation}) => {
             </View>
         </View>
         {
-           username === 'Supervisor' ?
+        isLoading ? (
+            <ActivityIndicator size="large" color="#ffffff" /> // White color ActivityIndicator
+       ) :  user.role === 'inspector' ?
            <View style={styles.supervisorContainer}>
               <View style={styles.itemsGrid}>
                 <View style={styles.supervisedItem}>
@@ -241,15 +341,17 @@ const Room = ({route, navigation}) => {
          : <View style={styles.cleanerContainer}>
               <View style={styles.timerContainer}>
                   <Icon name="timer-outline" size={24} color={colors.black} />
-                  <Text style={styles.timerText}>00:00:00</Text>
-                  <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>START</Text>
+                  <Text style={styles.timerText}>{formatTime()}</Text>
+                  <TouchableOpacity style={styles.button} onPress={isActive ? handleStop : handleStart}>
+                    <Text style={styles.buttonText}>{isActive ? 'STOP' : 'START'}</Text>
                   </TouchableOpacity>
               </View>
-                <Item label="FLOOR" />
-                <Item label="WINDOWS" />
-                <Item label="CURTAINS" />
-                <Item label="FURNITURE" />
+
+              {
+                tasks.map((task, index) => {
+                  return <Item key={index} label={(task.name.toUpperCase())} />
+                })
+              }
             </View>
         }
       <TouchableOpacity style={styles.submitButton} onPress={() => Alert.alert('Success!', 'Submitted Successfully')}>
@@ -258,5 +360,4 @@ const Room = ({route, navigation}) => {
     </View>
   );
 };
-
 export default Room;

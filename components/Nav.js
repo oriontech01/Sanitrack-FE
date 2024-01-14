@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         justifyContent: 'space-between',
-        // marginTop: 10,
+        marginTop: 10,
         alignItems: 'center',
       },
       userText: {
