@@ -1,40 +1,48 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import '../styles/Login.scss';
-import { IoIosArrowDown } from "react-icons/io";
+import useAuth from '../Hooks/useAuth';
 const Login = () => {
-    return (
-        <div className="bg-color">
-          <div className="language-selector">
-            <span className="text">Select language</span>
-            <IoIosArrowDown/>
+  const [username, setUserName] = useState()
+  const [password, setPassword] = useState()
+  const { login, loginStatus } = useAuth()
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    login(username, password)
+  }
+  return (
+    <>
+      <div className="language-selector">
+        <label htmlFor="languageSelect" className="text">Select language:</label>
+        <select id="languageSelect">
+          <option value="english">English</option>
+          <option value="spanish">Spanish</option>
+          <option value="chinese">Chinese</option>
+        </select>
+      </div>
+      <div className="bg-color">
+        <span className="centerbox">
+          <div className="loginbox-bg">
+            <form>
+              <label className="form-label" htmlFor="username">Username:</label>
+              <input type="text" id="username" name="username" onChange={(e) => { setUserName(e.target.value) }} required />
+
+              <label className="form-label" htmlFor="password">Password:</label>
+              <input type="password" id="password" name="password" onChange={(e) => { setPassword(e.target.value) }} required />
+
+              <button className="loginbtn" type="submit" onClick={(e) => { handleLogin(e) }}>Login</button>
+              {" "}
+              {loginStatus}
+              <div className="forgotandcreate">
+                <span className="forgot-pas"><a href="#">Forgot password?</a></span>
+              </div>
+            </form>
           </div>
-          <div className="lang-list-container">
-            <div className="lang-list-box">
-              <p>English</p>
-              <p>Spanish</p>
-              <p>Chinese</p>
-            </div>
-          </div>
-    
-          <span className="centerbox">
-            <div className="loginbox-bg">
-              <form action="./work_order_selection.html" method="post">
-                <label className="form-label" htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" required />
-    
-                <label className="form-label" htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" required />
-    
-                <button className="loginbtn" type="submit">Login</button>
-                <div className="forgotandcreate">
-                  <span className="forgot-pas"><a href="#">Forgot password?</a></span>
-                  <span className="create-acc"><a href="#">Create an account</a></span>
-                </div>
-              </form>
-            </div>
-          </span>
-        </div>
-      );
+        </span>
+      </div>
+    </>
+
+  );
 };
 
 export default Login;

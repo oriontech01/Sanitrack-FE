@@ -8,10 +8,16 @@
     display: flex;
     align-items: center;
     color: #fff;
+    background: #535695;
     justify-content: flex-end;
     padding-right: 40px;
     padding-top: 20px;
     cursor: pointer;
+    align-content: center;
+    select{
+      outline: none;
+      
+    }
   }
   
   .language-selector .text {

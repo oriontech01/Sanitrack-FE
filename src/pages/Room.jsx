@@ -7,7 +7,7 @@ const Room = () => {
   // Event handlers like starting the timer would go here
 
   return (
-    <div className="bg-color">
+    <div className="bg-color room-container">
       <div className="first_block">
         <div className="room_a">ROOM A</div>
         <div className="room_a_timer">

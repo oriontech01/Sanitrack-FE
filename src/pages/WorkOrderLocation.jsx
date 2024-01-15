@@ -3,7 +3,8 @@ import '../styles/WorkOrderLocation.scss';
 
 const WorkOrderLocation = () => {
   return (
-    <div className="bg-color container">
+    <div className="bg-color container 
+    .work-order-location-container">
       <div className="rooms-container">
         <div className="room-row1">
           <a href="#" className="room-a rooms_all">ROOM A</a>
