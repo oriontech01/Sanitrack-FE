@@ -1,0 +1,37 @@
+// WorkOrderLocation.scss
+
+.bg-color {
+    height: 100vh; // Full screen height
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .rooms-container {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 50px; // Adjust the gap between the rooms to match your design
+    justify-content: center;
+  }
+  
+  .room-row1,
+  .room-row2 {
+    display: contents; // This will allow the <a> elements to be direct children of the grid
+  }
+  
+  .rooms_all {
+    background-color: #A1A3CD;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 100px;
+    padding: 10px 30px; // Adjust padding to match your design
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20px; // Adjust this to match your design
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Optional: if there is a shadow in your design
+    font-size: 1.5rem; // Adjust font size to match your design
+  }
+  

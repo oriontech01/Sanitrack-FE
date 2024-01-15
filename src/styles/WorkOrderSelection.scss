@@ -1,0 +1,36 @@
+.bg-color {
+    background: #535695;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .workorder-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100vh;
+  }
+  
+  .scan-barcode, .select-from-list {
+    background-color: #a1a3cd;
+    height: 144px;
+    width: 358px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-size: 19px;
+    text-transform: uppercase;
+  }
+  
+  /* Media query for responsiveness */
+  @media screen and (max-width: 390px) {
+    .scan-barcode, .select-from-list {
+      width: 320px; /* Adjusted width for smaller screens */
+      height: auto; /* Height auto for a better fit */
+    }
+  }
+  

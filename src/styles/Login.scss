@@ -1,0 +1,121 @@
+.bg-color {
+    background: #535695;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .language-selector {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    justify-content: flex-end;
+    padding-right: 40px;
+    padding-top: 20px;
+    cursor: pointer;
+  }
+  
+  .language-selector .text {
+    font-size: 19px;
+    margin-right: 10px;
+  }
+  
+  .lang-list-box {
+    display: none; // Assuming this will be shown conditionally
+    background-color: #6368ed;
+    width: 170px;
+    height: 96px;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    right: 40px;
+    top: 60px; // Adjust according to actual layout
+  }
+  
+  .lang-list-box p {
+    font-weight: 400;
+    font-size: 19px;
+    padding-bottom: 4px;
+  }
+  
+  .centerbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+  }
+  
+  .loginbox-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; // Adjusted to be responsive
+    max-width: 755px; // Max width to maintain design
+    height: 576px;
+    border-radius: 40px;
+    background: #a1a3cd;
+    padding: 20px; // Added padding for internal spacing
+  }
+  
+  .form-label {
+    display: block;
+    font-size: 19px;
+    font-weight: 400;
+    margin-bottom: 8px; // Adjusted for spacing
+  }
+  
+  input {
+    width: 100%;
+    height: 42px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border-radius: 40px;
+    border: none;
+    font-size: 16px; // Font size for better readability
+  }
+  
+  input:focus-visible {
+    outline: none;
+  }
+  
+  .loginbtn {
+    width: 100%;
+    background: #535695;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    height: 65px;
+    font-size: 19px;
+    margin-top: 25px;
+  }
+  
+  .loginbtn:hover {
+    background: #252852;
+  }
+  
+  .forgotandcreate {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-family: "Inter", sans-serif; // Assuming 'inter' is a typo
+    font-weight: 400;
+  }
+  
+  .forgot-pas a, .create-acc a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  @media screen and (max-width: 390px) {
+    .loginbox-bg {
+      height: auto; // Adjusted for better responsiveness
+      padding-bottom: 20px; // Added padding for internal spacing
+    }
+  
+    .centerbox {
+      height: auto; // Adjusted for better responsiveness
+    }
+  }
+  

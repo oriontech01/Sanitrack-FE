@@ -1,0 +1,166 @@
+.bg-color {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif; // Use the font from your image
+  }
+
+  .first_block{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .first_block, .second_block, .last_section {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+
+  .last_section{
+    display: flex;
+    align-items: center;
+  }
+  
+  .room_a {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  
+  .room_a_timer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+  }
+  
+  .timer-box {
+    display: flex;
+    align-items: center;
+    color: #000;
+  }
+  
+  .time-counter {
+    margin: 0 20px;
+  }
+  
+  .timer_start_btn {
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .upload_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-color: #A1A3CD;
+    color: #000;
+  }
+  
+  .custom-upload-container {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    justify-content: space-between;
+    svg{
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+  }
+  
+  .custom-upload-text {
+    margin-right: 10px;
+  }
+  
+  .custom-upload-icon {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .checkbox {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .custom-checkbox-container {
+    position: relative;
+  }
+  
+  .custom-checkbox {
+    opacity: 0;
+    position: absolute;
+  }
+  
+  .custom-checkbox-label {
+    width: 30px;
+    height: 30px;
+    border: solid 1px #000;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .custom-checkbox-checkmark {
+    display: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    }
+    
+    .custom-checkbox:checked + .custom-checkbox-label .custom-checkbox-checkmark {
+    display: block;
+    }
+    
+    .submit_btn, .view_guide_text {
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 0;
+    }
+    .submit_btn{
+        background-color: #A1A3CD;
+        color: #000;
+        width: 600px;
+        height: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .view_guide {
+    margin-left: auto
+    }
+    .view_guide_text{
+        color: #000;
+    }
+    
+    // Adjust icon sizes as necessary
+    .MdOutlineTimer, .IoCloudUploadOutline {
+    font-size: 24px; // Adjust the size as necessary
+    }
+    
+    // Additional responsive styling if necessary
+    @media (max-width: 768px) {
+    .first_block, .second_block, .last_section {
+    width: 95%;
+    } }
+  
