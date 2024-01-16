@@ -285,7 +285,7 @@ const Room = ({route, navigation}) => {
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
-        const res = await axios.get(`http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`, {
+        const res = await axios.get(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details/${roomID}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -302,7 +302,7 @@ const Room = ({route, navigation}) => {
      }
      const getInspectorRoomDetails = async() => {
         try {
-          const res = await axios.get(`http://192.168.0.161:5000/api/inspector/room-details/${roomID}`, {
+          const res = await axios.get(`https://sanitrack-service.onrender.com/api/inspector/room-details/${roomID}`, {
             headers: {
               Authorization: `Bearer ${user.token}`
             }
