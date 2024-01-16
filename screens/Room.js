@@ -11,7 +11,10 @@ import { RoomContext } from '../context/RoomContext';
 import * as DocumentPicker from 'expo-document-picker';
 import { Cloudinary } from '@cloudinary/url-gen';
 
-const cld = new Cloudinary({cloud: {cloudName: 'dyh4orev5'}});
+const cld = new Cloudinary({
+  cloud: {cloudName: 'dyh4orev5'}
+});
+
 const takePicture = async () => {
   // No options are needed by default, but you can specify them if necessary
   let result = await ImagePicker.launchCameraAsync({
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
       }
   });
-const Item = ({ label, detailId, handleImageChange }) => {
+const Item = ({ label, detailId, uploadImage }) => {
     return (
     <View style={styles.itemsContainer}>
      <View style={styles.item}>
@@ -189,7 +192,7 @@ const Item = ({ label, detailId, handleImageChange }) => {
                 type: '*/*', // All file types
               });
               if (file.type !== 'cancel') {
-                handleImageChange(detailId, file);
+                uploadImage(detailId, file);
               }
             }} 
          style={styles.uploadButton}>
@@ -210,17 +213,34 @@ const Room = ({route, navigation}) => {
   const [fileInputs, setFileInputs] = useState({});
   const [roomDetails, setRoomDetails] = useState([])
 
-  const handleImageChange = (detailId, file) => {
-    
+  const uploadImage = async (detailId, file) => {
     setFileInputs((prevFileInputs) => ({
       ...prevFileInputs,
       [detailId]: file
     }));
-    Alert.alert("Upload", "Upload was successful!")
-
-    
+    let formData = new FormData();
+      formData.append('file', file)
+      formData.append('upload_preset', 'ml_default')
+      formData.append('cloud_name', 'dyh4orev5')
+      // formData.append('api_key', '461774348614721'); // Replace with your Cloudinary API key
+      // formData.append('signature', signature)
+      // formData.append('timestamp', timestamp)
+      console.log(formData._parts[0])
+    //  try {
+    //      // Make the upload request to Cloudinary
+    //      const response = await axios.post('https://api.cloudinary.com/v1_1/dyh4orev5/upload', formData._parts[0], {
+    //          headers: {
+    //              'Content-Type': 'multipart/form-data'
+    //          }
+    //      });
+    //      console.log("Upload response data:", response.data);
+    //      // Alert the user upon successful upload
+    //      Alert.alert("Upload", "Upload was successful!");
+    //  } catch (error) {
+    //      Alert.alert("Upload error", error.message)
+    //      console.error(error)
+    //  }
   };
-  // console.log(fileInputs)
   const handleSubmit = async () => {
     const formData = new FormData();
         // Ensure fileInputs is valid and contains files
@@ -228,48 +248,15 @@ const Room = ({route, navigation}) => {
           console.error('No files to upload');
           return;
       }
-      
     for (const [detailId, file] of Object.entries(fileInputs)) {    
       if (file.assets && file.assets[0] && file.assets[0].uri) {
         formData.append(detailId, { uri: file.assets[0].uri, type: 'image/jpeg', name: `${detailId}.jpg` });
-
-        
     }
     for (let [key, value] of formData.entries()) { 
       console.log(key, value); 
     }
-    // console.log(formData)
-
-    // const cloudinaryUploadResponse = await axios.post('https://api.cloudinary.com/v1_1/dyh4orev5/upload', {
-    //   method: 'POST', 
-    //   body: formData
-    // }).then((res => {
-    //   console.log(res.data)
-    // }))
-    // console.log(cloudinaryUploadResponse.data)
-      
-    }  
-    // console.log("formData", formData._parts)//
-        // axios.request({
-        //   method: 'post',
-        //   data: formData, /* Removed the [] to pass the formData as an object not as an array of object */
-        //   url: 'http://https://sanitrack-service.onrender.com/:5000/api/cleaner-dashboard/room-details',
-        //   headers: {
-        //     'Authorization': `Bearer ${user.token}`,
-        //     'Content-Type': 'multipart/form-data'
-        //   }
-        // }).then((response) => {
-        //   console.log(JSON.stringify(response.data))
-        // }).catch((error) => {
-        //   console.error('Error uploading document:', error);
-        //   if (error.response) {
-        //       // The server responded with a status code that falls out of the range of 2xx
-        //       console.error('Error response data:', error.response.data);
-        //       console.error('Error response status:', error.response.status);
-        //       console.error('Error response headers:', error.response.headers);
-        //   }
-        // })
-  };
+  }
+};
   
   const handleStart = () => {
     setIsActive(true);
@@ -298,7 +285,7 @@ const Room = ({route, navigation}) => {
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
-        const res = await axios.get(`http://https://sanitrack-service.onrender.com/:5000/api/cleaner-dashboard/room-details/${roomID}`, {
+        const res = await axios.get(`http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -315,7 +302,7 @@ const Room = ({route, navigation}) => {
      }
      const getInspectorRoomDetails = async() => {
         try {
-          const res = await axios.get(`http://https://sanitrack-service.onrender.com/:5000/api/inspector/room-details/${roomID}`, {
+          const res = await axios.get(`http://192.168.0.161:5000/api/inspector/room-details/${roomID}`, {
             headers: {
               Authorization: `Bearer ${user.token}`
             }
@@ -350,7 +337,7 @@ const Room = ({route, navigation}) => {
         </View>
         {
         isLoading ? (
-            <ActivityIndicator size="large" color="#ffffff" /> // White color ActivityIndicator
+            <ActivityIndicator size="large" color="#ffffff" />
        ) :  user.role === 'inspector' ?
            <View style={styles.supervisorContainer}>
               <View style={styles.itemsGrid}>
@@ -362,7 +349,7 @@ const Room = ({route, navigation}) => {
                                     <Text style={styles.supervisedItemLabel}>{(task.name).toUpperCase()}</Text>
                                     <CheckBox/>
                                   </View>
-                              </View>
+                                </View>
                     })
                   }
               </View>
@@ -380,7 +367,7 @@ const Room = ({route, navigation}) => {
                     key={index} 
                     label={task.name.toUpperCase()} 
                     detailId={task._id}
-                    handleImageChange={handleImageChange}
+                    uploadImage={uploadImage}
                   />
                ))}
             </View>

@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 15,
         alignItems: 'center',
+        gap: 10,
       },
       userText: {
         marginLeft: 10,
