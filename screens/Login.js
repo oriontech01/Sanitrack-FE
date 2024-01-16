@@ -93,7 +93,7 @@ const Login = ({navigation}) => {
 ];
 const handleLogin = async () => {
   try {
-    const res = await axios.post('http://192.168.0.161:5000/api/login', { username, password });
+    const res = await axios.post('http://https://sanitrack-service.onrender.com/:5000/api/login', { username, password });
     if (res.status === 200) { // Check for status code 200
       Alert.alert('Auth', 'Login successful, redirecting...');
       setUser(res.data.data);

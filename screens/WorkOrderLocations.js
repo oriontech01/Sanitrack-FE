@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
       const getDashboard = async () => {
         try {
           if(user.role === 'cleaner'){
-            const res = await axios.get('http://192.168.0.161:5000/api/cleaner-dashboard', {
+            const res = await axios.get('http://https://sanitrack-service.onrender.com/:5000/api/cleaner-dashboard', {
               headers: {
                 Authorization: `Bearer ${user.token}`
               }
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
           }
           else{
              try {
-              const res = await axios.get('http://192.168.0.161:5000/api/inspector', {
+              const res = await axios.get('http://https://sanitrack-service.onrender.com/:5000/api/inspector', {
                 headers: {
                   Authorization: `Bearer ${user.token}`
                 }
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
               if (res.status === 200) {
                 // Ensure roomList is always an array
                 setRoomList(res.data.data.inspectorRooms || []);
+                setIsLoading(false)
               }
               console.log(res.data.data.inspectorRooms)
              } catch (error) {

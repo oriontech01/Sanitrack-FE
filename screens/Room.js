@@ -1,5 +1,5 @@
 import {React, useContext, useState, useEffect, useRef} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Dimensions, ActivityIndicator, PermissionsAndroid} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Dimensions, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Ensure you have installed react-native-vector-icons
 import colors from '../util/colors';
 import { UserContext } from '../context/UserContext';
@@ -8,6 +8,10 @@ import Nav from '../components/Nav';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { RoomContext } from '../context/RoomContext';
+import * as DocumentPicker from 'expo-document-picker';
+import { Cloudinary } from '@cloudinary/url-gen';
+
+const cld = new Cloudinary({cloud: {cloudName: 'dyh4orev5'}});
 const takePicture = async () => {
   // No options are needed by default, but you can specify them if necessary
   let result = await ImagePicker.launchCameraAsync({
@@ -33,31 +37,6 @@ const requestCameraPermission = async () => {
     takePicture();
   } else {
     console.log('Camera permission denied');
-  }
-};
-
-const uploadFile = async () => {
-  console.log('Attempting to upload file'); // Debug log
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      {
-        title: 'External Storage Permission',
-        message: 'App needs access to your files',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Storage permission granted');
-      // Code to pick and upload file
-      // Example: Upload a file using axios
-    } else {
-      console.log('Storage permission denied');
-    }
-  } catch (err) {
-    console.warn(err);
   }
 };
 const screen = Dimensions.get('window')
@@ -197,7 +176,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
       }
   });
-const Item = ({ label }) =>{
+const Item = ({ label, detailId, handleImageChange }) => {
     return (
     <View style={styles.itemsContainer}>
      <View style={styles.item}>
@@ -205,13 +184,21 @@ const Item = ({ label }) =>{
          <TouchableOpacity style={styles.uploadButton} onPress={() => requestCameraPermission()}>
            <Icon name="cloud-upload" size={24} color={colors.black} />
          </TouchableOpacity>
-         <TouchableOpacity onPress={() => uploadFile()} style={styles.uploadButton}>
+         <TouchableOpacity onPress={async () => {
+              const file = await DocumentPicker.getDocumentAsync({
+                type: '*/*', // All file types
+              });
+              if (file.type !== 'cancel') {
+                handleImageChange(detailId, file);
+              }
+            }} 
+         style={styles.uploadButton}>
               <Icon name="file-upload" size={24} color={colors.black} />
          </TouchableOpacity>
      </View>
   </View>
   )
-} 
+};
 const Room = ({route, navigation}) => {
   const {user} = useContext(UserContext)
   const [tasks, setTasks] = useState([])
@@ -219,8 +206,71 @@ const Room = ({route, navigation}) => {
   const [timer, setTimer] = useState(0); // Implementation of timer feature
   const [isActive, setIsActive] = useState(false); // Timer state variable
   const countRef = useRef(null); 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false) // Renders ActivityIndicator to show that the app is loading content
+  const [fileInputs, setFileInputs] = useState({});
+  const [roomDetails, setRoomDetails] = useState([])
 
+  const handleImageChange = (detailId, file) => {
+    
+    setFileInputs((prevFileInputs) => ({
+      ...prevFileInputs,
+      [detailId]: file
+    }));
+    Alert.alert("Upload", "Upload was successful!")
+
+    
+  };
+  // console.log(fileInputs)
+  const handleSubmit = async () => {
+    const formData = new FormData();
+        // Ensure fileInputs is valid and contains files
+    if (!fileInputs || Object.keys(fileInputs).length === 0) {
+          console.error('No files to upload');
+          return;
+      }
+      
+    for (const [detailId, file] of Object.entries(fileInputs)) {    
+      if (file.assets && file.assets[0] && file.assets[0].uri) {
+        formData.append(detailId, { uri: file.assets[0].uri, type: 'image/jpeg', name: `${detailId}.jpg` });
+
+        
+    }
+    for (let [key, value] of formData.entries()) { 
+      console.log(key, value); 
+    }
+    // console.log(formData)
+
+    // const cloudinaryUploadResponse = await axios.post('https://api.cloudinary.com/v1_1/dyh4orev5/upload', {
+    //   method: 'POST', 
+    //   body: formData
+    // }).then((res => {
+    //   console.log(res.data)
+    // }))
+    // console.log(cloudinaryUploadResponse.data)
+      
+    }  
+    // console.log("formData", formData._parts)//
+        // axios.request({
+        //   method: 'post',
+        //   data: formData, /* Removed the [] to pass the formData as an object not as an array of object */
+        //   url: 'http://https://sanitrack-service.onrender.com/:5000/api/cleaner-dashboard/room-details',
+        //   headers: {
+        //     'Authorization': `Bearer ${user.token}`,
+        //     'Content-Type': 'multipart/form-data'
+        //   }
+        // }).then((response) => {
+        //   console.log(JSON.stringify(response.data))
+        // }).catch((error) => {
+        //   console.error('Error uploading document:', error);
+        //   if (error.response) {
+        //       // The server responded with a status code that falls out of the range of 2xx
+        //       console.error('Error response data:', error.response.data);
+        //       console.error('Error response status:', error.response.status);
+        //       console.error('Error response headers:', error.response.headers);
+        //   }
+        // })
+  };
+  
   const handleStart = () => {
     setIsActive(true);
     countRef.current = setInterval(() => {
@@ -248,13 +298,14 @@ const Room = ({route, navigation}) => {
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
-        const res = await axios.get(`http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`, {
+        const res = await axios.get(`http://https://sanitrack-service.onrender.com/:5000/api/cleaner-dashboard/room-details/${roomID}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
         });
         if(res.status === 200){
-          setTasks(res.data.data.detail || [])
+          // console.log(res.data)
+          setTasks(res.data.data.detail || [])   
           setIsLoading(false)
         }
       } catch (error) {
@@ -264,13 +315,14 @@ const Room = ({route, navigation}) => {
      }
      const getInspectorRoomDetails = async() => {
         try {
-          const res = await axios.get(`http://192.168.0.161:5000/api/inspector/room-details/${roomID}`, {
+          const res = await axios.get(`http://https://sanitrack-service.onrender.com/:5000/api/inspector/room-details/${roomID}`, {
             headers: {
               Authorization: `Bearer ${user.token}`
             }
           });
           if(res.status === 200){
-            setRoomDetails(res.data.data);
+            setRoomDetails(res.data.data.tasks);
+            console.log(res.data.data.tasks)
             setIsLoading(false)
           }
         } catch (error) {
@@ -302,40 +354,17 @@ const Room = ({route, navigation}) => {
        ) :  user.role === 'inspector' ?
            <View style={styles.supervisorContainer}>
               <View style={styles.itemsGrid}>
-                <View style={styles.supervisedItem}>
-                  <Image source={require("../assets/images/chair.png")} style={styles.itemImage} />
-                  <View style={styles.supervisedItemFooter}>
-                    <Text style={styles.supervisedItemLabel}>Chair</Text>
-                    <CheckBox/>
-                  </View>
-                </View>
-                <View style={styles.supervisedItem}>
-                  <Image source={require("../assets/images/table.png")} style={styles.itemImage} />
-                  <View style={styles.supervisedItemFooter}>
-                    <Text style={styles.supervisedItemLabel}>Table</Text>
-                    <CheckBox/>
-                  </View>
-                </View>
-                <View style={styles.supervisedItem}>
-                  <Image
-                    source={require("../assets/images/mattress.png")}
-                    style={styles.itemImage}
-                  />
-                  <View style={styles.supervisedItemFooter}>
-                    <Text style={styles.supervisedItemLabel}>Mattress</Text>
-                    <CheckBox/>
-                  </View>
-                </View>
-                <View style={styles.supervisedItem}>
-                  <Image
-                    source={require("../assets/images/freezer.png")}
-                    style={styles.itemImage}
-                  />
-                  <View style={styles.supervisedItemFooter}>
-                     <Text style={styles.supervisedItemLabel}>Freezer</Text>
-                     <CheckBox/>
-                  </View>
-                </View>
+                  {
+                    roomDetails && roomDetails.map((task, index)=>{
+                        return <View key={index} style={styles.supervisedItem}>
+                                  <Image source={require("../assets/images/chair.png")} style={styles.itemImage} />
+                                  <View style={styles.supervisedItemFooter}>
+                                    <Text style={styles.supervisedItemLabel}>{(task.name).toUpperCase()}</Text>
+                                    <CheckBox/>
+                                  </View>
+                              </View>
+                    })
+                  }
               </View>
             </View>
          : <View style={styles.cleanerContainer}>
@@ -346,15 +375,19 @@ const Room = ({route, navigation}) => {
                     <Text style={styles.buttonText}>{isActive ? 'STOP' : 'START'}</Text>
                   </TouchableOpacity>
               </View>
-
-              {
-                tasks.map((task, index) => {
-                  return <Item key={index} label={(task.name.toUpperCase())} />
-                })
-              }
+              {tasks.map((task, index) => (
+                  <Item 
+                    key={index} 
+                    label={task.name.toUpperCase()} 
+                    detailId={task._id}
+                    handleImageChange={handleImageChange}
+                  />
+               ))}
             </View>
         }
-      <TouchableOpacity style={styles.submitButton} onPress={() => Alert.alert('Success!', 'Submitted Successfully')}>
+      <TouchableOpacity style={styles.submitButton} onPress={() => {
+          handleSubmit()
+      }}>
         <Text style={styles.submitButtonText}>SUBMIT</Text>
       </TouchableOpacity>
     </View>

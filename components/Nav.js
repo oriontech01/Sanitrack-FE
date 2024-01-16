@@ -1,7 +1,11 @@
-import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import React, {useContext} from 'react'
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
 import colors from '../util/colors';
+import { UserContext } from '../context/UserContext';
+import { RoomContext } from '../context/RoomContext';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     userContainer: {
@@ -11,7 +15,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         justifyContent: 'space-between',
-        marginTop: 10,
+        marginTop: 15,
         alignItems: 'center',
       },
       userText: {
@@ -20,16 +24,34 @@ const styles = StyleSheet.create({
         fontSize: 20,
       },
 })
+
 const Nav = ({name}) => {
+  const {setUserName, setPassword} = useContext(AuthContext) 
+  const {setUser} = useContext(UserContext) 
+  const {setRoomID} = useContext(RoomContext)
+  const navigation = useNavigation() 
+
+  const logout = () => {
+    //  Alert.alert("Auth", 'You have been logged out!')
+     setUser({})
+     setPassword('')
+     setUserName('')
+     setRoomID('')
+     navigation.navigate("Login")
+  }
   return (
     <View style={styles.userContainer}>
     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
       <Icon name="account-circle-outline" size={40} color={colors.black}  />
       <Text style={styles.userText}>HELLO {name}</Text>
     </View>
-    <Icon name="bell-outline" size={22} color={colors.white} />
+    <View style={{flexDirection: 'row', gap: 20, alignItems:'center'}}>
+        <Icon name="bell-outline" size={22} color={colors.white} />
+        <TouchableOpacity>
+          <Icon name="logout-variant" size={26} color={colors.white} onPress={()=> logout()}/>
+        </TouchableOpacity>
+     </View>
  </View>
   )
 }
-
 export default Nav
