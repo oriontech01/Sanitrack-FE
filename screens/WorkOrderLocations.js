@@ -5,6 +5,7 @@ import { UserContext } from '../context/UserContext';
 import colors from '../util/colors';
 import Nav from '../components/Nav';
 import { RoomContext } from '../context/RoomContext';
+import {SANITRACK_API_URI} from '@env'
 
 const styles = StyleSheet.create({
     container: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
       const getDashboard = async () => {
         try {
           if(user.role === 'cleaner'){
-            const res = await axios.get('https://sanitrack-service.onrender.com/api/cleaner-dashboard', {
+            const res = await axios.get(`${SANITRACK_API_URI}cleaner-dashboard`, {
               headers: {
                 Authorization: `Bearer ${user.token}`
               }
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
           }
           else{
              try {
-              const res = await axios.get('https://sanitrack-service.onrender.com/api/inspector', {
+              const res = await axios.get(`${SANITRACK_API_URI}inspector`, {
                 headers: {
                   Authorization: `Bearer ${user.token}`
                 }

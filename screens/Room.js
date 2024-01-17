@@ -9,11 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { RoomContext } from '../context/RoomContext';
 import * as DocumentPicker from 'expo-document-picker';
-import { Cloudinary } from '@cloudinary/url-gen';
-
-const cld = new Cloudinary({
-  cloud: {cloudName: 'dyh4orev5'}
-});
+import {SANITRACK_API_URI, CLOUDINARY_URI} from "@env";
 
 const takePicture = async () => {
   // No options are needed by default, but you can specify them if necessary
@@ -91,6 +87,17 @@ const styles = StyleSheet.create({
       paddingLeft: 20,
       paddingRight: 20
     },
+    itemUploadSuccessful: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.itemBgColor,
+      width: '100%',
+      height: 59,
+      borderRadius: 20,
+      paddingLeft: 20,
+      paddingRight: 20,
+      backgroundColor: 'green'
+    },
     itemText: {
       color: colors.black,
       fontSize: 24,
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingVertical: 20,
       },
-      itemsGrid: {
+    itemsGrid: {
         display: 'flex',
         flexDirection: 'row', // Align children in a row
         flexWrap: 'wrap', // Allow items to wrap to the next line
@@ -146,7 +153,7 @@ const styles = StyleSheet.create({
         height: screen.height * .70,
         padding: 10,
       },
-      supervisedItem: {
+    supervisedItem: {
         width: '50%', // Take half of the container's width to fit 2 items per row
         display: 'flex',
         justifyContent: 'center', // Center the content inside the item
@@ -156,33 +163,34 @@ const styles = StyleSheet.create({
         gap: 10,
         height: screen.height * .30
       },
-      itemImage: {
+    itemImage: {
         width: '100%',
         height: '80%',
         resizeMode: 'contain',
         borderRadius: 10
       },
-      supervisedItemLabel: {
+    supervisedItemLabel: {
         marginTop: 8,
         fontSize: 16,
         color: colors.white,
         textAlign: 'left'
       },
-      supervisedItemFooter: {
+    supervisedItemFooter: {
         display: 'flex',
         flexDirection: 'row', 
         width: '100%', 
         alignItems: 'center', 
         justifyContent: 'space-between', 
       },
-      uploadButton: {
+    uploadButton: {
         marginLeft: 10,
-      }
+      },
   });
 const Item = ({ label, detailId, uploadImage }) => {
+    const [isUploaded, setIsUploaded] = useState(false)
     return (
     <View style={styles.itemsContainer}>
-     <View style={styles.item}>
+     <View style={isUploaded ? styles.itemUploadSuccessful : styles.item}>
          <Text style={styles.itemText}>{label}</Text>
          <TouchableOpacity style={styles.uploadButton} onPress={() => requestCameraPermission()}>
            <Icon name="cloud-upload" size={24} color={colors.black} />
@@ -193,6 +201,7 @@ const Item = ({ label, detailId, uploadImage }) => {
               });
               if (file.type !== 'cancel') {
                 uploadImage(detailId, file);
+                setIsUploaded(true)
               }
             }} 
          style={styles.uploadButton}>
@@ -212,49 +221,73 @@ const Room = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false) // Renders ActivityIndicator to show that the app is loading content
   const [fileInputs, setFileInputs] = useState({});
   const [roomDetails, setRoomDetails] = useState([])
+  const [urls, setUrls] = useState([])
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
 
   const uploadImage = async (detailId, file) => {
-    setFileInputs((prevFileInputs) => ({
-      ...prevFileInputs,
-      [detailId]: file
-    }));
-    let formData = new FormData();
-      formData.append('file', file)
-      formData.append('upload_preset', 'ml_default')
-      formData.append('cloud_name', 'dyh4orev5')
-      // formData.append('api_key', '461774348614721'); // Replace with your Cloudinary API key
-      // formData.append('signature', signature)
-      // formData.append('timestamp', timestamp)
-      console.log(formData._parts[0])
-    //  try {
-    //      // Make the upload request to Cloudinary
-    //      const response = await axios.post('https://api.cloudinary.com/v1_1/dyh4orev5/upload', formData._parts[0], {
-    //          headers: {
-    //              'Content-Type': 'multipart/form-data'
-    //          }
-    //      });
-    //      console.log("Upload response data:", response.data);
-    //      // Alert the user upon successful upload
-    //      Alert.alert("Upload", "Upload was successful!");
-    //  } catch (error) {
-    //      Alert.alert("Upload error", error.message)
-    //      console.error(error)
-    //  }
+    try {
+      // Update state with the file input
+      setFileInputs((prevFileInputs) => ({
+        ...prevFileInputs,
+        [detailId]: file
+      }));
+       const photo =  {
+         uri: file.assets[0].uri,
+         type: file.assets[0].mimeType,
+         name: file.assets[0].name
+       }
+      // Create FormData object for unsigned upload
+      let data = new FormData();
+      data.append('file', photo);
+      data.append('upload_preset', 'img_upload'); // Ensure this is an unsigned preset
+      data.append("cloud_name", "dyh4orev5")
+  
+      // Make the upload request to Cloudinary using fetch
+      const response = await axios.post(`${CLOUDINARY_URI}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      // Alert the user upon successful upload
+      setUrls((prevUrls) => {
+        const newUrls = [...prevUrls, response.data.secure_url];
+        console.log("Updated URLs:", newUrls); // Log the new state
+        return newUrls;
+      });
+      Alert.alert("Upload", "Upload was successful!");
+    } catch (error) {
+      console.error("Upload error:", error);
+      Alert.alert("Upload error", error.message);
+    }
   };
+
   const handleSubmit = async () => {
-    const formData = new FormData();
-        // Ensure fileInputs is valid and contains files
-    if (!fileInputs || Object.keys(fileInputs).length === 0) {
-          console.error('No files to upload');
-          return;
+  //   const data = new FormData();
+  //       // Ensure fileInputs is valid and contains files
+  //   if (!fileInputs || Object.keys(fileInputs).length === 0) {
+  //         console.error('No files to upload');
+  //         return;
+  //     }
+  //   for (const [detailId, file] of Object.entries(fileInputs)) {    
+  //     if (file.assets && file.assets[0] && file.assets[0].uri) {
+  //       data.append(detailId, { uri: file.assets[0].uri, type: 'image/jpeg', name: `${detailId}.jpg` });
+  //   }
+  //   for (let [key, value] of data.entries()) { 
+  //     console.log(key, value); 
+  //   }
+  // }
+  try {
+    const response  = await axios.post(`${SANITRACK_API_URI}cleaner-dashboard/room-details`, urls, {
+      headers: {
+        Authorization: `Bearer ${user.token}`
       }
-    for (const [detailId, file] of Object.entries(fileInputs)) {    
-      if (file.assets && file.assets[0] && file.assets[0].uri) {
-        formData.append(detailId, { uri: file.assets[0].uri, type: 'image/jpeg', name: `${detailId}.jpg` });
-    }
-    for (let [key, value] of formData.entries()) { 
-      console.log(key, value); 
-    }
+    })
+    console.log(response.data)
+    Alert.alert("Success", "Submission successful!")
+    setIsSubmitted(true)
+  } catch (error) {
+    Alert.alert("Error", error.message)
   }
 };
   
@@ -264,6 +297,7 @@ const Room = ({route, navigation}) => {
       setTimer((timer) => timer + 1);
     }, 1000);
   };
+
 
   const handleStop = () => {
     clearInterval(countRef.current);
@@ -285,14 +319,15 @@ const Room = ({route, navigation}) => {
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
-        const res = await axios.get(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details/${roomID}`, {
+        const res = await axios.get(`${SANITRACK_API_URI}cleaner-dashboard/room-details/${roomID}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
         });
+
         if(res.status === 200){
-          // console.log(res.data)
-          setTasks(res.data.data.detail || [])   
+          console.log(res.data)
+          setTasks(res.data.data || [])   
           setIsLoading(false)
         }
       } catch (error) {
@@ -302,14 +337,14 @@ const Room = ({route, navigation}) => {
      }
      const getInspectorRoomDetails = async() => {
         try {
-          const res = await axios.get(`https://sanitrack-service.onrender.com/api/inspector/room-details/${roomID}`, {
+          const res = await axios.get(`${SANITRACK_API_URI}inspector/room-details/${roomID}`, {
             headers: {
               Authorization: `Bearer ${user.token}`
             }
           });
           if(res.status === 200){
             setRoomDetails(res.data.data.tasks);
-            console.log(res.data.data.tasks)
+            console.log(res.data)
             setIsLoading(false)
           }
         } catch (error) {
