@@ -1,23 +1,41 @@
 import './App.scss'
 import Login from './pages/Login'
-import {Routes, Route} from 'react-router-dom'
-import WorkOrderSelection from './pages/WorkOrderSelection'
-import BarCode from './pages/BarCode';
-import WorkOrderLocation from './pages/WorkOrderLocation';
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom'
 import Room from './pages/Room';
-import AdminDashboard from './pages/AdminDashBoard';
+import AdminHome from './pages/AdminHome';
 import Tasks from './pages/Tasks';
+import SideNav from './components/SideNav/SideNav';
+import Staff from './pages/Staff';
+import AddUser from './pages/AddUser';
+import AddRoom from './pages/AddRoom';
+import RoomDetails from './pages/RoomDetails';
+import AddTask from './pages/AddTask';
 function App() {
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  console.log('value of logged in', isLoggedIn)
   return (
+    <>
       <Routes>
-        <Route path="/" element={<Login />}/>
-        <Route path="/admin-home" element ={<AdminDashboard/>} />
-        <Route path="/home" element={<WorkOrderSelection/>}/>
-        <Route path="/home/barcode-scan" element={<BarCode/>}/> 
-        <Route path="/home/work-order-location" element={<WorkOrderLocation/>}/>
-        <Route path="/home/room" element={<Room/>} />
-        <Route path="/home/tasks" element={<Tasks/>}/>
+        <Route path="/" element={<Login onLogin={() => setLoggedIn(true)} />} />
       </Routes>
+      {isLoggedIn && (
+          <SideNav>
+            <Routes>
+              <Route path="/admin-home" element={<AdminHome />} />
+              <Route path="/home/user" element={<Staff />} />
+              <Route path="/home/add-user" element={<AddUser />} />
+              <Route path="/home/room" element={<Room />} />
+              <Route path="/home/add-room" element={<AddRoom />} />
+              <Route path="/home/view-details/:roomId" element={<RoomDetails />} />
+              <Route path="/home/tasks" element={<Tasks />} />
+              <Route path="/home/add-task" element={<AddTask />} />
+            </Routes>
+          </SideNav>
+        )}
+      
+    </>
+      
   )
 }
 export default App

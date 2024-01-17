@@ -1,27 +1,30 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const useAuth = () => { 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
-    const [loginStatus, setLoginStatus] = useState()
-    const navigate = useNavigate()
+    const LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
+    const [loginStatus, setLoginStatus] = useState('')
+    const [loginState, setLoginState] = useState(false)
+    
 
     const login = async (username, password) => { 
         await axios
-        .post(`${BASE_URL}login`, {
+        .post(`${LOCAL_URL}login`, {
           username: username,
           password: password,
         })
         .then((response) => {
             // save the token if credentials are correct
-            if(response.status){ 
+            if(response.data.status === true){ 
                 console.log(response.data) 
                 localStorage.setItem("auth-token", response.data.data.token);
                 localStorage.setItem("name", response.data.data.username);
                 localStorage.setItem("role", response.data.data.role); 
                 localStorage.setItem('id', response.data.data.id)
-                navigate("/admin-home")
+                setLoginState(true)
+                // navigate("/admin-home")
             }
         })
         .catch((error) => {
@@ -41,7 +44,8 @@ const useAuth = () => {
 
     return{ 
         login, 
-        loginStatus
+        loginStatus,
+        loginState
     }
 }
 

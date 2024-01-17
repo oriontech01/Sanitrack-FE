@@ -1,0 +1,48 @@
+
+.add-user-container{ 
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-top: 2%;
+    
+
+
+    .add-user-header{ 
+        background-color: #A1A3CD;
+        margin-bottom: 1%;
+
+        h2{ 
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+    }
+
+    .add-user-form{ 
+        margin-top: 5%;
+        background-color: #A1A3CD;
+
+        form{ 
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-bottom: 2%;
+        }
+    }
+
+    .form-details{ 
+        display: flex;
+        align-items: center;
+        margin-left: 1%;
+        margin-right: 1%;
+
+        input{ 
+            border: none;
+            box-sizing: border-box;
+            border-radius: 0px;
+            border-bottom: 1px solid black;
+            margin-left: 1%;
+            padding: 0px;
+            margin-bottom: 0px;
+            background-color: #A1A3CD;
+        }
+    }
+}

@@ -3,6 +3,7 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 import { FaAngleDown } from 'react-icons/fa';
 
+
 const Nav = ({ logo, username }) => {
   return (
     <div className="header-section">

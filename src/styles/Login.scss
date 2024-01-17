@@ -2,8 +2,17 @@
     background: #535695;
     width: 100vw;
     height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
+  .centerbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+  }
   .language-selector {
     display: flex;
     align-items: center;
@@ -43,12 +52,7 @@
     padding-bottom: 4px;
   }
   
-  .centerbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 80vh;
-  }
+  
   
   .loginbox-bg {
     display: flex;

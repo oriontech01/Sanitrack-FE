@@ -35,6 +35,17 @@
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+
+    .btn-group{ 
+      display: flex;
+      gap: 10px;
+    }
+    .view-btn{ 
+      background-color: #535695;
+    }
+    .delete-btn{ 
+      background-color: red;
+    }
   }
   
   th {
@@ -43,15 +54,19 @@
   
   /* Modal styles */
   .modal {
-    display: none;
+    // display: none;
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    // left: 0;
+    width: 80%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    // background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+
+    & .display{ 
+      display: none;
+    }
   }
   
   .modal-content {

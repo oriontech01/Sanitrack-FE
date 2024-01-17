@@ -1,0 +1,36 @@
+.admin-container{ 
+    background-color:#535695;
+    width: 100%;
+}
+.nav{ 
+    height: 100vh;
+    width: 100%; 
+    display: flex;
+    // background-color: red;
+
+    .tab-menu {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        padding-left: 35px;
+        height: 100%;
+        box-shadow: 4px 0px 20px 0px #0000000d;
+        // background-color: green;
+    }
+
+    .tab-icons{ 
+        // background-color: orange;
+        display: flex;
+        margin-bottom: 35px;
+        cursor: pointer;
+        align-items: center;
+
+        &.selected {
+            background-color: #523ea6; // Change this to the color you want for the selected item
+          }
+    }
+    main{ 
+        // background-color: orange;
+        width: 100%;
+    }
+}

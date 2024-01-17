@@ -1,63 +1,77 @@
-import React from 'react';
-import '../styles/Room.scss';
-import { MdOutlineTimer } from "react-icons/md";
-import { IoCloudUploadOutline } from "react-icons/io5";
-
+import React, { useEffect, useState } from 'react';
+import '../styles/Tasks.scss';
+import { useNavigate } from 'react-router-dom';
+import useRoom from '../Hooks/useRoom';
 const Room = () => {
-  // Event handlers like starting the timer would go here
+  const { getRoom, allRooms, deleteRoom, responseMessage } = useRoom()
+  const navigate = useNavigate()
+  const handleNavigate = () => {
+    navigate('/home/add-room')
+  }
 
+  useEffect(() => {
+    getRoom()
+  }, [])
+
+  const handleViewDDetails = (roomId) => { 
+    navigate(`/home/view-details/${roomId}`)
+  }
+
+  const handleRoomDelete = async(roomId) => {
+    await deleteRoom(roomId)
+    navigate("/home/room")
+  }
   return (
-    <div className="bg-color room-container">
-      <div className="first_block">
-        <div className="room_a">ROOM A</div>
-        <div className="room_a_timer">
-          <div className="timer-box">
-            <MdOutlineTimer/>
-            <p className="time-counter" id="timer">00:00:00</p>
-            <p className="timer_start_btn" id="toggleButton">START</p>
+    <div className="tab-display">
+      <div className="center-me">
+        <div className="container">
+          <div className="task-section">
+            <h2>All Rooms</h2>
+            <button id="createTaskBtn" onClick={handleNavigate}>
+              Create New Room
+            </button>
           </div>
-        </div>
-      </div>
-      <div className="second_block">
-        {/* Repeated content for each upload box can be mapped from an array if preferred */}
-        <UploadBox label="FLOOR" idSuffix="1" />
-        <UploadBox label="WINDOWS" idSuffix="2" />
-        <UploadBox label="CURTAINS" idSuffix="3" />
-        <UploadBox label="FURNITURES" idSuffix="4" />
-      </div>
-      <div className="last_section">
-        <a href="#" className="submit_btn">SUBMIT</a>
-        <div className="view_guide">
-          <a href="#" className="view_guide_text">VIEW GUIDE</a>
+
+          <div className="table-section">
+            <table id="taskTable">
+              <thead>
+                <tr>
+                  <th>Room name</th>
+                  <th>Location</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allRooms ? (
+                  allRooms.map((item) => (
+                    <tr key={item._id}>
+                      <td>{item.roomName}</td>
+                      <td>{item.location}</td>
+                      <td>
+                        <div className='btn-group'>
+                          <button className='view-btn' onClick={() => {handleViewDDetails(item._id)}}>View Details</button>
+                          <button className='delete-btn' onClick={() => {handleRoomDelete(item._id)}}>Delete</button>
+                        </div>
+                        
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3">No rooms available</td>
+                  </tr>
+                )}
+
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>
   );
 };
 
-// This component handles the repeated upload boxes
-const UploadBox = ({ label, idSuffix }) => {
-  const fileInputId = `fileInput${idSuffix}`;
-  const checkboxId = `checkbox${idSuffix}`;
-  return (
-    <div className="upload_box">
-        <div className="custom-upload-container">
-            <span className="custom-upload-text">{label}</span>
-            <input type="file" id={fileInputId} className="custom-upload-input" style={{ display: 'none' }} />
-            <label htmlFor={fileInputId} className="custom-upload-icon">
-            <IoCloudUploadOutline />
-            </label>
-        </div>
-      <div className="checkbox">
-        <div className="custom-checkbox-container">
-          <input type="checkbox" className="custom-checkbox" id={checkboxId} />
-          <label htmlFor={checkboxId} className="custom-checkbox-label">
-            <span className="custom-checkbox-checkmark"></span>
-          </label>
-        </div>
-      </div>
-    </div>
-  );
-};
+
 
 export default Room;

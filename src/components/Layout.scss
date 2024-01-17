@@ -1,0 +1,14 @@
+.layout-main{ 
+    background-color: orange;
+
+    .layout-details{ 
+        // background-color: red;
+        display: flex;
+    }
+
+    .side-details{ 
+        // background-color: blue;
+        width: 15%;
+    }
+    
+}

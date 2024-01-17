@@ -1,25 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Login.scss';
 import useAuth from '../Hooks/useAuth';
-const Login = () => {
+import { useNavigate } from "react-router-dom";
+
+const Login = ({ onLogin }) => {
   const [username, setUserName] = useState()
   const [password, setPassword] = useState()
-  const { login, loginStatus } = useAuth()
+  const { login, loginStatus, loginState } = useAuth()
+  const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    login(username, password)
+
+    await login(username, password)
+   
   }
+  useEffect(() => {
+    console.log("After setting loginState:", loginState);
+    if (loginState) {
+      onLogin()
+      navigate("/admin-home");
+    }
+  }, [loginState]);
   return (
     <>
-      <div className="language-selector">
-        <label htmlFor="languageSelect" className="text">Select language:</label>
-        <select id="languageSelect">
-          <option value="english">English</option>
-          <option value="spanish">Spanish</option>
-          <option value="chinese">Chinese</option>
-        </select>
-      </div>
       <div className="bg-color">
         <span className="centerbox">
           <div className="loginbox-bg">
