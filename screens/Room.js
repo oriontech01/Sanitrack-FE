@@ -263,22 +263,8 @@ const Room = ({route, navigation}) => {
   };
 
   const handleSubmit = async () => {
-  //   const data = new FormData();
-  //       // Ensure fileInputs is valid and contains files
-  //   if (!fileInputs || Object.keys(fileInputs).length === 0) {
-  //         console.error('No files to upload');
-  //         return;
-  //     }
-  //   for (const [detailId, file] of Object.entries(fileInputs)) {    
-  //     if (file.assets && file.assets[0] && file.assets[0].uri) {
-  //       data.append(detailId, { uri: file.assets[0].uri, type: 'image/jpeg', name: `${detailId}.jpg` });
-  //   }
-  //   for (let [key, value] of data.entries()) { 
-  //     console.log(key, value); 
-  //   }
-  // }
   try {
-    const response  = await axios.post(`${SANITRACK_API_URI}cleaner-dashboard/room-details`, urls, {
+    const response  = await axios.post(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details`, urls, {
       headers: {
         Authorization: `Bearer ${user.token}`
       }
@@ -320,7 +306,7 @@ const Room = ({route, navigation}) => {
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
-        const res = await axios.get(`${SANITRACK_API_URI}cleaner-dashboard/room-details/${roomID}`, {
+        const res = await axios.get(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details/${roomID}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -338,7 +324,7 @@ const Room = ({route, navigation}) => {
      }
      const getInspectorRoomDetails = async() => {
         try {
-          const res = await axios.get(`${SANITRACK_API_URI}inspector/room-details/${roomID}`, {
+          const res = await axios.get(`https://sanitrack-service.onrender.com/api/inspector/room-details/${roomID}`, {
             headers: {
               Authorization: `Bearer ${user.token}`
             }

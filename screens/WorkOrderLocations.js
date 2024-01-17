@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
       const getDashboard = async () => {
         try {
           if(user.role === 'cleaner'){
-            const res = await axios.get(`${SANITRACK_API_URI}cleaner-dashboard`, {
+            const res = await axios.get(`https://sanitrack-service.onrender.com/api/cleaner-dashboard`, {
               headers: {
                 Authorization: `Bearer ${user.token}`
               }
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
           }
           else{
              try {
-              const res = await axios.get(`${SANITRACK_API_URI}inspector`, {
+              const res = await axios.get(`https://sanitrack-service.onrender.com/api/inspector`, {
                 headers: {
                   Authorization: `Bearer ${user.token}`
                 }
