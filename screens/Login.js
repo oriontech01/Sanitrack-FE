@@ -92,9 +92,6 @@ const Login = ({navigation}) => {
   { label: 'Italian', value: 'Italian' },
   { label: 'Hindi', value: 'Hindi' },
 ];
-  // useEffect(() => {
-  //   console.log(SANITRACK_API_URI)
-  // })
 const handleLogin = async () => {
   try {
     const res = await axios.post(`https://sanitrack-service.onrender.com/api/login`, { username, password });

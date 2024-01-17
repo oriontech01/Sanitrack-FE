@@ -219,52 +219,48 @@ const Room = ({route, navigation}) => {
   const [isActive, setIsActive] = useState(false); // Timer state variable
   const countRef = useRef(null); 
   const [isLoading, setIsLoading] = useState(false) // Renders ActivityIndicator to show that the app is loading content
-  const [fileInputs, setFileInputs] = useState({});
   const [roomDetails, setRoomDetails] = useState([])
-  const [urls, setUrls] = useState([])
   const [isSubmitted, setIsSubmitted] = useState(false)
-
+  const [fileInputs, setFileInputs] = useState([]);
 
   const uploadImage = async (detailId, file) => {
     try {
-      // Update state with the file input
-      setFileInputs((prevFileInputs) => ({
-        ...prevFileInputs,
-        [detailId]: file
-      }));
-       const photo =  {
-         uri: file.assets[0].uri,
-         type: file.assets[0].mimeType,
-         name: file.assets[0].name
-       }
-      // Create FormData object for unsigned upload
+      const photo = {
+        uri: file.assets[0].uri,
+        type: file.assets[0].mimeType,
+        name: file.assets[0].name
+      };
+  
       let data = new FormData();
       data.append('file', photo);
-      data.append('upload_preset', 'img_upload'); // Ensure this is an unsigned preset
-      data.append("cloud_name", "dyh4orev5")
+      data.append('upload_preset', 'img_upload'); // Unsigned preset
+      data.append("cloud_name", "dyh4orev5");
   
-      // Make the upload request to Cloudinary using fetch
-      const response = await axios.post(`${CLOUDINARY_URI}`, data, {
+      // Make the upload request to Cloudinary
+      const response = await axios.post(`https://api.cloudinary.com/v1_1/dyh4orev5/upload`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
-      // Alert the user upon successful upload
-      setUrls((prevUrls) => {
-        const newUrls = [...prevUrls, response.data.secure_url];
-        console.log("Updated URLs:", newUrls); // Log the new state
-        return newUrls;
-      });
+  
+      // Construct the new object
+      const newFileInput = { detail_id: detailId, image_path: response.data.secure_url };
+  
+      // Update state with the new object
+      setFileInputs(prevFileInputs => [...prevFileInputs, newFileInput]);
+  
       Alert.alert("Upload", "Upload was successful!");
     } catch (error) {
       console.error("Upload error:", error);
       Alert.alert("Upload error", error.message);
     }
   };
+  
 
   const handleSubmit = async () => {
+    console.log("File inputs", fileInputs)
   try {
-    const response  = await axios.post(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details`, urls, {
+    const response  = await axios.post(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details`, fileInputs, {
       headers: {
         Authorization: `Bearer ${user.token}`
       }
@@ -302,7 +298,6 @@ const Room = ({route, navigation}) => {
   useEffect(() => {
      // If user's role is cleaner, then make this network request
      // Else make network request to get data for inspector dashboard
-     setUrls([...urls, route.params.roomName])
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
@@ -313,7 +308,7 @@ const Room = ({route, navigation}) => {
         });
 
         if(res.status === 200){
-          console.log(res.data)
+          // console.log(res.data)
           setTasks(res.data.data || [])   
           setIsLoading(false)
         }
@@ -331,7 +326,7 @@ const Room = ({route, navigation}) => {
           });
           if(res.status === 200){
             setRoomDetails(res.data.data.tasks);
-            console.log(res.data)
+            console.log("Task data",res.data.data.tasks)
             setIsLoading(false)
           }
         } catch (error) {
@@ -366,7 +361,11 @@ const Room = ({route, navigation}) => {
                   {
                     roomDetails && roomDetails.map((task, index)=>{
                         return <View key={index} style={styles.supervisedItem}>
-                                  <Image source={require("../assets/images/chair.png")} style={styles.itemImage} />
+                                  <Image source={
+                                    {
+                                      uri: task.image_url
+                                    }
+                                    } style={styles.itemImage} />
                                   <View style={styles.supervisedItemFooter}>
                                     <Text style={styles.supervisedItemLabel}>{(task.name).toUpperCase()}</Text>
                                     <CheckBox/>
