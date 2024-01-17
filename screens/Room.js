@@ -316,6 +316,7 @@ const Room = ({route, navigation}) => {
   useEffect(() => {
      // If user's role is cleaner, then make this network request
      // Else make network request to get data for inspector dashboard
+     setUrls([...urls, route.params.roomName])
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {

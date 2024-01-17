@@ -1,4 +1,4 @@
-import {React, useState, useContext} from 'react'
+import {React, useState, useContext, useEffect} from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import colors from '../util/colors';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -92,6 +92,9 @@ const Login = ({navigation}) => {
   { label: 'Italian', value: 'Italian' },
   { label: 'Hindi', value: 'Hindi' },
 ];
+  // useEffect(() => {
+  //   console.log(SANITRACK_API_URI)
+  // })
 const handleLogin = async () => {
   try {
     const res = await axios.post(`${SANITRACK_API_URI}login`, { username, password });
@@ -108,6 +111,7 @@ const handleLogin = async () => {
     // Handle error here. Use error.response if you want to access the response
     const errorMessage = error.response ? error.response.data.message : error.message;
     Alert.alert('Error', errorMessage);
+    console.error(error)
   }
 };
   return (
