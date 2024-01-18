@@ -7,7 +7,7 @@ import logo from '../../assets/imgs/msslogo.png'
 
 const SideNav = ({children}) => {
   const [selectedItem, setSelectedItem] = useState("")
-
+  const userName = localStorage.getItem('name')
   const handleItemClick = (name) => { 
     setSelectedItem(name)
   }
@@ -17,7 +17,7 @@ const SideNav = ({children}) => {
   }, [])
   return (
     <div className='admin-container'>
-      <Nav logo={logo} username={"Bella"}></Nav>
+      <Nav logo={logo} username={`${userName.charAt(0).toUpperCase()}${userName.slice(1)}`}></Nav>
       <nav className='nav'>
       
       <div className="tab-menu">

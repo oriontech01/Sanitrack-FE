@@ -6,9 +6,12 @@ const useTask = () => {
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
     const[responseMessage, setResponseMessage] = useState()
+
     const [unAssignedRooms, setUnAssignedRooms] = useState([])
     const [allCleaners, setAllCleaners] = useState([])
     const [allInspectors, setAllInspectors] = useState([])
+    const [singleTaskDetail, setSingleTaskDetail] = useState([])
+
     const [allTasks, setAllTasks] = useState([])
 
     const [activeCleaners, setActiveCleaners] = useState()
@@ -147,6 +150,56 @@ const useTask = () => {
        
     }
 
+    const getTaskById = async (taskId) => {
+        await axios.get(`${LOCAL_URL}task/get-single-task?taskId=${taskId}`, 
+        {
+            headers: {Authorization: `Bearer ${access_token}`}
+        }).then((response) => { 
+            setSingleTaskDetail(response.data.data)
+        }).catch((error) => { 
+            if(error.response){ 
+                const { status, data } = error.response;
+                if (status === 400 && data && data.message) {
+                    setResponseMessage(data.message)
+                    console.log("An error occured",data.message)
+                } else if(status === 403 && data && data.message){
+                    navigate('/')
+                } else {
+                  console.log('Axios error:', error);
+                }
+            }else {
+                console.log('Network error:', error.message);
+              }
+        })
+    }
+
+    const updateTask = async(taskId, cleanerId, inspectorId, roomId) => { 
+        await axios.put(`${LOCAL_URL}task/update-task`, {
+            taskId: taskId,
+            inspectorId: inspectorId,
+            cleanerId: cleanerId,
+            roomId: roomId
+        },
+        {headers: {Authorization: `Bearer ${access_token}`}} 
+        ).then((response) => { 
+            console.log(response.data)
+            navigate("/home/tasks")
+        }).catch((error) => { 
+            if(error.response){ 
+                const { status, data } = error.response;
+                if (status === 400 && data && data.message) {
+                    setResponseMessage(data.message)
+                    console.log("An error occured",data.message)
+                } else if(status === 403 && data && data.message){
+                    navigate('/')
+                } else {
+                  console.log('Axios error:', error);
+                }
+            }else {
+                console.log('Network error:', error.message);
+              }
+        })
+    }
     const deleteTask =  async (taskId) => { 
         await axios.delete(`${LOCAL_URL}task/delete-task`, {
             data: { taskId: taskId }, 
@@ -183,7 +236,10 @@ const useTask = () => {
         deleteTask, 
         activeCleaners, 
         everyTask, 
-        activeInspectors
+        activeInspectors, 
+        getTaskById,
+        singleTaskDetail, 
+        updateTask
     }
 }
 export default useTask

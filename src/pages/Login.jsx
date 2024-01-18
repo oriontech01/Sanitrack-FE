@@ -39,7 +39,7 @@ const Login = ({ onLogin }) => {
               {" "}
               {loginStatus}
               <div className="forgotandcreate">
-                <span className="forgot-pas"><a href="#">Forgot password?</a></span>
+                {/* <span className="forgot-pas"><a href="#">Forgot password?</a></span> */}
               </div>
             </form>
           </div>

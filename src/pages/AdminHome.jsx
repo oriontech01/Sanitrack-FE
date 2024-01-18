@@ -14,8 +14,7 @@ const AdminHome = () => {
         const getAllActiveCleaners = async () => {await getAllCleaners()}
         const getAllActiveInspectors = async () => {await getAllInspectors()}
         const getEveryTask = async () => {await getAllTasks()}
-        const getRoomCount = async () => {await getRoom()
-        }
+        const getRoomCount = async () => {await getRoom()}
 
         getAllActiveCleaners()
         getAllActiveInspectors()
@@ -104,10 +103,6 @@ const AdminHome = () => {
 
                     <div className="card-container">
                         <Card title="All Rooms:" count={roomsCount}/>
-                    </div>
-
-                    <div className="card-container">
-                        <Card title="All Cleaners" count={5}/>
                     </div>
                 </div>
             </div>

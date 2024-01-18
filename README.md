@@ -14,7 +14,8 @@ Currently, two official plugins are available:
 ### Staff: 
     - Add Staff (DONE)
     - View All Staff (DONE)
-    - Fire Staff 
+    - Fire Staff (DONE)
+    - Restore Staff (DONE)
 ### Room: 
     - Add Room (DONE)
     - View All Room (DONE)
@@ -23,8 +24,7 @@ Currently, two official plugins are available:
 ### Tasks: 
     - Add Tasks (DONE)
     - View All Task (DONE)
-    - Edit Task 
-    - Delete Task 
+    - Edit Task (DONE)
 ### Functionality: 
     - Do a final check and remember to use thw BASE_URL instead
     - When there is a status 403 error, send user back to the login page!

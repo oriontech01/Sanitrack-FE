@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import '../styles/AddUser.scss'
 import useStaff from '../Hooks/useStaff'
+import { useNavigate } from 'react-router-dom'
 
 const AddUser = () => { 
+    const navigate = useNavigate()
+
     const [username, setUserName] = useState()
     const [password, setPassword] = useState()
     const [role, setRole] = useState('')
@@ -10,10 +13,8 @@ const AddUser = () => {
     const {addStaff, responseMessage} = useStaff()
 
     const handleUpload = async () => { 
-        console.log(role)
         await addStaff(username, password, role)
-        alert(responseMessage)
-
+        navigate('/home/user')
     }
     return(
         <>
@@ -44,7 +45,7 @@ const AddUser = () => {
                         
                        
                     </form>
-                    <button onClick={handleUpload} disabled = {role == '' ? true : false}>Upload</button>
+                    <button onClick={handleUpload} disabled = {role == '' ? true : false}>Create</button>
                 </div>
 
             </div>

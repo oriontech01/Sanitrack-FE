@@ -10,10 +10,15 @@ const Tasks = () => {
     navigate("/home/add-task");
   };
 
+  console.log("This is all the task. Checking for the roomId", allTasks)
   const handleTaskDelete = async (taskId) => {
     await deleteTask(taskId);
     window.location.reload();
   };
+
+  const handleTaskEdit = async (taskId) => {
+    navigate(`/home/edit-task/${taskId}`)
+  }
   useEffect(() => {
     getAllTasks();
   }, []);
@@ -63,19 +68,12 @@ const Tasks = () => {
                         <button
                           className="view-btn"
                           onClick={() => {
-                            handleViewDDetails(item._id);
+                            handleTaskEdit(task.taskId);
                           }}
                         >
-                          Edit
+                          Edit 
                         </button>
-                        <button
-                          className="delete-btn"
-                          onClick={() => {
-                            handleTaskDelete(task.taskId);
-                          }}
-                        >
-                          Delete
-                        </button>
+                        
                       </div>
                     </td>
                   </tr>
