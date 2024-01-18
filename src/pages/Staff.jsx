@@ -95,8 +95,7 @@ const Staff = () => {
             
                     </tr>
                   ))}
-                  
-                  
+              
                 </tbody>
               </table>
               {/* <div style={{marginTop: "2em", display:"flex", gap:"10px"}}>

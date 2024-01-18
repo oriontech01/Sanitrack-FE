@@ -11,18 +11,31 @@ import AddUser from './pages/AddUser';
 import AddRoom from './pages/AddRoom';
 import RoomDetails from './pages/RoomDetails';
 import AddTask from './pages/AddTask';
+import Report from './pages/Report';
+import useAuth from './Hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import ProtectedRoute from './pages/ProtectedRoute';
 import TaskDetails from './pages/TaskDetails';
 function App() {
-  const storedLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const [isLoggedIn, setLoggedIn] = useState(storedLoggedIn);
+  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
+  const {logout} = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    setLoggedIn(false);
+    localStorage.setItem('isLoggedIn', 'false');
+    alert("You have been logged out!")
+    navigate('/')
+  };
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Login onLogin={() => setLoggedIn(true)} />} />
       </Routes>
       {isLoggedIn && (
-          <SideNav>
+          <SideNav handleLogout={handleLogout}>
             <Routes>
               <Route path="/admin-home" element={<AdminHome />} />
               
@@ -35,13 +48,16 @@ function App() {
 
               <Route path="/home/tasks" element={<Tasks />} />
               <Route path="/home/add-task" element={<AddTask />} />
+
+              <Route path="/home/report" element={<Report/>} />
               <Route path='/home/edit-task/:taskId' element = {<TaskDetails/>}/>
+
             </Routes>
-          </SideNav>
+          </SideNav>  
       )}
-      
     </>
-      
-  )
+  );
 }
-export default App
+
+export default App;
+

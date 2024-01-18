@@ -7,8 +7,8 @@ const useAuth = () => {
     const LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
     const [loginStatus, setLoginStatus] = useState('')
     const [loginState, setLoginState] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     
-
     const login = async (username, password) => { 
         await axios
         .post(`${LOCAL_URL}login`, {
@@ -42,11 +42,23 @@ const useAuth = () => {
         
     }
 
+    const logout = () => {
+        // Remove the user's token and other related information from local storage
+        localStorage.removeItem("auth-token");
+        localStorage.removeItem("name");
+        localStorage.removeItem("role");
+        localStorage.removeItem("id");
+        localStorage.setItem('isLoggedIn', 'false'); // Make sure the value is a string
+        // Update the login state to false
+        setLoginState(false);
+    }
     return{ 
         login, 
         loginStatus,
-        loginState
+        loginState,
+        logout,
+        isLoading,
+        setIsLoading
     }
 }
-
 export default useAuth

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     margin: 20px;
+    align-items: center;
   }
 
   .task-section {
@@ -50,6 +51,9 @@
   
   th {
     background-color: #f2f2f2;
+  }
+  td{
+    color:#000;
   }
   
   /* Modal styles */

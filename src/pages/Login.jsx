@@ -3,6 +3,7 @@ import '../styles/Login.scss';
 import useAuth from '../Hooks/useAuth';
 import { useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line react/prop-types
 const Login = ({ onLogin }) => {
   const [username, setUserName] = useState()
   const [password, setPassword] = useState()
@@ -11,9 +12,7 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-
     await login(username, password)
-   
   }
   useEffect(() => {
     console.log("After setting loginState:", loginState);

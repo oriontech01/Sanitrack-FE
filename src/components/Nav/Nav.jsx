@@ -1,10 +1,10 @@
-import React from 'react';
 import { IoMdNotificationsOutline } from 'react-icons/io';
-import { CgProfile } from 'react-icons/cg';
+import { CgLogOut, CgProfile } from 'react-icons/cg';
 import { FaAngleDown } from 'react-icons/fa';
 
 
-const Nav = ({ logo, username }) => {
+// eslint-disable-next-line react/prop-types
+const Nav = ({ logo, username, handleLogout }) => {
   return (
     <div className="header-section">
       <img src={logo} alt="logo" />
@@ -15,6 +15,12 @@ const Nav = ({ logo, username }) => {
           <CgProfile className="profile-icon" />
           <FaAngleDown className="arrow-img" />
         </div>
+        {/* <CgLogOut className='logout' onClick={() => {
+          logout()
+          alert("You have been logged out")
+          navigate('/')
+        }}/> */}
+        <CgLogOut className='logout' onClick={handleLogout}/>
       </div>
     </div>
   );
