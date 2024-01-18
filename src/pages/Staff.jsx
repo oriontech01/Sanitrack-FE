@@ -5,15 +5,54 @@ import useStaff from "../Hooks/useStaff"
 
 const Staff = () => { 
     const navigate = useNavigate()
-    const {getAllStaffs, allStaffs} = useStaff()
+    const {getAllStaffs, allStaffs, totalPages,  fireStaff, restoreStaff} = useStaff()
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 100; // Change this number based on your preference
+
+
+    const [flag, setFlag] = useState("")
 
     const handleNavigate = () => { 
         navigate("/home/add-user")
     }
 
+    // console.log("Basic",currentPage)
+
+    // const handleNext = async () => {
+    //   setCurrentPage((prevPage) => {
+    //     const nextPage = prevPage + 1;
+    //     if (nextPage <= totalPages) {
+    //       getAllStaffs(nextPage, itemsPerPage);
+    //     }
+    //     return nextPage;
+    //   });
+    // };
+    
+    // const handlePrevious = async () => {
+    //   if (currentPage > 1) {
+    //     setCurrentPage((prevPage) => {
+    //       console.log("Current page after previous", currentPage)
+    //       const newPage = prevPage - 1;
+    //       getAllStaffs(newPage, itemsPerPage);
+    //       return newPage;
+    //     });
+    //   }
+    // };
+    
+
+    const handleFire = async (staffId) => { 
+      await fireStaff(staffId)
+      setFlag("INACTIVE")
+    }
+
+    const handleRestore = async (staffId) => {
+      await restoreStaff(staffId)
+      setFlag("ACTIVE")
+    }
+
     useEffect(() => { 
-      getAllStaffs()
-    })
+      getAllStaffs(currentPage, itemsPerPage)
+    }, [flag])
 
     return (
       <div className="tab-display">
@@ -44,8 +83,14 @@ const Staff = () => {
                       <td>{`${staff.role.charAt(0).toUpperCase()}${staff.role.slice(1)}`}</td>
                       <td>{staff.flag}</td>       
                       <td>
-                          <button>Fire</button>
-                          <button>Opposite of Fire</button>
+                          
+                          {staff.flag == "INACTIVE" ? 
+                            (
+                              <button className='view-btn' onClick={() => handleRestore(staff._id)}>Restore</button>
+                            )
+                            : 
+                            (<button className='delete-btn' onClick={() => handleFire(staff._id)}>Fire</button>)}
+                          
                       </td>
             
                     </tr>
@@ -53,6 +98,11 @@ const Staff = () => {
               
                 </tbody>
               </table>
+              {/* <div style={{marginTop: "2em", display:"flex", gap:"10px"}}>
+                <button disabled={currentPage == 1} onClick={() => {handlePrevious()}}>Previous</button>
+                <button disabled={currentPage == totalPages} onClick={() => handleNext()}>Next</button>
+              </div> */}
+              
             </div>
   
           </div>

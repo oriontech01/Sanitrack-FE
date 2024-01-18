@@ -10,10 +10,15 @@ const Tasks = () => {
     navigate("/home/add-task");
   };
 
+  console.log("This is all the task. Checking for the roomId", allTasks)
   const handleTaskDelete = async (taskId) => {
     await deleteTask(taskId);
     window.location.reload();
   };
+
+  const handleTaskEdit = async (taskId) => {
+    navigate(`/home/edit-task/${taskId}`)
+  }
   useEffect(() => {
     getAllTasks();
     console.log(allTasks)
@@ -43,6 +48,7 @@ const Tasks = () => {
               </thead>
               <tbody>
                 {/* Sample data for demonstration purposes */}
+
                 { 
   allTasks.map((task) => (
     <tr key={task._id}>
@@ -80,6 +86,7 @@ const Tasks = () => {
     </tr>
   ))
 }
+
 
               </tbody>
             </table>

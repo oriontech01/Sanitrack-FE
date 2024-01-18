@@ -14,6 +14,8 @@ import AddTask from './pages/AddTask';
 import Report from './pages/Report';
 import useAuth from './Hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import ProtectedRoute from './pages/ProtectedRoute';
+import TaskDetails from './pages/TaskDetails';
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
   const {logout} = useAuth()
@@ -39,14 +41,17 @@ function App() {
               
               <Route path="/home/user" element={<Staff />} />
               <Route path="/home/add-user" element={<AddUser />} />
-              
+
               <Route path="/home/room" element={<Room />} />
               <Route path="/home/add-room" element={<AddRoom />} />
               <Route path="/home/view-details/:roomId" element={<RoomDetails />} />
 
               <Route path="/home/tasks" element={<Tasks />} />
               <Route path="/home/add-task" element={<AddTask />} />
+
               <Route path="/home/report" element={<Report/>} />
+              <Route path='/home/edit-task/:taskId' element = {<TaskDetails/>}/>
+
             </Routes>
           </SideNav>  
       )}

@@ -8,14 +8,16 @@ import logo from '../../assets/imgs/msslogo.png'
 // eslint-disable-next-line react/prop-types
 const SideNav = ({children, handleLogout}) => {
   const [selectedItem, setSelectedItem] = useState("")
-
+  const userName = localStorage.getItem('name')
   const handleItemClick = (name) => { 
     setSelectedItem(name)
   }
   
   return (
     <div className='admin-container'>
-      <Nav handleLogout={handleLogout}  logo={logo} username={localStorage.getItem('name')}></Nav>
+
+      <Nav handleLogout={handleLogout}  logo={logo} username={`${userName.charAt(0).toUpperCase()}${userName.slice(1)}`}></Nav>
+
       <nav className='nav'>
       
       <div className="tab-menu">
