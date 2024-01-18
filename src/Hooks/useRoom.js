@@ -9,6 +9,8 @@ const useRoom = () => {
     const [allRooms, setAllRooms] = useState([])
     const [allRoomsById, setAllRoomsById] = useState([])
 
+    const [roomsCount, setRoomCount] = useState()
+
     const access_token = localStorage.getItem('auth-token')
 
     const addRoom = async(formData) => { 
@@ -19,6 +21,7 @@ const useRoom = () => {
         }).then((response) => {
             console.log(response.data.message)
             setResponseMessage(data.message)
+            navigate('/home/room')
         }).catch((error) => { 
             if (error.response) {
                 const { status, data } = error.response;
@@ -42,6 +45,7 @@ const useRoom = () => {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRooms(response.data.data.allRooms)
+            setRoomCount(response.data.data.allRooms.length)
             // console.log(response.data.data.allRooms)
         }).catch((error)=> { 
             if(error.response){ 
@@ -91,6 +95,7 @@ const useRoom = () => {
         } ).then((response) => { 
             console.log(response.data.message)
             setResponseMessage(response.data.message)
+            navigate('/home/room')
         }).catch((error) => { 
             if(error.response){ 
                 const { status, data } = error.response;
@@ -113,11 +118,11 @@ const useRoom = () => {
     const deleteRoom = async(roomId) => { 
         await axios.delete(`${LOCAL_URL}room/delete-room`, 
         {
-            data: {roomId: roomId}
-        },
-        {headers: {Authorization: `Bearer ${access_token}`}}
-        ).then((response) => { 
+            data: {roomId: roomId},
+            headers: {Authorization: `Bearer ${access_token}`}
+        }).then((response) => { 
             console.log(response)
+            navigate('/home/room')
         }).catch((error) => { 
             if(error.response){ 
                 const { status, data } = error.response;
@@ -136,6 +141,7 @@ const useRoom = () => {
               }
         })
     }
+    
     return{ 
         addRoom, 
         responseMessage, 
@@ -144,7 +150,8 @@ const useRoom = () => {
         getRoomById, 
         allRoomsById, 
         updateRoomDetail, 
-        deleteRoom
+        deleteRoom, 
+        roomsCount
     }
 }
 

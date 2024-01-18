@@ -19,6 +19,7 @@ const Login = ({ onLogin }) => {
     console.log("After setting loginState:", loginState);
     if (loginState) {
       onLogin()
+      localStorage.setItem('isLoggedIn', 'true');
       navigate("/admin-home");
     }
   }, [loginState]);

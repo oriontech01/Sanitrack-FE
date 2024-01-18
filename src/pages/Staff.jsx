@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../styles/Tasks.scss'
 import { useNavigate } from "react-router-dom";
+import useStaff from "../Hooks/useStaff"
+
 const Staff = () => { 
     const navigate = useNavigate()
-     
+    const {getAllStaffs, allStaffs} = useStaff()
+
     const handleNavigate = () => { 
         navigate("/home/add-user")
     }
-  
+
+    useEffect(() => { 
+      getAllStaffs()
+    })
+
     return (
       <div className="tab-display">
         <div className="center-me">
@@ -30,29 +37,21 @@ const Staff = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Sample data for demonstration purposes */}
-                  <tr>
+                  {allStaffs.map((staff) => (
+                    <tr key={staff._id}>
                 
-                    <td>Daniel</td>
-                    <td>Cleaner</td>
-                    <td>Active</td>       
-                    <td>
-                        <button>Fire</button>
-                        <button>Opposite of Fire</button>
-                    </td>
-                
-                  </tr>
-                  <tr>
-                
-                    <td>Daniel</td>
-                    <td>Cleaner</td>
-                    <td>Active</td>
-                    <td>
-                        <button>Fire</button>
-                        <button>Opposite of Fire</button>
-                    </td>
-                
-                  </tr>
+                      <td>{`${staff.username.charAt(0).toUpperCase()}${staff.username.slice(1)}`}</td>
+                      <td>{`${staff.role.charAt(0).toUpperCase()}${staff.role.slice(1)}`}</td>
+                      <td>{staff.flag}</td>       
+                      <td>
+                          <button>Fire</button>
+                          <button>Opposite of Fire</button>
+                      </td>
+            
+                    </tr>
+                  ))}
+                  
+                  
                 </tbody>
               </table>
             </div>

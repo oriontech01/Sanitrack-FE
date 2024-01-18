@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useStaff from "./useStaff";
 
 const useTask = () => { 
     const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -11,10 +10,15 @@ const useTask = () => {
     const [allCleaners, setAllCleaners] = useState([])
     const [allInspectors, setAllInspectors] = useState([])
     const [allTasks, setAllTasks] = useState([])
+
+    const [activeCleaners, setActiveCleaners] = useState()
+    const [activeInspectors, setActiveInspectors] = useState()
+    const [everyTask, setEveryTask] = useState()
+
     const navigate = useNavigate()
 
     const access_token = localStorage.getItem('auth-token')
-    const {getStaffById} = useStaff()
+
 
    
     const getUnAssignedRooms = async () => { 
@@ -45,6 +49,7 @@ const useTask = () => {
         await axios.get(`${LOCAL_URL}get-all-cleaner`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
+            setActiveCleaners(response.data.data.allCleaners.length)
             setAllCleaners(response.data.data.allCleaners)
         }).catch((error) => { 
             if(error.response){ 
@@ -69,6 +74,7 @@ const useTask = () => {
         await axios.get(`${LOCAL_URL}get-all-inspector`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
+            setActiveInspectors(response.data.data.allInspectors.length)
             setAllInspectors(response.data.data.allInspectors)
         }).catch((error) => { 
             if(error.response){ 
@@ -116,47 +122,56 @@ const useTask = () => {
         })
     }
 
-    // const getAllTasks = async () => { 
-    //     const response = await axios.get(`${LOCAL_URL}task/get-all-tasks`, {
-    //         headers: { Authorization: `Bearer ${access_token}` }
-    //     });
-
-    //     const allTasks = response.data.data.allTasks;
-    //     setAllTasks(allTasks)
-
-    //     const propertyIds = {
-    //         cleaner: allTasks.map(task => task.assigned_cleaner._id),
-    //         inspector: allTasks.map(task => task.assigned_inspector._id),
-    //         room: allTasks.map(task => task.assigned_room._id),
-    //     };
-
-    //     const propertyDetails = await Promise.all([
-    //         fetchPropertyDetails(propertyIds.cleaner, 'cleaner'),
-    //         fetchPropertyDetails(propertyIds.inspector, 'inspector'),
-    //     ]);
-
-    //     // console.log(propertyIds)
-
-    //     propertyDetails.forEach((details, index) => {
-    //         Object.entries(details).forEach(([propertyName, userDetails]) => {
-    //             const task = allTasks[index];
-    //             console.log(`Task ID: ${task._id}, Assigned ${propertyName}: ${userDetails}`);
-    //             // You can display the details on the page as needed
-    //         });
-    //     });
-       
-    // }
-    async function fetchPropertyDetails(propertyIds, propertyName) {
-        try{
-            const userDetailsPromises = propertyIds.map(propertyId => getStaffById(propertyId));
-            const userDetails = await Promise.all(userDetailsPromises);
-            const propertyDetails = userDetails.map(userDetails => userDetails.data.username);
-            // console.log(`${propertyName} Details:`, propertyDetails);
+    const getAllTasks = async () => { 
+        await axios.get(`${LOCAL_URL}task/get-all-tasks`, {
+            headers: { Authorization: `Bearer ${access_token}` }
+        }).then((response) => {
+            setEveryTask(response.data.data.allTasks.length)
+            setAllTasks(response.data.data.allTasks)
+        }).catch((error) => { 
+            if(error.response){ 
+                const { status, data } = error.response;
+                if (status === 400 && data && data.message) {
+                    setResponseMessage(data.message)
+                    console.log("An error occured",data.message)
+                } else if(status === 403 && data && data.message){
+                    navigate('/')
+                } else {
+                  console.log('Axios error:', error);
+                }
+            }else {
+                console.log('Network error:', error.message);
+              }
+        })
     
-            return { [propertyName]: propertyDetails };
-        }catch(e){}
-        
+       
     }
+
+    const deleteTask =  async (taskId) => { 
+        await axios.delete(`${LOCAL_URL}task/delete-task`, {
+            data: { taskId: taskId }, 
+            headers: { Authorization: `Bearer ${access_token}` }
+        }).then((response) => { 
+            console.log(response)
+        }).catch((error) => { 
+            if(error.response){ 
+                const { status, data } = error.response;
+                if (status === 400 && data && data.message) {
+                    setResponseMessage(data.message)
+                    console.log("An error occured",data.message)
+                } else if(status === 403 && data && data.message){
+                    navigate('/')
+                } else {
+                  console.log('Axios error:', error);
+                }
+            }else {
+                console.log('Network error:', error.message);
+              }
+        })
+    }
+  
+
+    
     return{ 
         getUnAssignedRooms, 
         getAllCleaners, 
@@ -164,7 +179,11 @@ const useTask = () => {
         unAssignedRooms, 
         allCleaners, allInspectors,
         addTask, getAllTasks, 
-        allTasks
+        allTasks, 
+        deleteTask, 
+        activeCleaners, 
+        everyTask, 
+        activeInspectors
     }
 }
 export default useTask

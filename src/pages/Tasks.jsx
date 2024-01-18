@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Tasks.scss"; // Import your CSS file if not already done
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import useTask from "../Hooks/useTask";
 const Tasks = () => {
-  const {getAllTasks, allTasks, getStaffById} = useTask()
+  const { getAllTasks, allTasks, deleteTask } = useTask();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate('/home/add-task')
-  }
+    navigate("/home/add-task");
+  };
 
-  useEffect(() => { 
-    // getAllTasks()
-  },[])
-
+  const handleTaskDelete = async (taskId) => {
+    await deleteTask(taskId);
+    window.location.reload();
+  };
+  useEffect(() => {
+    getAllTasks();
+  }, []);
 
   return (
     <div className="tab-display">
@@ -34,20 +37,52 @@ const Tasks = () => {
                   <th>Assigned Supervisor</th>
                   <th>Assigned Cleaner </th>
                   <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {/* Sample data for demonstration purposes */}
-                <tr>
-                  <td>Room 1</td>
-                  <td>Daniel</td>
-                  <td>Abel</td>
-                  <td>DONE</td>
-                </tr>
+                {allTasks.map((task) => (
+                  <tr key={task.taskId}>
+                    <td>{task.roomName.roomName}</td>
+                    <td>{`${task.inspectorUsername.username
+                      .charAt(0)
+                      .toUpperCase()}${task.inspectorUsername.username.slice(
+                      1
+                    )}`}</td>
+                    <td>{`${task.cleanerUsername.username
+                      .charAt(0)
+                      .toUpperCase()}${task.cleanerUsername.username.slice(
+                      1
+                    )}`}</td>
+                    <td className={`status ${task.isSubmitted ? "done" : ""}`}>
+                      {task.isSubmitted ? "Completed" : "Pending"}
+                    </td>
+                    <td>
+                      <div className="btn-group">
+                        <button
+                          className="view-btn"
+                          onClick={() => {
+                            handleViewDDetails(item._id);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            handleTaskDelete(task.taskId);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </div>

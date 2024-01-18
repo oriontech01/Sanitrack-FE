@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../styles/AdminDashBoard.scss';  // Import your CSS file if not already done
 import pie from '../assets/imgs/pie.png'
 import graph from "../assets/imgs/Graph (1).png"
-
+import Card from "../components/Cards/Card";
+import useTask from "../Hooks/useTask";
+import useRoom from "../Hooks/useRoom";
+import { Link, NavLink, Navigate } from "react-router-dom";
 const AdminHome = () => {
+    const {activeCleaners,activeInspectors, everyTask, getAllCleaners, getAllInspectors, getAllTasks} = useTask()
+    const {roomsCount, getRoom} = useRoom()
+
+    useEffect(() => { 
+        const getAllActiveCleaners = async () => {await getAllCleaners()}
+        const getAllActiveInspectors = async () => {await getAllInspectors()}
+        const getEveryTask = async () => {await getAllTasks()}
+        const getRoomCount = async () => {await getRoom()
+        }
+
+        getAllActiveCleaners()
+        getAllActiveInspectors()
+        getEveryTask()
+        getRoomCount()
+    }, [])
     return (
         <>
-            <div className="bg-color dashboard-container">
+            {/* <div className="bg-color dashboard-container">
                 <div className="tab_and_display">
                     <div className="tab-display">
                         <div className="center-me">
@@ -67,7 +85,32 @@ const AdminHome = () => {
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>  */}
+            <div className="dashboard-container">
+                <div className="dashboard-top-details">
+                    {/* Build the card */}
+                    <div className="card-container">
+                        <NavLink to = '/home/user' >
+                            <Card title="Active Cleaners:" count={activeCleaners}/>
+                        </NavLink>
+                    </div>
+                    <div className="card-container">
+                        <Card title="Active Inspectors:" count={activeInspectors}/>
+                    </div>
+
+                    <div className="card-container">
+                        <Card title="All Task:" count={everyTask}/>
+                    </div>
+
+                    <div className="card-container">
+                        <Card title="All Rooms:" count={roomsCount}/>
+                    </div>
+
+                    <div className="card-container">
+                        <Card title="All Cleaners" count={5}/>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
