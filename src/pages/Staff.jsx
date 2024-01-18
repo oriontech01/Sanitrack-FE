@@ -50,8 +50,7 @@ const Staff = () => {
             
                     </tr>
                   ))}
-                  
-                  
+              
                 </tbody>
               </table>
             </div>

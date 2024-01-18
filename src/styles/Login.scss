@@ -25,10 +25,13 @@
     align-content: center;
     select{
       outline: none;
-      
     }
   }
   
+  input{
+    background-color: #fff;
+    color: #000;
+  }
   .language-selector .text {
     font-size: 19px;
     margin-right: 10px;

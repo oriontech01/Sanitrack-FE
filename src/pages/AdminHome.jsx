@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import '../styles/AdminDashBoard.scss';  // Import your CSS file if not already done
-import pie from '../assets/imgs/pie.png'
-import graph from "../assets/imgs/Graph (1).png"
+// import pie from '../assets/imgs/pie.png'
+// import graph from "../assets/imgs/Graph (1).png"
 import Card from "../components/Cards/Card";
 import useTask from "../Hooks/useTask";
 import useRoom from "../Hooks/useRoom";
-import { Link, NavLink, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const AdminHome = () => {
     const {activeCleaners,activeInspectors, everyTask, getAllCleaners, getAllInspectors, getAllTasks} = useTask()
     const {roomsCount, getRoom} = useRoom()
@@ -16,7 +16,6 @@ const AdminHome = () => {
         const getEveryTask = async () => {await getAllTasks()}
         const getRoomCount = async () => {await getRoom()
         }
-
         getAllActiveCleaners()
         getAllActiveInspectors()
         getEveryTask()
@@ -90,16 +89,16 @@ const AdminHome = () => {
                 <div className="dashboard-top-details">
                     {/* Build the card */}
                     <div className="card-container">
-                        <NavLink to = '/home/user' >
+                        <Link to='/home/user' className="active-cleaners">
                             <Card title="Active Cleaners:" count={activeCleaners}/>
-                        </NavLink>
+                        </Link>
                     </div>
                     <div className="card-container">
                         <Card title="Active Inspectors:" count={activeInspectors}/>
                     </div>
 
                     <div className="card-container">
-                        <Card title="All Task:" count={everyTask}/>
+                        <Card title="All Tasks:" count={everyTask}/>
                     </div>
 
                     <div className="card-container">
