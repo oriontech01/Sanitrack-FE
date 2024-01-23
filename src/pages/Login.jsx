@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import '../styles/Login.scss';
 import useAuth from '../Hooks/useAuth';
 import { useNavigate } from "react-router-dom";
+import logo from '../assets/imgs/msslogo.png'
 
 // eslint-disable-next-line react/prop-types
 const Login = ({ onLogin }) => {
@@ -15,6 +16,7 @@ const Login = ({ onLogin }) => {
     await login(username, password)
   }
   useEffect(() => {
+    localStorage.setItem('isLoggedIn', 'false');
     console.log("After setting loginState:", loginState);
     if (loginState) {
       onLogin()
@@ -27,13 +29,18 @@ const Login = ({ onLogin }) => {
       <div className="bg-color">
         <span className="centerbox">
           <div className="loginbox-bg">
+          <img src={logo} alt='Logo'/>
             <form>
-              <label className="form-label" htmlFor="username">Username:</label>
-              <input type="text" id="username" name="username" onChange={(e) => { setUserName(e.target.value) }} required />
+              <h1>Sign In Page</h1>
+              <h3>Enter your credentials to sign in</h3>
 
-              <label className="form-label" htmlFor="password">Password:</label>
-              <input type="password" id="password" name="password" onChange={(e) => { setPassword(e.target.value) }} required />
+              <div className='inputContainer'>
+              <label className="form-label" htmlFor="username">Username</label>
+              <input type="text" placeholder='John Doe' id="username" name="username" onChange={(e) => { setUserName(e.target.value) }} required />
 
+              <label className="form-label" htmlFor="password">Password</label>
+              <input type="password" placeholder='*********' id="password" name="password" onChange={(e) => { setPassword(e.target.value) }} required />
+              </div>
               <button className="loginbtn" type="submit" onClick={(e) => { handleLogin(e) }}>Login</button>
               {" "}
               {loginStatus}
@@ -48,5 +55,4 @@ const Login = ({ onLogin }) => {
 
   );
 };
-
 export default Login;
