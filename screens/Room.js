@@ -260,7 +260,7 @@ const Room = ({route, navigation}) => {
   const handleSubmit = async () => {
     console.log("File inputs", fileInputs)
   try {
-    const response  = await axios.post(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details`, fileInputs, {
+    const response  = await axios.post(`http://192.168.1.161:5000/api/cleaner-dashboard/room-details`, fileInputs, {
       headers: {
         Authorization: `Bearer ${user.token}`
       }
@@ -301,7 +301,7 @@ const Room = ({route, navigation}) => {
      setIsLoading(true); // Start loading
      const getTasks = async() =>{
       try {
-        const res = await axios.get(`https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details/${roomID}`, {
+        const res = await axios.get(`http://192.168.1.161:5000/api/cleaner-dashboard/room-details/${roomID}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -319,7 +319,7 @@ const Room = ({route, navigation}) => {
      }
      const getInspectorRoomDetails = async() => {
         try {
-          const res = await axios.get(`https://sanitrack-service.onrender.com/api/inspector/room-details/${roomID}`, {
+          const res = await axios.get(`http://192.168.1.161:5000/api/inspector/room-details/${roomID}`, {
             headers: {
               Authorization: `Bearer ${user.token}`
             }

@@ -1,5 +1,6 @@
 export default colors = {
-    darkpurple: '#5C6BC0',
+    primary: '#03C5f0',
+    secondary: '#EEEFF2',
     white: '#fff',
     black: '#000',
     linkcolor: '#535695',
@@ -7,5 +8,6 @@ export default colors = {
     bgColor:'#9FA8DA',
     itemBgColor: '#D9D9D9',
     selectedColor: '#4630EB',
-    lightgray: '#D9D9D9'
+    lightgray: '#D9D9D9',
+    darkblue: '#0d47a1'
 }

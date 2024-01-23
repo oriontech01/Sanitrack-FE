@@ -6,14 +6,14 @@ import colors from '../util/colors';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.darkpurple,
+        backgroundColor: colors.primary,
         justifyContent: 'center',
         alignContent: 'center',
         gap: 120,
         padding: 20
     },
     workOrderButtons: {
-        backgroundColor: colors.palepurple,
+        backgroundColor: colors.white,
         width: '100%',
         height: 150,
         padding: 25,
