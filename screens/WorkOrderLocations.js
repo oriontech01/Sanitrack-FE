@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
       gap: 50
     },
     button: {
-      backgroundColor: '#9FA8DA',
+      backgroundColor: colors.white,
       padding: 15,
       borderRadius: 30,
       width: '100%',
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     const [roomList, setRoomList] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
+      // console.log(user)
       setIsLoading(true)
       const getDashboard = async () => {
         try {
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
               });
               if (res.status === 200) {
                 // Ensure roomList is always an array
+                console.log(res.data)
                 setRoomList(res.data.data.inspectorRooms || []);
                 setIsLoading(false)
               }
