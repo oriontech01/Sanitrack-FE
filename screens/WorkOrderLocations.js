@@ -5,7 +5,11 @@ import { UserContext } from '../context/UserContext';
 import colors from '../util/colors';
 import Nav from '../components/Nav';
 import { RoomContext } from '../context/RoomContext';
-import {SANITRACK_API_URI} from '@env'
+import JWT from 'expo-jwt';
+import {JWT_KEY} from '@env';
+
+// import {SANITRACK_API_URI} from '@env'
+// import JWT, decode user token, check the user role
 
 const styles = StyleSheet.create({
     container: {
@@ -42,12 +46,13 @@ const styles = StyleSheet.create({
     const [roomList, setRoomList] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
-      // console.log(user)
-      setIsLoading(true)
+      console.log("Logged in user",user)
+      const result = JWT.decode(user.token, JWT_KEY)
+      console.log(result)
       const getDashboard = async () => {
         try {
           if(user.role === 'cleaner'){
-            const res = await axios.get(`http://192.168.1.161:5000/api/cleaner-dashboard`, {
+            const res = await axios.get(`http://192.168.0.161:5000/api/cleaner-dashboard`, {
               headers: {
                 Authorization: `Bearer ${user.token}`
               }
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
           }
           else{
              try {
-              const res = await axios.get(`http://192.168.1.161:5000/api/inspector`, {
+              const res = await axios.get(`http://192.168.0.161:5000/api/inspector`, {
                 headers: {
                   Authorization: `Bearer ${user.token}`
                 }
@@ -80,6 +85,7 @@ const styles = StyleSheet.create({
         } catch (error) {
           Alert.alert('Error', error.message)
           setIsLoading(false)
+
         }
       };
       getDashboard();

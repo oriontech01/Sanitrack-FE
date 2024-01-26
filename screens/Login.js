@@ -9,7 +9,6 @@ import {
   Alert,
 } from "react-native";
 import colors from "../util/colors";
-import { Dropdown } from "react-native-element-dropdown";
 import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
@@ -129,17 +128,20 @@ const Login = ({ navigation }) => {
   ];
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`http://192.168.1.161:5000/api/login`, {
+      const res = await axios.post(`http://192.168.0.161:5000/api/login`, {
         username,
         password,
       });
       if (res.status === 200) {
         // Check for status code 200
         Alert.alert("Auth", "Login successful, redirecting...");
-        setUser(res.data.data);
-        setPassword("");
-        setUserName("");
-        navigation.navigate("WorkOrderSelection");
+        console.log(res.data)
+        setUser(res.data.data); // Set user object value to the user data gotten from the Backend API
+        setPassword(""); // Clear password field
+        setUserName(""); // Clear username field
+        // if(res.data.data.requiresRoleSelection) navigation.navigate("RoleSelection") //If user has multiple roles, prompt for role selection
+        // else navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
+        navigation.navigate("RoleSelection")
       } else {
         Alert.alert("Error", res.data.message);
       }
@@ -192,14 +194,14 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Forgot password?</Text>
-          <TouchableOpacity
+          <Text onPress={() => navigation.navigate("ForgotPassword")} style={styles.footerText}>Forgot password?</Text>
+          {/* <TouchableOpacity
             onPress={() => {
               navigation.navigate("Signup");
             }}
           >
             <Text style={styles.footerText}>Create an Account</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </LinearGradient>

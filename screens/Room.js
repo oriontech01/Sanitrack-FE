@@ -301,7 +301,7 @@ const Room = ({ route, navigation }) => {
     console.log("File inputs", fileInputs);
     try {
       const response = await axios.post(
-        `http://192.168.1.161:5000/api/cleaner-dashboard/room-details`,
+        `http://192.168.0.161:5000/api/cleaner-dashboard/room-details`,
         fileInputs,
         {
           headers: {
@@ -345,7 +345,7 @@ const Room = ({ route, navigation }) => {
     const getTasks = async () => {
       try {
         const res = await axios.get(
-          `http://192.168.1.161:5000/api/cleaner-dashboard/room-details/${roomID}`,
+          `http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -366,7 +366,7 @@ const Room = ({ route, navigation }) => {
     const getInspectorRoomDetails = async () => {
       try {
         const res = await axios.get(
-          `http://192.168.1.161:5000/api/inspector/room-details/${roomID}`,
+          `http://192.168.0.161:5000/api/inspector/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
