@@ -164,6 +164,8 @@ const Login = ({ navigation }) => {
       <Icon name="account-circle-outline"  size={100} color={colors.primary} />
         <Text style={styles.label}>Username</Text>
         <TextInput
+          autoCapitalize="none"
+          keyboardType="visible-password"
           value={username}
           onChangeText={(val) => setUserName(val)}
           style={styles.input}
@@ -174,10 +176,12 @@ const Login = ({ navigation }) => {
           
           <TextInput
             value={password}
+            keyboardType={isPasswordVisible ? "visible-password": "ascii-capable"}
             onChangeText={(pass) => setPassword(pass)}
             style={styles.passwordInput}
             secureTextEntry={!isPasswordVisible}
             placeholder="**********"
+            autoCapitalize="none"
           />
           <TouchableOpacity
             onPress={() => setIsPasswordVisible(!isPasswordVisible)}

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     width: "80%",
     marginBottom: 20,
     backgroundColor: colors.white,
-    padding: 5,
+    padding: 10,
     borderRadius: 20
   },
   proceedButton: {
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 });
 
 const roles = [
-  { label: "Cleaner", value: "cleaner" },
-  { label: "Inspector", value: "inspector" },
+  { label: "Cleaner", value: "Cleaner" },
+  { label: "Inspector", value: "Inspector" },
 ];
 
 const SelectRole = ({navigation}) => {
@@ -61,7 +61,7 @@ const SelectRole = ({navigation}) => {
       />
       <TouchableOpacity onPress={() => {
         if (!userRole) navigation.navigate("Login");
-        else navigation.navigate("WorkOrderLocations")
+        else navigation.navigate("WorkOrderSelection")
       }} style={styles.proceedButton}>
         <Text style={styles.proceedButtonText}>Proceed</Text>
       </TouchableOpacity>
