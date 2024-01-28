@@ -244,13 +244,14 @@ const Room = ({ route, navigation }) => {
   const { roomID } = useContext(RoomContext);
   const [timer, setTimer] = useState(0); // Implementation of timer feature
   const [isActive, setIsActive] = useState(false); // Timer state variable
-  const countRef = useRef(null);
+  const countRef = useRef(null); // Timer reference
   const [isLoading, setIsLoading] = useState(false); // Renders ActivityIndicator to show that the app is loading content
-  const [roomDetails, setRoomDetails] = useState([]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [fileInputs, setFileInputs] = useState([]);
+  const [roomDetails, setRoomDetails] = useState([]); // Set the details of rooms assigned to the user
+  const [isSubmitted, setIsSubmitted] = useState(false); // To track whether images are being submitted
+  const [fileInputs, setFileInputs] = useState([]); // Uploaded files
   const [modalVisible, setModalVisible] = useState(false); //Handle modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Handle selected image
+  const [trackedTime, setTrackedTime] = useState(0) // Timer value for tracking
 
   const openModal = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -280,16 +281,13 @@ const Room = ({ route, navigation }) => {
           },
         }
       );
-
       // Construct the new object
       const newFileInput = {
         detail_id: detailId,
         image_path: response.data.secure_url,
       };
-
       // Update state with the new object
       setFileInputs((prevFileInputs) => [...prevFileInputs, newFileInput]);
-
       Alert.alert("Upload", "Upload was successful!");
     } catch (error) {
       console.error("Upload error:", error);
@@ -298,7 +296,17 @@ const Room = ({ route, navigation }) => {
   };
 
   const handleSubmit = async () => {
-    console.log("File inputs", fileInputs);
+    // console.log("File inputs", fileInputs);
+    if (timer < 300) {
+      Alert.alert("Error", "You must work for at least 5 minutes before submitting");
+      return;
+    }
+    const timerDetails = { //Construct timer data for backend API
+      roomID,
+      start_time: timer,
+      stop_time: trackedTime,
+      task_id
+    }
     try {
       const response = await axios.post(
         `http://192.168.0.161:5000/api/cleaner-dashboard/room-details`,
@@ -309,7 +317,7 @@ const Room = ({ route, navigation }) => {
           },
         }
       );
-      console.log(response.data);
+      console.log("Submit",response.data);
       Alert.alert("Success", "Submission successful!");
       setIsSubmitted(true);
     } catch (error) {
@@ -325,8 +333,11 @@ const Room = ({ route, navigation }) => {
   };
 
   const handleStop = () => {
+    setTrackedTime(timer);
     clearInterval(countRef.current);
     setIsActive(false);
+    console.log("timer val", timer)
+    console.log("final time", trackedTime)
   };
 
   const formatTime = () => {
@@ -354,7 +365,7 @@ const Room = ({ route, navigation }) => {
         );
 
         if (res.status === 200) {
-          // console.log(res.data)
+          console.log("Tasks",res.data)
           setTasks(res.data.data || []);
           setIsLoading(false);
         }
