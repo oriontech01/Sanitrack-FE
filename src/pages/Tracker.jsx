@@ -6,7 +6,7 @@ import { FaLocationDot } from "react-icons/fa6";
 const Tracker = () => {
   const [locationData, setLocationData] = useState([]);
   const token = localStorage.getItem("auth-token");
-  const googleMapsApiKey = "AIzaSyDT9STHghZufah134eISBDF9ozIAVG5vTM"; // Replace with your API key
+  const googleMapsApiKey = import.meta.env.GOOGLE_API_KEY; // Replace with your API key
   const containerStyle = {
     width: "800px",
     height: "400px",
