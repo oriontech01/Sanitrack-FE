@@ -45,7 +45,7 @@ const Staff = () => {
                       <td>{staff.flag}</td>       
                       <td>
                           <button>Fire</button>
-                          <button>Opposite of Fire</button>
+                          <button>Hire</button>
                       </td>
             
                     </tr>

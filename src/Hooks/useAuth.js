@@ -18,13 +18,12 @@ const useAuth = () => {
         .then((response) => {
             // save the token if credentials are correct
             if(response.data.status === true){ 
-                console.log(response.data) 
+                console.log(response.data.data.token) 
                 localStorage.setItem("auth-token", response.data.data.token);
-                localStorage.setItem("name", response.data.data.username);
+                localStorage.setItem("name", username);
                 localStorage.setItem("role", response.data.data.role); 
                 localStorage.setItem('id', response.data.data.id)
                 setLoginState(true)
-                // navigate("/admin-home")
             }
         })
         .catch((error) => {
@@ -39,7 +38,6 @@ const useAuth = () => {
                 console.log('Network error:', error.message);
               }
         });
-        
     }
 
     const logout = () => {

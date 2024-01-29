@@ -16,7 +16,7 @@ const Tasks = () => {
   };
   useEffect(() => {
     getAllTasks();
-    console.log(allTasks)
+    console.log("Tasks", allTasks);
   }, []);
 
   return (
@@ -43,44 +43,45 @@ const Tasks = () => {
               </thead>
               <tbody>
                 {/* Sample data for demonstration purposes */}
-                { 
-  allTasks.map((task) => (
-    <tr key={task._id}>
-      <td>{task.assigned_room.roomName}</td>
-      <td>{`${task.assigned_inspector.username
-        .charAt(0)
-        .toUpperCase()}${task.assigned_inspector.username.slice(1)}`}</td>
-      <td>{`${task.assigned_cleaner.username
-        .charAt(0)
-        .toUpperCase()}${task.assigned_cleaner.username.slice(1)}`}</td>
-      <td className={`status ${task.isSubmitted ? "done" : ""}`}>
-        {task.isSubmitted ? "Completed" : "Pending"}
-      </td>
-      <td>
-        <div className="btn-group">
-          <button
-            className="view-btn"
-            onClick={() => {
-              // Ensure you update this to use task._id
-              handleViewDetails(task._id);
-            }}
-          >
-            Edit
-          </button>
-          <button
-            className="delete-btn"
-            onClick={() => {
-              handleTaskDelete(task._id);
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      </td>
-    </tr>
-  ))
-}
-
+                {allTasks.map((task) => (
+                  <tr key={task._id}>
+                    <td>{task.assigned_room.roomName}</td>
+                    <td>{`${task.assigned_inspector.username
+                      .charAt(0)
+                      .toUpperCase()}${task.assigned_inspector.username.slice(
+                      1
+                    )}`}</td>
+                    <td>{`${task.assigned_cleaner.username
+                      .charAt(0)
+                      .toUpperCase()}${task.assigned_cleaner.username.slice(
+                      1
+                    )}`}</td>
+                    <td className={`status ${task.isSubmitted ? "done" : ""}`}>
+                      {task.isSubmitted ? "Completed" : "Pending"}
+                    </td>
+                    <td>
+                      <div className="btn-group">
+                        <button
+                          className="view-btn"
+                          onClick={() => {
+                            // Ensure you update this to use task._id
+                            handleViewDetails(task._id);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            handleTaskDelete(task._id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

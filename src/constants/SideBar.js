@@ -3,6 +3,7 @@ import { AiFillDashboard } from "react-icons/ai";
 import { MdBarChart, MdOutlinePermMedia } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg"
+import { History } from "@mui/icons-material";
 
 const sideBarItems = [
     { 
@@ -48,7 +49,11 @@ const sideBarItems = [
         link: '/home/tracker', 
         icon: TbActivity
     },
-
+    {
+        name: "Work History", 
+        link: '/home/work-history',  
+        icon: History
+    },
 ]
 
 export default sideBarItems

@@ -26,20 +26,6 @@
     }
 }
 // from 7 to 51 is code for the nav
-.header-section {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 70%;
-    padding: 10px 20px;
-    height: 70px;
-    margin-left: auto;
-    color: #000;
-    svg{
-        width: 30px;
-        height: 30px;
-    }
-}
 
 .charts{
     width: 100%;
@@ -69,39 +55,6 @@
     cursor: pointer;
 }
 
-.logout{
-    cursor: pointer;
-}
-
-.second_section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    justify-content: space-around;
-    div{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-.username {
-    width: 115px;
-    font-size: 21px;
-    font-weight: bold;
-}
-
-.profile-icon {
-    margin-right: 30px;
-    cursor: pointer;
-}
-
-.arrow-img {
-    width: 30px;
-    height: 30px;
-    margin-left: 15px;
-    cursor: pointer;
-}
 
 /* Tab and display section */
 

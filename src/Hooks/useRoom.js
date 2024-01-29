@@ -41,7 +41,7 @@ const useRoom = () => {
     }
 
     const getRoom = async() => {
-        await axios.get(`${LOCAL_URL}/room/get-all-rooms`, {
+        await axios.get(`${LOCAL_URL}/room/get`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRooms(response.data.data.allRooms)

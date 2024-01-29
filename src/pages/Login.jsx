@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import '../styles/Login.scss';
 import useAuth from '../Hooks/useAuth';
-import { useNavigate } from "react-router-dom";
 import logo from '../assets/imgs/msslogo.png'
+import { useNavigate } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
 const Login = ({ onLogin }) => {
@@ -16,14 +16,13 @@ const Login = ({ onLogin }) => {
     await login(username, password)
   }
   useEffect(() => {
-    localStorage.setItem('isLoggedIn', 'false');
     console.log("After setting loginState:", loginState);
     if (loginState) {
       onLogin()
       localStorage.setItem('isLoggedIn', 'true');
       navigate("/admin-home");
     }
-  }, [loginState]);
+  }, [loginState, navigate, onLogin]);
   return (
     <>
       <div className="bg-color">

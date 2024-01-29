@@ -1,0 +1,40 @@
+.selectRoleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: "#747bff"; // Assuming you have a color variable $primary
+    height: 100%;
+  }
+  
+  .titleText {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: "#fff"; // Assuming you have a color variable $white
+  }
+  
+  .dropDownMenu {
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: "#fff";
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+  }
+  
+  .proceedButton {
+    background-color: 747bff; // Assuming you have a color variable $secondary
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+  
+  .proceedButtonText {
+    color: "#fff";
+    font-size: 16px;
+    font-weight: bold;
+  }
