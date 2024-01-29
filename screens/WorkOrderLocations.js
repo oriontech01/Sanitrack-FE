@@ -14,7 +14,6 @@ import Nav from "../components/Nav";
 import { RoomContext } from "../context/RoomContext";
 import JWT from "expo-jwt";
 import { JWT_KEY } from "@env";
-import { center } from "@cloudinary/url-gen/qualifiers/textAlignment";
 
 // import {SANITRACK_API_URI} from '@env'
 // import JWT, decode user token, check the user role
@@ -64,17 +63,16 @@ const WorkOrderLocations = ({ navigation }) => {
     const decodedToken = JWT.decode(user.token, JWT_KEY); // Decode user token
     const getDashboard = async () => {
       try {
-        // if (decodedToken.role_id.role_name === "Cleaner") {
-          if(user.role == "cleaner"){
+        if (decodedToken.role_id.role_name === "Cleaner") {
           const res = await axios.get(
-            `http://192.168.0.161:5000/api/cleaner-dashboard`,
+            `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard`,
             {
               headers: {
                 Authorization: `Bearer ${[user.token]}`,
               },
             }
           );
-          console.log(res.data.data.cleanerRooms);
+          console.log(res.data);
           if (res.status === 200) {
             // Ensure roomList is always an array
             setRoomList(res.data.data.cleanerRooms || []);
@@ -83,7 +81,7 @@ const WorkOrderLocations = ({ navigation }) => {
         } else {
           try {
             const res = await axios.get(
-              `http://192.168.0.161:5000/api/inspector`,
+              `https://sanitrack-node-api.onrender.com/api/inspector`,
               {
                 headers: {
                   Authorization: `Bearer ${user.token}`,
@@ -113,24 +111,8 @@ const WorkOrderLocations = ({ navigation }) => {
   const navigateToRoom = (roomName) => {
     navigation.navigate("Room", { roomName });
   };
+
   return (
-    // <View style={styles.container}>
-    //   <Nav name={user.username}/>
-    //   <View style={styles.roomContainer}>
-    //     {
-    //       isLoading ?  <ActivityIndicator size="large" color="#ffffff" /> :
-    //       roomList.map((room, index) => (
-    //         <TouchableOpacity key={index} style={styles.button} onPress={() => {
-    //              setRoomID(room.roomId)
-    //              navigateToRoom(room.roomName)
-    //           }
-    //         }>
-    //           <Text style={styles.buttonText}>{room.roomName}</Text>
-    //         </TouchableOpacity>
-    //       ))
-    //     }
-    //   </View>
-    // </View>
     <View style={styles.container}>
       <Nav name={user.username} />
       <View style={styles.roomContainer}>
@@ -158,4 +140,5 @@ const WorkOrderLocations = ({ navigation }) => {
     </View>
   );
 };
+
 export default WorkOrderLocations;

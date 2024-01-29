@@ -31,13 +31,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     borderRadius: 10,
   },
-  // dropdownText: {
-  //   color: '#FFF',
-  //   backgroundColor: '#7986CB',
-  //   padding: 10,
-  //   borderRadius: 5,
-  //   textAlign: 'center',
-  // },
   inputContainer: {
     width: "100%",
     backgroundColor: colors.white,
@@ -128,20 +121,19 @@ const Login = ({ navigation }) => {
   ];
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`http://192.168.0.161:5000/api/login`, {
+      const res = await axios.post(`https://sanitrack-node-api.onrender.com/api/login`, {
         username,
         password,
       });
       if (res.status === 200) {
         // Check for status code 200
         Alert.alert("Auth", "Login successful, redirecting...");
-        console.log(res.data)
+        console.log("user data",res.data.data)
         setUser(res.data.data); // Set user object value to the user data gotten from the Backend API
         setPassword(""); // Clear password field
         setUserName(""); // Clear username field
-        // if(res.data.data.requiresRoleSelection) navigation.navigate("RoleSelection") //If user has multiple roles, prompt for role selection
-        // else navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
-        navigation.navigate("RoleSelection")
+        if(res.data.data.requiresRoleSelection) navigation.navigate("RoleSelection") //If user has multiple roles, prompt for role selection
+        else navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
       } else {
         Alert.alert("Error", res.data.message);
       }
@@ -199,13 +191,6 @@ const Login = ({ navigation }) => {
 
         <View style={styles.footer}>
           <Text onPress={() => navigation.navigate("ForgotPassword")} style={styles.footerText}>Forgot password?</Text>
-          {/* <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Signup");
-            }}
-          >
-            <Text style={styles.footerText}>Create an Account</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </LinearGradient>

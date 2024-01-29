@@ -9,6 +9,7 @@ import BarCode from '../screens/BarCode';
 import Room from '../screens/Room';
 import SelectRole from './../screens/SelectRole';
 import ForgotPassword from '../screens/ForgotPassword';
+import Chat from '../screens/Chat';
 const NavigationStack = () => {
   const Stack  = createNativeStackNavigator()
   return (
@@ -22,6 +23,7 @@ const NavigationStack = () => {
            <Stack.Screen component={WorkOrderSelection} name='WorkOrderSelection'/>
            <Stack.Screen component={WorkOrderLocations} name='WorkOrderLocations'/>
            <Stack.Screen component={BarCode} name='BarCode'/>
+           <Stack.Screen component={Chat} name='Chat'/>
         </Stack.Navigator>
     </NavigationContainer>
   )

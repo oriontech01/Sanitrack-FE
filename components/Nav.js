@@ -48,6 +48,9 @@ const Nav = ({name}) => {
     </View>
     <View style={{flexDirection: 'row', gap: 20, alignItems:'center'}}>
         <Icon name="bell-outline" size={22} color={colors.white} />
+        {/* <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+           <Icon name='inbox' color={colors.white} size={22} />
+        </TouchableOpacity> */}
         <TouchableOpacity>
           <Icon name="logout-variant" size={26} color={colors.white} onPress={()=> logout()}/>
         </TouchableOpacity>

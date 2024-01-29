@@ -20,6 +20,8 @@ import axios from "axios";
 import { RoomContext } from "../context/RoomContext";
 import * as DocumentPicker from "expo-document-picker";
 import { SANITRACK_API_URI, CLOUDINARY_URI } from "@env";
+import JWT from "expo-jwt";
+import { JWT_KEY } from "@env";
 
 const takePicture = async () => {
   // No options are needed by default, but you can specify them if necessary
@@ -251,7 +253,7 @@ const Room = ({ route, navigation }) => {
   const [fileInputs, setFileInputs] = useState([]); // Uploaded files
   const [modalVisible, setModalVisible] = useState(false); //Handle modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Handle selected image
-  const [trackedTime, setTrackedTime] = useState(0) // Timer value for tracking
+  const [stopTime, setstopTime] = useState(0) // Timer value for tracking
 
   const openModal = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -286,6 +288,7 @@ const Room = ({ route, navigation }) => {
         detail_id: detailId,
         image_path: response.data.secure_url,
       };
+      await axios.post("https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details", newFileInput)
       // Update state with the new object
       setFileInputs((prevFileInputs) => [...prevFileInputs, newFileInput]);
       Alert.alert("Upload", "Upload was successful!");
@@ -301,15 +304,19 @@ const Room = ({ route, navigation }) => {
       Alert.alert("Error", "You must work for at least 5 minutes before submitting");
       return;
     }
+
+    if(fileInputs.length < 1){
+      Alert.alert("Submission Error", "You must upload at least one file")
+    }
     const timerDetails = { //Construct timer data for backend API
       roomID,
       start_time: timer,
-      stop_time: trackedTime,
+      stop_time: stopTime,
       task_id
     }
     try {
       const response = await axios.post(
-        `http://192.168.0.161:5000/api/cleaner-dashboard/room-details`,
+        `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details`,
         fileInputs,
         {
           headers: {
@@ -317,6 +324,7 @@ const Room = ({ route, navigation }) => {
           },
         }
       );
+
       console.log("Submit",response.data);
       Alert.alert("Success", "Submission successful!");
       setIsSubmitted(true);
@@ -327,19 +335,26 @@ const Room = ({ route, navigation }) => {
 
   const handleStart = () => {
     setIsActive(true);
+    setTimer(0); // Reset timer to zero when starting
     countRef.current = setInterval(() => {
       setTimer((timer) => timer + 1);
     }, 1000);
   };
-
+  
   const handleStop = () => {
-    setTrackedTime(timer);
     clearInterval(countRef.current);
     setIsActive(false);
-    console.log("timer val", timer)
-    console.log("final time", trackedTime)
+    const timeWorked = timer; // Store the current timer value in a local variable
+    setstopTime(timeWorked); // Update stopTime state with the current timer value
+    setTimer(0); // Reset timer to zero
+  
+    // Format the time worked and display in alert
+    const formattedTimeWorked = formatTime(timeWorked);
+    Alert.alert("Time Worked", `Time worked: ${formattedTimeWorked}`);
+    console.log("final time", timeWorked); // Logs the formatted time worked
   };
-
+  
+  
   const formatTime = () => {
     const getSeconds = `0${timer % 60}`.slice(-2);
     const minutes = `${Math.floor(timer / 60)}`;
@@ -353,17 +368,17 @@ const Room = ({ route, navigation }) => {
     // If user's role is cleaner, then make this network request
     // Else make network request to get data for inspector dashboard
     setIsLoading(true); // Start loading
+    const decodedToken = JWT.decode(user.token, JWT_KEY)
     const getTasks = async () => {
       try {
         const res = await axios.get(
-          `http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`,
+          `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
           }
         );
-
         if (res.status === 200) {
           console.log("Tasks",res.data)
           setTasks(res.data.data || []);
@@ -371,13 +386,14 @@ const Room = ({ route, navigation }) => {
         }
       } catch (error) {
         Alert.alert("Error", error.message);
+        console.log(error)
         setIsLoading(false);
       }
     };
     const getInspectorRoomDetails = async () => {
       try {
         const res = await axios.get(
-          `http://192.168.0.161:5000/api/inspector/room-details/${roomID}`,
+          `https://sanitrack-node-api.onrender.com/api/inspector/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -394,7 +410,7 @@ const Room = ({ route, navigation }) => {
         setIsLoading(false);
       }
     };
-    if (user.role === "cleaner") {
+    if (decodedToken.role_id.role_name === "Cleaner") {
       getTasks();
     } else {
       getInspectorRoomDetails();
