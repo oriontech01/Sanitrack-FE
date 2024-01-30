@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import '../styles/Login.scss';
-import useAuth from '../Hooks/useAuth';
-import logo from '../assets/imgs/msslogo.png'
+import '../../styles/Login.scss';
+import useAuth from '../../Hooks/useAuth';
+import logo from '../../assets/imgs/msslogo.png'
 import { useNavigate } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types

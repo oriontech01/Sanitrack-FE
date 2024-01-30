@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "../styles/Tasks.scss"; // Import your CSS file if not already done
+import "../../styles/Tasks.scss"; // Import your CSS file if not already done
 import { useNavigate } from "react-router-dom";
-import useTask from "../Hooks/useTask";
+import useTask from "../../Hooks/useTask";
 const Tasks = () => {
   const { getAllTasks, allTasks, deleteTask } = useTask();
 
@@ -45,15 +45,15 @@ const Tasks = () => {
                 {/* Sample data for demonstration purposes */}
                 {allTasks.map((task) => (
                   <tr key={task._id}>
-                    <td>{task.assigned_room.roomName}</td>
-                    <td>{`${task.assigned_inspector.username
+                    <td>{task.roomName.roomName}</td>
+                    <td>{`${task.inspectorUsername.username
                       .charAt(0)
-                      .toUpperCase()}${task.assigned_inspector.username.slice(
+                      .toUpperCase()}${task.inspectorUsername.username.slice(
                       1
                     )}`}</td>
-                    <td>{`${task.assigned_cleaner.username
+                    <td>{`${task.cleanerUsername.username
                       .charAt(0)
-                      .toUpperCase()}${task.assigned_cleaner.username.slice(
+                      .toUpperCase()}${task.cleanerUsername.username.slice(
                       1
                     )}`}</td>
                     <td className={`status ${task.isSubmitted ? "done" : ""}`}>

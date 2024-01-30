@@ -1,6 +1,6 @@
 import { useState } from "react";
-import '../styles/AddRoom.scss'
-import useRoom from "../Hooks/useRoom";
+import '../../styles/AddRoom.scss'
+import useRoom from "../../Hooks/useRoom";
 const AddRoom = () => {
     const {addRoom, responseMessage} = useRoom()
 

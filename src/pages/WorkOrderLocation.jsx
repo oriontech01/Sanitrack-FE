@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/WorkOrderLocation.scss'; 
+import '../../styles/WorkOrderLocation.scss'; 
 
 const WorkOrderLocation = () => {
   return (

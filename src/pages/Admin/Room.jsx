@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Tasks.scss';
+import '../../styles/Tasks.scss';
 import { useNavigate } from 'react-router-dom';
-import useRoom from '../Hooks/useRoom';
+import useRoom from '../../Hooks/useRoom';
 const Room = () => {
   const { getRoom, allRooms, deleteRoom, responseMessage } = useRoom()
   const navigate = useNavigate()

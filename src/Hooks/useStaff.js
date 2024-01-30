@@ -9,7 +9,6 @@ const useStaff = () => {
     const [allStaffs, setAllStaffs] = useState([])
 
     const access_token = localStorage.getItem('auth-token')
-    console.log(access_token)
     const addStaff = async (username, password, role) => {
         await axios.post(`${BASE_URL}create-user`, { 
             username: username, 
@@ -51,6 +50,7 @@ const useStaff = () => {
         })
         .then((response) => { 
             setAllStaffs(response.data.data.allUsers)
+            // console.log("All staff", response.data.data.allUsers)
         })
         .catch((error) => { 
             if (error.response) {

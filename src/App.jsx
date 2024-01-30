@@ -1,25 +1,29 @@
 import "./App.scss";
-import Login from "./pages/Login";
+import Login from "./pages/Admin/Login";
 import { useState } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import Room from "./pages/Room";
-import AdminHome from "./pages/AdminHome";
-import Tasks from "./pages/Tasks";
+import Room from "./pages/Admin/Room";
+import AdminHome from "./pages/Admin/AdminHome";
+import Tasks from "./pages/Admin/Tasks";
 import SideNav from "./components/SideNav/SideNav";
-import Staff from "./pages/Staff";
-import AddUser from "./pages/AddUser";
-import AddRoom from "./pages/AddRoom";
-import RoomDetails from "./pages/RoomDetails";
-import AddTask from "./pages/AddTask";
-import Report from "./pages/Report";
+import Staff from "./pages/Admin/Staff";
+import AddUser from "./pages/Admin/AddUser";
+import AddRoom from "./pages/Admin/AddRoom";
+import RoomDetails from "./pages/Admin/RoomDetails";
+import AddTask from "./pages/Admin/AddTask";
+import Report from "./pages/Admin/Report";
 import useAuth from "./Hooks/useAuth";
 import NewDashboard from "./components/NewDashboard";
-import Messages from "./pages/Messages";
-import Tracker from "./pages/Tracker";
-import WorkHistory from "./pages/WorkHistory";
+import Messages from "./pages/Admin/Messages";
+import Tracker from "./pages/Admin/Tracker";
+import WorkHistory from "./pages/Admin/WorkHistory";
 import CleanerHistory from "./components/manager/WorkHistory/CleanerHistory";
 import InspectorHistory from "./components/manager/WorkHistory/InspectorHistory";
 import RoomHistory from "./components/manager/WorkHistory/RoomHistory";
+import Evidence from "./pages/Admin/Evidence";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root') // React Modal component
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(
@@ -51,6 +55,7 @@ function App() {
               element={<RoomDetails />}
             />
             <Route path="/home/tasks" element={<Tasks />} />
+            <Route path="/home/evidence" element={<Evidence/>} />
             <Route path="/home/add-task" element={<AddTask />} />
             <Route path="/home/report" element={<Report />} />
             <Route path="/home/work-order" element={<NewDashboard />} />
@@ -61,7 +66,6 @@ function App() {
               <Route path="rooms" element={<RoomHistory />} />
               <Route path="cleaners" element={<CleanerHistory />} />
               <Route path="inspectors" element={<InspectorHistory />} />
-              {/* Redirect to /rooms by default */}
               <Route index element={<RoomHistory />} />
             </Route>
           </Routes>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import '../styles/AddUser.scss'
-import useStaff from '../Hooks/useStaff'
+import '../../styles/AddUser.scss'
+import useStaff from '../../Hooks/useStaff'
 
 const AddUser = () => { 
     const [username, setUserName] = useState()

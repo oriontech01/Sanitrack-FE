@@ -1,5 +1,5 @@
-import "../styles/AddTask.scss"
-import useTask from "../Hooks/useTask"
+import "../../styles/AddTask.scss"
+import useTask from "../../Hooks/useTask"
 import { useEffect, useState } from "react"
 
 const AddTask = () => {
@@ -41,7 +41,7 @@ const AddTask = () => {
                 <div className="unassigned-rooms-container">
                     <div className="unassigned-rooms">
                         {unAssignedRooms.map((room) => (
-                            <div className="unassigned-rooms-result">
+                            <div key={room._id} className="unassigned-rooms-result">
                                 <input type="radio" checked={selectedRoom === room._id} value={room._id} onChange={(e) => { handleRoomChange(e) }} />
                                 <p>{room.roomName}</p>
                             </div>
@@ -55,7 +55,7 @@ const AddTask = () => {
                 <div className="unassigned-rooms-container">
                     <div className="unassigned-rooms">
                         {allCleaners.map((cleaner) => (
-                            <div className="unassigned-rooms-result">
+                            <div key={cleaner._id} className="unassigned-rooms-result">
                                 <input type="radio" checked={selectedCleaner === cleaner._id} value={cleaner._id} onChange={(e) => { handleCleanerChange(e) }} />
                                 <p>{cleaner.username}</p>
                             </div>
@@ -70,7 +70,7 @@ const AddTask = () => {
                 <div className="unassigned-rooms-container">
                     <div className="unassigned-rooms">
                         {allInspectors.map((inspector) => (
-                            <div className="unassigned-rooms-result">
+                            <div key={inspector._id} className="unassigned-rooms-result">
                                 <input type="radio" checked={selectedInspector === inspector._id} value={inspector._id} onChange={(e) => { handleInspectorChange(e) }}/>
                                 <p>{inspector.username}</p>
                             </div>

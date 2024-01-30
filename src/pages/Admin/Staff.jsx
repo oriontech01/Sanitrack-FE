@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import '../styles/Tasks.scss'
+import '../../styles/Tasks.scss'
 import { useNavigate } from "react-router-dom";
-import useStaff from "../Hooks/useStaff"
+import useStaff from "../../Hooks/useStaff"
 
 const Staff = () => { 
     const navigate = useNavigate()
@@ -45,7 +45,7 @@ const Staff = () => {
                       <td>{staff.flag}</td>       
                       <td>
                           <button>Fire</button>
-                          <button>Hire</button>
+                          <button>Restore</button>
                       </td>
             
                     </tr>

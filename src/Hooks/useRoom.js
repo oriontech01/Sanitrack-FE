@@ -19,7 +19,7 @@ const useRoom = () => {
             headers: {Authorization: `Bearer ${access_token}`} 
             
         }).then((response) => {
-            console.log(response.data.message)
+            // console.log(response.data.message)
             setResponseMessage(data.message)
             navigate('/home/room')
         }).catch((error) => { 
@@ -46,7 +46,7 @@ const useRoom = () => {
         }).then((response) => { 
             setAllRooms(response.data.data.allRooms)
             setRoomCount(response.data.data.allRooms.length)
-            // console.log(response.data.data.allRooms)
+            // console.log("All rooms", response.data.data.allRooms)
         }).catch((error)=> { 
             if(error.response){ 
                 const { status, data } = error.response;
@@ -93,7 +93,7 @@ const useRoom = () => {
         await axios.put(`${LOCAL_URL}room/update-room`, formData, {
             headers: {Authorization: `Bearer ${access_token}`}
         } ).then((response) => { 
-            console.log(response.data.message)
+            // console.log(response.data.message)
             setResponseMessage(response.data.message)
             navigate('/home/room')
         }).catch((error) => { 

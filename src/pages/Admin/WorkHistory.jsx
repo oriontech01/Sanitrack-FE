@@ -1,6 +1,5 @@
-import React from 'react'
 import { NavLink, Outlet } from 'react-router-dom';
-import '../styles/WorkHistory.scss'
+import '../../styles/WorkHistory.scss'
 
 const WorkHistory = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/WorkOrderSelection.scss'; // Adjust the relative path as necessary
+import '../../styles/WorkOrderSelection.scss'; // Adjust the relative path as necessary
 
 const WorkOrderSelection = () => {
   return (

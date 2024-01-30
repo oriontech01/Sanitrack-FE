@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import "../styles/AdminDashBoard.scss"; // Import your CSS file if not already done
-import Card from "../components/Cards/Card";
-import useTask from "../Hooks/useTask";
-import useRoom from "../Hooks/useRoom";
+import "../../styles/AdminDashBoard.scss"; // Import your CSS file if not already done
+import Card from "../../components/Cards/Card";
+import useTask from "../../Hooks/useTask";
+import useRoom from "../../Hooks/useRoom";
 import { Link } from "react-router-dom";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
