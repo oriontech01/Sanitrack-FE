@@ -22,6 +22,7 @@ const Room = () => {
   
     fetchData();
   }, [getRoom]);
+  
   const handleViewDDetails = (roomId) => { 
     navigate(`/home/view-details/${roomId}`)
   }
@@ -58,7 +59,7 @@ const Room = () => {
                   rooms.map((item) => (
                     <tr key={item._id}>
                       <td>{item.roomName}</td>
-                      <td>{item.location}</td>
+                      <td>{item.location.city},{item.location.state} {item.location.country}</td>
                       <td>
                         <div className='btn-group'>
                           <button className='view-btn' onClick={() => {handleViewDDetails(item._id)}}>View Details</button>

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import usePermission from "../../Hooks/usePermission"
 import { useState, useEffect } from "react"
+import PermissionTable from "../../components/PermissionTable/PermissionTable"
 
 const RolePermissions = () => { 
     const {roleId} = useParams()
@@ -20,11 +21,7 @@ const RolePermissions = () => {
           {typeof rolePermissions === 'string' ? (
             <p>{rolePermissions}</p>
           ) : (
-            <ul>
-              {rolePermissions.map((permission, index) => (
-                <li key={index}>{permission._id} {permission.permission_name}</li>
-              ))}
-            </ul>
+            <PermissionTable permissions={rolePermissions} showButton={false} showRevoke={true} showCheckBox={true} roleId={roleId}></PermissionTable>
           )}
         </div>
       )}

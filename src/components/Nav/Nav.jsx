@@ -3,6 +3,7 @@ import { CgLogOut, CgProfile } from "react-icons/cg";
 import { FaAngleDown } from "react-icons/fa";
 import logo from "../../assets/imgs/msslogo.png";
 import "./Nav.scss"
+import LanguageDropDown from "../LanguageDropDown/languageDropDown";
 // eslint-disable-next-line react/prop-types
 const Nav = ({ username, handleLogout }) => {
   return (
@@ -14,7 +15,7 @@ const Nav = ({ username, handleLogout }) => {
           <IoMdNotificationsOutline className="not-icon" />
           <div>
             <CgProfile className="profile-icon" />
-            <FaAngleDown className="arrow-img" />
+            <LanguageDropDown></LanguageDropDown>
           </div>
           <CgLogOut className="logout" onClick={handleLogout} />
         </div>

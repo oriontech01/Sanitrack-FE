@@ -13,7 +13,7 @@ const sideBarItems = [
     }, 
 
     { 
-        name: "Tasks", 
+        name: "Work Order", 
         link: '/home/tasks', 
         icon: FaTasks
     },
@@ -25,7 +25,7 @@ const sideBarItems = [
     }, 
 
     { 
-        name: "Evidence", 
+        name: "Rooms", 
         link: '/home/room',
         icon: MdOutlinePermMedia
     },
@@ -35,24 +35,14 @@ const sideBarItems = [
         icon: TbMessage
     },
     {
-        name: "Report", 
-        link: '/home/report', 
-        icon: MdBarChart
-    },
-    {
-        name: "Work Order", 
-        link: '/home/work-order', 
-        icon: TbPaperBag
-    },
-    {
-        name: "Tracker", 
-        link: '/home/tracker', 
-        icon: TbActivity
-    },
-    {
         name: "Work History", 
         link: '/home/work-history',  
         icon: History
+    },
+    {
+        name: "Evidence", 
+        link: '/home/evidence', 
+        icon: TbMessage
     },
     { 
         name: "User Roles", 

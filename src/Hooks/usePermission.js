@@ -10,6 +10,7 @@ const usePermission = () => {
 
   const [rolePermissions, setRolePermission] = useState([]);
   const [allPermissions, setAllPermissions] = useState([]);
+  const [errorResponse, setResponseMessage] = useState();
 
   const getPermissionByRole = async (roleId) => {
     await axios
@@ -17,7 +18,6 @@ const usePermission = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        console.log(response.data.data);
         if (response.data.data == null) {
           setRolePermission(response.data.message);
         } else {
@@ -76,14 +76,13 @@ const usePermission = () => {
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
       .then((response) => {
-        // navigate("/home/role");
+        navigate("/home/permission");
       })
       .catch((error) => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            console.log("An error occured", data.message);
           } else if (status === 403 && data && data.message) {
             console.log("An error with status 403 occured", data.message);
             setResponseMessage(data.message);
@@ -96,12 +95,67 @@ const usePermission = () => {
       });
   };
 
+  const assignPermission = async (permissions) => {
+    await axios
+      .post(`${LOCAL_URL}permissions/assign`, permissions, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      })
+      .then((response) => {
+        navigate("/home/permission");
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            navigate("/home/role");
+            // console.log("An error occured", data.message);
+          } else if (status === 403 && data && data.message) {
+            navigate("/");
+          } else {
+            console.log("Axios error:", error);
+          }
+        } else {
+          console.log("Network error:", error.message);
+        }
+      });
+  };
+
+  const revokePermission = async (permissions) => {
+    await axios
+      .post(`${LOCAL_URL}permissions/delete`, permissions, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      })
+      .then((response) => {
+        navigate("/home/role");
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            navigate("/home/role");
+            // console.log("An error occured", data.message);
+          } else if (status === 403 && data && data.message) {
+            navigate("/");
+          } else {
+            console.log("Axios error:", error);
+          }
+        } else {
+          console.log("Network error:", error.message);
+        }
+      });
+  };
+
   return {
     getPermissionByRole,
     rolePermissions,
-    getPermissions, 
-    allPermissions, 
-    addPermission
+    getPermissions,
+    allPermissions,
+    addPermission,
+    errorResponse,
+    assignPermission, 
+    revokePermission
   };
 };
 export default usePermission;

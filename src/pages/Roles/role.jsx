@@ -13,7 +13,6 @@ const Roles = () => {
 
     const handleCreateNavigate = () => { 
         navigate("/home/role/add")
-        console.log("User clicked on create new rle")
     }
     const handleAssignNavigate = () => { 
         navigate("/home/role/assign")

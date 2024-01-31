@@ -25,6 +25,10 @@ import Permissions from "./pages/Permissions/Permissions";
 import AssignRole from "./pages/Roles/assign";
 import CreateRole from "./pages/Roles/create";
 import RolePermissions from "./pages/Roles/rolePermission";
+import AddPermission from "./pages/Permissions/create";
+import AssignPermission from "./pages/Permissions/assign";
+import Evidence from "./pages/Evidence/evidence";
+import ViewEvidence from "./pages/Evidence/view";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(
@@ -75,6 +79,11 @@ function App() {
             <Route path = "/home/role/permissions/:roleId" element = {<RolePermissions/>}/>
 
             <Route path = "/home/permission" element = {<Permissions/>}/>
+            <Route path = "/home/permission/add" element = {<AddPermission/>}/>
+            <Route path = "/home/permission/assign" element = {<AssignPermission/>}/>
+
+            <Route path = "/home/evidence" element = {<Evidence/>}/>
+            <Route path = "/home/evidence/view/:taskId" element = {<ViewEvidence/>}/>
           </Routes>
         </SideNav>
       ) : (

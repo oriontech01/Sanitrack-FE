@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../styles/AddRoom.scss'
 import useRoom from "../Hooks/useRoom";
+import useLocation from "../Hooks/useLocation";
+
 const AddRoom = () => {
     const {addRoom, responseMessage} = useRoom()
-
+    const {getLocation, allLocations} = useLocation()
     const [formData, setFormData] = useState({
         roomName: '',
-        location: '',
+        location_id: '',
         details: [{ name: '' }],
     });
 
@@ -19,6 +21,15 @@ const AddRoom = () => {
             details: newDetails,
         });
     };
+
+    const handleLocationChange = (event) => {
+        event.persist();
+        const selectedLocationId = event.target.value;
+        setFormData({
+            ...formData,
+            location_id: selectedLocationId,
+        });
+    }
 
     const handleAddDetail = () => {
         setFormData({
@@ -39,10 +50,21 @@ const AddRoom = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         // Handle form submission, e.g., send data to the server
-        // console.log(formData);
+        console.log(formData);
         await addRoom(formData)
-        alert(responseMessage)
+        // alert(responseMessage)
     };
+
+
+    useEffect(() => { 
+        const fetchData = async() =>{await getLocation()}
+
+        fetchData()
+    }, [getLocation])
+
+    useEffect(() => {
+        // console.log('formData.location_id:', formData.location_id);
+    }, [formData.location_id])
     return (
         <div className="add-user-container">
             <div className="add-user-header">
@@ -61,12 +83,15 @@ const AddRoom = () => {
 
                 <label>
                     Location:
-                    <input
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={(event) => setFormData({ ...formData, location: event.target.value })}
-                    />
+                    <select onChange={handleLocationChange} value={formData.location_id}>
+                        {allLocations ? (
+                            allLocations.map((location) => (
+                                <option key={location._id} value={location._id}>{location.city} {location.state}, {location.country}.</option>
+                            ))
+                        ):(
+                            <option>No Location Added</option>
+                        )}
+                    </select>
                 </label>
 
                 <div className="details-container">
@@ -94,7 +119,7 @@ const AddRoom = () => {
                     </button>
                 </div>
 
-                <button onClick={handleSubmit} style={{marginTop: "12px"}} disabled = {formData.details.some(item => item.name === '')}>Submit</button>
+                <button onClick={handleSubmit} style={{marginTop: "12px"}} disabled = {formData.details.some(item => item.name === '') || formData.location_id == ''}>Submit</button>
             </form>
         </div>
     )

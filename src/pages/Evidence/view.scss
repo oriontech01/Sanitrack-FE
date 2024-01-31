@@ -1,0 +1,22 @@
+.evidence-container{ 
+    // background-color: red;
+    text-align: center;
+    height: 80vh;
+
+    .gallery-images{ 
+        // background-color: orchid;
+        height: 70vh;
+        overflow-y: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .image-item {
+        flex: 0 0 calc(33.33% - 10px); /* Adjust the percentage as needed, and consider margin/padding */
+        margin-bottom: 10px;
+      }
+    img{ 
+        height: 300px;
+        width: 300px;
+    }
+}

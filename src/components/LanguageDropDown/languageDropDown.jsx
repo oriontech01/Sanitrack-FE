@@ -20,7 +20,7 @@ const LanguageDropDown = () => {
     return(
         <>
             <label>
-                Choose Language:
+                 Language:
             </label>
             <select onChange={handleLangChange}>
                 <option value="en">English</option>
