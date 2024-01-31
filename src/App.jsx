@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Room from "./pages/Admin/Room";
 import AdminHome from "./pages/Admin/AdminHome";
-import Tasks from "./pages/Admin/Tasks";
 import SideNav from "./components/SideNav/SideNav";
 import Staff from "./pages/Admin/Staff";
 import AddUser from "./pages/Admin/AddUser";
@@ -20,10 +19,7 @@ import WorkHistory from "./pages/Admin/WorkHistory";
 import CleanerHistory from "./components/manager/WorkHistory/CleanerHistory";
 import InspectorHistory from "./components/manager/WorkHistory/InspectorHistory";
 import RoomHistory from "./components/manager/WorkHistory/RoomHistory";
-import Evidence from "./pages/Admin/Evidence";
 import Modal from 'react-modal';
-
-Modal.setAppElement('#root') // React Modal component
 import Roles from "./pages/Roles/role";
 import Permissions from "./pages/Permissions/Permissions";
 import AssignRole from "./pages/Roles/assign";
@@ -33,6 +29,9 @@ import AddPermission from "./pages/Permissions/create";
 import AssignPermission from "./pages/Permissions/assign";
 import Evidence from "./pages/Evidence/evidence";
 import ViewEvidence from "./pages/Evidence/view";
+
+
+Modal.setAppElement('#root') // React Modal component
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(
@@ -63,7 +62,6 @@ function App() {
               path="/home/view-details/:roomId"
               element={<RoomDetails />}
             />
-            <Route path="/home/tasks" element={<Tasks />} />
             <Route path="/home/evidence" element={<Evidence/>} />
             <Route path="/home/add-task" element={<AddTask />} />
             <Route path="/home/report" element={<Report />} />

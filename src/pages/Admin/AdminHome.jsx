@@ -6,6 +6,7 @@ import useRoom from "../../Hooks/useRoom";
 import { Link } from "react-router-dom";
 import useWorkHistory from "../../Hooks/useWorkHistory";
 import Charts from "./Charts";
+import Spinner from "../../components/Spinner/Spinner";
 
 const AdminHome = () => {
   const {
@@ -43,12 +44,11 @@ const AdminHome = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner/>
   }
 
   return (
     <>
-      {console.log("Cleaner summary", cleanerSummary)}
       <div className="dashboard-container">
         <div className="dashboard-top-details">
           {/* Build the card */}
@@ -71,33 +71,7 @@ const AdminHome = () => {
         </div>
 
         <div className="charts">
-          {/* <div className="bar-chart">
-            <BarChart
-              series={[{ data: [35, 44] }, { data: [51, 6] }]}
-              height={150}
-              xAxis={[{ data: ["Q1", "Q2"], scaleType: "band" }]}
-              margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-              title="Staff Metrics"
-            />
-          </div>
-
-          <div className="pie-chart">
-            <PieChart
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 10, label: "series A" },
-                    { id: 1, value: 15, label: "series B" },
-                    { id: 2, value: 20, label: "series C" },
-                  ],
-                },
-              ]}
-              width={400}
-              height={200}
-              title="Cleaning metrics"
-            />
-          </div> */}
-          <Charts/>
+          <Charts data={cleanerSummary}/>
         </div>
       </div>
     </>

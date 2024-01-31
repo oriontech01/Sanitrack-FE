@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import i18n from '../../i18n'
 import { useTranslation } from "react-i18next";
+import './languageDropDown.scss';
 
 const LanguageDropDown = () => {
     const [selectedLang, setSelectedLang] = useState('en')
     // call the i18next and change the language
 
-    const {t } = useTranslation()
+    const {t} = useTranslation()
     useEffect(() => {
         const currentLanguage = localStorage.getItem("I18N_LANGUAGE")
         setSelectedLang(currentLanguage)
@@ -18,7 +19,7 @@ const LanguageDropDown = () => {
         setSelectedLang(e.target.value)
     }
     return(
-        <>
+        <div className="language-selector">
             <label>
                  Language:
             </label>
@@ -29,7 +30,7 @@ const LanguageDropDown = () => {
                 <option value="gr">German</option>
                 <option value="rs">Russian</option>
             </select>
-        </>
+        </div>
     )
 };
 
