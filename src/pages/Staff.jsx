@@ -54,6 +54,8 @@ const Staff = () => {
       getAllStaffs(currentPage, itemsPerPage)
     }, [flag])
 
+    console.log(allStaffs)
+
     return (
       <div className="tab-display">
         <div className="center-me">
@@ -79,8 +81,8 @@ const Staff = () => {
                   {allStaffs.map((staff) => (
                     <tr key={staff._id}>
                 
-                      <td>{`${staff.username.charAt(0).toUpperCase()}${staff.username.slice(1)}`}</td>
-                      <td>{`${staff.role.charAt(0).toUpperCase()}${staff.role.slice(1)}`}</td>
+                      <td>{`${staff.username?.charAt(0).toUpperCase()}${staff.username?.slice(1)}`}</td>
+                      <td>{`${staff.role?.charAt(0).toUpperCase()}${staff.role?.slice(1)}`}</td>
                       <td>{staff.flag}</td>       
                       <td>
                           
@@ -95,8 +97,7 @@ const Staff = () => {
             
                     </tr>
                   ))}
-                  
-                  
+              
                 </tbody>
               </table>
               {/* <div style={{marginTop: "2em", display:"flex", gap:"10px"}}>

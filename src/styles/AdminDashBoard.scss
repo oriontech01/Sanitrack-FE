@@ -3,96 +3,64 @@
     width: 100%;
     margin: 0 auto;
     overflow-x: hidden;
-    // background-color: orange;
 
     .dashboard-top-details{ 
-        background-color: #F3E8FF;
-        margin-left: 2%;
-        margin-right: 2%;
-        margin-top: 20px;
-        height: 30%;
+        height: 40%;
         border-radius: 20px;
+        padding: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
     .card-container{ 
         height: 150px;
-        width: 150px;
+        width: 230px;
         border-radius: 20px;
-        background-color: #FFE2E5;
+        background-color: #ffffff;
+        border: solid 2px #f7f7f7;
         cursor: pointer;
-        
+        color: #000;
+        a{
+            color: #000;
+        }
     }
-
 }
 // from 7 to 51 is code for the nav
-.header-section {
+
+.charts{
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    border-bottom: 1px solid rgba(56, 55, 55, 0.288);
-    height: 70px;
-    svg{
-        width: 30px;
-        height: 30px;
+    .bar-chart{
+        width: 50%;
+        height: 355px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        width: 50%;
+    }
+    .pie-chart{
+        height: 355px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        width: 50%;
     }
 }
-
+.active-cleaners{
+    color: #fff;
+}
 .not-icon {
     width: 30px;
     height: 30px;
     cursor: pointer;
 }
 
-.second_section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    justify-content: space-around;
-    div{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-.username {
-    width: 115px;
-    font-size: 21px;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.profile-icon {
-    margin-right: 30px;
-    cursor: pointer;
-}
-
-.arrow-img {
-    width: 30px;
-    height: 30px;
-    margin-left: 15px;
-    cursor: pointer;
-}
 
 /* Tab and display section */
 
 .tab_and_display {
     display: flex;
 }
-
-// .tab-menu {
-//     width: 20%;
-//     display: flex;
-//     flex-direction: column;
-//     padding-left: 35px;
-//     height: 100%;
-//     margin-top: 20px;
-//     padding-top: 20px;
-//     box-shadow: 4px 0px 20px 0px #0000000d;
-// }
 
 #tab-display {
     height: 82vh !important;
@@ -126,12 +94,6 @@
     font-weight: bold;
 }
 
-/* Tab display */
-// .center-me {
-    // display: flex;
-    // justify-content: center;
-    // margin-top: 40px;
-// }
 
 .first-box {
     width: 80%;

@@ -41,7 +41,7 @@ const useRoom = () => {
     }
 
     const getRoom = async() => {
-        await axios.get(`${LOCAL_URL}/room/get-all-rooms`, {
+        await axios.get(`${LOCAL_URL}/room/get`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRooms(response.data.data.allRooms)
@@ -66,7 +66,7 @@ const useRoom = () => {
     }
 
     const getRoomById = async(roomId) => {
-        await axios.get(`${LOCAL_URL}/room/get-single-room?roomId=${roomId}`, {
+        await axios.get(`${LOCAL_URL}/room/get-single?roomId=${roomId}`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRoomsById(response.data.data)

@@ -1,0 +1,55 @@
+// Tracker.scss
+
+.tracker-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 80vh; // Full height of the viewport
+    background-color: #f4f4f4; // Light background color for the page
+    h2{
+      color: #000;
+    }
+  
+    .map-container {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Shadow for depth
+      border-radius: 8px; // Rounded corners
+      overflow: hidden; // Ensures corners of map stay rounded
+  
+      .google-map {
+        width: 100%; // Full width of the container
+        height: 400px; // Fixed height for the map
+        border-radius: inherit; // Inherit border radius from parent
+      }
+    }
+  }
+
+.legend{
+    border: solid 3px white;
+    padding: 1.5em;
+    color: #000;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    gap: 20px;
+}
+.legend-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.location-header{
+  display: flex;
+  padding-top: 1em;
+  align-items: center;
+  align-content: center;
+  width: 70%;
+  gap: 20px;
+  justify-content: space-between;
+  text-align: center;
+}

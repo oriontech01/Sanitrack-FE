@@ -1,0 +1,24 @@
+.generate-report-container {
+//   border: 2px solid blue; 
+  width: 80%;
+  margin: 0 auto;
+}
+.center-report {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.generate-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 667px;
+  height: 94px;
+  text-decoration: none;
+  color: black;
+  background-color: #a1a3cd;
+  border-radius: 40px;
+  font-size: 28px;
+  font-weight: bold;
+}

@@ -7,10 +7,11 @@ const useStaff = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const LOCAL_URL = import.meta.env.VITE_LOCAL_URL;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [responseMessage, setResponseMessage] = useState();
   const [allStaffs, setAllStaffs] = useState([]);
+  const [staffByName, setStaffByName] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -25,7 +26,7 @@ const useStaff = () => {
         password: password,
       })
       .then((response) => {
-        setResponseMessage("Staff Added.")
+        setResponseMessage("Staff Added.");
       })
       .catch((error) => {
         if (error.response) {
@@ -57,14 +58,38 @@ const useStaff = () => {
     }
   };
 
+  const getStaffByUserName = async (name) => {
+    await axios
+      .get(`${LOCAL_URL}staff/?userName=${name}`, 
+      { headers: { Authorization: `Bearer ${access_token}` } })
+      .then((response) => {
+        setStaffByName(response.data.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log("An error occurred", data.message);
+          } else {
+            console.log("Axios error:", error);
+          }
+        } else {
+          console.log("Network error:", error.message);
+        }
+      });
+  };
   const getAllStaffs = async (page, itemPerPage) => {
     await axios
-      .get(`${LOCAL_URL}get-all-users?page=${page}&documentCount=${itemPerPage}`, {
-        headers: { Authorization: `Bearer ${access_token}` },
-      })
+      .get(
+        `${LOCAL_URL}get-all-users?page=${page}&documentCount=${itemPerPage}`,
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      )
       .then((response) => {
         setAllStaffs(response.data.data.allUsers);
-        setTotalPages(Math.ceil(response.data.data.totalUsers/itemPerPage))
+        setTotalPages(Math.ceil(response.data.data.totalUsers / itemPerPage));
       })
       .catch((error) => {
         if (error.response) {
@@ -83,14 +108,18 @@ const useStaff = () => {
 
   const fireStaff = async (staffId) => {
     await axios
-      .put(`${LOCAL_URL}delete-user`, {
-        staffId: staffId
-      }, {
-        headers: { Authorization: `Bearer ${access_token}` },
-      })
+      .put(
+        `${LOCAL_URL}delete-user`,
+        {
+          staffId: staffId,
+        },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      )
       .then((response) => {
         console.log(response.data);
-        navigate('/home/user')
+        navigate("/home/user");
       })
       .catch((error) => {
         if (error.response) {
@@ -109,14 +138,18 @@ const useStaff = () => {
 
   const restoreStaff = async (staffId) => {
     await axios
-      .put(`${LOCAL_URL}update-user-status`, {
-        staffId: staffId
-      }, {
-        headers: { Authorization: `Bearer ${access_token}` },
-      })
+      .put(
+        `${LOCAL_URL}update-user-status`,
+        {
+          staffId: staffId,
+        },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      )
       .then((response) => {
         console.log(response.data);
-        navigate('/home/user')
+        navigate("/home/user");
       })
       .catch((error) => {
         if (error.response) {
@@ -136,11 +169,13 @@ const useStaff = () => {
     addStaff,
     responseMessage,
     getStaffById,
+    getStaffByUserName,
+    staffByName,
     getAllStaffs,
     allStaffs,
-    fireStaff, 
-    restoreStaff, 
-    totalPages
+    fireStaff,
+    restoreStaff,
+    totalPages,
   };
 };
 

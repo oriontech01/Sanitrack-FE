@@ -38,7 +38,7 @@ const useTask = () => {
                 } else if(status === 403 && data && data.message){
                     console.log("An error with status 403 occured",data.message)
                     setResponseMessage(data.message)
-                    // send user back to the login page!
+                    navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -64,6 +64,7 @@ const useTask = () => {
                     console.log("An error with status 403 occured",data.message)
                     setResponseMessage(data.message)
                     // send user back to the login page!
+                    navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -88,6 +89,7 @@ const useTask = () => {
                 } else if(status === 403 && data && data.message){
                     console.log("An error with status 403 occured",data.message)
                     setResponseMessage(data.message)
+                    navigate('/')
                     // send user back to the login page!
                 } else {
                   console.log('Axios error:', error);
@@ -126,11 +128,13 @@ const useTask = () => {
     }
 
     const getAllTasks = async () => { 
-        await axios.get(`${LOCAL_URL}task/get-all-tasks`, {
+        await axios.get(`${LOCAL_URL}task/get`, {
             headers: { Authorization: `Bearer ${access_token}` }
         }).then((response) => {
             setEveryTask(response.data.data.allTasks.length)
             setAllTasks(response.data.data.allTasks)
+            console.log("All Tasks", response.data.data.allTasks)
+            console.log(response.data.data.allTasks)
         }).catch((error) => { 
             if(error.response){ 
                 const { status, data } = error.response;

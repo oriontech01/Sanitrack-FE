@@ -21,6 +21,7 @@ const Tasks = () => {
   }
   useEffect(() => {
     getAllTasks();
+    console.log("Tasks", allTasks);
   }, []);
 
   return (
@@ -48,16 +49,16 @@ const Tasks = () => {
               <tbody>
                 {/* Sample data for demonstration purposes */}
                 {allTasks.map((task) => (
-                  <tr key={task.taskId}>
+                  <tr key={task._id}>
                     <td>{task.roomName.roomName}</td>
-                    <td>{`${task.inspectorUsername.username
-                      .charAt(0)
-                      .toUpperCase()}${task.inspectorUsername.username.slice(
-                      1
-                    )}`}</td>
                     <td>{`${task.cleanerUsername.username
                       .charAt(0)
                       .toUpperCase()}${task.cleanerUsername.username.slice(
+                      1
+                    )}`}</td>
+                    <td>{`${task.inspectorUsername.username
+                      .charAt(0)
+                      .toUpperCase()}${task.inspectorUsername.username.slice(
                       1
                     )}`}</td>
                     <td className={`status ${task.isSubmitted ? "done" : ""}`}>
@@ -68,12 +69,21 @@ const Tasks = () => {
                         <button
                           className="view-btn"
                           onClick={() => {
+                            // Ensure you update this to use task._id
+                            // handleViewDetails(task._id);
                             handleTaskEdit(task.taskId);
                           }}
                         >
                           Edit 
                         </button>
-                        
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            handleTaskDelete(task._id);
+                          }}
+                        >
+                          Delete
+                        </button>
                       </div>
                     </td>
                   </tr>
