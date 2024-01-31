@@ -7,8 +7,8 @@
   height: 100%;
   width: 100%;
   display: flex;
-  position: sticky;
-  top: 0;
+  // position: sticky;
+  // top: 0;
   .tab-menu {
     width: 20%;
     height: 100vh;
@@ -18,7 +18,7 @@
     flex-direction: column;
     padding-left: 35px;
     padding-top: 20px;
-    box-shadow: 4px 0px 20px 0px #0000000d;
+    box-shadow: 4px 0px 20px 0px #0000000d; //
     border-radius: 10px;
     background-color: #fff;
     z-index: 100; // Ensure it stays above other content
