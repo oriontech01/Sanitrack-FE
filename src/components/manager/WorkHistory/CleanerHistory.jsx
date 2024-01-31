@@ -1,28 +1,50 @@
-// eslint-disable-next-line react/prop-types
-import './index.scss';
-const CleanerDetails = ({ name }) => {
-  return (
-    <div className="cleaner-history">
-      <span className='cleaner-name'>{name}</span> <span className='view-history-button'>View History</span>
-    </div>
-  );
-};
+
+
+import { useEffect, useState } from 'react';
+import HistoryDetails from '../HistoryDetails/HistoryDetails';
+import useStaff from '../../../Hooks/useStaff';
+import  useWorkHistory from '../../../Hooks/useWorkHistory';
+import './index.scss'
 
 const CleanerHistory = () => {
-  const data = [
-    {
-      name: "cleaner 1",
-    },
-    {
-      name: "cleaner 2",
-    },
-    {
-      name: "cleaner 3",
-    },
-  ];
-  return data.map((cleaner) => {
-    return <CleanerDetails key={cleaner.name} name={cleaner.name} />;
-  });
+  const { allStaffs, getAllStaffs } = useStaff();
+  const { getCleanerHistory } = useWorkHistory();
+  const [cleanerHistory, setCleanerHistory] = useState({});
+  const [isFetched, setIsFetched] = useState(false); // State to track if history has been fetched
+
+  useEffect(() => {
+    getAllStaffs();
+  }, [getAllStaffs]); 
+
+  useEffect(() => {
+    const fetchCleanerHistory = async () => {
+      const cleanerData = allStaffs.filter(staff => staff.role === 'cleaner');
+      const historyPromises = cleanerData.map(cleaner => getCleanerHistory(cleaner._id));
+      const histories = await Promise.all(historyPromises);
+
+      const newHistory = {};
+      cleanerData.forEach((cleaner, index) => {
+        newHistory[cleaner._id] = histories[index];
+      });
+
+      setCleanerHistory(newHistory);
+      setIsFetched(true); // Set the flag to true after fetching
+    };
+
+    // Fetch history only if it hasn't been fetched yet
+    if (allStaffs.length > 0 && !isFetched) {
+      fetchCleanerHistory();
+    }
+  }, [allStaffs, getCleanerHistory, isFetched]); // Add isFetched to the dependency array
+
+  return allStaffs.filter(staff => staff.role === 'cleaner').map(cleaner => (
+    <HistoryDetails
+      key={cleaner._id}
+      name={cleaner.username}
+      detailId={cleaner._id}
+      historyData={cleanerHistory[cleaner._id]}
+    />
+  ));
 };
 
 export default CleanerHistory;

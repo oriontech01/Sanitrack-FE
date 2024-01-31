@@ -38,6 +38,8 @@
   }
   main {
     overflow-y: auto; // Makes the main content scrollable
+    display: flex;
+    flex-direction: column;
     flex-grow: 1; // Allows the main content to take up the remaining space
     // Add any additional styling for main content here
   }

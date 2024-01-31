@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import React, { useState, useEffect } from 'react';
-import useRoom from "../Hooks/useRoom";
-import '../styles/AddRoom.scss'
+import useRoom from "../../Hooks/useRoom";
+import '../../styles/AddRoom.scss'
 import { useNavigate } from "react-router-dom";
 const RoomDetails = () => {
     const { roomId } = useParams()

@@ -25,7 +25,7 @@ const useTask = () => {
 
    
     const getUnAssignedRooms = async () => { 
-        await axios.get(`${LOCAL_URL}get-unassigned-rooms`, {
+        await axios.get(`${LOCAL_URL}room/unassigned-rooms`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setUnAssignedRooms(response.data.data.roomsNotInTasks)

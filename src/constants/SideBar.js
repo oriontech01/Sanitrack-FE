@@ -3,7 +3,7 @@ import { AiFillDashboard } from "react-icons/ai";
 import { MdBarChart, MdOutlinePermMedia } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg"
-import { History } from "@mui/icons-material";
+import { History, RoomOutlined } from "@mui/icons-material";
 
 const sideBarItems = [
     { 
@@ -11,6 +11,11 @@ const sideBarItems = [
         link: '/admin-home', 
         icon: AiFillDashboard
     }, 
+    {
+        name: "Rooms", 
+        link: '/home/room',  
+        icon: RoomOutlined
+    },
 
     { 
         name: "Work Order", 
@@ -33,6 +38,21 @@ const sideBarItems = [
         name: "Messages", 
         link: '/home/messages', 
         icon: TbMessage
+    },
+    {
+        name: "Report", 
+        link: '/home/report', 
+        icon: MdBarChart
+    },
+    // {
+    //     name: "Work Order", 
+    //     link: '/home/work-order', 
+    //     icon: TbPaperBag
+    // },
+    {
+        name: "Tracker", 
+        link: '/home/tracker', 
+        icon: TbActivity
     },
     {
         name: "Work History", 

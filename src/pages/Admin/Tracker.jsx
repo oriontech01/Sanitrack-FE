@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import "../styles/Tracker.scss";
+import "../../styles/Tracker.scss";
 import axios from "axios";
 import { FaLocationDot } from "react-icons/fa6";
+import AddLocation from "../../components/Form/AddLocation";
 const Tracker = () => {
   const [locationData, setLocationData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const token = localStorage.getItem("auth-token");
-  const googleMapsApiKey = import.meta.env.GOOGLE_API_KEY; // Replace with your API key
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_API_KEY
+
   const containerStyle = {
     width: "800px",
     height: "400px",
@@ -15,7 +18,7 @@ const Tracker = () => {
   const center = {
     lat: 9.05785000,    
     lng: 7.49508000,  // Longitude for Nigeria
-  };
+  };  
   
 
   useEffect(() => {
@@ -37,13 +40,13 @@ const Tracker = () => {
             address
           )}&key=${googleMapsApiKey}`
         );
-        console.log("GeoRes: " + JSON.stringify(geoRes.data));
+        // console.log("GeoRes: " + JSON.stringify(geoRes.data));
         const geoData = geoRes.data.results[0].geometry.location;
         location.lat = geoData.lat;
         location.lng = geoData.lng;
       }
 
-      console.log("Location Data", locations);
+      // console.log("Location Data", locations);
       setLocationData(locations);
     };
 
@@ -53,7 +56,7 @@ const Tracker = () => {
   return (
     <div className="tracker-container">
     <div className="location-header">
-      <h2>Location Management</h2> <button>Add Location</button>
+      <h2>Location Management</h2> <button onClick={() => setIsModalOpen(true)}>Add Location</button>
     </div>
       
       <div className="map-container">
@@ -73,6 +76,7 @@ const Tracker = () => {
           </GoogleMap>
         </LoadScript>
       </div>
+      <AddLocation isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}/>
       {/* Add the legend */}
       <div className="legend">
         <h3>Legend</h3>
