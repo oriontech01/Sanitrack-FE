@@ -61,11 +61,12 @@ const WorkOrderLocations = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const decodedToken = JWT.decode(user.token, JWT_KEY); // Decode user token
+    console.log( "decode", decodedToken)
     const getDashboard = async () => {
       try {
         if (decodedToken.role_id.role_name === "Cleaner") {
           const res = await axios.get(
-            `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard`,
+            `http://192.168.0.161:5000/api/cleaner-dashboard`,
             {
               headers: {
                 Authorization: `Bearer ${[user.token]}`,
@@ -81,7 +82,7 @@ const WorkOrderLocations = ({ navigation }) => {
         } else {
           try {
             const res = await axios.get(
-              `https://sanitrack-node-api.onrender.com/api/inspector`,
+              `http://192.168.0.161:5000/api/inspector`,
               {
                 headers: {
                   Authorization: `Bearer ${user.token}`,

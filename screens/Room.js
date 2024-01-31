@@ -288,7 +288,7 @@ const Room = ({ route, navigation }) => {
         detail_id: detailId,
         image_path: response.data.secure_url,
       };
-      await axios.post("https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details", newFileInput)
+      await axios.post("http://192.168.0.161:5000/api/cleaner-dashboard/room-details", newFileInput)
       // Update state with the new object
       setFileInputs((prevFileInputs) => [...prevFileInputs, newFileInput]);
       Alert.alert("Upload", "Upload was successful!");
@@ -316,7 +316,7 @@ const Room = ({ route, navigation }) => {
     }
     try {
       const response = await axios.post(
-        `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details`,
+        `http://192.168.0.161:5000/api/cleaner-dashboard/room-details`,
         fileInputs,
         {
           headers: {
@@ -372,7 +372,7 @@ const Room = ({ route, navigation }) => {
     const getTasks = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details/${roomID}`,
+          `http://192.168.0.161:5000/api/cleaner-dashboard/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -393,7 +393,7 @@ const Room = ({ route, navigation }) => {
     const getInspectorRoomDetails = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/inspector/room-details/${roomID}`,
+          `http://192.168.0.161:5000/api/inspector/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#4630EB"
       },
-      "package": "com.sanitrack"
+      "package": "com.orion.sanitrack"
     },
     "web": {
       "favicon": "./assets/favicon.png"

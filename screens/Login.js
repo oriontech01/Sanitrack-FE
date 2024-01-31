@@ -15,6 +15,7 @@ import axios from "axios";
 import { SANITRACK_API_URI } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import registerForPushNotificationsAsync from "../util/notifications";
 
 const screen = Dimensions.get("window");
 const styles = StyleSheet.create({
@@ -42,9 +43,9 @@ const styles = StyleSheet.create({
     height: screen.height * 0.7,
   },
   textInputWithIcon: {
-    flexDirection: 'row', // Aligns children horizontally
-    alignItems: 'center', // Vertically centers the children
-    position: 'relative',
+    flexDirection: "row", // Aligns children horizontally
+    alignItems: "center", // Vertically centers the children
+    position: "relative",
   },
   input: {
     backgroundColor: colors.lightgray,
@@ -60,14 +61,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     alignContent: "center",
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   icon: {
-    position: 'absolute', // Position the icon over the input field
+    position: "absolute", // Position the icon over the input field
     right: 10, // Distance from the right edge of the input field
-    height: '100%', // Ensures the touchable area covers the height of the input field
-    justifyContent: 'center', // Centers the icon vertically
-    bottom: -40
+    height: "100%", // Ensures the touchable area covers the height of the input field
+    justifyContent: "center", // Centers the icon vertically
+    bottom: -40,
   },
   button: {
     backgroundColor: colors.primary,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     borderRadius: 30,
-    marginTop: 10
+    marginTop: 10,
   },
   buttonText: {
     color: "#FFF",
@@ -121,18 +122,23 @@ const Login = ({ navigation }) => {
   ];
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`https://sanitrack-node-api.onrender.com/api/login`, {
+      const res = await axios.post(`http://192.168.0.161:5000/api/login`, {
         username,
         password,
       });
       if (res.status === 200) {
         // Check for status code 200
-        Alert.alert("Auth", "Login successful, redirecting...");
-        console.log("user data",res.data.data)
+        // Alert.alert("Auth", "Login successful, redirecting...");
+        console.log("user data", res.data.data);
+        registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser(res.data.data); // Set user object value to the user data gotten from the Backend API
         setPassword(""); // Clear password field
         setUserName(""); // Clear username field
-        if(res.data.data.requiresRoleSelection) navigation.navigate("RoleSelection") //If user has multiple roles, prompt for role selection
+        if (res.data.data.username === "manager")
+          navigation.navigate("AccessDenied");
+        else if (res.data.data.requiredRoleSelection)
+          navigation.navigate("RoleSelection");
+        //If user has multiple roles, prompt for role selection
         else navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
       } else {
         Alert.alert("Error", res.data.message);
@@ -149,11 +155,10 @@ const Login = ({ navigation }) => {
   return (
     <LinearGradient
       style={styles.container}
-      colors={[colors.primary,colors.darkblue ]}
+      colors={[colors.primary, colors.darkblue]}
     >
-       
       <View style={styles.inputContainer}>
-      <Icon name="account-circle-outline"  size={100} color={colors.primary} />
+        <Icon name="account-circle-outline" size={100} color={colors.primary} />
         <Text style={styles.label}>Username</Text>
         <TextInput
           autoCapitalize="none"
@@ -165,10 +170,11 @@ const Login = ({ navigation }) => {
         />
         <Text style={styles.label}>Password</Text>
         <View style={styles.textInputWithIcon}>
-          
           <TextInput
             value={password}
-            keyboardType={isPasswordVisible ? "visible-password": "ascii-capable"}
+            keyboardType={
+              isPasswordVisible ? "visible-password" : "ascii-capable"
+            }
             onChangeText={(pass) => setPassword(pass)}
             style={styles.passwordInput}
             secureTextEntry={!isPasswordVisible}
@@ -179,7 +185,7 @@ const Login = ({ navigation }) => {
             onPress={() => setIsPasswordVisible(!isPasswordVisible)}
           >
             <Icon
-            style={styles.icon}
+              style={styles.icon}
               name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
               size={20}
             />
@@ -190,7 +196,12 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.footer}>
-          <Text onPress={() => navigation.navigate("ForgotPassword")} style={styles.footerText}>Forgot password?</Text>
+          <Text
+            onPress={() => navigation.navigate("ForgotPassword")}
+            style={styles.footerText}
+          >
+            Forgot password?
+          </Text>
         </View>
       </View>
     </LinearGradient>

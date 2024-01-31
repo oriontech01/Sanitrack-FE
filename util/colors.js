@@ -9,5 +9,6 @@ export default colors = {
     itemBgColor: '#D9D9D9',
     selectedColor: '#4630EB',
     lightgray: '#D9D9D9',
-    darkblue: '#0d47a1'
+    darkblue: '#0d47a1',
+    red: '#b80000'
 }
