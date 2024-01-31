@@ -1,8 +1,9 @@
-import { useState } from "react";
-import '../../styles/AddRoom.scss'
+import React, { useState } from "react";
+import '../../styles/AddRoom.scss';
 import useRoom from "../../Hooks/useRoom";
+
 const AddRoom = () => {
-    const {addRoom, responseMessage} = useRoom()
+    const { addRoom, responseMessage } = useRoom();
 
     const [formData, setFormData] = useState({
         roomName: '',
@@ -38,41 +39,40 @@ const AddRoom = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Handle form submission, e.g., send data to the server
-        // console.log(formData);
-        await addRoom(formData)
-        alert(responseMessage)
+        await addRoom(formData);
+        alert(responseMessage);
     };
+
     return (
-        <div className="add-user-container">
-            <div className="add-user-header">
+        <div className="add-room-container">
+            <form onSubmit={handleSubmit} className="add-room-form">
                 <h2>Add Room</h2>
-            </div>
-            <form >
-                <label>
-                    Room Name:
+                <div className="form-group">
+                    <label htmlFor="roomName">Room Name:</label>
                     <input
+                        id="roomName"
                         type="text"
                         name="roomName"
                         value={formData.roomName}
                         onChange={(event) => setFormData({ ...formData, roomName: event.target.value })}
+                        placeholder="Enter room name"
                     />
-                </label>
-
-                <label>
-                    Location:
+                </div>
+                <div className="form-group">
+                    <label htmlFor="location">Location:</label>
                     <input
+                        id="location"
                         type="text"
                         name="location"
                         value={formData.location}
                         onChange={(event) => setFormData({ ...formData, location: event.target.value })}
+                        placeholder="Enter location"
                     />
-                </label>
-
+                </div>
                 <div className="details-container">
                     <h4>Details:</h4>
                     {formData.details.map((detail, index) => (
-                        <div key={index}>
+                        <div className="detail-item" key={index}>
                             <label>
                                 Detail Name:
                                 <input
@@ -80,24 +80,26 @@ const AddRoom = () => {
                                     name="name"
                                     value={detail.name}
                                     onChange={(event) => handleInputChange(index, event)}
+                                    placeholder="Detail name"
                                 />
                             </label>
                             {index > 0 && (
-                                <button type="button" onClick={() => handleRemoveDetail(index)}>
-                                    Remove Detail
+                                <button type="button" className="remove-btn" onClick={() => handleRemoveDetail(index)}>
+                                    &times; Remove
                                 </button>
                             )}
                         </div>
                     ))}
-                    <button type="button" onClick={handleAddDetail} style={{marginTop: "12px"}}>
-                        Add Detail
+                    <button type="button" className="add-detail-btn" onClick={handleAddDetail}>
+                        + Add Detail
                     </button>
                 </div>
-
-                <button onClick={handleSubmit} style={{marginTop: "12px"}} disabled = {formData.details.some(item => item.name === '')}>Submit</button>
+                <button type="submit" className="submit-btn" disabled={formData.details.some(item => item.name === '')}>
+                    Submit
+                </button>
             </form>
         </div>
-    )
-}
+    );
+};
 
-export default AddRoom
+export default AddRoom;

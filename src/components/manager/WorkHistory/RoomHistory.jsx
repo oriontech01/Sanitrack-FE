@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import HistoryDetails from '../HistoryDetails/HistoryDetails';
 import useRoom from '../../../Hooks/useRoom';
-import { useWorkHistory } from '../../../Hooks/useWorkHistory';
+import useWorkHistory  from '../../../Hooks/useWorkHistory';
 import './index.scss';
 
 const RoomHistory = () => {

@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "../../styles/AdminDashBoard.scss"; // Import your CSS file if not already done
 import Card from "../../components/Cards/Card";
 import useTask from "../../Hooks/useTask";
 import useRoom from "../../Hooks/useRoom";
 import { Link } from "react-router-dom";
-import { BarChart } from "@mui/x-charts/BarChart";
-import { PieChart } from "@mui/x-charts/PieChart";
+import useWorkHistory from "../../Hooks/useWorkHistory";
+import Charts from "./Charts";
 
 const AdminHome = () => {
   const {
@@ -17,6 +17,7 @@ const AdminHome = () => {
     getAllTasks,
   } = useTask();
   const { roomsCount, getRoom } = useRoom();
+  const { getCleanerSummary, cleanerSummary, isLoading } = useWorkHistory();
 
   useEffect(() => {
     const getAllActiveCleaners = async () => {
@@ -31,13 +32,23 @@ const AdminHome = () => {
     const getRoomCount = async () => {
       await getRoom();
     };
+    const getCleanerWorkHistorySummary = async () => {
+      await getCleanerSummary();
+    };
+    getCleanerWorkHistorySummary();
     getAllActiveCleaners();
     getAllActiveInspectors();
     getEveryTask();
     getRoomCount();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
+      {console.log("Cleaner summary", cleanerSummary)}
       <div className="dashboard-container">
         <div className="dashboard-top-details">
           {/* Build the card */}
@@ -60,7 +71,7 @@ const AdminHome = () => {
         </div>
 
         <div className="charts">
-          <div className="bar-chart">
+          {/* <div className="bar-chart">
             <BarChart
               series={[{ data: [35, 44] }, { data: [51, 6] }]}
               height={150}
@@ -72,7 +83,8 @@ const AdminHome = () => {
 
           <div className="pie-chart">
             <PieChart
-              series={[{
+              series={[
+                {
                   data: [
                     { id: 0, value: 10, label: "series A" },
                     { id: 1, value: 15, label: "series B" },
@@ -84,7 +96,8 @@ const AdminHome = () => {
               height={200}
               title="Cleaning metrics"
             />
-          </div>
+          </div> */}
+          <Charts/>
         </div>
       </div>
     </>

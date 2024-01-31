@@ -1,24 +1,84 @@
-.add-user-container{     
-    // form{ 
-    //     background-color: #A1A3CD;
-       
-    // }
-    .details-container{ 
-        // background-color: red;
-        overflow: scroll;
-        overflow-x: hidden;
-        height: 45vh;
+.add-room-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+
+  .add-room-form {
+    width: 100%;
+    max-width: 500px; // Adjust width as necessary
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
     }
-    .details-container::-webkit-scrollbar {
-        width: 5px; /* width of the scrollbar */
+
+    .form-group {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #000;
       }
-      
-      .details-container::-webkit-scrollbar-thumb {
-        background-color: #888; /* color of the thumb */
-        border-radius: 6px; /* rounded corners of the thumb */
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
       }
-      
-      .details-container::-webkit-scrollbar-track {
-        background-color: #f1f1f1; /* color of the track */
+    }
+
+    .details-container {
+      margin-bottom: 15px;
+
+      h4{
+        color: #000;
       }
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        input {
+          margin-right: 10px;
+          flex-grow: 1;
+        }
+
+        .remove-btn {
+          padding: 5px 10px;
+          background-color: #f44336;
+          color: #ffffff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
+
+      .add-detail-btn {
+        background-color: #4CAF50;
+        color: #ffffff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
 }

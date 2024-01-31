@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import HistoryDetails from '../HistoryDetails/HistoryDetails';
 import useStaff from '../../../Hooks/useStaff';
-import { useWorkHistory } from '../../../Hooks/useWorkHistory';
+import useWorkHistory  from '../../../Hooks/useWorkHistory';
 
 const InspectorHistory = () => {
   const { allStaffs, getAllStaffs } = useStaff();

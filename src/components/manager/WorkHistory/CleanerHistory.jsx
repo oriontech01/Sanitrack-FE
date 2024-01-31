@@ -1,7 +1,9 @@
+
+
 import { useEffect, useState } from 'react';
 import HistoryDetails from '../HistoryDetails/HistoryDetails';
 import useStaff from '../../../Hooks/useStaff';
-import { useWorkHistory } from '../../../Hooks/useWorkHistory';
+import  useWorkHistory from '../../../Hooks/useWorkHistory';
 import './index.scss'
 
 const CleanerHistory = () => {

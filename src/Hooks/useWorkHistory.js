@@ -1,7 +1,9 @@
 import axios from "axios"
+import { useState } from "react";
 
-
-export const useWorkHistory = () => {
+const useWorkHistory = () => {
+    const [cleanerSummary, setCleanerSummary] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const BASE_URL =
         import.meta.env.VITE_BASE_URL;
     const LOCAL_URL =
@@ -14,7 +16,7 @@ export const useWorkHistory = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log("Room History",res.data.data);
+            console.log("Room History", res.data.data);
             return res.data.data;
         } catch (error) {
             console.error('Error fetching room history:', error);
@@ -23,7 +25,7 @@ export const useWorkHistory = () => {
             return null; // or throw error;
         }
     };
-    
+
     const getInspectorHistory = async (inspectorId) => {
         try {
             const res = await axios.get(`${LOCAL_URL}work-history/inspector?inspectorId=${inspectorId}`, {
@@ -31,14 +33,14 @@ export const useWorkHistory = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-           
+
             return res.data.data;
         } catch (error) {
             console.error('Error fetching inspector history:', error);
             return null; // or throw error;
         }
     };
-    
+
 
     const getCleanerHistory = async (cleanerId) => {
         try {
@@ -54,10 +56,29 @@ export const useWorkHistory = () => {
             return null; // or throw error;
         }
     };
-    
+
+    const getCleanerSummary = async () => {
+        setIsLoading(true);
+        try {
+          const res = await axios.get(`${LOCAL_URL}/work-history/cleaner-task-summary`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setCleanerSummary(res.data.data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
     return {
+        getCleanerSummary,
         getCleanerHistory,
         getInspectorHistory,
         getRoomHistory,
+        cleanerSummary,
+        isLoading
     }
 }
+export default useWorkHistory
