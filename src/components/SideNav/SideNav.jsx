@@ -17,7 +17,10 @@ const SideNav = ({ children, handleLogout }) => {
   return (
     <div className='admin-container'>
 
-      <Nav handleLogout={handleLogout}  logo={logo} username={`${userName.charAt(0).toUpperCase()}${userName.slice(1)}`}></Nav>
+      <Nav
+        handleLogout={handleLogout}
+        username={localStorage.getItem("name")}
+      ></Nav>
 
       <nav className='nav'>
       
