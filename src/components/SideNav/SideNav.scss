@@ -13,6 +13,7 @@
     width: 20%;
     height: 100vh;
     margin-left: 10px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     padding-left: 35px;
@@ -20,8 +21,6 @@
     box-shadow: 4px 0px 20px 0px #0000000d;
     border-radius: 10px;
     background-color: #fff;
-    position: sticky;
-    top: 0; // Stick to the top
     z-index: 100; // Ensure it stays above other content
   }
 

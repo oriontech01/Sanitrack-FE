@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Room from "./pages/Admin/Room";
 import AdminHome from "./pages/Admin/AdminHome";
-import Tasks from "./pages/Admin/Tasks";
 import SideNav from "./components/SideNav/SideNav";
 import Staff from "./pages/Admin/Staff";
 import AddUser from "./pages/Admin/AddUser";
@@ -20,8 +19,17 @@ import WorkHistory from "./pages/Admin/WorkHistory";
 import CleanerHistory from "./components/manager/WorkHistory/CleanerHistory";
 import InspectorHistory from "./components/manager/WorkHistory/InspectorHistory";
 import RoomHistory from "./components/manager/WorkHistory/RoomHistory";
-import Evidence from "./pages/Admin/Evidence";
 import Modal from 'react-modal';
+import Roles from "./pages/Roles/role";
+import Permissions from "./pages/Permissions/Permissions";
+import AssignRole from "./pages/Roles/assign";
+import CreateRole from "./pages/Roles/create";
+import RolePermissions from "./pages/Roles/rolePermission";
+import AddPermission from "./pages/Permissions/create";
+import AssignPermission from "./pages/Permissions/assign";
+import Evidence from "./pages/Evidence/evidence";
+import ViewEvidence from "./pages/Evidence/view";
+
 
 Modal.setAppElement('#root') // React Modal component
 
@@ -54,7 +62,6 @@ function App() {
               path="/home/view-details/:roomId"
               element={<RoomDetails />}
             />
-            <Route path="/home/tasks" element={<Tasks />} />
             <Route path="/home/evidence" element={<Evidence/>} />
             <Route path="/home/add-task" element={<AddTask />} />
             <Route path="/home/report" element={<Report />} />
@@ -68,6 +75,17 @@ function App() {
               <Route path="inspectors" element={<InspectorHistory />} />
               <Route index element={<RoomHistory />} />
             </Route>
+            <Route path = "/home/role" element = {<Roles/>}/>
+            <Route path = "/home/role/assign" element = {<AssignRole/>}/>
+            <Route path = "/home/role/add" element = {<CreateRole/>}/>
+            <Route path = "/home/role/permissions/:roleId" element = {<RolePermissions/>}/>
+
+            <Route path = "/home/permission" element = {<Permissions/>}/>
+            <Route path = "/home/permission/add" element = {<AddPermission/>}/>
+            <Route path = "/home/permission/assign" element = {<AssignPermission/>}/>
+
+            <Route path = "/home/evidence" element = {<Evidence/>}/>
+            <Route path = "/home/evidence/view/:taskId" element = {<ViewEvidence/>}/>
           </Routes>
         </SideNav>
       ) : (

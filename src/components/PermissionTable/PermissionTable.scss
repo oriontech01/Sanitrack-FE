@@ -1,0 +1,15 @@
+.permission-tables-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap between tables as needed */
+  }
+  .checkbox-container, .checkAll{
+    display: flex;
+    gap: 4px;
+    align-content: center;
+
+    input{ 
+      height: 20px;
+      width: 20px;
+    }
+  }

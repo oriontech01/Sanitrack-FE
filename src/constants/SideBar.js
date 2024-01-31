@@ -3,7 +3,7 @@ import { AiFillDashboard } from "react-icons/ai";
 import { MdBarChart, MdOutlinePermMedia } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg"
-import { History, RoomOutlined } from "@mui/icons-material";
+import { History,Group, PermIdentityRounded } from "@mui/icons-material";
 
 const sideBarItems = [
     { 
@@ -11,18 +11,11 @@ const sideBarItems = [
         link: '/admin-home', 
         icon: AiFillDashboard
     }, 
-    {
-        name: "Rooms", 
-        link: '/home/room',  
-        icon: RoomOutlined
-    },
-
-    { 
-        name: "Tasks", 
-        link: '/home/tasks', 
-        icon: FaTasks
-    },
-
+    // { 
+    //     name: "Work Order", 
+    //     link: '/home/tasks', 
+    //     icon: FaTasks
+    // },
     {
         name: "User", 
         link: '/home/user', 
@@ -30,8 +23,8 @@ const sideBarItems = [
     }, 
 
     { 
-        name: "Evidence", 
-        link: '/home/evidence',
+        name: "Rooms", 
+        link: '/home/room',
         icon: MdOutlinePermMedia
     },
     {
@@ -39,15 +32,10 @@ const sideBarItems = [
         link: '/home/messages', 
         icon: TbMessage
     },
-    {
-        name: "Report", 
-        link: '/home/report', 
-        icon: MdBarChart
-    },
     // {
-    //     name: "Work Order", 
-    //     link: '/home/work-order', 
-    //     icon: TbPaperBag
+    //     name: "Report", 
+    //     link: '/home/report', 
+    //     icon: MdBarChart
     // },
     {
         name: "Tracker", 
@@ -59,6 +47,21 @@ const sideBarItems = [
         link: '/home/work-history',  
         icon: History
     },
+    {
+        name: "Evidence", 
+        link: '/home/evidence', 
+        icon: TbMessage
+    },
+    { 
+        name: "User Roles", 
+        link: "/home/role", 
+        icon: Group
+    }, 
+    { 
+        name: "Permissions", 
+        link: "/home/permission",
+        icon: PermIdentityRounded
+    }
 ]
 
 export default sideBarItems

@@ -4,22 +4,35 @@ import { useNavigate } from 'react-router-dom';
 import useRoom from '../../Hooks/useRoom';
 const Room = () => {
   const { getRoom, allRooms, deleteRoom, responseMessage } = useRoom()
+  const [rooms, setRooms] = useState()
+
+  
+
   const navigate = useNavigate()
   const handleNavigate = () => {
     navigate('/home/add-room')
   }
 
+  
   useEffect(() => {
-    getRoom()
-  }, [])
-
+    const fetchData = async () => {
+      await getRoom();
+      setRooms(allRooms);
+    };
+  
+    fetchData();
+  }, [getRoom]);
+  
   const handleViewDDetails = (roomId) => { 
     navigate(`/home/view-details/${roomId}`)
   }
 
   const handleRoomDelete = async(roomId) => {
     await deleteRoom(roomId)
-    navigate("/home/room")
+    const updatedRooms = rooms.filter(room => room._id !== roomId);
+
+    // Update the state to trigger a re-render
+    setRooms(updatedRooms);
   }
   return (
     <div className="tab-display">
@@ -42,17 +55,16 @@ const Room = () => {
                 </tr>
               </thead>
               <tbody>
-                {allRooms ? (
-                  allRooms.map((item) => (
+                {rooms ? (
+                  rooms.map((item) => (
                     <tr key={item._id}>
                       <td>{item.roomName}</td>
-                      <td>{item.location}</td>
+                      <td>{item.location.city},{item.location.state} {item.location.country}</td>
                       <td>
                         <div className='btn-group'>
                           <button className='view-btn' onClick={() => {handleViewDDetails(item._id)}}>View Details</button>
                           <button className='delete-btn' onClick={() => {handleRoomDelete(item._id)}}>Delete</button>
                         </div>
-                        
                       </td>
                     </tr>
                   ))

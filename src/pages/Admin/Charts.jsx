@@ -2,49 +2,52 @@ import { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import "../../styles/Charts.scss";
 
+// eslint-disable-next-line react/prop-types
 function Charts({ data }) {
   const [chartType, setChartType] = useState("bar");
   const chartRef = useRef(null);
 
-  const cleanerRoomData = [
-    {
-      _id: "65a3e4a08e1cd614e43c1c47",
-      cleanerId: "65a3e4a08e1cd614e43c1c47",
-      cleanerUsername: "cleaner-testing",
-      totalRoomsCleaned: 1,
-    },
-    {
-      _id: "65a168a2f08626bff34b026b",
-      cleanerId: "65a168a2f08626bff34b026b",
-      cleanerUsername: "lilstex",
-      totalRoomsCleaned: 2,
-    },
-    {
-        _id: "65a168a2f08626bff34b026b",
-        cleanerId: "65a168a2f08626bff34b026b",
-        cleanerUsername: "lilstex",
-        totalRoomsCleaned: 2,
-      },
-      {
-        _id: "65a168a2f08626bff34b026b",
-        cleanerId: "65a168a2f08626bff34b026b",
-        cleanerUsername: "lilstex",
-        totalRoomsCleaned: 2,
-      },
-  ];
+  // const cleanerRoomData = [
+  //   {
+  //     _id: "65a3e4a08e1cd614e43c1c47",
+  //     cleanerId: "65a3e4a08e1cd614e43c1c47",
+  //     cleanerUsername: "cleaner-testing",
+  //     totalRoomsCleaned: 1,
+  //   },
+  //   {
+  //     _id: "65a168a2f08626bff34b026b",
+  //     cleanerId: "65a168a2f08626bff34b026b",
+  //     cleanerUsername: "lilstex",
+  //     totalRoomsCleaned: 2,
+  //   },
+  //   {
+  //       _id: "65a168a2f08626bff34b026b",
+  //       cleanerId: "65a168a2f08626bff34b026b",
+  //       cleanerUsername: "lilstex",
+  //       totalRoomsCleaned: 2,
+  //     },
+  //     {
+  //       _id: "65a168a2f08626bff34b026b",
+  //       cleanerId: "65a168a2f08626bff34b026b",
+  //       cleanerUsername: "lilstex",
+  //       totalRoomsCleaned: 2,
+  //     },
+  // ];
 
   useEffect(() => {
     destroyChart();
     renderChart();
-  }, [cleanerRoomData, chartType]);
+  }, [data, chartType]);
 
   const renderChart = () => {
     const chartData = {
-      labels: cleanerRoomData.map((cleaner) => cleaner.cleanerUsername),
+      // eslint-disable-next-line react/prop-types
+      labels: data.map((cleaner) => cleaner.cleanerUsername),
       datasets: [
         {
           label: chartType === "bar" ? "Total Rooms Cleaned" : undefined,
-          data: cleanerRoomData.map((cleaner) => cleaner.totalRoomsCleaned),
+          // eslint-disable-next-line react/prop-types
+          data: data.map((cleaner) => cleaner.totalRoomsCleaned),
           backgroundColor:
             chartType === "bar" ? "rgba(75, 192, 192, 0.2)" : undefined,
           borderColor:
@@ -59,7 +62,8 @@ function Charts({ data }) {
         y: {
           beginAtZero: true,
           max: Math.max(
-            ...cleanerRoomData.map((data) => data.totalRoomsCleaned)
+            // eslint-disable-next-line react/prop-types
+            ...data.map((data) => data.totalRoomsCleaned)
           ),
           ticks: {
             stepSize: 1,

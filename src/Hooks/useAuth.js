@@ -18,7 +18,6 @@ const useAuth = () => {
         .then((response) => {
             // save the token if credentials are correct
             if(response.data.status === true){ 
-                console.log(response.data.data.token) 
                 localStorage.setItem("auth-token", response.data.data.token);
                 localStorage.setItem("name", username);
                 localStorage.setItem("role", response.data.data.role); 

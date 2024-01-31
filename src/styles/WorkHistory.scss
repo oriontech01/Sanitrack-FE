@@ -13,14 +13,14 @@
         align-items: center;
 
         a {
-            background-color: #9c27b0; // purple for the links
+            background-color: #6368ed; // purple for the links
             color: white; // white text for contrast
             padding: 1em;
             border-radius: 10px;
             transition: background-color 0.3s; // smooth transition for hover effect
 
             &:hover {
-                background-color: #7b1fa2; // slightly darker purple on hover
+                background-color: #6368ed; // slightly darker purple on hover
             }
         }
         .active {

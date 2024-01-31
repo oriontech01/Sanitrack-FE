@@ -22,21 +22,6 @@ const useRoom = () => {
             // console.log(response.data.message)
             setResponseMessage(data.message)
             navigate('/home/room')
-        }).catch((error) => { 
-            if (error.response) {
-                const { status, data } = error.response;
-                if (status === 400 && data && data.message) {
-                    setResponseMessage(data.message)
-                    console.log("An error occured",data.message)
-                } else if(status === 403 && data && data.message){
-                    console.log("An error with status 403 occured",data.message)
-                    setResponseMessage(data.message)
-                } else {
-                  console.log('Axios error:', error);
-                }
-            } else {
-                console.log('Network error:', error.message);
-              }
         })
     }
 
@@ -66,7 +51,7 @@ const useRoom = () => {
     }
 
     const getRoomById = async(roomId) => {
-        await axios.get(`${LOCAL_URL}/room/get-single-room?roomId=${roomId}`, {
+        await axios.get(`${LOCAL_URL}/room/get-single?roomId=${roomId}`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRoomsById(response.data.data)
@@ -116,9 +101,8 @@ const useRoom = () => {
     }
 
     const deleteRoom = async(roomId) => { 
-        await axios.delete(`${LOCAL_URL}room/delete-room`, 
+        await axios.delete(`${LOCAL_URL}room/delete?roomId=${roomId}`, 
         {
-            data: {roomId: roomId},
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             console.log(response)
