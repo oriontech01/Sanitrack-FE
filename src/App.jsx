@@ -30,6 +30,7 @@ import AssignPermission from "./pages/Permissions/assign";
 import Evidence from "./pages/Evidence/evidence";
 import ViewEvidence from "./pages/Evidence/view";
 import Profile from "./pages/Profile";
+import Tasks from "./pages/Admin/Tasks";
 
 Modal.setAppElement("#root"); // React Modal component
 
@@ -59,6 +60,7 @@ function App() {
             <Route path="/home/add-user" element={<AddUser />} />
             <Route path="/home/room" element={<Room />} />
             <Route path="/home/add-room" element={<AddRoom />} />
+            <Route path="/home/tasks" element={<Tasks/>} />
             <Route
               path="/home/view-details/:roomId"
               element={<RoomDetails />}

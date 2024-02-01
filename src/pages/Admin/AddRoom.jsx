@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import '../../styles/AddRoom.scss';
 import useRoom from "../../Hooks/useRoom";
 import useLocation from "../../Hooks/useLocation";
@@ -15,7 +15,7 @@ const AddRoom = () => {
 
     const [formData, setFormData] = useState({
         roomName: '',
-        location: '',
+        location_id: '',
         details: [{ name: '' }],
     });
 
@@ -48,8 +48,8 @@ const AddRoom = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData)
-        // await addRoom(formData);
-        // alert(responseMessage);
+        await addRoom(formData);
+        alert(responseMessage);
     };
 
     console.log("Locations", allLocations)
@@ -75,14 +75,17 @@ const AddRoom = () => {
                         id="location"
                         name="location"
                         value={formData.location}
-                        onChange={(event) => setFormData({ ...formData, location: event.target.value })}
+                        onChange={(event) => {
+                             setFormData({ ...formData, location_id: event.target.value })
+                        }
+                       }
                         placeholder="Enter location"
                     >
 
                         {
                             allLocations.map((location) => {
                                 const address = `${location.city}, ${location.state}, ${location.country}`;
-                                return <option key={location._id} value={address} >{address}</option>
+                                return <option key={location._id} value={location._id}>{address}</option>
                             })
                         }
                     </select>

@@ -3,7 +3,15 @@ import useTask from "../../Hooks/useTask";
 import { useEffect, useState } from "react";
 
 const AddTask = () => {
-  const { getUnAssignedRooms, getAllCleaners, getAllInspectors, addTask, unAssignedRooms, allCleaners, allInspectors } = useTask();
+  const {
+    getUnAssignedRooms,
+    getAllCleaners,
+    getAllInspectors,
+    addTask,
+    unAssignedRooms,
+    allCleaners,
+    allInspectors,
+  } = useTask();
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedCleaner, setSelectedCleaner] = useState("");
   const [selectedInspector, setSelectedInspector] = useState("");
@@ -14,7 +22,7 @@ const AddTask = () => {
     getAllInspectors();
   }, []);
 
-  console.log("Unassigned Rooms",unAssignedRooms)
+  console.log("Unassigned Rooms", unAssignedRooms);
   return (
     <div className="add-task-container">
       <div className="add-task-header">
@@ -51,7 +59,7 @@ const AddTask = () => {
                   value={cleaner._id}
                   onChange={() => setSelectedCleaner(cleaner._id)}
                 />
-                {cleaner.username}
+                {cleaner.user_name}
               </label>
             ))}
           </div>
@@ -65,11 +73,11 @@ const AddTask = () => {
                 <input
                   type="radio"
                   name="selectedInspector"
-                  checked={selectedInspector === inspector._id}
+                  checked={selectedInspector === inspector.user_id}
                   value={inspector._id}
-                  onChange={() => setSelectedInspector(inspector._id)}
+                  onChange={() => setSelectedInspector(inspector.user_id)}
                 />
-                {inspector.username}
+                {inspector.user_name}
               </label>
             ))}
           </div>
@@ -78,7 +86,10 @@ const AddTask = () => {
         <button
           className="upload-btn"
           disabled={!selectedRoom || !selectedCleaner || !selectedInspector}
-          onClick={() => addTask(selectedRoom, selectedCleaner, selectedInspector)}
+          onClick={() => {
+             addTask(selectedRoom, selectedCleaner, selectedInspector)
+            // console.log(selectedCleaner, selectedInspector, selectedRoom);
+          }}
         >
           Upload Task
         </button>

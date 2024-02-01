@@ -1,6 +1,5 @@
-import React from "react";
 import { CgProfile } from "react-icons/cg";
-import '../styles/Profile.scss';
+import "../styles/Profile.scss";
 
 const Profile = () => {
   return (
@@ -20,7 +19,6 @@ const Profile = () => {
         <input type="email" id="email" name="email" required />
         <br />
         <br />
-
         <div>
           <h3>Address</h3>
           <label htmlFor="">Country:</label>
