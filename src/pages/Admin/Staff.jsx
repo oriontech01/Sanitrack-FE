@@ -34,6 +34,7 @@ const Staff = () => {
   // Before rendering, check if allStaffs is defined and has length
   const staffList = allStaffs && allStaffs.map((staff) => (
     <tr key={staff._id}>
+
       <td>{staff.username?.charAt(0).toUpperCase() + staff.username?.slice(1)}</td>
       <td>{staff.role?.charAt(0).toUpperCase() + staff.role?.slice(1)}</td>
       <td>{staff.flag}</td>
@@ -51,6 +52,8 @@ const Staff = () => {
       </td>
     </tr>
   ));
+
+  console.log(allStaffs);
 
   return (
     <div className="tab-display">

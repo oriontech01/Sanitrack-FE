@@ -9,6 +9,7 @@ const useLocation = () => {
   const access_token = localStorage.getItem("auth-token");
 
   const [allLocations, setLocation] = useState([])
+  const [responseMessage, setResponseMessage] = useState();
 
   const getLocation = async () => {
     await axios

@@ -1,21 +1,27 @@
-$border-color: #aaa9ad; // Border color
-$border-radius: 20px; // Border radius
-$background-color-sent: #cf1e1e; // Background color for sent messages
-$background-color-received: #535695; // Background color for received messages
+$border-color: #e0e0e3; // Lighter border color for a softer look
+$border-radius: 30px; // Increased border radius for softer edges
+$background-color-sent: #0078ff; // Vibrant blue for sent messages
+$background-color-received: #f0f0f0; // Light grey for received messages, easier on the eyes
 $text-color-sent: #fff; // Text color for sent messages
-$text-color-received: #000; // Text color for received messages
-$text-color-timestamp: #000; // Text color for timestamps
+$text-color-received: #333; // Darker text color for better readability on light background
+$text-color-timestamp: #888; // Greyed out text color for timestamps for subtlety
 $padding-size: 1em; // Padding size
-$message-width: 20%; // Message width
+$message-width: 50%; // Increased message width for better use of space
+
+// Adding a subtle shadow for depth
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 .chat-container {
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
     border: 1px solid $border-color;
     height: 100%;
     border-radius: $border-radius;
     padding: $padding-size;
     margin-left: 10px;
+    background: #ffffff; // Adding a clean background
+    box-shadow: $shadow; // Applying shadow for depth
 
     .messages-list {
         flex-grow: 1;
@@ -24,15 +30,17 @@ $message-width: 20%; // Message width
 
         .message-item {
             margin: 0.5em;
-            padding: 0.5em;
-            border-radius: 10px;
-            color: red;
+            padding: 0.8em; // Increased padding for more space around text
+            border-radius: $border-radius;
+            box-shadow: $shadow; // Adding shadow to individual messages for depth
+            font-size: 0.9em; // Adjust font size for readability
 
             &.sent {
                 background-color: $background-color-sent;
                 align-self: flex-end;
                 width: $message-width;
                 color: $text-color-sent;
+                border-bottom-right-radius: 4px; // Adjusting for speech bubble look
             }
 
             &.received {
@@ -40,13 +48,16 @@ $message-width: 20%; // Message width
                 align-self: flex-start;
                 padding: 0.5em;
                 width: $message-width;
-                color: $text-color-sent;
+                color: $text-color-received;
+                border-bottom-left-radius: 4px; // Adjusting for speech bubble look
             }
 
             .timestamp {
                 display: block;
                 text-align: right;
                 color: $text-color-timestamp;
+                font-size: 0.75em; // Smaller font size for timestamps
+                margin-top: 4px; // Space between message and timestamp
             }
         }
     }
@@ -62,16 +73,21 @@ $message-width: 20%; // Message width
 
         input {
             flex-grow: 1;
+            border: 1px solid $border-color;
+            border-radius: 20px; // Rounded edges for input
+            padding: 0.5em;
+            margin-right: 10px; // Ensure some space between input and send button
         }
 
         .sendMessage {
             background-color: $background-color-sent;
             color: $text-color-sent;
-            width: $message-width;
-            padding: 0.5em;
+            width: 200px;
+            border-radius: 20px; // Rounded button for a modern look
+            padding: 0.6em 1em; // Balanced padding for the button
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s; // Smooth transition for hover effect
 
             &:hover {
                 background-color: darken($background-color-sent, 10%);

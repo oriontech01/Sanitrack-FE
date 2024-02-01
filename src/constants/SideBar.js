@@ -11,11 +11,11 @@ const sideBarItems = [
         link: '/admin-home', 
         icon: AiFillDashboard
     }, 
-    // { 
-    //     name: "Work Order", 
-    //     link: '/home/tasks', 
-    //     icon: FaTasks
-    // },
+    { 
+        name: "Work Order", 
+        link: '/home/tasks', 
+        icon: FaTasks
+    },
     {
         name: "User", 
         link: '/home/user', 

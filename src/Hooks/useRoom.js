@@ -19,8 +19,8 @@ const useRoom = () => {
             headers: {Authorization: `Bearer ${access_token}`} 
             
         }).then((response) => {
-            // console.log(response.data.message)
-            setResponseMessage(data.message)
+            console.log(response.data.message)
+            setResponseMessage(response.data.message)
             navigate('/home/room')
         })
     }

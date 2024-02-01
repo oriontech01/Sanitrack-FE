@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   .add-user-header {
-    background-color: #a1a3cd;
+    background-color: #520e69;
     padding: 1% 1%; // Uniform padding for better spacing
     margin-bottom: 2%; // Increased to give more space between sections
     border-radius: 20px;
@@ -14,35 +14,8 @@
     }
   }
 
-  // .add-user-form {
-  //   background-color: #A1A3CD;
-  //   padding: 2%; // Add padding for internal spacing
-  //   margin-top: 2%; // Reduced top margin for better visual grouping
-  //   border-radius: 8px; // Soften edges for a modern look
-  //   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: 20px;
-  //   form {
-  //     display: flex;
-  //     align-items: flex-start;
-  //     flex-wrap: wrap; // Ensure responsiveness
-  //     gap: 20px; // Increase gap for better separation of fields
-  //     justify-content: space-between;
-  //     padding: 0 1%; // Padding for inner spacing
-
-  //     input{
-  //         width: 200px;
-  //     }
-  //   }
-  //   button{
-  //     width: 200px;
-  //     align-self: center;
-  // }
-  // }
-
   .add-user-form {
-    background-color: #a1a3cd;
+    background-color:  #520e69;
     padding: 2%; // Maintain padding for internal spacing
     margin-top: 2%; // Keep the top margin for visual grouping
     border-radius: 8px; // Soften edges for a modern look
