@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next';
 const cleanerPage = () => { 
+  const {t} = useTranslation()
     return(
         <div className="bg-color room-container">
       <div className="first_block">
-        <div className="room_a">ROOM A</div>
+        <div className="room_a">{t('ROOM A')}</div>
         <div className="room_a_timer">
           <div className="timer-box">
             <MdOutlineTimer/>
@@ -19,9 +21,9 @@ const cleanerPage = () => {
         <UploadBox label="FURNITURES" idSuffix="4" />
       </div>
       <div className="last_section">
-        <a href="#" className="submit_btn">SUBMIT</a>
+        <a href="#" className="submit_btn">{t('SUBMIT')}</a>
         <div className="view_guide">
-          <a href="#" className="view_guide_text">VIEW GUIDE</a>
+          <a href="#" className="view_guide_text">{t('VIEW GUIDE')}</a>
         </div>
       </div>
     </div>

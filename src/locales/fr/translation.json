@@ -26,6 +26,57 @@
     "Assigned Supervisor" : "Superviseur assigné", 
     "Assigned Cleaner": "Agent d'entretien assigné", 
     "Status": "Statut", 
-    "Edit" : "Modifier"
+    "Edit" : "Modifier",
+    "Add room" : "Ajouter une chambre",
+    "Room Name": "Nom de la pièce",
+    "No Location Added" : "Aucun emplacement ajouté",
+    "Details" : "Détails",
+    "Detail Name" : "Nom du détail ",
+    " Remove Detail" : "Supprimer le détail",
+    " Add Detail": "Ajouter un détail",
+    "Submit" : " Soumettre",
+    "Add Task" : "Ajouter une tâche",
+    "Unassigned Rooms" : "Chambres non assignées",
+    "Cleaners" : "Agents d'entretien",
+    "Inspectors" : "Inspecteurs",
+    "Add User" : "Ajouter un utilisateur",	
+    "Name": "Nom",
+    "Select Role" : "Sélectionner le rôle",
+    "Cleaner" : "Agent d'entretien" ,
+    "Inspector" : "Inspecteur",
+    "Create" : "Créer",
+    "scan qr code to view work order" : "Scanner le code QR pour voir l'ordre de travail"	,
+    "ROOM A" : "ROOM A",
+    "SUBMIT": "SOUMETTRE",
+    "VIEW GUIDE" : "VOIR LE GUIDE",
+    "ForgotPassword": "Mot de passe oublié",
+    "Generate Report":"Générer un rapport",
+    "No rooms available" : "Aucune chambre disponible",
+    "Edit Room" : "Modifier la chambre",
+    "Delete Detail" : "Supprimer le détail",
+    "Save Changes" : "Enregistrer les modifications",
+    "SelectRole" : "Sélectionner le rôle",
+    "Update" : "Mettre à jour",
+    "Location Management" : "Gestion de l'emplacement",
+    "Add Location" : "Ajouter un emplacement",
+    "Legend":"Légende",
+    "Facility Location" :"Emplacement de l'installation",
+    "ROOM B": "ROOM B",
+    "ROOM C" : "ROOM C",
+    "ROOM D" : "ROOM D",
+    "Scan barcode to": "Scanner le code-barres pour",
+    "view work order": "voir l'ordre de travail",
+    "Select from list" : "Sélectionner dans la liste",
+
+
+
+
+
+
+
+
+
+
+    
     
 }

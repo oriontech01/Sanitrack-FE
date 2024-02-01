@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import '../styles/Tasks.scss'
 import { useNavigate } from "react-router-dom";
 import useStaff from "../Hooks/useStaff"
+import { useTranslation } from 'react-i18next';
 
 const Staff = () => { 
+    const {t} = useTranslation()
     const navigate = useNavigate()
     const {getAllStaffs, allStaffs, totalPages,  fireStaff, restoreStaff} = useStaff()
     const [currentPage, setCurrentPage] = useState(1);
@@ -61,9 +63,9 @@ const Staff = () => {
         <div className="center-me">
           <div className="container">
             <div className="task-section">
-              <h2>All Staffs</h2>
+              <h2>{t('All Staffs')}</h2>
               <button id="createTaskBtn" onClick={handleNavigate}>
-                Create New Staff
+                {t('Create New Staff')}
               </button>
             </div>
   
@@ -71,10 +73,10 @@ const Staff = () => {
               <table id="taskTable">
                 <thead>
                   <tr>
-                    <th>Staff name</th>
-                    <th>Role</th>
-                    <th>Staff Status</th>
-                    <th>Action</th>
+                    <th>{t('Staff name')}</th>
+                    <th>{t('Role')}</th>
+                    <th>{t('Staff Status')}</th>
+                    <th>{t('Action')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -88,10 +90,10 @@ const Staff = () => {
                           
                           {staff.flag == "INACTIVE" ? 
                             (
-                              <button className='view-btn' onClick={() => handleRestore(staff._id)}>Restore</button>
+                              <button className='view-btn' onClick={() => handleRestore(staff._id)}>{t('Restore')}</button>
                             )
                             : 
-                            (<button className='delete-btn' onClick={() => handleFire(staff._id)}>Fire</button>)}
+                            (<button className='delete-btn' onClick={() => handleFire(staff._id)}>{t('Fire')}</button>)}
                           
                       </td>
             

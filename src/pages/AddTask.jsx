@@ -1,8 +1,11 @@
 import "../styles/AddTask.scss"
 import useTask from "../Hooks/useTask"
 import { useEffect, useState } from "react"
+import { useTranslation } from 'react-i18next';
+
 
 const AddTask = () => {
+    const {t} = useTranslation()
     const { getUnAssignedRooms, getAllCleaners, getAllInspectors, addTask,  unAssignedRooms,allCleaners, allInspectors } = useTask()
     const [selectedRoom, setSelectedRoom] = useState('')
     const [selectedCleaner, setSelectedCleaner] = useState('')
@@ -34,10 +37,10 @@ const AddTask = () => {
     return (
         <div className="add-task-container">
             <div className="add-user-header">
-                <h2>Add Task</h2>
+                <h2>{t('Add Task')}</h2>
             </div>
             <div className="add-task-sub-container">
-                <h2>Unassigned Rooms:</h2>
+                <h2>{t('Unassigned Rooms')}:</h2>
                 <div className="unassigned-rooms-container">
                     <div className="unassigned-rooms">
                         {unAssignedRooms.map((room) => (
@@ -51,7 +54,7 @@ const AddTask = () => {
 
                 </div>
 
-                <h2>Cleaners:</h2>
+                <h2>{t('Cleaners')}:</h2>
                 <div className="unassigned-rooms-container">
                     <div className="unassigned-rooms">
                         {allCleaners.map((cleaner) => (
@@ -66,7 +69,7 @@ const AddTask = () => {
 
                 </div>
 
-                <h2>Inspectors</h2>
+                <h2>{t('Inspectors')}</h2>
                 <div className="unassigned-rooms-container">
                     <div className="unassigned-rooms">
                         {allInspectors.map((inspector) => (

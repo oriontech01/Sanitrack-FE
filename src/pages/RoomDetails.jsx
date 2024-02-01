@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 import useRoom from "../Hooks/useRoom";
 import '../styles/AddRoom.scss'
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 const RoomDetails = () => {
+    const {t} = useTranslation()
     const { roomId } = useParams()
     const { getRoomById, allRoomsById, updateRoomDetail, responseMessage } = useRoom()
     const navigate = useNavigate()
@@ -69,11 +72,11 @@ const RoomDetails = () => {
     return (
         <div className="add-user-container">
             <div className="add-user-header">
-                <h2>Edit Room</h2>
+                <h2>{t('Edit Room')}</h2>
             </div>
             <form >
                 <label>
-                    Room Name:
+                    {t('Room Name')}:
                     <input
                         type="text"
                         name="roomName"
@@ -83,7 +86,7 @@ const RoomDetails = () => {
                 </label>
 
                 <label>
-                    Location:
+                    {t('Location')}:
                     <input
                         type="text"
                         name="location"
@@ -93,11 +96,11 @@ const RoomDetails = () => {
                 </label>
 
                 <div className="details-container">
-                    <h4>Details:</h4>
+                    <h4>{t('Details')}:</h4>
                     {formData.details && formData.details.map((detail, index) => (
                         <div key={index}>
                             <label>
-                                Detail Name:
+                                {t('Detail Name')}:
                                 <input
                                     type="text"
                                     name="name"
@@ -107,19 +110,21 @@ const RoomDetails = () => {
                             </label>
 
                             <button type="button" onClick={() => handleRemoveDetail(index)}>
-                                Delete Detail
+                                {t('Delete Detail')}
                             </button>
 
                         </div>
                     ))}
                     <button type="button" onClick={handleAddDetail} style={{ marginTop: "12px" }}>
-                        Add Detail
+                        {t('Add Detail')}
                     </button>
                 </div>
 
 
             </form>
-            <button onClick={handleSubmit} style={{ marginTop: "12px" }} disabled={formData.details.some(item => item.name === '')}>Save Changes</button>
+            <button onClick={handleSubmit} style={{ marginTop: "12px" }} disabled={formData.details.some(item => item.name === '')}>
+                {t('Save Changes')}
+                </button>
         </div>
     );
 }

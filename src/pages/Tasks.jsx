@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import "../styles/Tasks.scss"; // Import your CSS file if not already done
 import { useNavigate } from "react-router-dom";
 import useTask from "../Hooks/useTask";
+import { useTranslation } from 'react-i18next';
+
+
 const Tasks = () => {
+  const {t} = useTranslation()
   const { getAllTasks, allTasks, deleteTask } = useTask();
 
   const navigate = useNavigate();
@@ -29,9 +33,9 @@ const Tasks = () => {
       <div className="center-me">
         <div className="container">
           <div className="task-section">
-            <h2> Tasks</h2>
+            <h2> {t('Tasks')}</h2>
             <button id="createTaskBtn" onClick={handleNavigate}>
-              Create New Task
+              {t('Create New Task')}
             </button>
           </div>
 
@@ -39,11 +43,11 @@ const Tasks = () => {
             <table id="taskTable">
               <thead>
                 <tr>
-                  <th>Room name</th>
-                  <th>Assigned Supervisor</th>
-                  <th>Assigned Cleaner </th>
-                  <th>Status</th>
-                  <th>Action</th>
+                  <th>{t('Room name')}</th>
+                  <th>{t('Assigned Supervisor')}</th>
+                  <th>{t('Assigned Cleaner')} </th>
+                  <th>{t('Status')}</th>
+                  <th>{t('Action')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -74,7 +78,7 @@ const Tasks = () => {
                             handleTaskEdit(task.taskId);
                           }}
                         >
-                          Edit 
+                          {t('Edit')} 
                         </button>
                         <button
                           className="delete-btn"
@@ -82,7 +86,7 @@ const Tasks = () => {
                             handleTaskDelete(task._id);
                           }}
                         >
-                          Delete
+                          {t('Delete')}
                         </button>
                       </div>
                     </td>

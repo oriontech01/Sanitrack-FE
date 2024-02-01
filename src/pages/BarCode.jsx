@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import '../styles/BarCode.scss'; // Make sure this path is correct for your project structure
 import BarCodeScanner from './BarCodeScanner';
+import { useTranslation } from 'react-i18next';
 
 const BarCode = () => {
+  const {t} = useTranslation()
+
   useEffect(() => {
     // Check if the browser supports the getUserMedia API
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -27,7 +30,7 @@ const BarCode = () => {
             <div className="camera_text"> 
               
               <BarCodeScanner/>
-              <p>scan qr code to view work order</p>
+              <p>{t('scan qr code to view work order')}</p>
             </div>
         </div>
      </div>

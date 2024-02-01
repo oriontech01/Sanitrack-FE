@@ -3,7 +3,10 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import "../styles/Tracker.scss";
 import axios from "axios";
 import { FaLocationDot } from "react-icons/fa6";
+import { useTranslation } from 'react-i18next';
+
 const Tracker = () => {
+  const {t} = useTranslation()
   const [locationData, setLocationData] = useState([]);
   const token = localStorage.getItem("auth-token");
   const googleMapsApiKey = import.meta.env.GOOGLE_API_KEY; // Replace with your API key
@@ -53,7 +56,7 @@ const Tracker = () => {
   return (
     <div className="tracker-container">
     <div className="location-header">
-      <h2>Location Management</h2> <button>Add Location</button>
+      <h2>{t('Location Management')}</h2> <button>{t('Add Location')}</button>
     </div>
       
       <div className="map-container">
@@ -75,10 +78,10 @@ const Tracker = () => {
       </div>
       {/* Add the legend */}
       <div className="legend">
-        <h3>Legend</h3>
+        <h3>{t('Legend')}</h3>
         <div className="legend-item">
           <FaLocationDot fill="red"/>
-          <span>Facility Location</span>
+          <span>{t('Facility Location')}</span>
         </div>
       </div>
     </div>

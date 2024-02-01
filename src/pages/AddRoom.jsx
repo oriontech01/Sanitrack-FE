@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import '../styles/AddRoom.scss'
 import useRoom from "../Hooks/useRoom";
 import useLocation from "../Hooks/useLocation";
+import { useTranslation } from 'react-i18next';
 
 const AddRoom = () => {
+    const {t} = useTranslation()
     const {addRoom, responseMessage} = useRoom()
     const {getLocation, allLocations} = useLocation()
     const [formData, setFormData] = useState({
@@ -68,11 +70,11 @@ const AddRoom = () => {
     return (
         <div className="add-user-container">
             <div className="add-user-header">
-                <h2>Add Room</h2>
+                <h2>{t('Add room')}</h2>
             </div>
             <form >
                 <label>
-                    Room Name:
+                    {t('Room Name')}:
                     <input
                         type="text"
                         name="roomName"
@@ -82,24 +84,24 @@ const AddRoom = () => {
                 </label>
 
                 <label>
-                    Location:
+                    {t('Location')}:
                     <select onChange={handleLocationChange} value={formData.location_id}>
                         {allLocations ? (
                             allLocations.map((location) => (
                                 <option key={location._id} value={location._id}>{location.city} {location.state}, {location.country}.</option>
                             ))
                         ):(
-                            <option>No Location Added</option>
+                            <option>{t('No Location Added')}</option>
                         )}
                     </select>
                 </label>
 
                 <div className="details-container">
-                    <h4>Details:</h4>
+                    <h4>{t('Details')}:</h4>
                     {formData.details.map((detail, index) => (
                         <div key={index}>
                             <label>
-                                Detail Name:
+                                {t('Detail Name')}:
                                 <input
                                     type="text"
                                     name="name"
@@ -109,17 +111,17 @@ const AddRoom = () => {
                             </label>
                             {index > 0 && (
                                 <button type="button" onClick={() => handleRemoveDetail(index)}>
-                                    Remove Detail
+                                   {t(' Remove Detail')}
                                 </button>
                             )}
                         </div>
                     ))}
                     <button type="button" onClick={handleAddDetail} style={{marginTop: "12px"}}>
-                        Add Detail
+                       {t(' Add Detail')}
                     </button>
                 </div>
 
-                <button onClick={handleSubmit} style={{marginTop: "12px"}} disabled = {formData.details.some(item => item.name === '') || formData.location_id == ''}>Submit</button>
+                <button onClick={handleSubmit} style={{marginTop: "12px"}} disabled = {formData.details.some(item => item.name === '') || formData.location_id == ''}>{t('Submit')}</button>
             </form>
         </div>
     )

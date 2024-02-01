@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Tasks.scss';
 import { useNavigate } from 'react-router-dom';
 import useRoom from '../Hooks/useRoom';
+import { useTranslation } from 'react-i18next';
 const Room = () => {
+  const {t} = useTranslation()
   const { getRoom, allRooms, deleteRoom, responseMessage } = useRoom()
   const [rooms, setRooms] = useState()
 
@@ -39,9 +41,9 @@ const Room = () => {
       <div className="center-me">
         <div className="container">
           <div className="task-section">
-            <h2>All Rooms</h2>
+            <h2>{t('All Rooms')}</h2>
             <button id="createTaskBtn" onClick={handleNavigate}>
-              Create New Room
+              {t('Create New Room')}
             </button>
           </div>
 
@@ -49,9 +51,9 @@ const Room = () => {
             <table id="taskTable">
               <thead>
                 <tr>
-                  <th>Room name</th>
-                  <th>Location</th>
-                  <th>Action</th>
+                  <th>{t('Room name')}</th>
+                  <th>{t('Location')}</th>
+                  <th>{t('Action')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +72,7 @@ const Room = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3">No rooms available</td>
+                    <td colSpan="3">{t('No rooms available')}</td>
                   </tr>
                 )}
 

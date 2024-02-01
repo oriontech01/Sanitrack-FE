@@ -1,7 +1,9 @@
 import { useEffect , useState} from "react"
 import { useParams } from "react-router-dom"
 import useTask from "../Hooks/useTask"
+import { useTranslation } from 'react-i18next';
 const TaskDetails = () => { 
+    const {t} = useTranslation()
     const {taskId} = useParams()
 
     const [selectedCleaner, setSelectedCleaner] = useState('')
@@ -30,7 +32,7 @@ const TaskDetails = () => {
             {/* <h2> Room: {singleTaskDetail.assigned_room.roomName}</h2> */}
             {/* contains all the cleaners */}
             <div className="unassigned-rooms-container">
-                <h3>Cleaners:</h3>
+                <h3>{t('Cleaners')}:</h3>
                 <div className="unassigned-rooms">
                     {allCleaners.map((cleaner) => (
                         <div className="unassigned-rooms-result">
@@ -44,7 +46,7 @@ const TaskDetails = () => {
             </div>
 
             <div className="unassigned-rooms-container">
-                <h3>Inspectors:</h3>
+                <h3>{t('Inspectors')}:</h3>
                 <div className="unassigned-rooms">
                     {allInspectors.map((inspector) => (
                         <div className="unassigned-rooms-result">
@@ -57,7 +59,7 @@ const TaskDetails = () => {
 
             </div>
 
-            <button disabled = {selectedCleaner == '' || selectedInspector == '' || singleTaskDetail.isSubmitted == true} onClick={handleUpdate}>Update</button>
+            <button disabled = {selectedCleaner == '' || selectedInspector == '' || singleTaskDetail.isSubmitted == true} onClick={handleUpdate}>{t('Update')}</button>
         </div>
     )
 }
