@@ -4,29 +4,49 @@ import useStaff from "../../Hooks/useStaff";
 import useRoles from "../../Hooks/useRoles";
 
 const AddUser = () => {
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const { addStaff, responseMessage } = useStaff();
+  const {getRoles, roles} = useRoles()
+
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
   const [address, setAddress] = useState({
     country: "",
     state: "",
     city: "",
+    home_address: ''
   });
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [role, setRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
+ 
 
   useEffect(() => {
-        
+    const fetchData = async() => {await getRoles()}
+    fetchData()
+    setSelectedRole(roles[0]?._id)
+    // console.log(roles[0]._id)
+    // console.log(`calling the getRoles => ${JSON.stringify(selectedRole)}`)
   }, [])
 
 // Custom Hooks
-  const { addStaff, responseMessage } = useStaff();
-  const {getAllRoles, allRoles} = useRoles()
-
+ 
+  const disableButton = (username, password, email, address, phoneNumber) => { 
+    return (username == '' || password.length < 3 || email == '' || address.country == '' || address.state == '' || address.city == '' || phoneNumber.length < 5 || selectedRole == '')
+  }
   const handleUpload = async () => {
-    console.log({ role, username, email, password, phoneNumber, address });
-    // await addStaff(username, password, role);
-    // alert(responseMessage);
+    console.log({ selectedRole });
+    const dataToPass = { 
+      username: username, 
+      password: password, 
+      email: email, 
+      address: {country: address.country, state: address.state, city: address.city, home_address: address.home_address}, 
+      phone_number: phoneNumber, 
+      role_id: selectedRole, 
+      role_name: roles.find((role) => role._id == selectedRole)?.role_name
+    }
+    // console.log(dataToPass)
+    await addStaff(dataToPass);
+    
   };
   return (
     <>
@@ -102,22 +122,37 @@ const AddUser = () => {
                   });
                 }}
               ></input>
+              <input
+                placeholder="Home Address"
+                onChange={(e) => {
+                  setAddress({
+                    ...address,
+                    home_address: e.target.value,
+                  });
+                }}
+              ></input>
             </div>{" "}
             <div className="form-details">
               <label>Role:</label>
               <select
-                value={role}
+                value={selectedRole}
                 onChange={(e) => {
-                  setRole(e.target.value);
+                  setSelectedRole(e.target.value);
                 }}
+                
               >
-                <option value="">Select Role</option>
-                <option value="Cleaner">Cleaner</option>
-                <option value="Inspector">Inspector</option>
+                {roles ? (
+                  roles.map((allroles) => (
+                    <option value={allroles._id}>{allroles.role_name}</option>
+                  ))
+                  
+                ): (
+                  <p>Please Add Roles. </p>
+                )}
               </select>
             </div>
           </form>
-          <button onClick={handleUpload} disabled={role == "" ? true : false}>
+          <button onClick={handleUpload} disabled={disableButton(username, password, email, address, phoneNumber)}>
             Add User
           </button>
         </div>

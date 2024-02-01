@@ -31,6 +31,8 @@ import Evidence from "./pages/Evidence/evidence";
 import ViewEvidence from "./pages/Evidence/view";
 import Profile from "./pages/Profile";
 import Tasks from "./pages/Admin/Tasks";
+import UserRole from "./pages/Admin/UserRole";
+
 
 Modal.setAppElement("#root"); // React Modal component
 
@@ -58,6 +60,7 @@ function App() {
             <Route path="/admin-home/profile" element={<Profile />} />
             <Route path="/home/user" element={<Staff />} />
             <Route path="/home/add-user" element={<AddUser />} />
+            <Route path="/home/user/role/:staffId" element={<UserRole />} />
             <Route path="/home/room" element={<Room />} />
             <Route path="/home/add-room" element={<AddRoom />} />
             <Route path="/home/tasks" element={<Tasks/>} />

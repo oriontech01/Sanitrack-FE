@@ -7,15 +7,21 @@ import  useWorkHistory from '../../../Hooks/useWorkHistory';
 import './index.scss'
 
 const CleanerHistory = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 100;
+
   const { allStaffs, getAllStaffs } = useStaff();
   const { getCleanerHistory } = useWorkHistory();
+
   const [cleanerHistory, setCleanerHistory] = useState({});
   const [isFetched, setIsFetched] = useState(false); // State to track if history has been fetched
 
   useEffect(() => {
-    getAllStaffs();
-  }, [getAllStaffs]); 
+    getAllStaffs(currentPage, itemsPerPage);
+    console.log(`all staffs => ${JSON.stringify(allStaffs)}`)
+  }, []); 
 
+  
   useEffect(() => {
     const fetchCleanerHistory = async () => {
       const cleanerData = allStaffs.filter(staff => staff.role === 'cleaner');
@@ -37,7 +43,7 @@ const CleanerHistory = () => {
     }
   }, [allStaffs, getCleanerHistory, isFetched]); // Add isFetched to the dependency array
 
-  return allStaffs.filter(staff => staff.role === 'cleaner').map(cleaner => (
+  return allStaffs.map(cleaner => (
     <HistoryDetails
       key={cleaner._id}
       name={cleaner.username}

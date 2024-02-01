@@ -133,7 +133,6 @@ const useTask = () => {
         }).then((response) => {
             setEveryTask(response.data.data.allTasks.length)
             setAllTasks(response.data.data.allTasks)
-            console.log("All Tasks", response.data.data.allTasks)
         }).catch((error) => { 
             if(error.response){ 
                 const { status, data } = error.response;
