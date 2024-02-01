@@ -1,54 +1,76 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
-import db from '../util/firebase'; // adjust the path
-import { UserContext } from './../context/UserContext';
+import React, {
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useContext,
+  useEffect,
+} from "react";
+import { GiftedChat } from "react-native-gifted-chat";
+import db from "../util/firebase";
+import { UserContext } from "./../context/UserContext";
+import {
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
+import {format} from 'date-fns'
 
-// Assuming userData is passed as a prop to the Chat component
 const Chat = () => {
   const [messages, setMessages] = useState([]);
-  const {user}  = useContext(UserContext)
+  const { user } = useContext(UserContext); // Assuming you have a UserContext
 
   useEffect(() => {
-    const unsubscribe = db.collection('messages').orderBy('createdAt', 'desc')
-      .onSnapshot(snapshot => {
-        const firestoreMessages = snapshot.docs.map(doc => {
-          const firebaseData = doc.data();
-          const data = {
-            _id: doc.id,
-            text: firebaseData.text,
-            createdAt: new Date(firebaseData.createdAt.seconds * 1000),
-            user: firebaseData.user,
-          };
-
-          return data;
-        });
-
-        setMessages(firestoreMessages);
+    const messagesRef = collection(db, 'messages');
+    const q = query(messagesRef, orderBy('timestamp', 'asc'));
+  
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const loadedMessages = snapshot.docs.map((doc) => {
+        const firebaseData = doc.data();
+        // Convert Firestore timestamp to JavaScript Date object for GiftedChat
+        const createdAt = firebaseData.timestamp ? firebaseData.timestamp.toDate() : new Date();
+        return {
+          _id: doc.id,
+          text: firebaseData.text,
+          createdAt, // Use the converted Date object
+          user: {
+            _id: firebaseData.senderId || 'unknown',
+            name: firebaseData.senderName || 'Unnamed',
+          },
+        };
       });
-
-    return () => unsubscribe(); // Unsubscribe from firestore updates
-  }, []);
-
-  const onSend = useCallback((messages = []) => {
-    messages.forEach(message => {
-      db.collection('messages').add({
-        ...message, 
-        createdAt: new Date(),
-        user: {
-          _id: user.id,
-          name: user.username,
-        }
-      });
+      setMessages(loadedMessages.reverse());
     });
-  }, [user]);
+  
+    return () => unsubscribe();
+  }, []);
+  
 
+const onSend = useCallback((messages = []) => {
+  messages.forEach(async (message) => {
+    const { text } = message;
+    if (!user.username) {
+      console.error("User name is undefined");
+      return;
+    }
+    await addDoc(collection(db, 'messages'), {
+      text,
+      timestamp: serverTimestamp(), // Firestore handles conversion
+      senderName: user.username,
+    });
+  });
+}, [user.username]); // Ensure this uses the correct user property
+
+  
   return (
     <GiftedChat
       messages={messages}
-      onSend={messages => onSend(messages)}
+      onSend={(messages) => onSend(messages)}
       user={{
-        _id: user.id,
-        name: user.username,
+        _id: user.id, // Assuming the user's ID is stored in user context
+        name: user.name, // Assuming the user's name is stored in user context
       }}
     />
   );

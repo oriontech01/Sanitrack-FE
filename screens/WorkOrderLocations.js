@@ -55,18 +55,20 @@ const styles = StyleSheet.create({
   }
 });
 const WorkOrderLocations = ({ navigation }) => {
-  const { user } = useContext(UserContext);
+  const { user, userRole } = useContext(UserContext);
   const { setRoomID } = useContext(RoomContext);
   const [roomList, setRoomList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    const decodedToken = JWT.decode(user.token, JWT_KEY); // Decode user token
-    console.log( "decode", decodedToken)
+    // const decodedToken = JWT.decode(user.token, JWT_KEY); // Decode user token
+    // console.log("User OBJ", user)
+    // console.log( "decode", decodedToken)
+    
     const getDashboard = async () => {
       try {
-        if (decodedToken.role_id.role_name === "Cleaner") {
+        if (userRole === "Cleaner") {
           const res = await axios.get(
-            `http://192.168.0.161:5000/api/cleaner-dashboard`,
+            `http://192.168.0.161:5000/api/cleaner-dashboard/`,
             {
               headers: {
                 Authorization: `Bearer ${[user.token]}`,

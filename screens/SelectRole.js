@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { UserContext } from "../context/UserContext";
@@ -38,17 +38,22 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
 const SelectRole = ({navigation}) => {
   const [selectedRole, setSelectedRole] = useState('')
   const { userRole, setUserRole, user, setUser } = useContext(UserContext);
-  // const roles = user.assignedRoles.map((role) => {
-  //    return {
-  //     label: role.role_name,
-  //     value: role.role_name
-  //    }
-  // })
+
+    // Effect to perform navigation after user state updates
+    useEffect(() => {
+      if (user.role_id) {
+        if (!userRole) navigation.navigate("Login");
+        // Ensure you have the correct logic here, as your current condition will always be true
+        // because userRole will never be simultaneously 'Cleaner' and 'Inspector'.
+        // Perhaps you meant to use && instead of ||, or you need additional checks.
+        else if (userRole !== 'Cleaner' && userRole !== 'Inspector') navigation.navigate('AccessDenied')
+        else navigation.navigate("WorkOrderSelection")
+      }
+    }, [user]); // This will trigger when user state changes
+
   const roles = user && Array.isArray(user.assignedRoles) ? user.assignedRoles.map((role) => ({
     label: role.role_name,
     value: role.role_name,
@@ -63,22 +68,21 @@ const SelectRole = ({navigation}) => {
           Authorization: `Bearer ${user.token}`
         }
       })
+      console.log(res.data)
       if (res.status == 200){
         Alert.alert("Successfully Selected Role!")
         setUser(res.data.data)
         console.log("Response data", res.data.data) 
-        console.log("User", user)       
-        if (!userRole) navigation.navigate("Login");
-        else if(userRole !== 'Cleaner' || userRole !=='Inspector') navigation.navigate('AccessDenied')
-        else navigation.navigate("WorkOrderSelection")
+        console.log("User", user)  
       }
+      
     } catch (error) {
       Alert.alert(error)
       console.log(error)
     }
   }
-  console.log("Select Role", user)
-  console.log("Roles", roles)
+  // console.log("Select Role", user)
+  // console.log("Roles", roles)
   return (
     <View style={styles.selectRoleContainer}>
       <Text style={styles.titleText}>Select A Role To Login As</Text>

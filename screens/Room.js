@@ -241,7 +241,7 @@ const Item = ({ label, detailId, uploadImage }) => {
   );
 };
 const Room = ({ route, navigation }) => {
-  const { user } = useContext(UserContext);
+  const { user, userRole } = useContext(UserContext);
   const [tasks, setTasks] = useState([]);
   const { roomID } = useContext(RoomContext);
   const [timer, setTimer] = useState(0); // Implementation of timer feature
@@ -410,7 +410,7 @@ const Room = ({ route, navigation }) => {
         setIsLoading(false);
       }
     };
-    if (decodedToken.role_id.role_name === "Cleaner") {
+    if (userRole == "Cleaner") {
       getTasks();
     } else {
       getInspectorRoomDetails();

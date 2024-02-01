@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Button, Linking } from 'react-native';
 import colors from '../util/colors';
 
 const RoleBasedAccessDeniedScreen = ({ userRole }) => {
-  const webAppURL = "https://example.com"; // Replace with your web app's URL
+  const webAppURL = "https://sanitrack.vercel.app/"; // Replace with your web app's URL
 
   return (
     <View style={styles.container}>
