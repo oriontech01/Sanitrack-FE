@@ -25,7 +25,7 @@ const useTask = () => {
 
    
     const getUnAssignedRooms = async () => { 
-        await axios.get(`${LOCAL_URL}get-unassigned-rooms`, {
+        await axios.get(`${LOCAL_URL}room/unassigned-rooms`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setUnAssignedRooms(response.data.data.roomsNotInTasks)
@@ -133,6 +133,7 @@ const useTask = () => {
         }).then((response) => {
             setEveryTask(response.data.data.allTasks.length)
             setAllTasks(response.data.data.allTasks)
+            console.log("All Tasks", response.data.data.allTasks)
         }).catch((error) => { 
             if(error.response){ 
                 const { status, data } = error.response;

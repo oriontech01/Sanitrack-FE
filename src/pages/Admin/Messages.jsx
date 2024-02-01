@@ -1,6 +1,6 @@
-import '../styles/Messages.scss';
+import '../../styles/Messages.scss';
 import React, { useState, useEffect, useRef } from 'react';
-import { db } from '../services/firebase';
+import { db } from '../../services/firebase';
 import { collection, addDoc, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
 import { format } from 'date-fns';
 

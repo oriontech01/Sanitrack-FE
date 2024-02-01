@@ -1,7 +1,11 @@
 import React from 'react';
+<<<<<<< HEAD
 import '../styles/WorkOrderLocation.scss';
 import { useTranslation } from 'react-i18next';
 
+=======
+import '../../styles/WorkOrderLocation.scss'; 
+>>>>>>> 951514aba50d165272dd75807afb8afea79e5946
 
 const WorkOrderLocation = () => {
   const {t} = useTranslation()

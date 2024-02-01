@@ -1,0 +1,33 @@
+.language-selector {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  color: #333;
+  background: #e6e6e6;
+  padding: 12px 20px;
+  border-radius: 20px; // Rounded corners for the dropdown
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000; // Ensure it's above other elements
+
+  .text {
+    margin-right: 10px;
+  }
+
+  label {
+    color: #333;
+    margin-right: 10px; // Space out the label from the selector
+  }
+
+  select {
+    outline: none;
+    background: #e6e6e6;
+    border: none;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer; // Indicate it's selectable
+    padding: 5px 8px; // Padding inside the select box
+    appearance: none; // Remove default styling
+    border-radius: 4px; // Match the border-radius of the container
+  }
+}

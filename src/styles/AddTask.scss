@@ -1,56 +1,89 @@
 .add-task-container {
-    height: 100vh;
-    // background-color: orange;
-
-    .add-task-sub-container{ 
-        // background-color: #888;
-        height: 90vh;
-
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+  
+    .add-task-header {
+      text-align: center;
+      margin-bottom: 30px;
+  
+      h1 {
+        color: #2c3e50;
+        font-size: 24px; // Increased font size for header
+      }
     }
-    .unassigned-rooms-container {
-        overflow: scroll;
-        overflow-x: hidden;
-        height: 30%;
-
-
+  
+    .form-container {
+      .selection-group {
+        margin-bottom: 20px;
+  
+        h2 {
+          margin-bottom: 10px;
+          color: #34495e;
+          font-size: 20px; // Increased font size for subheaders
+        }
+  
+        .options-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          
+          .option {
+            flex: 1 1 200px;
+            display: flex;
+            align-items: center;
+            justify-content: start; // Align items to the start for better text alignment
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+  
+            &:hover {
+              background: #e0e0e0;
+            }
+  
+            input[type="radio"] {
+              height: 20px;
+            //   transform: scale(1); // Adjust scale as needed to control the size
+              cursor: pointer;
+            }
+  
+            label {
+              cursor: pointer;
+              font-size: 16px; // Increased font size for option labels
+              display: flex;
+              justify-content: center;
+              align-items: center   ;
+            }
+          }
+        }
+      }
+  
+      .upload-btn {
+        width: 100%;
+        padding: 15px 20px;
+        background-color: #3498db;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px; // Increased font size for button
+        transition: background-color 0.3s ease;
+  
+        &:disabled {
+          background-color: #bdc3c7;
+          cursor: not-allowed;
+        }
+  
+        &:not(:disabled):hover {
+          background-color: #2980b9;
+        }
+      }
     }
-
-    .unassigned-rooms-container::-webkit-scrollbar {
-        width: 3px;
-        /* width of the scrollbar */
-    }
-
-    .unassigned-rooms-container::-webkit-scrollbar-thumb {
-        background-color: #888;
-        /* color of the thumb */
-        border-radius: 6px;
-        /* rounded corners of the thumb */
-    }
-
-    .unassigned-rooms-container::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-        /* color of the track */
-    }
-
-    .unassigned-rooms {
-        // background-color: rebeccapurple;
-        display: flex;
-        flex-wrap: wrap;
-        height: auto;
-    }
-
-    .unassigned-rooms-result input {
-        height: 20px;
-        width: 20px;
-
-    }
-
-    .unassigned-rooms-result {
-        display: flex;
-        gap: 3px;
-        flex: 0 0 25%;
-        /* 25% width for each column, adjust as needed */
-        box-sizing: border-box;
-        padding: 8px;
-    }
-}
+  }

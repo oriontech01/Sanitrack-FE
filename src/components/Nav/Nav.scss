@@ -6,51 +6,90 @@
     padding: 10px 20px;
     height: 70px;
     color: #000;
-    svg{
-        width: 30px;
-        height: 30px;
+    background-color: #ffffff; // Consider adding a background color if it's missing
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Adds depth to the header
+  
+    svg {
+      width: 30px;
+      height: 30px;
     }
+  
     .second_section {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        justify-content: space-between;
-        width: 100%;
-        div{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px; // Increased gap to prevent squishing
+      width: 100%;
+    //   div {
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //   }
     }
-    .logout{
-        cursor: pointer;
+  
+    .logout {
+      cursor: pointer;
+      height: 60px;
+      width: 60px;
+      padding: 5px 15px; // Add padding for better clickability
+      border-radius: 5px; // Slightly rounded edges for a modern look
+      transition: background-color 0.2s; // Smooth transition for hover effect
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05); // Subtle hover effect
+      }
     }
     
-    .nav_elements{
+    .nav_elements {
+      display: flex;
+      
+      justify-content: flex-end;
+      align-content: center;
+      align-items: center;
+      width: 70vw;
+      gap: 20px; // Ensure consistent spacing between nav elements
+      div {
+        min-width: 100px; // Prevent squishing by setting a minimum width
         display: flex;
-        justify-content: flex-end;
-        gap: 15px;
-        div{
-            width: 100px;
-        }
+        justify-content: center;
+        align-items: center;
+      }
     }
     
     .username {
-        width: 115px;
-        font-size: 21px;
-        font-weight: bold;
+      font-size: 21px;
+      font-weight: bold;
+      white-space: nowrap; // Prevent the username from breaking into multiple lines
     }
     
     .profile-icon {
-        margin-right: 30px;
-        cursor: pointer;
+      margin-right: 30px;
+      cursor: pointer;
     }
     
     .arrow-img {
-        width: 30px;
-        height: 30px;
-        margin-left: 15px;
-        cursor: pointer;
+      width: 30px;
+      height: 30px;
+      margin-left: 15px;
+      cursor: pointer;
     }
-    
-}
+  }
+  
+  // Responsive adjustments for smaller screens
+  @media screen and (max-width: 768px) {
+    .header-section {
+      flex-direction: column;
+      height: auto;
+      padding: 20px;
+  
+      .second_section {
+        width: 100%;
+        justify-content: space-around; // Distribute space around for smaller screens
+      }
+  
+      .nav_elements {
+        width: 100%;
+        justify-content: center;
+        gap: 10px; // Reduce gap on smaller screens
+      }
+    }
+  }  

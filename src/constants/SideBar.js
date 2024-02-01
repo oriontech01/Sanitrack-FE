@@ -3,7 +3,7 @@ import { AiFillDashboard } from "react-icons/ai";
 import { MdBarChart, MdOutlinePermMedia } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg"
-import { History } from "@mui/icons-material";
+import { History,Group, PermIdentityRounded } from "@mui/icons-material";
 
 const sideBarItems = [
     { 
@@ -11,13 +11,11 @@ const sideBarItems = [
         link: '/admin-home', 
         icon: AiFillDashboard
     }, 
-
-    { 
-        name: "Work Order", 
-        link: '/home/tasks', 
-        icon: FaTasks
-    },
-
+    // { 
+    //     name: "Work Order", 
+    //     link: '/home/tasks', 
+    //     icon: FaTasks
+    // },
     {
         name: "User", 
         link: '/home/user', 
@@ -34,6 +32,16 @@ const sideBarItems = [
         link: '/home/messages', 
         icon: TbMessage
     },
+    // {
+    //     name: "Report", 
+    //     link: '/home/report', 
+    //     icon: MdBarChart
+    // },
+    {
+        name: "Tracker", 
+        link: '/home/tracker', 
+        icon: TbActivity
+    },
     {
         name: "Work History", 
         link: '/home/work-history',  
@@ -47,12 +55,12 @@ const sideBarItems = [
     { 
         name: "User Roles", 
         link: "/home/role", 
-        icon: History
+        icon: Group
     }, 
     { 
         name: "Permissions", 
         link: "/home/permission",
-        icon: History
+        icon: PermIdentityRounded
     }
 ]
 

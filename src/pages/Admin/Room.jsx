@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Tasks.scss';
+import '../../styles/Tasks.scss';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD:src/pages/Room.jsx
 import useRoom from '../Hooks/useRoom';
 import { useTranslation } from 'react-i18next';
+=======
+import useRoom from '../../Hooks/useRoom';
+>>>>>>> 951514aba50d165272dd75807afb8afea79e5946:src/pages/Admin/Room.jsx
 const Room = () => {
   const {t} = useTranslation()
   const { getRoom, allRooms, deleteRoom, responseMessage } = useRoom()

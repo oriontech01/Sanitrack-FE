@@ -89,6 +89,7 @@ const useStaff = () => {
       )
       .then((response) => {
         setAllStaffs(response.data.data.allUsers);
+        console.log("All Staffs returned", response.data.data.allUsers)
         setTotalPages(Math.ceil(response.data.data.totalUsers / itemPerPage));
       })
       .catch((error) => {

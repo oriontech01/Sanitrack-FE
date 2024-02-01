@@ -8,19 +8,4 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-
-    .cleaner-name{
-        border: solid 2px lime;
-        width: 70%;
-        padding: 1em;
-    }
-    .view-history-button{
-        width: 20%;
-        border: solid 2px lightblue;
-        text-align: center;
-        padding: 1em;
-    }
-    span{
-        border-radius: 10px;
-    }
 }

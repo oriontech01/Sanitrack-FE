@@ -1,7 +1,11 @@
 import React from 'react';
+<<<<<<< HEAD
 import '../styles/WorkOrderSelection.scss'; // Adjust the relative path as necessary
 import { useTranslation } from 'react-i18next';
 
+=======
+import '../../styles/WorkOrderSelection.scss'; // Adjust the relative path as necessary
+>>>>>>> 951514aba50d165272dd75807afb8afea79e5946
 
 const WorkOrderSelection = () => {
   const {t} = useTranslation()

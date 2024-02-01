@@ -1,5 +1,4 @@
-.history-container{
-    border: solid 3px blue;
+.history-container {
     border-radius: 10px;
     padding: 1em;
     height: 100%;
@@ -7,29 +6,40 @@
     flex-direction: column;
     gap: 10px;
 
-    nav{
-        // border: solid 3px green;
+    nav {
         height: 10vh;
         display: flex;
         justify-content: space-around;
         align-items: center;
 
-        a{
-            border: solid 2px fuchsia;
+        a {
+            background-color: #6368ed; // purple for the links
+            color: white; // white text for contrast
             padding: 1em;
             border-radius: 10px;
+            transition: background-color 0.3s; // smooth transition for hover effect
+
+            &:hover {
+                background-color: #6368ed; // slightly darker purple on hover
+            }
+        }
+        .active {
+            color: #f3f3f3; // light grey for active link
+            background-color: #673ab7; // a different shade of purple for distinction
         }
     }
 
-    .work-history-list{
-        border: solid 2px red;
+    .work-history-list {
+        background-color: #f3f3f3; // light grey for the background
+        padding: 1.5em;
         border-radius: 10px;
         height: 80%;
         overflow-y: auto;
-        color: #000;
+        color: #333; // darker grey for text
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // subtle shadow for depth
     }
 }

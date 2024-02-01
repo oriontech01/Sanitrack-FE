@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import '../styles/BarCode.scss'; // Make sure this path is correct for your project structure
+import '../../styles/BarCode.scss'; // Make sure this path is correct for your project structure
 import BarCodeScanner from './BarCodeScanner';
 import { useTranslation } from 'react-i18next';
 
