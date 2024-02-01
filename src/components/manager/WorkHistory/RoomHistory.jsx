@@ -13,7 +13,7 @@ const RoomHistory = () => {
   useEffect(() => {
     getRoom();
 
-  }, [getRoom]);
+  }, []);
 
   useEffect(() => {
     const fetchRoomHistory = async () => {

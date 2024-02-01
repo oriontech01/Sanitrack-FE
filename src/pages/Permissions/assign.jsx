@@ -10,11 +10,11 @@ const AssignPermission = () => {
 
   useEffect(() => {
     getRoles();
-  }, [getRoles]);
+  }, []);
 
   useEffect(() => {
     getPermissions();
-  }, [allPermissions]);
+  }, []);
 
   
 

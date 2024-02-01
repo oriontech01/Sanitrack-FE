@@ -1,22 +1,32 @@
 import { useParams } from "react-router-dom"
 import React, { useState, useEffect } from 'react';
 import useRoom from "../../Hooks/useRoom";
+import useLocation from "../../Hooks/useLocation";
 import '../../styles/AddRoom.scss'
 import { useNavigate } from "react-router-dom";
 const RoomDetails = () => {
     const { roomId } = useParams()
     const { getRoomById, allRoomsById, updateRoomDetail, responseMessage } = useRoom()
+    const {getLocation, allLocations} = useLocation()
+
     const navigate = useNavigate()
 
+    const [selectedLocation, setSelectedLocation] = useState("");
     const [formData, setFormData] = useState({
         roomId: '',
         roomName: '',
-        location: '',
+        locationId: '',
         details: [{ name: '' }],
     });
     useEffect(() => {
-        getRoomById(roomId)
+        getRoomById(roomId)  
     }, [roomId]);
+
+    useEffect(() => { 
+        const fetchData = async() =>{await getLocation()}
+        fetchData()
+        setSelectedLocation(allLocations[0]?._id)
+    }, [])
 
     useEffect(() => {
         // This effect runs when allRoomsById is updated
@@ -25,7 +35,7 @@ const RoomDetails = () => {
             setFormData({
                 roomId: roomId,
                 roomName: allRoomsById.roomName || '',
-                location: allRoomsById.location || '',
+                locationId: selectedLocation || '',
                 details: detailsWithNames || [],
             });
         }
@@ -60,10 +70,10 @@ const RoomDetails = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // console.log(formData)
-        await updateRoomDetail(formData)
-        alert(responseMessage)
-        navigate("/home/room")
+        console.log(formData)
+        // await updateRoomDetail(formData)
+        // alert(responseMessage)
+        // navigate("/home/room")
     }
 
     return (
@@ -82,15 +92,27 @@ const RoomDetails = () => {
                     />
                 </label>
 
-                <label>
-                    Location:
-                    <input
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={(event) => setFormData({ ...formData, location: event.target.value })}
-                    />
-                </label>
+                <label>Location:</label>
+                <select
+                    value={selectedLocation}
+                    onChange={(e) => {
+                        
+                        setSelectedLocation(e.target.value);
+                        console.log(`clicked change => ${selectedLocation}`)
+                    }}
+                    
+                >
+                    {allLocations ? (
+                    allLocations.map((location) => (
+                        <option key={location._id} value={location._id}>
+                        {location._id} {location.state}, {location.country}
+                    </option>
+                    ))
+                    
+                    ): (
+                    <p>Please Add Locations. </p>
+                    )}
+                </select>
 
                 <div className="details-container">
                     <h4>Details:</h4>

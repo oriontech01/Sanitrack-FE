@@ -17,11 +17,11 @@ const Room = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getRoom();
-      setRooms(allRooms);
     };
   
+    console.log(`room`)
     fetchData();
-  }, [getRoom]);
+  }, []);
   
   const handleViewDDetails = (roomId) => { 
     navigate(`/home/view-details/${roomId}`)
@@ -29,10 +29,6 @@ const Room = () => {
 
   const handleRoomDelete = async(roomId) => {
     await deleteRoom(roomId)
-    const updatedRooms = rooms.filter(room => room._id !== roomId);
-
-    // Update the state to trigger a re-render
-    setRooms(updatedRooms);
   }
   return (
     <div className="tab-display">
@@ -55,8 +51,8 @@ const Room = () => {
                 </tr>
               </thead>
               <tbody>
-                {rooms ? (
-                  rooms.map((item) => (
+                {allRooms ? (
+                  allRooms.map((item) => (
                     <tr key={item._id}>
                       <td>{item.roomName}</td>
                       <td>{item.location.city},{item.location.state} {item.location.country}</td>

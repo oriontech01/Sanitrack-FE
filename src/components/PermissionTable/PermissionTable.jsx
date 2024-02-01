@@ -1,6 +1,7 @@
 import './PermissionTable.scss'
 import { useState } from 'react';
 import usePermission from '../../Hooks/usePermission';
+import { chunkArray } from '../../utils/chunkArray';
 
 const PermissionTable = ({ permissions, showCheckBox , showButton, roleId, showRevoke}) => {
 
@@ -8,16 +9,7 @@ const PermissionTable = ({ permissions, showCheckBox , showButton, roleId, showR
     const {assignPermission, revokePermission} = usePermission()
 
     // Function to spilt the array
-    const chunkArray = (array, chunkSize) => {
-        return Array.from(
-        { length: Math.ceil(array.length / chunkSize) },
-        (_, index) => {
-            const start = index * chunkSize;
-            const end = start + chunkSize;
-            return array.slice(start, end);
-        }
-        );
-    };
+    
 
     const chunkedPermissions = chunkArray(permissions, 5);
 

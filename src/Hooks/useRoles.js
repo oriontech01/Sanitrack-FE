@@ -48,10 +48,10 @@ const useRole = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        console.log(
-          `response is`,
-          JSON.stringify(response.data.data.userRole, null, 2)
-        );
+        // console.log(
+        //   `response is`,
+        //   JSON.stringify(response.data.data.userRole, null, 2)
+        // );
 
         setStaffRoles(response.data.data.userRole);
       })

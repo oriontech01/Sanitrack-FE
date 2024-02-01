@@ -18,15 +18,14 @@ const useStaff = () => {
 
   const access_token = localStorage.getItem("auth-token");
 
-  const addStaff = async (username, password, role) => {
+  const addStaff = async (dataToPass) => {
     await axios
-      .post(`${BASE_URL}create-user`, {
-        username: username,
-        role: role,
-        password: password,
+      .post(`${LOCAL_URL}create-user`, dataToPass, {
+        headers: {Authorization: `Bearer ${access_token}`}
       })
       .then((response) => {
         setResponseMessage("Staff Added.");
+        navigate("/home/user")
       })
       .catch((error) => {
         if (error.response) {
@@ -35,7 +34,8 @@ const useStaff = () => {
             setResponseMessage(data.message);
             console.log("An error occured", data.message);
           } else {
-            console.log("Axios error:", error);
+            console.log("Axios error:", data.err.details[0].message);
+            alert(data.err.details[0].message)
           }
         } else {
           console.log("Network error:", error.message);
@@ -89,7 +89,6 @@ const useStaff = () => {
       )
       .then((response) => {
         setAllStaffs(response.data.data.allUsers);
-        console.log("All Staffs returned", response.data.data.allUsers)
         setTotalPages(Math.ceil(response.data.data.totalUsers / itemPerPage));
       })
       .catch((error) => {
