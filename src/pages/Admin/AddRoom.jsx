@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../../styles/AddRoom.scss';
 import useRoom from "../../Hooks/useRoom";
-
+import useLocation from "../../Hooks/useLocation";
 const AddRoom = () => {
     const { addRoom, responseMessage } = useRoom();
+    const {allLocations, getLocation} = useLocation();
+
+    useEffect(() =>{
+        const fetchLocationData = async () => {
+            await getLocation()
+        }
+        fetchLocationData();
+    }, [])
 
     const [formData, setFormData] = useState({
         roomName: '',
@@ -39,9 +47,12 @@ const AddRoom = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await addRoom(formData);
-        alert(responseMessage);
+        console.log(formData)
+        // await addRoom(formData);
+        // alert(responseMessage);
     };
+
+    console.log("Locations", allLocations)
 
     return (
         <div className="add-room-container">
@@ -60,14 +71,21 @@ const AddRoom = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="location">Location:</label>
-                    <input
+                    <select
                         id="location"
-                        type="text"
                         name="location"
                         value={formData.location}
                         onChange={(event) => setFormData({ ...formData, location: event.target.value })}
                         placeholder="Enter location"
-                    />
+                    >
+
+                        {
+                            allLocations.map((location) => {
+                                const address = `${location.city}, ${location.state}, ${location.country}`;
+                                return <option key={location._id} value={address} >{address}</option>
+                            })
+                        }
+                    </select>
                 </div>
                 <div className="details-container">
                     <h4>Details:</h4>
