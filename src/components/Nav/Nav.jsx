@@ -1,26 +1,26 @@
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { CgLogOut, CgProfile } from "react-icons/cg";
 import logo from "../../assets/imgs/msslogo.png";
-import "./Nav.scss"
+import "./Nav.scss";
 import LanguageDropDown from "../LanguageDropDown/languageDropDown";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // eslint-disable-next-line react/prop-types
 const Nav = ({ username, handleLogout }) => {
   const capitalizeText = (text) => text.charAt(0).toUpperCase() + text.slice(1);
-  const navigator = useNavigate()
   return (
     <div className="header-section">
       <div className="second_section">
         <img src={logo} alt="Logo" />
         <div className="nav_elements">
-          <p className="username">{capitalizeText(username
-          )}</p>
+          <p className="username">{capitalizeText(username)}</p>
           <IoMdNotificationsOutline className="not-icon" />
           <div className="user_lang_dropdown">
-            <CgProfile onClick={() => navigator.navigate('/home/profile')  } className="profile-icon" />
+            <Link to="/admin-home/profile">
+              <CgProfile className="profile-icon" />
+            </Link>
             <LanguageDropDown></LanguageDropDown>
           </div>
-          <CgLogOut  className="logout" onClick={handleLogout} />
+          <CgLogOut className="logout" onClick={handleLogout} />
         </div>
       </div>
     </div>
