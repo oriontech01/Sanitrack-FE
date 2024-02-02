@@ -1,11 +1,28 @@
 import { chunkArray } from "../../utils/chunkArray"
 import '../PermissionTable/PermissionTable.scss'
 import { useNavigate } from "react-router-dom"
+import useStaff from "../../Hooks/useStaff";
+import { useState } from "react";
+
 const StaffTable = ({allStaffs}) => { 
+
+  const [flag, setFlag] = useState("")
+  const { fireStaff, restoreStaff } = useStaff();
   const navigate = useNavigate()
 
   const handleViewRole = (staffId) => { 
     navigate(`/home/user/role/${staffId}`)
+  }
+
+  const handleFire = async (staffId) => { 
+    console.log("fire")
+    await fireStaff(staffId)
+    setFlag("INACTIVE")
+  }
+
+  const handleRestore = async (staffId) => {
+    await restoreStaff(staffId)
+    setFlag("ACTIVE")
   }
     return(
         <div className="permission-tables-container">

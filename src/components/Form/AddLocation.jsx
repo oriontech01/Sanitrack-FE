@@ -16,7 +16,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
     console.log({ city, country, state, postalCode }); // Log the data or process as needed
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_LOCAL_URL}/locations/add`,
+        `${import.meta.env.VITE_BASE_URL}/locations/add`,
         {
           country,
           state,

@@ -20,7 +20,7 @@ const useStaff = () => {
 
   const addStaff = async (dataToPass) => {
     await axios
-      .post(`${LOCAL_URL}create-user`, dataToPass, {
+      .post(`${BASE_URL}create-user`, dataToPass, {
         headers: {Authorization: `Bearer ${access_token}`}
       })
       .then((response) => {
@@ -46,7 +46,7 @@ const useStaff = () => {
   const getStaffById = async (userId) => {
     try {
       const response = await axios.get(
-        `${LOCAL_URL}get-user?userId=${userId}`,
+        `${BASE_URL}get-user?userId=${userId}`,
         { headers: { Authorization: `Bearer ${access_token}` } }
       );
       const userDetails = response.data; // Adjust based on your user data structure
@@ -60,7 +60,7 @@ const useStaff = () => {
 
   const getStaffByUserName = async (name) => {
     await axios
-      .get(`${LOCAL_URL}staff/?userName=${name}`, 
+      .get(`${BASE_URL}staff/?userName=${name}`, 
       { headers: { Authorization: `Bearer ${access_token}` } })
       .then((response) => {
         setStaffByName(response.data.data);
@@ -82,7 +82,7 @@ const useStaff = () => {
   const getAllStaffs = async (page, itemPerPage) => {
     await axios
       .get(
-        `${LOCAL_URL}get-all-users?page=${page}&documentCount=${itemPerPage}`,
+        `${BASE_URL}get-all-users?page=${page}&documentCount=${itemPerPage}`,
         {
           headers: { Authorization: `Bearer ${access_token}` },
         }
@@ -109,7 +109,7 @@ const useStaff = () => {
   const fireStaff = async (staffId) => {
     await axios
       .put(
-        `${LOCAL_URL}delete-user`,
+        `${BASE_URL}delete-user`,
         {
           staffId: staffId,
         },
@@ -139,7 +139,7 @@ const useStaff = () => {
   const restoreStaff = async (staffId) => {
     await axios
       .put(
-        `${LOCAL_URL}update-user-status`,
+        `${BASE_URL}update-user-status`,
         {
           staffId: staffId,
         },

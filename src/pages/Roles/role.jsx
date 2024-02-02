@@ -25,6 +25,10 @@ const Roles = () => {
     const handleViewPermissions = async(roleId) => { 
       navigate(`/home/role/permissions/${roleId}`)
     }
+
+    const handleViewNavigate = async() => { 
+      navigate("/home/role/staff")
+    }
     return (
         <div className="tab-display">
           <div className="center-me">
@@ -36,6 +40,9 @@ const Roles = () => {
                 </button>
                 <button id="createTaskBtn" onClick={handleAssignNavigate}>
                   Assign Role
+                </button>
+                <button id="createTaskBtn" onClick={handleViewNavigate}>
+                  View Staff Role
                 </button>
               </div>
     

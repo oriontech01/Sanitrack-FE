@@ -14,7 +14,7 @@ const usePermission = () => {
 
   const getPermissionByRole = async (roleId) => {
     await axios
-      .get(`${LOCAL_URL}permissions/role-id?roleId=${roleId}`, {
+      .get(`${BASE_URL}permissions/role-id?roleId=${roleId}`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -44,7 +44,7 @@ const usePermission = () => {
 
   const getPermissions = async () => {
     await axios
-      .get(`${LOCAL_URL}permissions/`, {
+      .get(`${BASE_URL}permissions/`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -71,7 +71,7 @@ const usePermission = () => {
   const addPermission = async (permission_name) => {
     await axios
       .post(
-        `${LOCAL_URL}permissions/add`,
+        `${BASE_URL}permissions/add`,
         { permission_name: permission_name },
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
@@ -97,7 +97,7 @@ const usePermission = () => {
 
   const assignPermission = async (permissions) => {
     await axios
-      .post(`${LOCAL_URL}permissions/assign`, permissions, {
+      .post(`${BASE_URL}permissions/assign`, permissions, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -123,7 +123,7 @@ const usePermission = () => {
 
   const revokePermission = async (permissions) => {
     await axios
-      .post(`${LOCAL_URL}permissions/delete`, permissions, {
+      .post(`${BASE_URL}permissions/delete`, permissions, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {

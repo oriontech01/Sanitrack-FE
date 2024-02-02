@@ -11,11 +11,12 @@ const useRole = () => {
 
   const [roles, setAllRoles] = useState([]);
   const [staffRoles, setStaffRoles] = useState([]);
+  const [roleForStaff, setRoleForStaff] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
 
   const getRoles = async () => {
     await axios
-      .get(`${LOCAL_URL}/roles/`, {
+      .get(`${BASE_URL}/roles/`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -41,9 +42,10 @@ const useRole = () => {
       });
   };
 
+  // consider this as 'getSTaffRoleById'
   const getStaffRoles = async (staffId) => {
     await axios
-      .get(`${LOCAL_URL}user-role/?userId=${staffId}`, {
+      .get(`${BASE_URL}user-role/?userId=${staffId}`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -51,8 +53,30 @@ const useRole = () => {
           `response is`,
           JSON.stringify(response.data.data.userRole, null, 2)
         );
-
         setStaffRoles(response.data.data.userRole);
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log("An error occurred", data.message);
+          } else {
+            console.log("Axios error:", error);
+          }
+        } else {
+          console.log("Network error:", error.message);
+        }
+      });
+  };
+
+  const getRoleForStaff = async () => {
+    await axios
+      .get(`${BASE_URL}roles/staff`, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      })
+      .then((response) => {
+        setRoleForStaff(response.data.data.userRoles);
       })
       .catch((error) => {
         if (error.response) {
@@ -71,7 +95,7 @@ const useRole = () => {
 
   const assignUserRole = async (roleData) => {
     await axios
-      .post(`${LOCAL_URL}roles/assign`, roleData, {
+      .post(`${BASE_URL}roles/assign`, roleData, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -98,7 +122,7 @@ const useRole = () => {
   const addRole = async (roleName) => {
     await axios
       .post(
-        `${LOCAL_URL}/roles/add`,
+        `${BASE_URL}/roles/add`,
         { role_name: roleName },
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
@@ -125,8 +149,34 @@ const useRole = () => {
 
   const deleteRole = async (roleId) => {
     await axios
-      .delete(`${LOCAL_URL}roles/delete?roleId=${roleId}`, {
+      .delete(`${BASE_URL}roles/delete?roleId=${roleId}`, {
         headers: { Authorization: `Bearer ${access_token}` },
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log("An error occured", data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log("An error with status 403 occured", data.message);
+            setResponseMessage(data.message);
+          } else {
+            console.log("Axios error:", error);
+          }
+        } else {
+          console.log("Network error:", error.message);
+        }
+      });
+  };
+
+  const revokeUserRole = async (roleIds) => {
+    await axios
+      .post(`${BASE_URL}user-role/delete`, roleIds, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      })
+      .then((response) => {
+        navigate("/home/role/staff");
       })
       .catch((error) => {
         if (error.response) {
@@ -153,6 +203,9 @@ const useRole = () => {
     assignUserRole,
     addRole,
     deleteRole,
+    getRoleForStaff,
+    roleForStaff,
+    revokeUserRole
   };
 };
 export default useRole;

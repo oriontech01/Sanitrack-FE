@@ -15,7 +15,7 @@ const useRoom = () => {
 
     const addRoom = async(formData) => { 
         console.log("From the useRoom hook", formData)
-        await axios.post(`${LOCAL_URL}room/create-room`, formData, {
+        await axios.post(`${BASE_URL}room/create-room`, formData, {
             headers: {Authorization: `Bearer ${access_token}`} 
             
         }).then((response) => {
@@ -26,7 +26,7 @@ const useRoom = () => {
     }
 
     const getRoom = async() => {
-        await axios.get(`${LOCAL_URL}/room/get`, {
+        await axios.get(`${BASE_URL}/room/get`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRooms(response.data.data.allRooms)
@@ -51,7 +51,7 @@ const useRoom = () => {
     }
 
     const getRoomById = async(roomId) => {
-        await axios.get(`${LOCAL_URL}/room/get-single?roomId=${roomId}`, {
+        await axios.get(`${BASE_URL}/room/get-single?roomId=${roomId}`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRoomsById(response.data.data)
@@ -75,7 +75,7 @@ const useRoom = () => {
     }
 
     const updateRoomDetail = async( formData) => { 
-        await axios.put(`${LOCAL_URL}room/update-room`, formData, {
+        await axios.put(`${BASE_URL}room/update-room`, formData, {
             headers: {Authorization: `Bearer ${access_token}`}
         } ).then((response) => { 
             // console.log(response.data.message)
@@ -101,7 +101,7 @@ const useRoom = () => {
     }
 
     const deleteRoom = async(roomId) => { 
-        await axios.delete(`${LOCAL_URL}room/delete?roomId=${roomId}`, 
+        await axios.delete(`${BASE_URL}room/delete?roomId=${roomId}`, 
         {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 

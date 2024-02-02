@@ -13,7 +13,7 @@ const useLocation = () => {
 
   const getLocation = async () => {
     await axios
-      .get(`${LOCAL_URL}locations`, {
+      .get(`${BASE_URL}locations`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {

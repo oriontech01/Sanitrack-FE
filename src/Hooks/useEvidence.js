@@ -12,7 +12,7 @@ const useEvidence = () => {
     const [allImages, setImages] =  useState([])
 
     const getRoom = async() => { 
-        await axios.get(`${LOCAL_URL}evidence/room-name`, {
+        await axios.get(`${BASE_URL}evidence/room-name`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setAllRooms(response.data.data)
@@ -36,7 +36,7 @@ const useEvidence = () => {
     }
 
     const getImages = async(taskId) => { 
-        await axios.get(`${LOCAL_URL}evidence/images?taskId=${taskId}`, {
+        await axios.get(`${BASE_URL}evidence/images?taskId=${taskId}`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setImages(response.data.data)

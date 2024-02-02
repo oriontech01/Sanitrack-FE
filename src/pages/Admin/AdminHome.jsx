@@ -54,11 +54,11 @@ const AdminHome = () => {
           {/* Build the card */}
           <div className="card-container">
             <Link to="/home/user" className="active-cleaners">
-              <Card title=" Cleaners:" count={activeCleaners} />
+              <Card title="Active Cleaners:" count={activeCleaners} />
             </Link>
           </div>
           <div className="card-container">
-            <Card title=" Inspectors:" count={activeInspectors} />
+            <Card title="Active Inspectors:" count={activeInspectors} />
           </div>
 
           <div className="card-container">

@@ -11,7 +11,7 @@ const useAuth = () => {
     
     const login = async (username, password) => { 
         await axios
-        .post(`${LOCAL_URL}login`, {
+        .post(`${BASE_URL}login`, {
           username: username,
           password: password,
         })

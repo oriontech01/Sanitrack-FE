@@ -10,10 +10,8 @@ const Tasks = () => {
     navigate("/home/add-task");
   };
 
-  console.log("This is all the task. Checking for the roomId", allTasks)
   const handleTaskDelete = async (taskId) => {
     await deleteTask(taskId);
-    window.location.reload();
   };
 
   const handleTaskEdit = async (taskId) => {
@@ -21,7 +19,6 @@ const Tasks = () => {
   }
   useEffect(() => {
     getAllTasks();
-    console.log("Tasks", allTasks);
   }, []);
 
   return (

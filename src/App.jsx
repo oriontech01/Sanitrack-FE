@@ -32,6 +32,9 @@ import ViewEvidence from "./pages/Evidence/view";
 import Profile from "./pages/Profile";
 import Tasks from "./pages/Admin/Tasks";
 import UserRole from "./pages/Admin/UserRole";
+import TaskDetails from "./pages/TaskDetails";
+import StaffRoles from "./pages/Roles/staffRole";
+import RevokeRole from "./pages/Roles/revoke";
 
 
 Modal.setAppElement("#root"); // React Modal component
@@ -63,7 +66,9 @@ function App() {
             <Route path="/home/user/role/:staffId" element={<UserRole />} />
             <Route path="/home/room" element={<Room />} />
             <Route path="/home/add-room" element={<AddRoom />} />
+
             <Route path="/home/tasks" element={<Tasks/>} />
+            <Route path="/home/edit-task/:taskId" element={<TaskDetails/>} />
             <Route
               path="/home/view-details/:roomId"
               element={<RoomDetails />}
@@ -89,6 +94,8 @@ function App() {
               path="/home/role/permissions/:roleId"
               element={<RolePermissions />}
             />
+            <Route path="/home/role/staff" element={<StaffRoles />} />
+            <Route path="/home/role/staff/revoke/:staffId" element={<RevokeRole />} />
 
             <Route path="/home/permission" element={<Permissions />} />
             <Route path="/home/permission/add" element={<AddPermission />} />

@@ -6,7 +6,6 @@ const ViewEvidence = () => {
   const { taskId } = useParams();
   const { getImages, allImages } = useEvidence();
 
-  // console.log(`task id => ${taskId}`)
   useEffect(() => {
     const fetchData = async () => {
       await getImages(taskId);
@@ -24,7 +23,7 @@ const ViewEvidence = () => {
                 {image.image_url !== "empty" ? (
                   <img src={image.image_url} alt={`Image ${index + 1}`} />
                 ) : (
-                  <p key={index}>There is no image for this room</p>
+                  <p key={index}>There is no image for this room detail</p>
                 )}
               </div>
             ))

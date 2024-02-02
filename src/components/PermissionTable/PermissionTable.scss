@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     gap: 20px; /* Adjust the gap between tables as needed */
     color: #000;
+    overflow-y: scroll;
   }
   .checkbox-container, .checkAll{
     display: flex;

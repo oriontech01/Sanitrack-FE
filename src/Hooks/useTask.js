@@ -25,7 +25,7 @@ const useTask = () => {
 
    
     const getUnAssignedRooms = async () => { 
-        await axios.get(`${LOCAL_URL}room/unassigned-rooms`, {
+        await axios.get(`${BASE_URL}room/unassigned-rooms`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setUnAssignedRooms(response.data.data.roomsNotInTasks)
@@ -49,7 +49,7 @@ const useTask = () => {
     }
 
     const getAllCleaners = async () => { 
-        await axios.get(`${LOCAL_URL}get-all-cleaner`, {
+        await axios.get(`${BASE_URL}get-all-cleaner`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setActiveCleaners(response.data.data.allCleaners.length)
@@ -75,7 +75,7 @@ const useTask = () => {
     }
 
     const getAllInspectors = async () => { 
-        await axios.get(`${LOCAL_URL}get-all-inspector`, {
+        await axios.get(`${BASE_URL}get-all-inspector`, {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
             setActiveInspectors(response.data.data.allInspectors.length)
@@ -100,7 +100,7 @@ const useTask = () => {
         })
     }
     const addTask = async(roomId, cleanerId, inspectorId) => { 
-        await axios.post(`${LOCAL_URL}task/create-task`, 
+        await axios.post(`${BASE_URL}task/create-task`, 
         { 
             inspectorId: inspectorId, 
             cleanerId: cleanerId, 
@@ -128,7 +128,7 @@ const useTask = () => {
     }
 
     const getAllTasks = async () => { 
-        await axios.get(`${LOCAL_URL}task/get`, {
+        await axios.get(`${BASE_URL}task/get`, {
             headers: { Authorization: `Bearer ${access_token}` }
         }).then((response) => {
             setEveryTask(response.data.data.allTasks.length)
@@ -153,7 +153,7 @@ const useTask = () => {
     }
 
     const getTaskById = async (taskId) => {
-        await axios.get(`${LOCAL_URL}task/get-single-task?taskId=${taskId}`, 
+        await axios.get(`${BASE_URL}task/get-single-task?taskId=${taskId}`, 
         {
             headers: {Authorization: `Bearer ${access_token}`}
         }).then((response) => { 
@@ -176,7 +176,7 @@ const useTask = () => {
     }
 
     const updateTask = async(taskId, cleanerId, inspectorId, roomId) => { 
-        await axios.put(`${LOCAL_URL}task/update-task`, {
+        await axios.put(`${BASE_URL}task/update-task`, {
             taskId: taskId,
             inspectorId: inspectorId,
             cleanerId: cleanerId,
@@ -184,7 +184,8 @@ const useTask = () => {
         },
         {headers: {Authorization: `Bearer ${access_token}`}} 
         ).then((response) => { 
-            console.log(response.data)
+            
+            setResponseMessage(response.data.message)
             navigate("/home/tasks")
         }).catch((error) => { 
             if(error.response){ 
@@ -203,7 +204,7 @@ const useTask = () => {
         })
     }
     const deleteTask =  async (taskId) => { 
-        await axios.delete(`${LOCAL_URL}task/delete-task`, {
+        await axios.delete(`${BASE_URL}task/delete-task`, {
             data: { taskId: taskId }, 
             headers: { Authorization: `Bearer ${access_token}` }
         }).then((response) => { 
@@ -241,7 +242,8 @@ const useTask = () => {
         activeInspectors, 
         getTaskById,
         singleTaskDetail, 
-        updateTask
+        updateTask, 
+        responseMessage
     }
 }
 export default useTask

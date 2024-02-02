@@ -22,7 +22,6 @@ const AddTask = () => {
     getAllInspectors();
   }, []);
 
-  console.log("Unassigned Rooms", unAssignedRooms);
   return (
     <div className="add-task-container">
       <div className="add-task-header">
@@ -59,7 +58,7 @@ const AddTask = () => {
                   value={cleaner._id}
                   onChange={() => setSelectedCleaner(cleaner._id)}
                 />
-                {cleaner.user_name}
+                {cleaner.username}
               </label>
             ))}
           </div>
@@ -77,7 +76,7 @@ const AddTask = () => {
                   value={inspector._id}
                   onChange={() => setSelectedInspector(inspector.user_id)}
                 />
-                {inspector.user_name}
+                {inspector.username}
               </label>
             ))}
           </div>

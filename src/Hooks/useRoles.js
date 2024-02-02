@@ -16,7 +16,7 @@ const useRole = () => {
   
   const getRoles = async () => {
     await axios
-      .get(`${LOCAL_URL}/roles/`, {
+      .get(`${BASE_URL}/roles/`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -44,7 +44,7 @@ const useRole = () => {
 
   const getStaffRoles = async (staffId) => {
     await axios
-      .get(`${LOCAL_URL}user-role/?userId=${staffId}`, {
+      .get(`${BASE_URL}user-role/?userId=${staffId}`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -72,7 +72,7 @@ const useRole = () => {
 
   const assignUserRole = async (roleData) => {
     await axios
-      .post(`${LOCAL_URL}roles/assign`, roleData, {
+      .post(`${BASE_URL}roles/assign`, roleData, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
@@ -99,7 +99,7 @@ const useRole = () => {
   const addRole = async (roleName) => {
     await axios
       .post(
-        `${LOCAL_URL}/roles/add`,
+        `${BASE_URL}/roles/add`,
         { role_name: roleName },
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
@@ -126,7 +126,7 @@ const useRole = () => {
 
   const deleteRole = async (roleId) => {
     await axios
-      .delete(`${LOCAL_URL}roles/delete?roleId=${roleId}`, {
+      .delete(`${BASE_URL}roles/delete?roleId=${roleId}`, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .catch((error) => {

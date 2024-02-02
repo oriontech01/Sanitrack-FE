@@ -47,13 +47,10 @@ const AddRoom = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // await addRoom(formData);
         console.log(formData)
-        await addRoom(formData);
-        alert(responseMessage);
     };
-
-    console.log("Locations", allLocations)
-
+    
     return (
         <div className="add-room-container">
             <form onSubmit={handleSubmit} className="add-room-form">
@@ -74,9 +71,9 @@ const AddRoom = () => {
                     <select
                         id="location"
                         name="location"
-                        value={formData.location}
+                        value={formData.location_id}
                         onChange={(event) => {
-                             setFormData({ ...formData, location_id: event.target.value })
+                            setFormData({ ...formData, location_id: event.target.value })
                         }
                        }
                         placeholder="Enter location"
@@ -85,7 +82,7 @@ const AddRoom = () => {
                         {
                             allLocations.map((location) => {
                                 const address = `${location.city}, ${location.state}, ${location.country}`;
-                                return <option key={location._id} value={location._id}>{address}</option>
+                                return <option key={location._id} value={location._id} >{location._id}{address}</option>
                             })
                         }
                     </select>
@@ -115,9 +112,14 @@ const AddRoom = () => {
                         + Add Detail
                     </button>
                 </div>
-                <button type="submit" className="submit-btn" disabled={formData.details.some(item => item.name === '')}>
-                    Submit
-                </button>
+                {formData.details.some(item => item.name === '') || formData.location_id === '' || formData.roomName === '' || formData.roomName.length < 3 ? (
+                    <></>
+                ): (
+                    <button type="submit" className="submit-btn" onClick={handleSubmit}>
+                        Submit
+                    </button>
+                )} 
+                
             </form>
         </div>
     );

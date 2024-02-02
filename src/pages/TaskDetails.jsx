@@ -7,7 +7,7 @@ const TaskDetails = () => {
     const [selectedCleaner, setSelectedCleaner] = useState('')
     const [selectedInspector, setSelectedInspector] = useState('')
 
-    const {getAllCleaners, getAllInspectors, getTaskById, updateTask,  allCleaners, allInspectors, singleTaskDetail} = useTask()
+    const {getAllCleaners, getAllInspectors, getTaskById, updateTask, responseMessage,  allCleaners, allInspectors, singleTaskDetail} = useTask()
     useEffect(() => { 
         const fetchAllCleaners = async () => {await getAllCleaners()}
         const fetchAllInspectors = async () => {await getAllInspectors()}
@@ -20,14 +20,15 @@ const TaskDetails = () => {
     }, [])
 
     const handleUpdate = async() => {
-        await updateTask(taskId, selectedCleaner, selectedInspector, singleTaskDetail.assigned_room._id) 
+        // console.log(`selected Cleaner => ${selectedCleaner} selected Inspector => ${selectedInspector}`)
+        await updateTask(taskId, selectedCleaner, selectedInspector, singleTaskDetail.assigned_room._id)
     }
-    console.log("All cleaners are", allCleaners)
-    console.log("All Inspectors are", allInspectors)
-    console.log("The single task details", singleTaskDetail)
+    // console.log("All cleaners are", allCleaners)
+    // console.log("All Inspectors are", allInspectors)
+    // console.log("The single task details", singleTaskDetail)
     return(
         <div className="add-task-container">
-            {/* <h2> Room: {singleTaskDetail.assigned_room.roomName}</h2> */}
+            <h2> Room: {singleTaskDetail?.assigned_room?.roomName}</h2>
             {/* contains all the cleaners */}
             <div className="unassigned-rooms-container">
                 <h3>Cleaners:</h3>

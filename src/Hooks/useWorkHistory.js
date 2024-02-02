@@ -11,7 +11,7 @@ const useWorkHistory = () => {
     const token = localStorage.getItem("auth-token")
     const getRoomHistory = async (roomId) => {
         try {
-            const res = await axios.get(`${LOCAL_URL}work-history/rooms?roomId=${roomId}`, {
+            const res = await axios.get(`${BASE_URL}work-history/rooms?roomId=${roomId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -28,7 +28,7 @@ const useWorkHistory = () => {
 
     const getInspectorHistory = async (inspectorId) => {
         try {
-            const res = await axios.get(`${LOCAL_URL}work-history/inspector?inspectorId=${inspectorId}`, {
+            const res = await axios.get(`${BASE_URL}work-history/inspector?inspectorId=${inspectorId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -44,7 +44,7 @@ const useWorkHistory = () => {
 
     const getCleanerHistory = async (cleanerId) => {
         try {
-            const res = await axios.get(`${LOCAL_URL}work-history/cleaner?cleanerId=${cleanerId}`, {
+            const res = await axios.get(`${BASE_URL}work-history/cleaner?cleanerId=${cleanerId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -60,7 +60,7 @@ const useWorkHistory = () => {
     const getCleanerSummary = async () => {
         setIsLoading(true);
         try {
-          const res = await axios.get(`${LOCAL_URL}/work-history/cleaner-task-summary`, {
+          const res = await axios.get(`${BASE_URL}/work-history/cleaner-task-summary`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
