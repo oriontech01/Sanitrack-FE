@@ -24,7 +24,7 @@ const Tracker = () => {
   useEffect(() => {
     const getFacilitiesLocation = async () => {
       const res = await axios.get(
-        `${import.meta.env.VITE_LOCAL_URL}locations/`,
+        `${import.meta.env.VITE_BASE_URL}locations/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
