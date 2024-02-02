@@ -15,9 +15,12 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         justifyContent: 'space-between',
+        alignContent: 'center',
         marginTop: 15,
         alignItems: 'center',
-        gap: 10,
+        gap: 5,
+        // backgroundColor: colors.bgColor,
+        // borderRadius: 10
       },
       userText: {
         marginLeft: 10,
@@ -28,16 +31,17 @@ const styles = StyleSheet.create({
 
 const Nav = ({name}) => {
   const {setUserName, setPassword} = useContext(AuthContext) 
-  const {setUser} = useContext(UserContext) 
+  const {setUser, setUserRole} = useContext(UserContext) 
   const {setRoomID} = useContext(RoomContext)
   const navigation = useNavigation() 
 
   const logout = () => {
-    //  Alert.alert("Auth", 'You have been logged out!')
+     Alert.alert("Auth", 'You have been logged out!')
      setUser({})
      setPassword('')
      setUserName('')
      setRoomID('')
+     setUserRole('')
      navigation.navigate("Login")
   }
   return (

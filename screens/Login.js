@@ -12,10 +12,12 @@ import colors from "../util/colors";
 import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
-import { SANITRACK_API_URI } from "@env";
+// import { SANITRACK_API_URI } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import registerForPushNotificationsAsync from "../util/notifications";
+// import { JWT_KEY } from "@env";
+import JWT from "expo-jwt";
+// import registerForPushNotificationsAsync from "../util/notifications";
 
 const screen = Dimensions.get("window");
 const styles = StyleSheet.create({
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
 const Login = ({ navigation }) => {
   const { username, password, setPassword, setUserName } =
     useContext(AuthContext);
-  const { setUser } = useContext(UserContext);
+  const { setUser, setUserRole } = useContext(UserContext);
   // const [value, setValue] = useState(null);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const data = [
@@ -122,24 +124,32 @@ const Login = ({ navigation }) => {
   ];
   const handleLogin = async () => {
     try {
-      const res = await axios.post(`http://192.168.0.161:5000/api/login`, {
+      const res = await axios.post(`https://sanitrack-node-api.onrender.com/api/login`, {
         username,
         password,
       });
       if (res.status === 200) {
         // Check for status code 200
-        // Alert.alert("Auth", "Login successful, redirecting...");
+        Alert.alert("Auth", "Login successful, redirecting...");
         console.log("user data", res.data.data);
-        registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
+        // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser(res.data.data); // Set user object value to the user data gotten from the Backend API
         setPassword(""); // Clear password field
         setUserName(""); // Clear username field
         if (res.data.data.username === "manager")
           navigation.navigate("AccessDenied");
-        else if (res.data.data.requiredRoleSelection)
+        else if (res.data.data.requiredRoleSelection) {
           navigation.navigate("RoleSelection");
+        } 
         //If user has multiple roles, prompt for role selection
-        else navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
+        else {
+          const decodedToken = JWT.decode(res.data.data.token, "SANITRACK")
+          console.log("Token", decodedToken);
+          const currentRole = decodedToken.role_id.role_name
+          console.log("Current role--", currentRole)
+          setUserRole(currentRole)
+          navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
+        } 
       } else {
         Alert.alert("Error", res.data.message);
       }

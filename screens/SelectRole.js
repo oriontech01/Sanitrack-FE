@@ -63,14 +63,14 @@ const SelectRole = ({navigation}) => {
     const selectedRoleId = user.assignedRoles.filter((obj) => obj.role_name === role)[0].role_id
     console.log("Selected role", selectedRoleId)
     try {
-      const res =  await axios.post('http://192.168.0.161:5000/api/select-role', {selectedRoleId}, {
+      const res =  await axios.post('https://sanitrack-node-api.onrender.com/api/select-role', {selectedRoleId}, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
       })
       console.log(res.data)
       if (res.status == 200){
-        Alert.alert("Successfully Selected Role!")
+        Alert.alert("Auth","Successfully Selected Role!")
         setUser(res.data.data)
         console.log("Response data", res.data.data) 
         console.log("User", user)  
