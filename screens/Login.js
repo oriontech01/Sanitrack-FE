@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
+  ActivityIndicator
 } from "react-native";
 import colors from "../util/colors";
 import { AuthContext } from "../context/AuthContext";
@@ -16,7 +17,7 @@ import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 // import { JWT_KEY } from "@env";
-import JWT from "expo-jwt";
+// import JWT from "expo-jwt";
 // import registerForPushNotificationsAsync from "../util/notifications";
 
 const screen = Dimensions.get("window");
@@ -27,6 +28,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.primary, 
   },
   dropdown: {
     marginBottom: 20,
@@ -110,24 +117,18 @@ const styles = StyleSheet.create({
 const Login = ({ navigation }) => {
   const { username, password, setPassword, setUserName } =
     useContext(AuthContext);
-  const { setUser, setUserRole } = useContext(UserContext);
-  // const [value, setValue] = useState(null);
+  const { setUser, setUserRole, userRole } = useContext(UserContext);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const data = [
-    { label: "English", value: "English" },
-    { label: "French", value: "French" },
-    { label: "Spanish", value: "Spanish" },
-    { label: "German", value: "German" },
-    { label: "Portuguese", value: "Portuguese" },
-    { label: "Italian", value: "Italian" },
-    { label: "Hindi", value: "Hindi" },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogin = async () => {
+    setIsLoading(true);
     try {
-      const res = await axios.post(`https://sanitrack-node-api.onrender.com/api/login`, {
+      const res = await axios.post(`https://sanitrack-service.onrender.com/api/login`, {
         username,
         password,
       });
+      setIsLoading(false); // Stop loading indicator when the request is done
       if (res.status === 200) {
         // Check for status code 200
         Alert.alert("Auth", "Login successful, redirecting...");
@@ -141,33 +142,40 @@ const Login = ({ navigation }) => {
         else if (res.data.data.requiredRoleSelection) {
           navigation.navigate("RoleSelection");
         } 
-        //If user has multiple roles, prompt for role selection
         else {
-          const decodedToken = JWT.decode(res.data.data.token, "SANITRACK")
-          console.log("Token", decodedToken);
-          const currentRole = decodedToken.role_id.role_name
-          console.log("Current role--", currentRole)
-          setUserRole(currentRole)
+          // const decodedToken = JWT.decode(res.data.data.token, "SANITRACK") // Token decoding logic is not working, needs fix
+          // console.log("Token", decodedToken);
+          // const currentRole = decodedToken.role_id.role_name
+          // console.log("Current role--", currentRole)
+          // setUserRole(currentRole)
+          if(res.data.data.username === "user add") setUserRole("Cleaner")
           navigation.navigate("WorkOrderSelection"); // Take user to WorkOrderSelection page
         } 
       } else {
         Alert.alert("Error", res.data.message);
       }
     } catch (error) {
+      setIsLoading(false); // Stop loading indicator if there's an error
       // Handle error here. Use error.response if you want to access the response
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
       Alert.alert("Error", errorMessage);
-      console.error(error);
+      console.error(error.message);
     }
   };
+
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={[colors.primary, colors.darkblue]}
-    >
-      <View style={styles.inputContainer}>
+    isLoading ? (
+      <View style={styles.centeredView}>
+        <ActivityIndicator size="large" color={colors.white} />
+      </View>
+    ) : (
+      <LinearGradient
+        style={styles.container}
+        colors={[colors.primary, colors.darkblue]}
+      >
+        <View style={styles.inputContainer}>
         <Icon name="account-circle-outline" size={100} color={colors.primary} />
         <Text style={styles.label}>Username</Text>
         <TextInput
@@ -213,8 +221,9 @@ const Login = ({ navigation }) => {
             Forgot password?
           </Text>
         </View>
-      </View>
-    </LinearGradient>
+        </View>
+      </LinearGradient>
+    )
   );
 };
 export default Login;

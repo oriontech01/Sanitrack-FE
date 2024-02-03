@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
@@ -17,6 +17,7 @@ export default function CleanerRoom({ route, navigation }) {
   const [fileInputs, setFileInputs] = useState([]); // Uploaded files
   const [isActive, setIsActive] = useState(false); // Timer state variable
   const countRef = useRef(null); // Timer reference
+  const [isLoading, setIsLoading] = useState(false);
 
   // console.log("Task ID", taskId)
 
@@ -50,9 +51,10 @@ export default function CleanerRoom({ route, navigation }) {
 
   useEffect(() => {
     const getDetails = async () => {
+      setIsLoading(true)
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-task?roomId=${roomId}`,
+          `https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-task?roomId=${roomId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -61,7 +63,9 @@ export default function CleanerRoom({ route, navigation }) {
         );
         console.log(res.data);
         setDetails(res.data.data);
+        setIsLoading(false)
       } catch (error) {
+        setIsLoading(false)
         console.log(error);
       }
     };
@@ -104,7 +108,7 @@ export default function CleanerRoom({ route, navigation }) {
 
       // Now, post the newFileInput to your API
       const res = await axios.post(
-        "https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details",
+        "https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details",
         [newFileInput],
         {
           headers: {
@@ -161,13 +165,13 @@ export default function CleanerRoom({ route, navigation }) {
   const handleSubmit = async () => {
     console.log("File inputs", fileInputs);
 
-    // if (timer < 60) {
-    //   Alert.alert(
-    //     "Error",
-    //     "You must work for at least 5 minutes before submitting"
-    //   );
-    //   return;
-    // }
+    if (timer < 300) {
+      Alert.alert(
+        "Error",
+        "You must work for at least 5 minutes before submitting"
+      );
+      return;
+    }
 
     if (fileInputs.length < 1) {
       Alert.alert("Submission Error", "You must upload at least one file");
@@ -183,7 +187,7 @@ export default function CleanerRoom({ route, navigation }) {
     setIsSubmitted(true);
     try {
       const response = await axios.post(
-        `https://sanitrack-node-api.onrender.com/api/task/submit?taskId=${taskId}`,
+        `https://sanitrack-service.onrender.com/api/task/submit?taskId=${taskId}`,
         timerDetails,
         {
           headers: {
@@ -272,42 +276,35 @@ export default function CleanerRoom({ route, navigation }) {
   return (
     <View style={styles.cleanerContainer}>
       <Nav name={user.username} />
-      <View style={styles.timerContainer}>
-        <Icon name="timer-outline" size={24} color={colors.black} />
-        <Text style={styles.timerText}>{formatTime(timer)}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={isActive ? handleStop : handleStart}
-        >
-          <Text style={styles.buttonText}>{isActive ? "STOP" : "START"}</Text>
-        </TouchableOpacity>
-      </View>
-      {details.map((detail, index) => (
-        <Item
-          key={index}
-          label={detail.name.toUpperCase()}
-          detailId={detail._id}
-          uploadImage={uploadImage}
-        />
-      ))}
-      {isSubmitted === false ? (
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => {
-            handleSubmit();
-          }}
-        >
-          <Text style={styles.submitButtonText}>SUBMIT</Text>
-        </TouchableOpacity>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={colors.white} />
       ) : (
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => {
-            navigation.navigate("WorkOrderSelection");
-          }}
-        >
-          <Text style={styles.submitButtonText}>CLOSE</Text>
-        </TouchableOpacity>
+        <>
+          <View style={styles.timerContainer}>
+            <Icon name="timer-outline" size={24} color={colors.black} />
+            <Text style={styles.timerText}>{formatTime(timer)}</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={isActive ? handleStop : handleStart}
+            >
+              <Text style={styles.buttonText}>{isActive ? "STOP" : "START"}</Text>
+            </TouchableOpacity>
+          </View>
+          {details.map((detail, index) => (
+            <Item
+              key={index}
+              label={detail.name.toUpperCase()}
+              detailId={detail._id}
+              uploadImage={uploadImage}
+            />
+          ))}
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={isSubmitted ? () => navigation.navigate("WorkOrderSelection") : handleSubmit}
+          >
+            <Text style={styles.submitButtonText}>{isSubmitted ? "CLOSE" : "SUBMIT"}</Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );

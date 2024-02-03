@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
@@ -12,7 +12,7 @@ export default function InspectorDashBoard({ navigation }) {
     const getRoomLocation = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/inspector`,
+          `https://sanitrack-service.onrender.com/api/inspector`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

@@ -12,11 +12,12 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import Nav from "../components/Nav";
-import {View, StyleSheet} from "react-native"
+import {View, StyleSheet, ActivityIndicator} from "react-native"
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const { user } = useContext(UserContext); // Assuming you have a UserContext
+  const [isLoading, setIsLoading] = useState(true); // Add this line
 
   const styles = StyleSheet.create({
     container: {
@@ -68,18 +69,17 @@ const Chat = () => {
   useEffect(() => {
     const messagesRef = collection(db, "messages");
     const q = query(messagesRef, orderBy("timestamp", "asc"));
-
+  
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const loadedMessages = snapshot.docs.map((doc) => {
         const firebaseData = doc.data();
-        // Convert Firestore timestamp to JavaScript Date object for GiftedChat
         const createdAt = firebaseData.timestamp
           ? firebaseData.timestamp.toDate()
           : new Date();
         return {
           _id: doc.id,
           text: firebaseData.text,
-          createdAt, // Use the converted Date object
+          createdAt,
           user: {
             _id: firebaseData.senderId || "unknown",
             name: firebaseData.senderName || "Unnamed",
@@ -87,11 +87,12 @@ const Chat = () => {
         };
       });
       setMessages(loadedMessages.reverse());
+      setIsLoading(false); // Set loading to false after messages are loaded
     });
-
+  
     return () => unsubscribe();
   }, []);
-
+  
   const onSend = useCallback(
     (messages = []) => {
       messages.forEach(async (message) => {
@@ -110,10 +111,14 @@ const Chat = () => {
     [user.username]
   ); // Ensure this uses the correct user property
 
+
   return (
     <View style={styles.container}>
       <Nav name={user.username} />
-      <GiftedChat
+      {isLoading ? (
+        <ActivityIndicator size="large" color={colors.white} /> // Customize the size and color as needed
+      ) : (
+        <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
@@ -128,6 +133,7 @@ const Chat = () => {
           <Icon name="chevron-double-down" size={22} color={colors.darkblue} />
         )}
       />
+      )}
     </View>
   );
 };

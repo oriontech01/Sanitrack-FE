@@ -41,7 +41,7 @@ export default function CleanerTasks({ route, navigation }) {
     const getTasksForLocation = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/inspector/room-task?roomId=${locationId}`,
+          `https://sanitrack-service.onrender.com/api/inspector/room-task?roomId=${locationId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

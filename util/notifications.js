@@ -15,7 +15,7 @@
 //   const token = (await Notifications.getExpoPushTokenAsync()).data;
 //   console.log(token);
 //   // Here, you could send the token to your server for database storage, etc.
-//   const res = await axios.post('https://sanitrack-node-api.onrender.com/api/notification/get-token', {token}, {
+//   const res = await axios.post('https://sanitrack-service.onrender.com/api/notification/get-token', {token}, {
 //     headers: {
 //       Authorization: `Bearer ${authToken}`
 //     }

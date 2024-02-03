@@ -207,7 +207,7 @@ const InspectorRooms = ({ route, navigation }) => {
     const getTasks = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/cleaner-dashboard/room-details/${roomID}`,
+          `https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -228,7 +228,7 @@ const InspectorRooms = ({ route, navigation }) => {
     const getInspectorRoomDetails = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-node-api.onrender.com/api/inspector/room-details/${roomID}`,
+          `https://sanitrack-service.onrender.com/api/inspector/room-details/${roomID}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
