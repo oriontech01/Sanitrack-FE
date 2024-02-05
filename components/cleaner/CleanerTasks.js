@@ -4,6 +4,7 @@ import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import Nav from "../Nav";
 import colors from "../../util/colors"; // Ensure you have a colors object defined in your project
+import Constants from "expo-constants";
 
 export default function CleanerTasks({ route, navigation }) {
   const { user } = useContext(UserContext);
@@ -16,7 +17,7 @@ export default function CleanerTasks({ route, navigation }) {
     const getTasksForLocation = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/cleaner-dashboard/rooms?locationId=${locationId}`,
+          `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/rooms?locationId=${locationId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

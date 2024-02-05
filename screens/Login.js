@@ -13,11 +13,9 @@ import colors from "../util/colors";
 import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/UserContext";
 import axios from "axios";
-// import { SANITRACK_API_URI } from "@env";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-// import { JWT_KEY } from "@env";
-// import JWT from "expo-jwt";
+import Constants from "expo-constants"
 // import registerForPushNotificationsAsync from "../util/notifications";
 
 const screen = Dimensions.get("window");
@@ -123,8 +121,9 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     setIsLoading(true);
+    console.log("Base URL", Constants.expoConfig.extra.baseUrl)
     try {
-      const res = await axios.post(`https://sanitrack-service.onrender.com/api/login`, {
+      const res = await axios.post(`${Constants.expoConfig.extra.baseUrl}login`, {
         username,
         password,
       });

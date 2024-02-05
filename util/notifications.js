@@ -1,5 +1,6 @@
 // import axios from 'axios';
 // import * as Notifications from 'expo-notifications';
+// import Constants from "expo-constants"
 
 // async function registerForPushNotificationsAsync(authToken) {
 //   const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -15,7 +16,7 @@
 //   const token = (await Notifications.getExpoPushTokenAsync()).data;
 //   console.log(token);
 //   // Here, you could send the token to your server for database storage, etc.
-//   const res = await axios.post('https://sanitrack-service.onrender.com/api/notification/get-token', {token}, {
+//   const res = await axios.post('Constants.expoConfig.extra.baseUrlnotification/get-token', {token}, {
 //     headers: {
 //       Authorization: `Bearer ${authToken}`
 //     }

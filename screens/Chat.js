@@ -37,18 +37,18 @@ const Chat = () => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: colors.primary, // Styling for messages you send
+            backgroundColor: colors.darkblue, // Adjust this color to match your theme
           },
           left: {
-            backgroundColor: colors.secondary, // Styling for messages you receive
+            backgroundColor: colors.secondary,
           },
         }}
         textStyle={{
           right: {
-            color: colors.white, // Text color for messages you send
+            color: colors.white,
           },
           left: {
-            color: colors.black, // Text color for messages you receive
+            color: colors.black,
           },
         }}
       />

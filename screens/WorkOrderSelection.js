@@ -32,6 +32,7 @@ const WorkOrderSelection = ({ navigation }) => {
   const { userRole } = useContext(UserContext);
   return (
     <View style={styles.container}>
+    {/* <Text>Work Order Selection</Text> */}
       <TouchableOpacity
         style={styles.workOrderButtons}
         onPress={() => navigation.navigate("BarCode")}

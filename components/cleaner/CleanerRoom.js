@@ -5,6 +5,7 @@ import { UserContext } from "../../context/UserContext";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Item from "../Item";
 import Nav from "../Nav";
+import Constants from "expo-constants"
 
 export default function CleanerRoom({ route, navigation }) {
   const [details, setDetails] = useState([]);
@@ -54,7 +55,7 @@ export default function CleanerRoom({ route, navigation }) {
       setIsLoading(true)
       try {
         const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-task?roomId=${roomId}`,
+          `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/room-task?roomId=${roomId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -108,7 +109,7 @@ export default function CleanerRoom({ route, navigation }) {
 
       // Now, post the newFileInput to your API
       const res = await axios.post(
-        "https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details",
+        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/room-details`,
         [newFileInput],
         {
           headers: {
@@ -187,7 +188,7 @@ export default function CleanerRoom({ route, navigation }) {
     setIsSubmitted(true);
     try {
       const response = await axios.post(
-        `https://sanitrack-service.onrender.com/api/task/submit?taskId=${taskId}`,
+        `${Constants.expoConfig.extra.baseUrl}task/submit?taskId=${taskId}`,
         timerDetails,
         {
           headers: {

@@ -4,6 +4,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { UserContext } from "../context/UserContext";
 import colors from "../util/colors";
 import axios from "axios";
+import Constants from "expo-constants"
 
 const styles = StyleSheet.create({
   selectRoleContainer: {
@@ -63,7 +64,7 @@ const SelectRole = ({navigation}) => {
     const selectedRoleId = user.assignedRoles.filter((obj) => obj.role_name === role)[0].role_id
     console.log("Selected role", selectedRoleId)
     try {
-      const res =  await axios.post('https://sanitrack-service.onrender.com/api/select-role', {selectedRoleId}, {
+      const res =  await axios.post(`${Constants.expoConfig.extra.baseUrl}select-role`, {selectedRoleId}, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }

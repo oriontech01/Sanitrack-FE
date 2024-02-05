@@ -4,18 +4,18 @@ import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import colors from "./../../util/colors";
 import Nav from "../Nav";
+import Constants from "expo-constants";
 
 export default function CleanerDashboard({ navigation }) {
   const { user } = useContext(UserContext);
   const [taskLocation, setTaskLocation] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const getRoomLocation = async () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/cleaner-dashboard`,
+          `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

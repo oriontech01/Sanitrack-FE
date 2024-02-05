@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import Nav from "../Nav";
+import Constants from "expo-constants"
 
 export default function CleanerTasks({ route, navigation }) {
   const { user } = useContext(UserContext);
@@ -41,15 +42,15 @@ export default function CleanerTasks({ route, navigation }) {
     const getTasksForLocation = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/inspector/room-task?roomId=${locationId}`,
+          `${Constants.expoConfig.extra.baseUrl}inspector/rooms?locationId=${locationId}`, //Tasks associated with locationId
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
           }
         );
-        console.log("Tasks fetched:", res.data.data.cleanerRooms); // Log to check the fetched data
-        setTasks(res.data.data.cleanerRooms || []); // Ensure tasks is always set to an array
+        console.log("Tasks fetched:", res.data.data); // Log to check the fetched data
+        setTasks(res.data.data.inspectorRooms || []); // Ensure tasks is always set to an array
       } catch (error) {
         console.error("Error fetching room location:", error);
       }
@@ -82,9 +83,9 @@ export default function CleanerTasks({ route, navigation }) {
             key={index}
             style={styles.task}
             onPress={() => {
-              navigation.navigate("InspectorRoom", {
+              navigation.navigate("InspectorRooms", {
                 roomId: task.roomId,
-                taskId: task.taskId,
+                roomName: task.roomName,
               });
             }}
           >

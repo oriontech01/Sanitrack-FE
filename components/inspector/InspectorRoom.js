@@ -15,14 +15,8 @@ import colors from "../../util/colors";
 import { UserContext } from "../../context/UserContext";
 import CheckBox from "../CheckBox";
 import Nav from "../Nav";
-import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import { RoomContext } from "../../context/RoomContext";
-import * as DocumentPicker from "expo-document-picker";
-// import { SANITRACK_API_URI, CLOUDINARY_URI } from "@env";
-import JWT from "expo-jwt";
-// import { JWT_KEY } from "@env";
-
+import Constants from "expo-constants";
 
 const screen = Dimensions.get("window");
 const styles = StyleSheet.create({
@@ -33,16 +27,16 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   fullScreenContainer: {
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      backgroundColor: colors.black 
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: colors.black,
   },
   fullScreenImage: {
-      width: screen.width * .9,
-      height: screen.height * .5,
-      alignSelf: 'center',
-      borderRadius: 10
+    width: screen.width * 0.9,
+    height: screen.height * 0.5,
+    alignSelf: "center",
+    borderRadius: 10,
   },
   header: {
     flexDirection: "row",
@@ -102,7 +96,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   submitButton: {
-    backgroundColor: colors.darkblue,
+    backgroundColor: colors.secondary,
     padding: 20,
     borderRadius: 30,
     width: "80%",
@@ -112,7 +106,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   submitButtonText: {
-    color: colors.white,
+    color: colors.black,
     fontSize: 20,
   },
   itemsContainer: {
@@ -186,49 +180,21 @@ const styles = StyleSheet.create({
 });
 
 const InspectorRooms = ({ route, navigation }) => {
-  const { user, userRole } = useContext(UserContext);
-  const [tasks, setTasks] = useState([]);
-  const { roomID } = useContext(RoomContext);
+  const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false); // Renders ActivityIndicator to show that the app is loading content
   const [roomDetails, setRoomDetails] = useState([]); // Set the details of rooms assigned to the user
   const [modalVisible, setModalVisible] = useState(false); //Handle modal visibility
   const [selectedImage, setSelectedImage] = useState(null); // Handle selected image
-
-  const openModal = (imageUrl) => {
-    setSelectedImage(imageUrl);
-    setModalVisible(true);
-  };
+  const [approved, setApproved] = useState(false); // Used to change the function of the button at the bottom of the screen
+  const [approvedTasks, setApprovedTasks] = useState([]);
+  const roomId = route.params.roomId;
 
   useEffect(() => {
-    // If user's role is cleaner, then make this network request
-    // Else make network request to get data for inspector dashboard
     setIsLoading(true); // Start loading
-    const decodedToken = JWT.decode(user.token, "SANITRACK")
-    const getTasks = async () => {
-      try {
-        const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/cleaner-dashboard/room-details/${roomID}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-            },
-          }
-        );
-        if (res.status === 200) {
-          console.log("Tasks",res.data)
-          setTasks(res.data.data || []);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        Alert.alert("Error", error.message);
-        console.log(error)
-        setIsLoading(false);
-      }
-    };
     const getInspectorRoomDetails = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/inspector/room-details/${roomID}`,
+          `${Constants.expoConfig.extra.baseUrl}inspector/room-task?roomId=${roomId}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,
@@ -245,13 +211,50 @@ const InspectorRooms = ({ route, navigation }) => {
         setIsLoading(false);
       }
     };
-    if (userRole == "Cleaner") {
-      getTasks();
-    } else {
-      getInspectorRoomDetails();
-    }
+    getInspectorRoomDetails();
   }, [user.token]);
 
+  // console.log("IDs",roomId, roomName);
+  const handleSelection = (isSelected, taskId) => {
+    // Function for selecting approved tasks
+    if (isSelected) {
+      // Add taskId to approvedTasks if not already present
+      if (!approvedTasks.some((task) => task.taskId === taskId)) {
+        setApprovedTasks([...approvedTasks, { taskId }]);
+      }
+    } else {
+      // Remove taskId from approvedTasks if deselected
+      setApprovedTasks(approvedTasks.filter((task) => task.taskId !== taskId));
+    }
+  };
+
+  const openModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setModalVisible(true);
+  };
+
+  const handleApproval = async () => {
+    console.log("Submitted", approvedTasks);
+    try {
+      const res = await axios.put(
+        `${Constants.expoConfig.extra.baseUrl}inspector/approve-task?roomId=${roomId}`,
+        { passedTasks: approvedTasks },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      console.log("Response", res.data);
+      setApproved(true);
+      Alert.alert(
+        "Approved",
+        "You have successfully reviewed and approved the task!"
+      );
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
   return (
     <View style={styles.container}>
       <Nav name={user.username} />
@@ -289,7 +292,11 @@ const InspectorRooms = ({ route, navigation }) => {
                       <Text style={styles.supervisedItemLabel}>
                         {task.name.toUpperCase()}
                       </Text>
-                      <CheckBox />
+                      <CheckBox
+                        handleSelection={(isSelected) =>
+                          handleSelection(isSelected, task.task_id)
+                        }
+                      />
                     </View>
                   </TouchableOpacity>
                 );
@@ -312,15 +319,18 @@ const InspectorRooms = ({ route, navigation }) => {
             </TouchableOpacity>
           </Modal>
         </View>
-      )
-      }
+      )}
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => {
-          handleSubmit();
-        }}
+        onPress={
+          approved
+            ? () => navigation.navigate("WorkOrderSelection")
+            : handleApproval
+        }
       >
-        <Text style={styles.submitButtonText}>SUBMIT</Text>
+        <Text style={styles.submitButtonText}>
+          {approved ? "CLOSE" : "APPROVE"}
+        </Text>
       </TouchableOpacity>
     </View>
   );

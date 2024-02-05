@@ -19,8 +19,6 @@ const styles = StyleSheet.create({
         marginTop: 15,
         alignItems: 'center',
         gap: 5,
-        // backgroundColor: colors.bgColor,
-        // borderRadius: 10
       },
       userText: {
         marginLeft: 10,
@@ -48,7 +46,7 @@ const Nav = ({name}) => {
     <View style={styles.userContainer}>
     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
       <Icon name="account-circle-outline" size={40} color={colors.black}  />
-      <Text style={styles.userText}>HELLO {name}</Text>
+      <Text style={styles.userText}>{(name).toUpperCase()}</Text>
     </View>
     <View style={{flexDirection: 'row', gap: 20, alignItems:'center'}}>
         <Icon name="bell-outline" size={22} color={colors.white} />

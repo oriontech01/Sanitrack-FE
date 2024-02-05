@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import colors from "./../../util/colors";
 import Nav from "../Nav";
+import Constants from "expo-constants"
 export default function InspectorDashBoard({ navigation }) {
   const { user } = useContext(UserContext);
   const [taskLocation, setTaskLocation] = useState([]);
@@ -12,7 +13,7 @@ export default function InspectorDashBoard({ navigation }) {
     const getRoomLocation = async () => {
       try {
         const res = await axios.get(
-          `https://sanitrack-service.onrender.com/api/inspector`,
+          `${Constants.expoConfig.extra.baseUrl}inspector`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`,

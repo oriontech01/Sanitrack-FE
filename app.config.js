@@ -1,10 +1,12 @@
-{
+import 'dotenv/config';
+
+export default { 
   "expo": {
     "name": "sanitrack",
     "slug": "sanitrack",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/msslogo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -35,7 +37,13 @@
     "extra": {
       "eas": {
         "projectId": "b3cb1efd-5bca-4061-b626-050774444c01"
-      }
+      },
+      cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+      baseUrl: process.env.SANITRACK_API_URI,
+      cloudinaryUrl: process.env.CLOUDINARY_URI,
+      cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      jwtKey: process.env.JWT_KEY
+      
     },
     "owner": "test-kali"
   }
