@@ -4,8 +4,8 @@ import { useState } from 'react';
 const useWorkHistory = () => {
   const [cleanerSummary, setCleanerSummary] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const BASE_URL = process.env.REACT_APP_LOCAL_URL;
-//   const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+//   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const token = localStorage.getItem('auth-token');
   const getRoomHistory = async (roomId) => {
     try {

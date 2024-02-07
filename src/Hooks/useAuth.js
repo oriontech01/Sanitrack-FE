@@ -2,7 +2,7 @@ import  { useState } from "react";
 import axios from "axios";
 
 const useAuth = () => {
-    const BASE_URL = process.env.REACT_APP_LOCAL_URL;
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
     // const [loginStatus, setLoginStatus] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 

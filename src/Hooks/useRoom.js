@@ -2,8 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const useRoom = () => { 
-    const BASE_URL = process.env.REACT_APP_LOCAL_URL;
-    // const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    // const BASE_URL = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate()
     const [responseMessage, setResponseMessage] = useState()
     const [allRooms, setAllRooms] = useState([])

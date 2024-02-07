@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const useTask = () => { 
-    const BASE_URL = process.env.REACT_APP_LOCAL_URL;
-    // const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    // const BASE_URL = process.env.REACT_APP_BASE_URL;
     const [responseMessage, setResponseMessage] = useState()
     const [unAssignedRooms, setUnAssignedRooms] = useState([])
     const [allCleaners, setAllCleaners] = useState([])

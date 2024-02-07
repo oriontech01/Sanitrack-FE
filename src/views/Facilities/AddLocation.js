@@ -15,7 +15,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_LOCAL_URL}/locations/add`,
+        `${import.meta.env.VITE_BASE_URL}/locations/add`,
         {
           country,
           state,

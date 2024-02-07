@@ -12,7 +12,7 @@ const Facilities = () => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("auth-token");
   const googleMapsApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-  const BASE_URL = process.env.REACT_APP_LOCAL_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   console.log(googleMapsApiKey)
 

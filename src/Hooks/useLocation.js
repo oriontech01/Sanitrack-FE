@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const useLocation = () => {
   // const navigate = useNavigate();
-  const BASE_URL = process.env.REACT_APP_LOCAL_URL;
-  // const LOCAL_URL = process.env.REACT_APP_LOCAL_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  // const BASE_URL = process.env.REACT_APP_BASE_URL;
   const access_token = localStorage.getItem("auth-token");
 
   const [allLocations, setLocation] = useState([])
