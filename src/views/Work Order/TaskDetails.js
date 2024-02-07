@@ -1,31 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useTask from '../../Hooks/useTask';
-import {
-  Grid,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Button,
-  Box,
-} from '@mui/material';
+import { Grid, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, Box } from '@mui/material';
 
 const TaskDetails = () => {
   const { taskId } = useParams();
   const [selectedCleaner, setSelectedCleaner] = useState('');
   const [selectedInspector, setSelectedInspector] = useState('');
-  const {
-    getAllCleaners,
-    getAllInspectors,
-    getTaskById,
-    updateTask,
-    allCleaners,
-    allInspectors,
-    singleTaskDetail,
-  } = useTask();
+  const { getAllCleaners, getAllInspectors, getTaskById, updateTask, allCleaners, allInspectors, singleTaskDetail } = useTask();
 
   useEffect(() => {
     const fetchAllCleaners = async () => {
@@ -41,7 +23,7 @@ const TaskDetails = () => {
     fetchAllCleaners();
     fetchAllInspectors();
     fetchSingleTask();
-  }, []);
+  }, [getAllCleaners, getAllInspectors, getTaskById, taskId]);
 
   const handleUpdate = async () => {
     await updateTask(taskId, selectedCleaner, selectedInspector, singleTaskDetail.assigned_room._id);

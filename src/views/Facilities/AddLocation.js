@@ -51,9 +51,8 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-      }}
+      }}    
       // Animate from the top
-      // In MUI v5, Slide is used for transitions
       // Define the direction to 'down' for top to bottom animation
       // Adjust the timeout for smoother animation
       // Adjust the position for different top margin

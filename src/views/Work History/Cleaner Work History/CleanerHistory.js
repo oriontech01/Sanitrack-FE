@@ -15,7 +15,7 @@ const CleanerHistory = () => {
 
   useEffect(() => {
     const fetchAllStaffs = async () => {
-      await getAllCleaners()
+      await getAllCleaners();
     };
     fetchAllStaffs();
   }, [getAllCleaners]);
@@ -23,7 +23,7 @@ const CleanerHistory = () => {
   useEffect(() => {
     const fetchCleanerHistory = async () => {
       if (allCleaners.length > 0 && !isFetched) {
-        const historyPromises = allCleaners.map(cleaner => getCleanerHistory(cleaner._id));
+        const historyPromises = allCleaners.map((cleaner) => getCleanerHistory(cleaner._id));
         const histories = await Promise.all(historyPromises);
 
         const newHistory = {};
@@ -33,7 +33,7 @@ const CleanerHistory = () => {
 
         setCleanerHistory(newHistory);
         setIsFetched(true);
-        setLoading(false); // Data fetched  
+        setLoading(false); // Data fetched
       }
     };
 
@@ -47,22 +47,17 @@ const CleanerHistory = () => {
       </Typography>
       {loading ? (
         <Loader />
+      ) : allCleaners.length > 0 ? (
+        allCleaners.map((cleaner) => (
+          <HistoryDetails key={cleaner._id} name={cleaner.username} detailId={cleaner._id} historyData={cleanerHistory[cleaner._id]} />
+        ))
       ) : (
-        allCleaners.length > 0 ? (
-          allCleaners.map(cleaner => (
-            <HistoryDetails
-              key={cleaner._id}
-              name={cleaner.username}
-              detailId={cleaner._id}
-              historyData={cleanerHistory[cleaner._id]}
-            />
-          ))
-        ) : (
-          <Typography variant="body1">No cleaner history available.</Typography>
-        )
+        <Typography variant="body1">No cleaner history available.</Typography>
       )}
     </Box>
   );
 };
+
+
 
 export default CleanerHistory;

@@ -1,19 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useTask from '../../Hooks/useTask';
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Button,
-  Paper,
-} from '@mui/material';
+import { Grid, Card, CardContent, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 const Tasks = () => {
@@ -45,12 +33,7 @@ const Tasks = () => {
             <Typography variant="h3" gutterBottom>
               Tasks
             </Typography>
-            <Button
-              variant="contained"
-              style={{ marginBottom: theme.spacing(2) }}
-              color="primary"
-              onClick={handleNavigate}
-            >
+            <Button variant="contained" style={{ marginBottom: theme.spacing(2) }} color="primary" onClick={handleNavigate}>
               Create New Task
             </Button>
             <Paper>
@@ -72,9 +55,7 @@ const Tasks = () => {
                         {`${task.cleanerUsername.username.charAt(0).toUpperCase()}${task.cleanerUsername.username.slice(1)}`}
                       </TableCell>
                       <TableCell>
-                        {`${task.inspectorUsername.username.charAt(0).toUpperCase()}${task.inspectorUsername.username.slice(
-                          1
-                        )}`}
+                        {`${task.inspectorUsername.username.charAt(0).toUpperCase()}${task.inspectorUsername.username.slice(1)}`}
                       </TableCell>
                       <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
                         {task.isSubmitted ? 'Completed' : 'Pending'}

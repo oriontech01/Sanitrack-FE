@@ -23,7 +23,7 @@ const Room = () => {
       await getRoom();
     };
     fetchData();
-  }, []);
+  }, [getRoom]);
 
   const handleNavigate = () => {
     navigate('/dashboard/add-room');

@@ -1,7 +1,7 @@
 // File contains CRUD operations for staffs
-import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const useStaff = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -16,38 +16,38 @@ const useStaff = () => {
   const [allCleaners, setAllCleaners] = useState([]);
   const [allInspectors, setAllInspectors] = useState([]);
 
-  const access_token = localStorage.getItem("auth-token");
+  const access_token = localStorage.getItem('auth-token');
 
-  const addStaff = async (dataToPass) => {
+  const addStaff = async dataToPass => {
     await axios
       .post(`${BASE_URL}create-user`, dataToPass, {
-        headers: { Authorization: `Bearer ${access_token}` },
+        headers: { Authorization: `Bearer ${access_token}` }
       })
-      .then((response) => {
-        setResponseMessage("Staff Added.");
-        console.log("Here is staff added response",response.json())
-        navigate("/home/user");
+      .then(response => {
+        setResponseMessage('Staff Added.');
+        console.log('Here is staff added response', response.json());
+        navigate('/home/user');
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            console.log("An error occured", data.message);
+            console.log('An error occured', data.message);
           } else {
-            console.log("Axios error:", data.err.details[0].message);
+            console.log('Axios error:', data.err.details[0].message);
             alert(data.err.details[0].message);
           }
         } else {
-          console.log("Network error:", error.message);
+          console.log('Network error:', error.message);
         }
       });
   };
 
-  const getStaffById = async (userId) => {
+  const getStaffById = async userId => {
     try {
       const response = await axios.get(`${BASE_URL}get-user?userId=${userId}`, {
-        headers: { Authorization: `Bearer ${access_token}` },
+        headers: { Authorization: `Bearer ${access_token}` }
       });
       const userDetails = response.data; // Adjust based on your user data structure
       // console.log(`User Details for ID ${userId}:`, userDetails);
@@ -58,114 +58,111 @@ const useStaff = () => {
     }
   };
 
-  const getStaffByUserName = async (name) => {
+  const getStaffByUserName = async name => {
     await axios
       .get(`${BASE_URL}staff/?userName=${name}`, {
-        headers: { Authorization: `Bearer ${access_token}` },
+        headers: { Authorization: `Bearer ${access_token}` }
       })
-      .then((response) => {
+      .then(response => {
         setStaffByName(response.data.data);
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            console.log("An error occurred", data.message);
+            console.log('An error occurred', data.message);
           } else {
-            console.log("Axios error:", error);
+            console.log('Axios error:', error);
           }
         } else {
-          console.log("Network error:", error.message);
+          console.log('Network error:', error.message);
         }
       });
   };
   const getAllStaffs = async (page, itemPerPage) => {
     setIsLoading(true);
     await axios
-      .get(
-        `${BASE_URL}get-all-users?page=${page}&documentCount=${itemPerPage}`,
-        {
-          headers: { Authorization: `Bearer ${access_token}` },
-        }
-      )
-      .then((response) => {
+      .get(`${BASE_URL}get-all-users?page=${page}&documentCount=${itemPerPage}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
         setIsLoading(false);
         setAllStaffs(response.data.data.allUsers);
         setTotalPages(Math.ceil(response.data.data.totalUsers / itemPerPage));
       })
-      .catch((error) => {
+      .catch(error => {
         setIsLoading(false);
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            console.log("An error occurred", data.message);
+            console.log('An error occurred', data.message);
           } else {
-            console.log("Axios error:", error);
+            console.log('Axios error:', error);
           }
         } else {
-          console.log("Network error:", error.message);
+          console.log('Network error:', error.message);
         }
       });
   };
 
-  const fireStaff = async (staffId) => {
+  const fireStaff = async staffId => {
     await axios
       .put(
         `${BASE_URL}delete-user`,
         {
-          staffId: staffId,
+          staffId: staffId
         },
         {
-          headers: { Authorization: `Bearer ${access_token}` },
+          headers: { Authorization: `Bearer ${access_token}` }
         }
       )
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
-        navigate("/home/user");
+        navigate('/home/user');
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            console.log("An error occurred", data.message);
+            console.log('An error occurred', data.message);
           } else {
-            console.log("Axios error:", error);
+            console.log('Axios error:', error);
           }
         } else {
-          console.log("Network error:", error.message);
+          console.log('Network error:', error.message);
         }
       });
   };
 
-  const restoreStaff = async (staffId) => {
+  const restoreStaff = async staffId => {
     await axios
       .put(
         `${BASE_URL}update-user-status`,
         {
-          staffId: staffId,
+          staffId: staffId
         },
         {
-          headers: { Authorization: `Bearer ${access_token}` },
+          headers: { Authorization: `Bearer ${access_token}` }
         }
       )
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
-        navigate("/home/user");
+        navigate('/home/user');
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            console.log("An error occurred", data.message);
+            console.log('An error occurred', data.message);
           } else {
-            console.log("Axios error:", error);
+            console.log('Axios error:', error);
           }
         } else {
-          console.log("Network error:", error.message);
+          console.log('Network error:', error.message);
         }
       });
   };
@@ -173,10 +170,10 @@ const useStaff = () => {
     try {
       const res = await axios.get(`${BASE_URL}get-all-cleaner`, {
         headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
+          Authorization: `Bearer ${access_token}`
+        }
       });
-      console.log("All cleaners", res.data.data.allCleaners);
+      console.log('All cleaners', res.data.data.allCleaners);
       setAllCleaners(res.data.data.allCleaners);
     } catch (error) {
       console.log(error);
@@ -187,8 +184,8 @@ const useStaff = () => {
     try {
       const res = await axios.get(`${BASE_URL}get-all-inspector`, {
         headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
+          Authorization: `Bearer ${access_token}`
+        }
       });
       setAllInspectors(res.data.data.allInspectors);
     } catch (error) {
@@ -210,7 +207,7 @@ const useStaff = () => {
     getAllCleaners,
     getAllInspectors,
     allCleaners,
-    allInspectors,
+    allInspectors
   };
 };
 

@@ -3,15 +3,7 @@ import useTask from '../../Hooks/useTask';
 import { Grid, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button, Box, Paper } from '@mui/material';
 
 const AddTask = () => {
-  const {
-    getUnAssignedRooms,
-    getAllCleaners,
-    getAllInspectors,
-    addTask,
-    unAssignedRooms,
-    allCleaners,
-    allInspectors,
-  } = useTask();
+  const { getUnAssignedRooms, getAllCleaners, getAllInspectors, addTask, unAssignedRooms, allCleaners, allInspectors } = useTask();
   const [selectedRoom, setSelectedRoom] = useState('');
   const [selectedCleaner, setSelectedCleaner] = useState('');
   const [selectedInspector, setSelectedInspector] = useState('');
@@ -20,7 +12,7 @@ const AddTask = () => {
     getUnAssignedRooms();
     getAllCleaners();
     getAllInspectors();
-  }, []);
+  }, [getAllCleaners, getAllInspectors, getUnAssignedRooms]);
 
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {
@@ -34,7 +26,7 @@ const AddTask = () => {
     borderColor: 'divider',
     borderRadius: '4px',
     padding: '10px',
-    backgroundColor: '#f5f5f5', // A light grey to subtly highlight the area
+    backgroundColor: '#f5f5f5' // A light grey to subtly highlight the area
   };
 
   return (
@@ -45,7 +37,9 @@ const AddTask = () => {
             Add Task
           </Typography>
           <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>Unassigned Rooms</FormLabel>
+            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
+              Unassigned Rooms
+            </FormLabel>
             <RadioGroup
               name="selectedRoom"
               value={selectedRoom}
@@ -59,7 +53,9 @@ const AddTask = () => {
           </FormControl>
 
           <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>Cleaners</FormLabel>
+            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
+              Cleaners
+            </FormLabel>
             <RadioGroup
               name="selectedCleaner"
               value={selectedCleaner}
@@ -73,7 +69,9 @@ const AddTask = () => {
           </FormControl>
 
           <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>Inspectors</FormLabel>
+            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
+              Inspectors
+            </FormLabel>
             <RadioGroup
               name="selectedInspector"
               value={selectedInspector}
