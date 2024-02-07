@@ -53,6 +53,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "postbuild": "shx rm -rf dist/ && shx mv build dist",
     "build-stage": "env-cmd -f .env.qa react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -98,6 +99,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.7.1",
     "react-error-overlay": "^6.0.9",
-    "sass": "^1.58.0"
+    "sass": "^1.58.0",
+    "shx": "^0.3.4"
   }
 }
