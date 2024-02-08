@@ -44,9 +44,6 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
       aria-labelledby="add-location-modal"
       aria-describedby="add-location-form"
       closeAfterTransition
-      BackdropProps={{
-        timeout: 500,
-      }}
       sx={{
         display: "flex",
         alignItems: "center",

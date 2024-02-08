@@ -17,6 +17,8 @@ import InspectorHistory from 'views/Work History/Inspector Work History/Inspecto
 import RoomHistory from 'views/Work History/Room Work History/RoomHistory';
 import Evidence from 'views/Evidence/Evidence';
 import ViewEvidence from 'views/Evidence/ViewEvidence';
+import Users from 'views/Users/Users';
+import AddUser from 'views/Users/AddUser';
 
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 
@@ -52,7 +54,9 @@ const MainRoutes = {
       ]
     },
     { path: '/dashboard/evidence', element: <Evidence /> },
-    { path: '/dashboard/evidence/view/:taskId', element: <ViewEvidence /> }
+    { path: '/dashboard/evidence/view/:taskId', element: <ViewEvidence /> },
+    { path: '/dashboard/users', element: <Users /> },
+    { path: '/dashboard/add-user', element: <AddUser/> }
   ]
 };
 

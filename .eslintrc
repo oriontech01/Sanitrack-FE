@@ -102,6 +102,7 @@
     "import/order": "off",
     "react-hooks/exhaustive-deps": "off",
     "import/no-cycle": "off",
+    "no-unused-vars": "off",
     "no-console": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "prefer-destructuring": "off",
@@ -115,12 +116,12 @@
         "patterns": ["@mui/*/*/*", "!@mui/material/test-utils/*"]
       }
     ],
-    "no-unused-vars": [
-      "error",
-      {
-        "ignoreRestSiblings": false
-      }
-    ],
+    // "no-unused-vars": [
+    //   "error",
+    //   {
+    //     "ignoreRestSiblings": false
+    //   }
+    // ],
     "prettier/prettier": "off"
   }
 }

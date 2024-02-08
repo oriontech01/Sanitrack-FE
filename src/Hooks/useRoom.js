@@ -34,7 +34,7 @@ const useRoom = () => {
             setIsLoading(false)
             setAllRooms(response.data.data.allRooms)
             setRoomCount(response.data.data.allRooms.length)
-            // console.log("All rooms", response.data.data.allRooms)
+            console.log("All rooms", response.data.data.allRooms)
         }).catch((error)=> { 
             setIsLoading(false)
             if(error.response){ 

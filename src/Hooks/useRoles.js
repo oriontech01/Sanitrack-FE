@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const useRole = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const navigate = useNavigate();
 
   const access_token = localStorage.getItem("auth-token");
