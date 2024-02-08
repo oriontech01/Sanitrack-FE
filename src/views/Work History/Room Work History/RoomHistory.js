@@ -19,7 +19,7 @@ const RoomHistory = () => {
     const fetchRoomHistory = async () => {
       if (allRooms.length > 0 && !isFetched) {
         setLoading(true);
-        const historyPromises = allRooms.map((room) => getRoomHistory(room._id));
+        const historyPromises = allRooms.map(room => getRoomHistory(room._id));
         const histories = await Promise.all(historyPromises);
 
         const newHistory = {};
@@ -37,16 +37,19 @@ const RoomHistory = () => {
   }, [allRooms, getRoomHistory, isFetched]);
 
   return (
-    <Box>
+    <Box
+      sx={{
+        maxHeight: '600px', // Set a max height for the Box
+        overflow: 'auto' // Enable scrolling
+      }}
+    >
       <Typography variant="h3" p={2} gutterBottom>
         Room History
       </Typography>
       {loading ? (
         <Loader />
       ) : allRooms.length > 0 ? (
-        allRooms.map((room) => (
-          <HistoryDetails key={room._id} name={room.roomName} detailId={room._id} historyData={roomHistory[room._id]} />
-        ))
+        allRooms.map(room => <HistoryDetails key={room._id} name={room.roomName} detailId={room._id} historyData={roomHistory[room._id]} />)
       ) : (
         <Typography variant="body1">No rooms available</Typography>
       )}
