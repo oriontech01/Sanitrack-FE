@@ -16,7 +16,7 @@ import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Constants from "expo-constants"
-// import registerForPushNotificationsAsync from "../util/notifications";
+import registerForPushNotificationsAsync from "../util/notifications";
 
 const screen = Dimensions.get("window");
 const styles = StyleSheet.create({
@@ -132,7 +132,7 @@ const Login = ({ navigation }) => {
         // Check for status code 200
         Alert.alert("Auth", "Login successful, redirecting...");
         console.log("user data", res.data.data);
-        // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
+        registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser(res.data.data); // Set user object value to the user data gotten from the Backend API
         setPassword(""); // Clear password field
         setUserName(""); // Clear username field

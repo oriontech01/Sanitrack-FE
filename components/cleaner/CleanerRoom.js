@@ -21,6 +21,7 @@ export default function CleanerRoom({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(false);
 
   // console.log("Task ID", taskId)
+  // console.log("Room ID", roomId)
 
   const takePicture = async () => {
     // No options are needed by default, but you can specify them if necessary
@@ -166,13 +167,13 @@ export default function CleanerRoom({ route, navigation }) {
   const handleSubmit = async () => {
     console.log("File inputs", fileInputs);
 
-    if (timer < 300) {
-      Alert.alert(
-        "Error",
-        "You must work for at least 5 minutes before submitting"
-      );
-      return;
-    }
+    // if (timer < 20) {
+    //   Alert.alert(
+    //     "Error",
+    //     "You must work for at least 5 minutes before submitting"
+    //   );
+    //   return;
+    // }
 
     if (fileInputs.length < 1) {
       Alert.alert("Submission Error", "You must upload at least one file");
@@ -184,8 +185,7 @@ export default function CleanerRoom({ route, navigation }) {
       start_time: formatTime(timer),
       stop_time: formatTime(stopTime),
     };
-    console.log(timerDetails);
-    setIsSubmitted(true);
+
     try {
       const response = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}task/submit?taskId=${taskId}`,
@@ -196,9 +196,10 @@ export default function CleanerRoom({ route, navigation }) {
           },
         }
       );
+      console.log(timerDetails);
+      setIsSubmitted(true);
       console.log("Submit", response.data);
       Alert.alert("Success", "Submission successful!");
-      setIsSubmitted(true);
     } catch (error) {
       Alert.alert("Error", error.message);
     }

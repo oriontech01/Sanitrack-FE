@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import colors from "./../../util/colors";
@@ -32,6 +32,8 @@ export default function CleanerDashboard({ navigation }) {
     getRoomLocation();
   }, []);
 
+  console.log("Task location", taskLocation)
+
   const styles = StyleSheet.create({
     roomLocation: {
       flex: 1,
@@ -42,12 +44,14 @@ export default function CleanerDashboard({ navigation }) {
     location: {
       borderWidth: 1,
       marginTop: 10,
+      display: 'flex',
+      flexDirection: 'row',
       borderColor: colors.secondary,
       backgroundColor: colors.itemBgColor,
       padding: 15,
       borderRadius: 10,
       marginBottom: 10,
-      width: "90%",
+      width: "100%",
       shadowColor: colors.black,
       shadowOffset: {
         width: 0,
@@ -56,9 +60,9 @@ export default function CleanerDashboard({ navigation }) {
       shadowOpacity: 0.1,
       shadowRadius: 4,
       elevation: 5,
-      flexDirection: "column",
       justifyContent: "space-between",
       alignItems: "center",
+      gap: 5,
     },
     locationText: {
       color: colors.darkblue,
@@ -80,21 +84,30 @@ export default function CleanerDashboard({ navigation }) {
       <Text style={styles.header}>Work Locations</Text>
       {isLoading ? (
         <ActivityIndicator size="large" color={colors.white} />
-      ) : taskLocation.length > 0 ? (
-        taskLocation.map((location) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CleanerTasks", { locationId: location.id })
-            }
-            key={location.id}
-            style={styles.location}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.locationText}> {location.country}, {location.state}, {location.city} </Text>
-          </TouchableOpacity>
-        ))
       ) : (
-        <Text style={styles.locationText}>No tasks available</Text>
+        <ScrollView showsVerticalScrollIndicator={true}>
+          {taskLocation.length > 0 ? (
+            taskLocation.map((location, index) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("CleanerTasks", { locationId: location.id })
+                }
+                key={location.id}
+                style={styles.location}
+                activeOpacity={0.7}
+              >
+                <Text>
+                {index + 1}.
+                </Text>
+                <Text style={styles.locationText}>
+                  {location.country}, {location.state}, {location.city}
+                </Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={styles.locationText}>No tasks available</Text>
+          )}
+        </ScrollView>
       )}
     </View>
   );

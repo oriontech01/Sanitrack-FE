@@ -1,10 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  ScrollView
+} from "react-native";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import Nav from "../Nav";
 import colors from "../../util/colors"; // Ensure you have a colors object defined in your project
 import Constants from "expo-constants";
+import CleanerManual from "./CleanerManual";
 
 export default function CleanerTasks({ route, navigation }) {
   const { user } = useContext(UserContext);
@@ -37,6 +45,8 @@ export default function CleanerTasks({ route, navigation }) {
     }
   }, [locationId, user.token]);
 
+  console.log("Tasks", tasks);
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -47,10 +57,15 @@ export default function CleanerTasks({ route, navigation }) {
     },
     task: {
       backgroundColor: colors.itemBgColor,
+      display: "flex",
+      flexDirection: "row",
+      alignContent: "center",
+      alignItems: "center",
+      gap: 10,
       marginTop: 20,
       padding: 20,
       borderRadius: 10,
-      width: '90%',
+      width: "80%",
       marginBottom: 10,
       shadowColor: colors.black,
       shadowOffset: { width: 0, height: 2 },
@@ -62,25 +77,55 @@ export default function CleanerTasks({ route, navigation }) {
       color: colors.darkblue,
       fontSize: 18,
       fontWeight: "bold",
+    },
+    taskContainer: {
+      width: '100%',
+      display: "flex",
+      alignContent: "center",
+      alignItems: "center",
     }
   });
 
   return (
     <View style={styles.container}>
       <Nav name={user.username} />
-      {isLoading ? (
-        <ActivityIndicator size="large" color={colors.white} />
-      ) : (
-        tasks.map((task, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.task}
-            onPress={() => navigation.navigate("CleanerRoom", { roomId: task.roomId })}
-          >
-            <Text style={styles.taskText}>{task.roomName}</Text>
-          </TouchableOpacity>
-        ))
-      )}
+      <Text
+        style={{
+          fontSize: 30,
+          marginTop: 20,
+          fontWeight: "bold",
+          color: colors.white,
+        }}
+      >
+        Cleaner Tasks
+      </Text>
+      <CleanerManual />
+      <ScrollView
+        style={{width: "100%"}}
+        showsVerticalScrollIndicator={true}
+      >
+        <View style={styles.taskContainer}>
+          {isLoading ? (
+            <ActivityIndicator size="large" color={colors.white} />
+          ) : (
+            tasks.map((task, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.task}
+                onPress={() =>
+                  navigation.navigate("CleanerRoom", {
+                    roomId: task.roomId,
+                    taskId: task.taskId,
+                  })
+                }
+              >
+                <Text>{index + 1}.</Text>
+                <Text style={styles.taskText}>{task.roomName}</Text>
+              </TouchableOpacity>
+            ))
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
-};
+}
