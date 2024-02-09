@@ -39,13 +39,15 @@ export default function InspectorDashBoard({ navigation }) {
     },
     location: {
       borderWidth: 1,
+      display: 'flex',
+      flexDirection: 'row',
       marginTop: 10,
       borderColor: colors.secondary, // Subtle border color for elegance
       backgroundColor: colors.itemBgColor, // Softer background for each location item
       padding: 15,
       borderRadius: 10, // Rounded corners for a modern look
       marginBottom: 10, // Space between location items
-      width: "90%", // Ensure items don't stretch too wide
+      width: "100%", // Ensure items don't stretch too wide
       shadowColor: colors.black, // Shadow for a subtle depth effect
       shadowOffset: {
         width: 0,
@@ -54,7 +56,6 @@ export default function InspectorDashBoard({ navigation }) {
       shadowOpacity: 0.1,
       shadowRadius: 4,
       elevation: 5, // Android elevation
-      flexDirection: "column", // Align items inline
       justifyContent: "space-between", // Distribute space between items
       alignItems: "center", // Vertically align items
     },
@@ -78,7 +79,7 @@ export default function InspectorDashBoard({ navigation }) {
       <Nav name={user.username} />
       <Text style={styles.header}>Work Locations</Text>
       {taskLocation.length > 0 ? (
-        taskLocation.map((location) => (
+        taskLocation.map((location, index) => (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("InspectorTasks", { locationId: location.id })
@@ -87,6 +88,7 @@ export default function InspectorDashBoard({ navigation }) {
             style={styles.location}
             activeOpacity={0.7} // Slightly dims the button on press for feedback
           >
+            <Text>{index + 1}.</Text>
             <Text style={styles.locationText}> {location.country}, {location.state}, {location.city} </Text>
           </TouchableOpacity>
         ))

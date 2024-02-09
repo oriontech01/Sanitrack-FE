@@ -22,7 +22,7 @@ export default {
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/msslogo.png",
         "backgroundColor": "#4630EB"
       },
       "package": "com.orion.sanitrack"
@@ -32,7 +32,8 @@ export default {
     },
     "plugins": [
       "@react-native-firebase/app",
-      "@react-native-firebase/auth"
+      "@react-native-firebase/auth",
+      "expo-document-picker"
     ],
     "extra": {
       "eas": {

@@ -21,6 +21,11 @@ export default function CleanerTasks({ route, navigation }) {
     task: {
       backgroundColor: colors.itemBgColor, // Background color for each task
       marginTop: 20,
+      display: "flex",
+      flexDirection: "row",
+      alignContent: "center",
+      alignItems: 'center',
+      gap: 10,
       padding: 20, // Add some padding inside each task for spacing
       borderRadius: 10, // Rounded corners for a modern look
       width: "90%", // Make tasks take up most of the container width
@@ -88,7 +93,8 @@ export default function CleanerTasks({ route, navigation }) {
                 roomName: task.roomName,
               });
             }}
-          >
+          > 
+            <Text>{index + 1}.</Text>
             <Text style={styles.taskText}>{task.roomName}</Text>
           </TouchableOpacity>
         ))

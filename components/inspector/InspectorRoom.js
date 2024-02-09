@@ -1,16 +1,17 @@
-import { React, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Alert,
   Image,
   Dimensions,
   ActivityIndicator,
   Modal,
+  ScrollView,
+  StyleSheet,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"; // Ensure you have installed react-native-vector-icons
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../../util/colors";
 import { UserContext } from "../../context/UserContext";
 import CheckBox from "../CheckBox";
@@ -19,6 +20,9 @@ import axios from "axios";
 import Constants from "expo-constants";
 
 const screen = Dimensions.get("window");
+const ITEM_WIDTH = screen.width * 0.45;
+const ITEM_HEIGHT = screen.height * 0.3;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -181,16 +185,16 @@ const styles = StyleSheet.create({
 
 const InspectorRooms = ({ route, navigation }) => {
   const { user } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(false); // Renders ActivityIndicator to show that the app is loading content
-  const [roomDetails, setRoomDetails] = useState([]); // Set the details of rooms assigned to the user
-  const [modalVisible, setModalVisible] = useState(false); //Handle modal visibility
-  const [selectedImage, setSelectedImage] = useState(null); // Handle selected image
-  const [approved, setApproved] = useState(false); // Used to change the function of the button at the bottom of the screen
+  const [isLoading, setIsLoading] = useState(false);
+  const [roomDetails, setRoomDetails] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [approved, setApproved] = useState(false);
   const [approvedTasks, setApprovedTasks] = useState([]);
   const roomId = route.params.roomId;
 
   useEffect(() => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     const getInspectorRoomDetails = async () => {
       try {
         const res = await axios.get(
@@ -203,7 +207,6 @@ const InspectorRooms = ({ route, navigation }) => {
         );
         if (res.status === 200) {
           setRoomDetails(res.data.data.tasks);
-          console.log("Task data", res.data.data.tasks);
           setIsLoading(false);
         }
       } catch (error) {
@@ -214,16 +217,12 @@ const InspectorRooms = ({ route, navigation }) => {
     getInspectorRoomDetails();
   }, [user.token]);
 
-  // console.log("IDs",roomId, roomName);
   const handleSelection = (isSelected, taskId) => {
-    // Function for selecting approved tasks
     if (isSelected) {
-      // Add taskId to approvedTasks if not already present
       if (!approvedTasks.some((task) => task.taskId === taskId)) {
         setApprovedTasks([...approvedTasks, { taskId }]);
       }
     } else {
-      // Remove taskId from approvedTasks if deselected
       setApprovedTasks(approvedTasks.filter((task) => task.taskId !== taskId));
     }
   };
@@ -234,7 +233,6 @@ const InspectorRooms = ({ route, navigation }) => {
   };
 
   const handleApproval = async () => {
-    console.log("Submitted", approvedTasks);
     try {
       const res = await axios.put(
         `${Constants.expoConfig.extra.baseUrl}inspector/approve-task?roomId=${roomId}`,
@@ -245,7 +243,6 @@ const InspectorRooms = ({ route, navigation }) => {
           },
         }
       );
-      console.log("Response", res.data);
       setApproved(true);
       Alert.alert(
         "Approved",
@@ -255,6 +252,7 @@ const InspectorRooms = ({ route, navigation }) => {
       Alert.alert("Error", error.message);
     }
   };
+
   return (
     <View style={styles.container}>
       <Nav name={user.username} />
@@ -272,35 +270,30 @@ const InspectorRooms = ({ route, navigation }) => {
       {isLoading ? (
         <ActivityIndicator size="large" color="#ffffff" />
       ) : (
-        <View style={styles.supervisorContainer}>
+        <ScrollView contentContainerStyle={styles.supervisorContainer}>
           <View style={styles.itemsGrid}>
-            {roomDetails &&
-              roomDetails.map((task, index) => {
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => openModal(task.image_url)}
-                    style={styles.supervisedItem}
-                  >
-                    <Image
-                      source={{
-                        uri: task.image_url,
-                      }}
-                      style={styles.itemImage}
-                    />
-                    <View style={styles.supervisedItemFooter}>
-                      <Text style={styles.supervisedItemLabel}>
-                        {task.name.toUpperCase()}
-                      </Text>
-                      <CheckBox
-                        handleSelection={(isSelected) =>
-                          handleSelection(isSelected, task.task_id)
-                        }
-                      />
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
+            {roomDetails.map((task, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => openModal(task.image_url)}
+                style={styles.supervisedItem}
+              >
+                <Image
+                  source={{ uri: task.image_url }}
+                  style={styles.itemImage}
+                />
+                <View style={styles.supervisedItemFooter}>
+                  <Text style={styles.supervisedItemLabel}>
+                    {task.name.toUpperCase()}
+                  </Text>
+                  <CheckBox
+                    handleSelection={(isSelected) =>
+                      handleSelection(isSelected, task.task_id)
+                    }
+                  />
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
           <Modal
             animationType="slide"
@@ -318,7 +311,7 @@ const InspectorRooms = ({ route, navigation }) => {
               />
             </TouchableOpacity>
           </Modal>
-        </View>
+        </ScrollView>
       )}
       <TouchableOpacity
         style={styles.submitButton}
@@ -335,4 +328,5 @@ const InspectorRooms = ({ route, navigation }) => {
     </View>
   );
 };
+
 export default InspectorRooms;
