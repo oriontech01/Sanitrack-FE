@@ -55,35 +55,34 @@ const Default = () => {
   const { getCleanerSummary, cleanerSummary } = useWorkHistory();
   const [isLoading, setIsLoading] = useState(true)
 
-  console.log('===============BEFORE===============', isLoading)
-
   useEffect(() => {
-    // setIsLoading(true)
-    console.log('===============DURING===============', isLoading)
-    const getAllActiveCleaners = async () => {
-      await getAllCleaners();
+    const fetchData = async () => {
+      setIsLoading(true); // Start loading before initiating asynchronous operations
+  
+      try {
+        // Create an array of promises
+        const tasks = [
+          getAllCleaners(),
+          getAllInspectors(),
+          getAllTasks(),
+          getRoom(),
+          getCleanerSummary(),
+        ];
+  
+        // Await all promises concurrently
+        await Promise.all(tasks);
+  
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        // Handle any errors here, such as displaying an error message to the user
+      }
+  
+      setIsLoading(false); // End loading after all promises are resolved
     };
-    const getAllActiveInspectors = async () => {
-      await getAllInspectors();
-    };
-    const getEveryTask = async () => {
-      await getAllTasks();
-    };
-    const getRoomCount = async () => {
-      await getRoom();
-    };
-    const getCleanerWorkHistorySummary = async () => {
-      await getCleanerSummary();
-    };
-    getCleanerWorkHistorySummary();
-    getAllActiveCleaners();
-    getAllActiveInspectors();
-    getEveryTask();
-    getRoomCount();
-    setIsLoading(false)
-  }, []);
-
-  console.log('==============AFTER==================', isLoading)
+  
+    fetchData();
+  }, []); // Empty dependency array means this effect runs only once after the initial render
+  
 
   if(isLoading){
     return <Loader/>
@@ -126,7 +125,7 @@ const Default = () => {
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
               primary={roomsCount}
-              secondary="Total Room Counts"
+              secondary="Total Room Count"
               color={theme.palette.primary.main}
               footerData="All Rooms Listed For Cleaning."
               iconPrimary={RoomSharp}

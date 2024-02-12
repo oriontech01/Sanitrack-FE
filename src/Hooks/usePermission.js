@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 const usePermission = () => {
   const navigate = useNavigate();
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const access_token = localStorage.getItem("auth-token");
 
   const [rolePermissions, setRolePermission] = useState([]);
@@ -44,8 +43,8 @@ const usePermission = () => {
 
   const getPermissions = async () => {
     await axios
-      .get(`${BASE_URL}permissions/`, {
-        headers: { Authorization: `Bearer ${access_token}` },
+      .get(`${BASE_URL}permissions`, {
+        headers: { Authorization: `Bearer ${access_token}`},
       })
       .then((response) => {
         setAllPermissions(response.data.data.allPermissions);
@@ -76,7 +75,7 @@ const usePermission = () => {
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
       .then((response) => {
-        navigate("/home/permission");
+        navigate("/dashboard/permissions");
       })
       .catch((error) => {
         if (error.response) {
@@ -101,14 +100,14 @@ const usePermission = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        navigate("/home/permission");
+        navigate("/dashboard/permissions");
       })
       .catch((error) => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            navigate("/home/role");
+            navigate("/dashboard/roles");
             // console.log("An error occured", data.message);
           } else if (status === 403 && data && data.message) {
             navigate("/");
@@ -127,14 +126,14 @@ const usePermission = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        navigate("/home/role");
+        navigate("/dashboard/roles");
       })
       .catch((error) => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            navigate("/home/role");
+            navigate("/dashboard/roles");
             // console.log("An error occured", data.message);
           } else if (status === 403 && data && data.message) {
             navigate("/");

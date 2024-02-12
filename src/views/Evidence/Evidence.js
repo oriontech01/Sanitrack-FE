@@ -17,11 +17,12 @@ const Evidence = () => {
     const fetchData = async () => {
       setLoading(true);
       await getRoom();
+      setLoading(false); // Move setLoading(false) here
     };
-
+  
     fetchData();
-    setLoading(false);
-  }, [getRoom]);
+  }, []); // Dependency array to re-run the effect if getRoom changes
+  
 
   return loading ? (
     <Loader />

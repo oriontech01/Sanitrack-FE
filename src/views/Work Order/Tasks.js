@@ -9,7 +9,7 @@ const Tasks = () => {
   const { getAllTasks, allTasks, deleteTask } = useTask();
   const navigate = useNavigate();
   const theme = useTheme();
-  const [isLoading, setIsLoading] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleNavigate = () => {
     navigate('/dashboard/add-task');
@@ -24,11 +24,20 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true)
-    getAllTasks();
-    setIsLoading(false)
-  }, [getAllTasks]);
-
+    const fetchTasks = async () => {
+      setIsLoading(true); // Start loading
+      try {
+        await getAllTasks(); // Wait for all tasks to be fetched
+      } catch (error) {
+        console.error("Failed to fetch tasks:", error);
+        // Handle any errors here, such as displaying an error message to the user
+      }
+      setIsLoading(false); // End loading after tasks are fetched
+    };
+  
+    fetchTasks();
+  }, []);
+  
   if(isLoading){
     return <Loader/>
   }

@@ -90,7 +90,7 @@ const HistoryDetails = ({ name, detailId, historyData }) => {
       <Box
         display="flex"
         margin={5}
-        justifyContent="space-around"
+        justifyContent="space-between"
         alignItems="center"
         bgcolor="#f3f3f3" // Set background color
         padding={2} // Add padding for better spacing
