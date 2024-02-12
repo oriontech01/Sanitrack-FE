@@ -24,11 +24,11 @@ const Room = () => {
     await deleteRoom(roomId);
   };
 
-  return (
-    <Container maxWidth="lg">
-      {isLoading ? (
-        <Loader />
-      ) : (
+  if (isLoading) {
+    return <Loader />;
+  } else {
+    return (
+      <Container maxWidth="lg">
         <div className="center-me">
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h2" gutterBottom>
@@ -81,9 +81,9 @@ const Room = () => {
             </TableContainer>
           </div>
         </div>
-      )}
-    </Container>
-  );
+      </Container>
+    );
+  }
 };
 
 export default Room;

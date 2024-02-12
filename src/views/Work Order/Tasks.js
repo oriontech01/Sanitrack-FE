@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useTask from '../../Hooks/useTask';
 import { Grid, Card, CardContent, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import Loader from 'component/Loader/Loader';
 
 const Tasks = () => {
   const { getAllTasks, allTasks, deleteTask } = useTask();
   const navigate = useNavigate();
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState()
 
   const handleNavigate = () => {
     navigate('/dashboard/add-task');
@@ -22,8 +24,14 @@ const Tasks = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     getAllTasks();
+    setIsLoading(false)
   }, [getAllTasks]);
+
+  if(isLoading){
+    return <Loader/>
+  }
 
   return (
     <Grid container spacing={2}>

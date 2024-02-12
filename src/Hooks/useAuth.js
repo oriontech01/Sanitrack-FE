@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import JWT from "jsonwebtoken"
 
 const useAuth = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -26,7 +27,10 @@ const useAuth = () => {
       );
 
       console.log(response.data);
-
+      const JWT_KEY = process.env.REACT_APP_JWT_KEY
+      console.log(JWT_KEY)
+      const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
+      console.log(decodedResponse)
       if (response.data.status === true) {
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state

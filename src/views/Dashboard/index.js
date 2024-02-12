@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import useTask from 'Hooks/useTask';
+import useWorkHistory from 'Hooks/useWorkHistory';
+import useRoom from 'Hooks/useRoom';
+import Loader from 'component/Loader/Loader';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Grid, Card, CardHeader, CardContent, Typography, Divider, LinearProgress } from '@mui/material';
+import Charts from './chart/Charts';
 
 //project import
 import SalesLineCard from './SalesLineCard';
@@ -14,12 +19,12 @@ import ReportCard from './ReportCard';
 import { gridSpacing } from 'config.js';
 
 // assets
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import MonetizationOnTwoTone from '@mui/icons-material/MonetizationOnTwoTone';
 import DescriptionTwoTone from '@mui/icons-material/DescriptionTwoTone';
 import ThumbUpAltTwoTone from '@mui/icons-material/ThumbUpAltTwoTone';
-import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
+import { RoomSharp } from '@mui/icons-material';
+import { GroupWorkRounded } from '@mui/icons-material';
+import { SupervisorAccount } from '@mui/icons-material';
 
 // custom style
 const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)(({ theme }) => ({
@@ -38,6 +43,51 @@ const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)
 
 const Default = () => {
   const theme = useTheme();
+  const {
+    activeCleaners,
+    activeInspectors,
+    everyTask,
+    getAllCleaners,
+    getAllInspectors,
+    getAllTasks,
+  } = useTask();
+  const { roomsCount, getRoom } = useRoom();
+  const { getCleanerSummary, cleanerSummary } = useWorkHistory();
+  const [isLoading, setIsLoading] = useState(true)
+
+  console.log('===============BEFORE===============', isLoading)
+
+  useEffect(() => {
+    // setIsLoading(true)
+    console.log('===============DURING===============', isLoading)
+    const getAllActiveCleaners = async () => {
+      await getAllCleaners();
+    };
+    const getAllActiveInspectors = async () => {
+      await getAllInspectors();
+    };
+    const getEveryTask = async () => {
+      await getAllTasks();
+    };
+    const getRoomCount = async () => {
+      await getRoom();
+    };
+    const getCleanerWorkHistorySummary = async () => {
+      await getCleanerSummary();
+    };
+    getCleanerWorkHistorySummary();
+    getAllActiveCleaners();
+    getAllActiveInspectors();
+    getEveryTask();
+    getRoomCount();
+    setIsLoading(false)
+  }, []);
+
+  console.log('==============AFTER==================', isLoading)
+
+  if(isLoading){
+    return <Loader/>
+  }
 
   return (
     <Grid container spacing={gridSpacing}>
@@ -45,47 +95,50 @@ const Default = () => {
         <Grid container spacing={gridSpacing}>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="$30200"
-              secondary="All Earnings"
+              primary={activeCleaners}
+              secondary="All Cleaners"
               color={theme.palette.warning.main}
-              footerData="10% changes on profit"
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
+              footerData="Total Number Of Active Cleaners."
+              iconPrimary={GroupWorkRounded}
+              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="145"
-              secondary="Task"
+              primary={activeInspectors}
+              secondary="All Inspectors"
               color={theme.palette.error.main}
-              footerData="28% task performance"
-              iconPrimary={CalendarTodayTwoTone}
-              iconFooter={TrendingDownIcon}
+              footerData="Total Number Of Active inspectors."
+              iconPrimary={SupervisorAccount}
+              // iconFooter={TrendingDownIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="290+"
-              secondary="Page Views"
+              primary={everyTask}
+              secondary="All Tasks"
               color={theme.palette.success.main}
-              footerData="10k daily views"
+              footerData="All Available Tasks For Cleaners and Inspectors."
               iconPrimary={DescriptionTwoTone}
-              iconFooter={TrendingUpIcon}
+              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="500"
-              secondary="Downloads"
+              primary={roomsCount}
+              secondary="Total Room Counts"
               color={theme.palette.primary.main}
-              footerData="1k download in App store"
-              iconPrimary={ThumbUpAltTwoTone}
-              iconFooter={TrendingUpIcon}
+              footerData="All Rooms Listed For Cleaning."
+              iconPrimary={RoomSharp}
+              // iconFooter={TrendingUpIcon}
             />
+            {/* <Typography variant='h2'>Cleaner Work History Summary</Typography> */}
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+
+      <Charts data={cleanerSummary}/>
+      {/* <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={8} xs={12}>
             <Grid container spacing={gridSpacing}>
@@ -244,7 +297,7 @@ const Default = () => {
             </Card>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

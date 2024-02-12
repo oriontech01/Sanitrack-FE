@@ -14,8 +14,6 @@ const Facilities = () => {
   const googleMapsApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-  console.log(googleMapsApiKey)
-
   const containerStyle = {
     width: "800px",
     height: "400px",

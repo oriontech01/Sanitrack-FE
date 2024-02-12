@@ -61,7 +61,6 @@ const Login = () => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          console.log(values)
           await login(values.username, values.password, setIsLoggedIn); // Pass setIsLoggedIn to login
           setStatus({ success: true });
           setSubmitting(false);

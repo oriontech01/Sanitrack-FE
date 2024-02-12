@@ -13,7 +13,7 @@ const useTask = () => {
 
     const [allTasks, setAllTasks] = useState([])
     // eslint-disable-next-line no-unused-vars
-    const [isLoading, setIsLoading] = useState(false)
+ 
 
     const [activeCleaners, setActiveCleaners] = useState()
     const [activeInspectors, setActiveInspectors] = useState()
@@ -129,17 +129,14 @@ const useTask = () => {
     }
 
     const getAllTasks = async () => {
-        // setIsLoading(true);
         try {
           const response = await axios.get(`${BASE_URL}task/get`, {
             headers: { Authorization: `Bearer ${access_token}` },
           });
-        //   setIsLoading(false);
           console.log("Task retrieved", response.data.data);
           setEveryTask(response.data.data.allTasks.length);
           setAllTasks(response.data.data.allTasks);
         } catch (error) {
-        //   setIsLoading(false);
           if (error.response) {
             const { status, data } = error.response;
             console.log("An error occurred", data.message || "Error");
@@ -247,7 +244,6 @@ const useTask = () => {
         singleTaskDetail, 
         updateTask, 
         responseMessage,
-        isLoading
     }
 }
 export default useTask
