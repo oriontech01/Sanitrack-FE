@@ -43,6 +43,7 @@ const useRole = () => {
 
   // consider this as 'getSTaffRoleById'
   const getStaffRoles = async (staffId) => {
+    // console.log(staffId)
     await axios
       .get(`${BASE_URL}user-role/?userId=${staffId}`, {
         headers: { Authorization: `Bearer ${access_token}` },

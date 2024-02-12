@@ -35,11 +35,11 @@ const Roles = () => {
   };
 
   const handleViewPermissions = async roleId => {
-    navigate(`/dashboard/role/permissions/${roleId}`);
+    navigate(`/dashboard/roles/permissions/${roleId}`);
   };
 
   const handleViewNavigate = async () => {
-    navigate('/dashboard/role/staff');
+    navigate('/dashboard/roles/staff');
   };
 
   if (loading) {

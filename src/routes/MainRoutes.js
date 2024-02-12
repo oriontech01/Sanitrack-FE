@@ -2,10 +2,13 @@ import React, { lazy } from 'react';
 
 // project import
 import Loadable from 'component/Loadable';
-import AssignPermission from 'views/Permissions/AssignPermissions';
-import CreatePermissions from 'views/Permissions/CreatePermissions';
-import CreateRole from 'views/Roles/CreateRole';
-import AssignRole from 'views/Roles/AssignRole';
+const AssignPermission = Loadable(lazy(() => import('views/Permissions/AssignPermissions')));
+const CreatePermissions = Loadable(lazy(() => import('views/Permissions/CreatePermissions')));
+const CreateRole = Loadable(lazy(() => import('views/Roles/CreateRole')));
+const AssignRole = Loadable(lazy(() => import('views/Roles/AssignRole')));
+const StaffRoles = Loadable(lazy(() => import('views/Roles/StaffRoles')));
+const RevokeRole = Loadable(lazy(() => import('views/Roles/RevokeRole')));
+const ViewRolePermissions = Loadable(lazy(() => import('views/Roles/ViewRolePermissions')));
 const Roles = Loadable(lazy(() => import('views/Roles/Roles')));
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
 const Tasks = Loadable(lazy(() => import('views/Work Order/Tasks')));
@@ -69,10 +72,11 @@ const MainRoutes = {
     { path: '/dashboard/permissions/create', element: <CreatePermissions /> },
     { path: '/dashboard/permissions/assign', element: <AssignPermission /> },
     { path: '/dashboard/roles', element: <Roles /> },
-    { path: '/dashboard/roles/create', element: <CreateRole/>},
-    { path: '/dashboard/roles/assign', element: <AssignRole/>},
-    // { path: '/dashboard/roles/permissions/view', element: },
-    { path: '/dashboard/roles/staff/view/:id', element: <CreateRole/>}
+    { path: '/dashboard/roles/create', element: <CreateRole /> },
+    { path: '/dashboard/roles/assign', element: <AssignRole /> },
+    { path: '/dashboard/roles/permissions/:id', element: <ViewRolePermissions /> },
+    { path: '/dashboard/roles/staff', element: <StaffRoles /> },
+    { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> }
   ]
 };
 
