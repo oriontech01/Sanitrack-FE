@@ -10,7 +10,7 @@ const Room = () => {
 
   useEffect(() => {
     getRoom();
-  }, [getRoom]);
+  }, []);
 
   const handleNavigate = () => {
     navigate('/dashboard/add-room');
