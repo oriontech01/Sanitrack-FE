@@ -29,10 +29,13 @@ const useAuth = () => {
       const JWT_KEY = process.env.REACT_APP_JWT_KEY;
       const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
       const loggedInUserRole = decodedResponse.role_id.role_name;
-      console.log(decodedResponse);
-      if (response.data.status === true && loggedInUserRole === 'Admin' && response.data.requiredSelection === false) {
+      // console.log("Decoded----", decodedResponse)
+      // console.log("User Role", loggedInUserRole)
+      // console.log("Response data", response.data)
+      if (response.data.status === true && loggedInUserRole === 'Admin' && response.data.data.requiredSelection === false) {
+      //  if (response.data.status === true  && response.data.requiredSelection === false){
         // Set auth details in localStorage
-        localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
+        localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state  
         localStorage.setItem('auth-token', response.data.data.token);
         localStorage.setItem('name', response.data.data.username);
         localStorage.setItem('id', response.data.data.userId);
