@@ -7,7 +7,6 @@ const SanitrackLandingPage = () => {
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-
   return (
     <Box>
       <Tabs
