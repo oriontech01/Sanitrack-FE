@@ -5,17 +5,7 @@ import Loader from 'component/Loader/Loader';
 
 // MUI and third-party imports
 import { useTheme } from '@mui/material/styles';
-import {
-  Box,
-  Button,
-  FormHelperText,
-  TextField,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton
-} from '@mui/material';
+import { Box, Button, FormHelperText, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
@@ -33,7 +23,7 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = event => {
     event.preventDefault();
   };
 
@@ -61,9 +51,11 @@ const Login = () => {
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          await login(values.username, values.password, setIsLoggedIn); // Pass setIsLoggedIn to login
-          setStatus({ success: true });
-          setSubmitting(false);
+          const res = await login(values.username, values.password, setIsLoggedIn); // Pass setIsLoggedIn to login
+          if (res) {
+            setStatus({ success: true });
+            setSubmitting(false);
+          }
         } catch (error) {
           setStatus({ success: false });
           setErrors({ submit: error.message });
@@ -110,9 +102,7 @@ const Login = () => {
               }
               label="Password"
             />
-            {touched.password && errors.password && (
-              <FormHelperText error>{errors.password}</FormHelperText>
-            )}
+            {touched.password && errors.password && <FormHelperText error>{errors.password}</FormHelperText>}
           </FormControl>
 
           {errors.submit && (

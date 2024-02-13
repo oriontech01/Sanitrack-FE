@@ -4,6 +4,7 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
+import UnAuthorized from 'views/Unauthorized Page/UnAuthorized';
 
 const AuthLogin = Loadable(lazy(() => import('../views/Login')));
 
@@ -16,6 +17,10 @@ const AuthenticationRoutes = {
     {
       path: '/',
       element: <AuthLogin />
+    },
+    {
+      path: '/unauthorized',
+      element: <UnAuthorized/>
     }
   ]
 };

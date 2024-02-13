@@ -15,12 +15,12 @@ const useRoom = () => {
     const access_token = localStorage.getItem('auth-token')
 
     const addRoom = async(formData) => { 
-        console.log("From the useRoom hook", formData)
+        // console.log("From the useRoom hook", formData)
         await axios.post(`${BASE_URL}room/create-room`, formData, {
             headers: {Authorization: `Bearer ${access_token}`} 
             
         }).then((response) => {
-            console.log(response.data.message)
+            // console.log(response.data.message)
             setResponseMessage(response.data.message)
             navigate('/home/room')
         })
@@ -34,7 +34,7 @@ const useRoom = () => {
             setIsLoading(false)
             setAllRooms(response.data.data.allRooms)
             setRoomCount(response.data.data.allRooms.length)
-            console.log("All rooms", response.data.data.allRooms)
+            // console.log("All rooms", response.data.data.allRooms)
         }).catch((error)=> { 
             setIsLoading(false)
             if(error.response){ 

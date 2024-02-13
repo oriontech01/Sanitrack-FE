@@ -110,7 +110,7 @@ const useTask = () => {
         ).then((response) => { 
             // send user back to the task home page 
             navigate('/home/tasks')
-            console.log(response.json())
+            // console.log(response.json())
         }).catch((error) => { 
             if(error.response){ 
                 const { status, data } = error.response;
@@ -133,7 +133,7 @@ const useTask = () => {
           const response = await axios.get(`${BASE_URL}task/get`, {
             headers: { Authorization: `Bearer ${access_token}` },
           });
-          console.log("Task retrieved", response.data.data);
+        //   console.log("Task retrieved", response.data.data);
           setEveryTask(response.data.data.allTasks.length);
           setAllTasks(response.data.data.allTasks);
         } catch (error) {
