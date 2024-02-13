@@ -29,10 +29,9 @@ const Users = Loadable(lazy(() => import('views/Users/Users')));
 const AddUser = Loadable(lazy(() => import('views/Users/AddUser')));
 const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const Permissions = Loadable(lazy(() => import('../views/Permissions/Permissions')));
-
-// const UtilsTypography = Loadable(lazy(() => import('../views/Utils/Typography')));
-
-// const SamplePage = Loadable(lazy(() => import('../views/SamplePage')));
+const LandingPage = Loadable(lazy(() => import('../views/Dashboard/Landing Page/index')));
+const SanitationSchedule = Loadable(lazy(() => import('../views/Dashboard/Facility Sanitation Schedule/index')));
+const CleaningTimer = Loadable(lazy(() => import('../views/Dashboard/Facility Cleaning Timer/index')));
 
 // ==============================|| MAIN ROUTES ||============================== //
 
@@ -42,7 +41,12 @@ const MainRoutes = {
   children: [
     {
       path: '/dashboard',
-      element: <DashboardDefault />
+      element: <LandingPage />,
+      children: [
+        { path: 'facility-overview', element: <DashboardDefault /> },
+        { path: 'sanitation-schedule', element: <SanitationSchedule /> },
+        { path: 'cleaning-timer', element: <CleaningTimer /> }
+      ]
     },
     { path: '/dashboard/tasks', element: <Tasks /> },
     { path: '/dashboard/add-task', element: <AddTask /> },
