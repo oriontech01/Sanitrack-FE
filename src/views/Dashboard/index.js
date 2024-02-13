@@ -10,11 +10,6 @@ import { Grid, Card, CardHeader, CardContent, Typography, Divider, LinearProgres
 import Charts from './chart/Charts';
 
 //project import
-import SalesLineCard from './SalesLineCard';
-import SalesLineCardData from './chart/sale-chart-1';
-
-import RevenuChartCard from './RevenuChartCard';
-import RevenuChartCardData from './chart/revenu-chart';
 import ReportCard from './ReportCard';
 import { gridSpacing } from 'config.js';
 
@@ -89,7 +84,7 @@ const Default = () => {
   }
 
   return (
-    <Grid container spacing={gridSpacing}>
+    <Grid container marginTop={2} spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={3} sm={6} xs={12}>
