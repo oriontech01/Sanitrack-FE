@@ -44,7 +44,7 @@ const MainRoutes = {
       path: '/dashboard',
       element: <LandingPage />,
       children: [
-        { path: 'facility-overview', element: <DashboardDefault /> },
+        { path: '', element: <DashboardDefault /> },
         { path: 'sanitation-schedule', element: <SanitationSchedule /> },
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
