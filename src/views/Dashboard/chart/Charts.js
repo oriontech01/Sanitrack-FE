@@ -82,6 +82,7 @@ function Charts({ data }) {
           <Select
             value={chartType}
             onChange={(e) => setChartType(e.target.value)}
+            style={{border: 'solid 2px red'}}
           >
             <MenuItem value="bar">Bar Chart</MenuItem>
             <MenuItem value="pie">Pie Chart</MenuItem>

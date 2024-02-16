@@ -8,7 +8,7 @@ const WorkHistoryTabs = ({ selectedTab, setSelectedTab }) => {
 
   return (
     <Tabs value={selectedTab} onChange={handleTabChange} indicatorColor="primary" textColor="primary" centered>
-      <Tab label="Rooms" component={Link} to="/dashboard/work-history/rooms" />
+      <Tab label="Rooms" component={Link} to="/dashboard/work-history" />
       <Tab label="Inspectors" component={Link} to="/dashboard/work-history/inspectors" />
       <Tab label="Cleaners" component={Link} to="/dashboard/work-history/cleaners" />
     </Tabs>
