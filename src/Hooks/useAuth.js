@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 
 const useAuth = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+  console.log(BASE_URL)
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 

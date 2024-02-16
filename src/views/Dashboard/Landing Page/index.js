@@ -3,7 +3,7 @@ import { Tab, Tabs, Box, Typography, Paper } from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
 
 const SanitrackLandingPage = () => {
-  const [selectedTab, setSelectedTab] = useState('');
+  const [selectedTab, setSelectedTab] = useState(0);
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };

@@ -80,7 +80,7 @@ function Charts({ data }) {
 
   return (
     <ChartContainer style={{ margin: '0 auto', marginTop: 50}}>
-      <Typography variant="h2" component="h2" gutterBottom style={{ fontWeight: 600, marginBottom: 20 }}>
+      <Typography variant="h4" component="h4" gutterBottom style={{ fontWeight: 600, marginBottom: 20 }}>
         Cleaning Data Overview
       </Typography>
       <ChartControls>
