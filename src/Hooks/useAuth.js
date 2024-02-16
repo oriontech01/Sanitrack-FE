@@ -23,7 +23,8 @@ const useAuth = () => {
         },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept-Language': localStorage.getItem('i18nextLng')
           }
         }
       );
@@ -33,7 +34,7 @@ const useAuth = () => {
       console.log('Decoded----', decodedResponse);
       console.log('User Role', loggedInUserRole);
       console.log('Response data', response.data);
-      if (response.data.status === true &&  loggedInUserRole === 'Admin') {
+      if (response.data.status === true && loggedInUserRole === 'Admin') {
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
         localStorage.setItem('auth-token', response.data.data.token);
@@ -41,7 +42,7 @@ const useAuth = () => {
         localStorage.setItem('id', response.data.data.userId);
         setIsLoggedIn(true); // Update global state via context
         return true;
-      } // I'll add a check here when a user has multiple roles 
+      } // I'll add a check here when a user has multiple roles
       else {
         console.log('User not logged in');
         navigate('/unauthorized');
