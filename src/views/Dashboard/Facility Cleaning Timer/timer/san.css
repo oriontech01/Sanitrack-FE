@@ -23,7 +23,7 @@
     color: #36f;
     font-feature-settings: 'cv04' on, 'cv03' on, 'cv01' on;
     letter-spacing: -0.48px;
-    align-self: start;
+    align-self: flex-start;
     font: 600 24px/120% Inter, -apple-system, Roboto, Helvetica,
         sans-serif;
 }
@@ -37,7 +37,7 @@
 .div-35 {
     color: #475367;
     font-feature-settings: 'cv04' on, 'cv03' on, 'cv01' on;
-    align-self: start;
+    align-self: flex-start;
     margin-top: 4px;
     font: 400 16px/145% Inter, -apple-system, Roboto, Helvetica,
         sans-serif;
@@ -150,7 +150,7 @@
 .div-42 {
     font-feature-settings: 'cv04' on, 'cv03' on, 'cv01' on;
     letter-spacing: -0.32px;
-    align-self: start;
+    align-self: flex-start;
     font: 500 16px Inter, sans-serif;
 }
 
@@ -298,7 +298,7 @@
     display: flex;
     width: 100%;
     padding-right: 13px;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 20px;
     font-size: 12px;
@@ -351,7 +351,7 @@
 .div-55 {
     background-color: #ffea3d;
     border-radius: 50%;
-    align-self: start;
+    align-self: flex-start;
     width: 10px;
     height: 10px;
 }
@@ -625,7 +625,7 @@
     display: flex;
     width: 100%;
     padding-right: 13px;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 20px;
     font-size: 12px;
@@ -678,7 +678,7 @@
 .div-85 {
     background-color: #ffea3d;
     border-radius: 50%;
-    align-self: start;
+    align-self: flex-start;
     width: 10px;
     height: 10px;
 }
@@ -952,7 +952,7 @@
     display: flex;
     width: 100%;
     padding-right: 13px;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 20px;
     font-size: 12px;
@@ -1005,7 +1005,7 @@
 .div-115 {
     background-color: #ffea3d;
     border-radius: 50%;
-    align-self: start;
+    align-self: flex-start;
     width: 10px;
     height: 10px;
 }
