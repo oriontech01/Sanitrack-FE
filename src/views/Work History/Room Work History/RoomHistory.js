@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import HistoryDetails from '../../../component/History Details/HistoryDetails';
 import useRoom from '../../../Hooks/useRoom';
 import useWorkHistory from '../../../Hooks/useWorkHistory';
 import Loader from 'component/Loader/Loader';
+import RoomHistoryDetails from 'component/History Details/RoomHistoryDetails';
 const RoomHistory = () => {
   const { allRooms, getRoom } = useRoom();
   const { getRoomHistory } = useWorkHistory();
@@ -13,7 +13,7 @@ const RoomHistory = () => {
 
   useEffect(() => {
     getRoom();
-  }, [getRoom]);
+  }, []);
 
   useEffect(() => {
     const fetchRoomHistory = async () => {
@@ -34,8 +34,10 @@ const RoomHistory = () => {
     };
 
     fetchRoomHistory();
-  }, [allRooms, getRoomHistory, isFetched]);
+  }, [allRooms, isFetched, setRoomHistory]);
 
+
+  console.log("History Data,", roomHistory)
   return (
     <Box
       sx={{
@@ -49,11 +51,14 @@ const RoomHistory = () => {
       {loading ? (
         <Loader />
       ) : allRooms.length > 0 ? (
-        allRooms.map(room => <HistoryDetails key={room._id} name={room.roomName} detailId={room._id} historyData={roomHistory[room._id]} />)
+        allRooms.map(room => {
+          {/* console.log('UNDEFINED?????????', roomHistory[room._id]); */}
+          return <RoomHistoryDetails key={room._id} name={room.roomName} detailId={room._id} roomHistory={roomHistory[room._id]} />;
+        })
       ) : (
         <Typography variant="body1">No rooms available</Typography>
       )}
-    </Box>
+    </Box> 
   );
 };
 

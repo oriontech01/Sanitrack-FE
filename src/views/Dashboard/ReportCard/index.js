@@ -45,12 +45,12 @@ const ReportCard = ({ primary, secondary, iconPrimary, color, footerData, iconFo
             color: theme.palette.common.white
           }}
         >
-          <Grid item>
+          {/* <Grid item>
             <Typography variant="body2">{footerData}</Typography>
-          </Grid>
-          <Grid item>
+          </Grid> */}
+          {/* <Grid item>
             <Typography variant="body2">{footerIcon}</Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Card>

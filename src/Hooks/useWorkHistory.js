@@ -14,7 +14,7 @@ const useWorkHistory = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log('Room History', res.data.data);
+      console.log("HAS THE DATA BEEN FETCHED?", res.data.data)
       return res.data.data;
     } catch (error) {
       console.error('Error fetching room history:', error);
