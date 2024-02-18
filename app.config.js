@@ -37,7 +37,7 @@ export default {
     ],
     "extra": {
       "eas": {
-        "projectId": "b3cb1efd-5bca-4061-b626-050774444c01"
+        "projectId": "6608f4dd-ca71-4db3-940d-d20eba015ad3"
       },
       cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
       baseUrl: process.env.SANITRACK_API_URI,
@@ -46,6 +46,6 @@ export default {
       jwtKey: process.env.JWT_KEY
       
     },
-    "owner": "test-kali"
+    "owner": "sanitrack-kali"
   }
 }
