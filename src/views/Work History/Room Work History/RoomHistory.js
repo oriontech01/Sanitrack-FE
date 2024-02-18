@@ -3,7 +3,8 @@ import { Box, Typography } from '@mui/material';
 import useRoom from '../../../Hooks/useRoom';
 import useWorkHistory from '../../../Hooks/useWorkHistory';
 import Loader from 'component/Loader/Loader';
-import RoomHistoryDetails from 'component/History Details/RoomHistoryDetails';
+// import RoomHistoryDetails from 'component/History Details/RoomHistoryDetails';
+import HistoryDetails from 'component/History Details/HistoryDetails';
 const RoomHistory = () => {
   const { allRooms, getRoom } = useRoom();
   const { getRoomHistory } = useWorkHistory();
@@ -53,7 +54,7 @@ const RoomHistory = () => {
       ) : allRooms.length > 0 ? (
         allRooms.map(room => {
           {/* console.log('UNDEFINED?????????', roomHistory[room._id]); */}
-          return <RoomHistoryDetails key={room._id} name={room.roomName} detailId={room._id} roomHistory={roomHistory[room._id]} />;
+          return <HistoryDetails key={room._id} name={room.roomName} detailId={room._id} historyData={roomHistory[room._id]} />;
         })
       ) : (
         <Typography variant="body1">No rooms available</Typography>

@@ -17,6 +17,7 @@ const TaskDetails = Loadable(lazy(() => import('views/Work Order/TaskDetails')))
 const Room = Loadable(lazy(() => import('views/Rooms/Rooms')));
 const AddRoom = Loadable(lazy(() => import('views/Rooms/AddRoom')));
 const RoomDetails = Loadable(lazy(() => import('views/Rooms/RoomDetails')));
+const RoomView = Loadable(lazy(() => import('views/Rooms/RoomView')));
 const Messages = Loadable(lazy(() => import('views/Messages/Messages')));
 const Facilities = Loadable(lazy(() => import('views/Facilities/Facilities')));
 const WorkHistory = Loadable(lazy(() => import('views/Work History/WorkHistory')));
@@ -31,7 +32,7 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Dashboard')));
 const Permissions = Loadable(lazy(() => import('../views/Permissions/Permissions')));
 const LandingPage = Loadable(lazy(() => import('../views/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Dashboard/Facility Sanitation Schedule/index')));
-const CleaningTimer = Loadable(lazy(() => import('../views/Dashboard/Facility Cleaning Timer/index')));
+const CleaningTimer = Loadable(lazy(() => import('../views/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
 
 // ==============================|| MAIN ROUTES ||============================== //
 
@@ -43,7 +44,7 @@ const MainRoutes = {
       path: '/dashboard',
       element: <LandingPage />,
       children: [
-        { path: 'facility-overview', element: <DashboardDefault /> },
+        { path: '', element: <DashboardDefault /> },
         { path: 'sanitation-schedule', element: <SanitationSchedule /> },
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
@@ -54,6 +55,7 @@ const MainRoutes = {
     { path: '/dashboard/rooms', element: <Room /> },
     { path: '/dashboard/add-room', element: <AddRoom /> },
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
+    { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
     { path: '/dashboard/messages', element: <Messages /> },
     { path: '/dashboard/facilities', element: <Facilities /> },
     {
