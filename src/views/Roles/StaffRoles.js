@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import useRole from '../../Hooks/useRole';
 import { useNavigate } from 'react-router-dom';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from '@mui/material';
 
 const StaffRoles = () => {
   const navigate = useNavigate();
   const { getRoleForStaff, roleForStaff } = useRole();
   const [userRoles, setUserRoles] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,15 @@ const StaffRoles = () => {
     setUserRoles(uniqueUserRoles);
   }, [roleForStaff]);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page with new number of rows
+  };
+
   const handleRoleRevoke = staffId => {
     navigate(`/dashboard/roles/staff/revoke/${staffId}`);
   };
@@ -36,6 +47,9 @@ const StaffRoles = () => {
   const handleViewPermissions = () => {
     navigate('/dashboard/permissions');
   };
+
+  // Calculate the current slice of user roles to display
+  const currentRoles = userRoles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div className="tab-display">
@@ -54,37 +68,38 @@ const StaffRoles = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {userRoles ? (
-                  userRoles.map(item => (
-                    <TableRow key={item._id}>
-                      <TableCell>{item.username}</TableCell>
-                      <TableCell>{item.role_name.join(', ')}</TableCell>
-                      <TableCell>
-                        <div className="btn-group">
-                          <Button variant="contained" onClick={handleViewPermissions}>
-                            View Permissions
-                          </Button>
-                          <Button
-                            variant="contained"
-                            style={{ margin: 10 }}
-                            onClick={() => {
-                              handleRoleRevoke(item._id);
-                            }}
-                          >
-                            Revoke
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={3}>No roles available</TableCell>
+                {currentRoles.map((item) => (
+                  <TableRow key={item._id}>
+                    <TableCell>{item.username}</TableCell>
+                    <TableCell>{item.role_name.join(', ')}</TableCell>
+                    <TableCell>
+                      <div className="btn-group">
+                        <Button variant="contained" onClick={handleViewPermissions}>
+                          View Permissions
+                        </Button>
+                        <Button
+                          variant="contained"
+                          style={{ margin: 10 }}
+                          onClick={() => handleRoleRevoke(item._id)}
+                        >
+                          Revoke
+                        </Button>
+                      </div>
+                    </TableCell>
                   </TableRow>
-                )}
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            component="div"
+            count={userRoles.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
         </div>
       </div>
     </div>

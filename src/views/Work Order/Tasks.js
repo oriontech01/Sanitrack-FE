@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useTask from '../../Hooks/useTask';
-import { Grid, Card, CardContent, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button, Paper } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button, Paper, TablePagination } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Loader from 'component/Loader/Loader';
 
@@ -10,6 +10,17 @@ const Tasks = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false)
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const handleNavigate = () => {
     navigate('/dashboard/add-task');
@@ -44,56 +55,65 @@ const Tasks = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Card>
-          <CardContent>
-            <Typography variant="h3" gutterBottom>
-              Tasks
-            </Typography>
-            <Button variant="contained" style={{ marginBottom: theme.spacing(2) }} color="primary" onClick={handleNavigate}>
-              Create New Task
-            </Button>
-            <Paper>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Room name</TableCell>
-                    <TableCell>Assigned Supervisor</TableCell>
-                    <TableCell>Assigned Cleaner</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Action</TableCell>
+    <Grid item xs={12}>
+      <Card>
+        <CardContent>
+          <Typography variant="h3" gutterBottom>
+            Tasks
+          </Typography>
+          <Button variant="contained" style={{ marginBottom: '16px' }} color="primary" onClick={handleNavigate}>
+            Create New Task
+          </Button>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Room name</TableCell>
+                  <TableCell>Assigned Supervisor</TableCell>
+                  <TableCell>Assigned Cleaner</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {allTasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((task) => (
+                  <TableRow key={task._id}>
+                    <TableCell>{task.roomName.roomName}</TableCell>
+                    <TableCell>
+                      {`${task.cleanerUsername.username.charAt(0).toUpperCase()}${task.cleanerUsername.username.slice(1)}`}
+                    </TableCell>
+                    <TableCell>
+                      {`${task.inspectorUsername.username.charAt(0).toUpperCase()}${task.inspectorUsername.username.slice(1)}`}
+                    </TableCell>
+                    <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
+                      {task.isSubmitted ? 'Completed' : 'Pending'}
+                    </TableCell>
+                    <TableCell>
+                      <Button color="primary" onClick={() => handleTaskEdit(task.taskId)}>
+                        Edit
+                      </Button>
+                      <Button color="secondary" onClick={() => handleTaskDelete(task._id)}>
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {allTasks.map((task) => (
-                    <TableRow key={task._id}>
-                      <TableCell>{task.roomName.roomName}</TableCell>
-                      <TableCell>
-                        {`${task.cleanerUsername.username.charAt(0).toUpperCase()}${task.cleanerUsername.username.slice(1)}`}
-                      </TableCell>
-                      <TableCell>
-                        {`${task.inspectorUsername.username.charAt(0).toUpperCase()}${task.inspectorUsername.username.slice(1)}`}
-                      </TableCell>
-                      <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
-                        {task.isSubmitted ? 'Completed' : 'Pending'}
-                      </TableCell>
-                      <TableCell>
-                        <Button color="primary" onClick={() => handleTaskEdit(task.taskId)}>
-                          Edit
-                        </Button>
-                        <Button color="secondary" onClick={() => handleTaskDelete(task._id)}>
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Paper>
-          </CardContent>
-        </Card>
-      </Grid>
+                ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={allTasks.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </CardContent>
+      </Card>
     </Grid>
+  </Grid>
   );
 };
 
