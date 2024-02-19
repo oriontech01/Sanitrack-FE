@@ -2,13 +2,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import JWT from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
+import { useCurrentRole } from 'context/UserRoleContext';
 
 const useAuth = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   console.log(BASE_URL)
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
+  const {currentRole, setCurrentRole} = useCurrentRole()
   // No longer manage loginState here; it will be managed by AuthProvider via context
 
   const login = async (username, password, setIsLoggedIn) => {
@@ -31,15 +32,18 @@ const useAuth = () => {
       const JWT_KEY = process.env.REACT_APP_JWT_KEY;
       const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
       const loggedInUserRole = decodedResponse.role_id.role_name;
+      setCurrentRole(loggedInUserRole)
       console.log('Decoded----', decodedResponse);
       console.log('User Role', loggedInUserRole);
       console.log('Response data', response.data);
-      if (response.data.status === true && loggedInUserRole === 'Admin') {
+      console.log("My role buddy", currentRole)
+      if (response.data.status === true) {
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
         localStorage.setItem('auth-token', response.data.data.token);
         localStorage.setItem('name', response.data.data.username);
         localStorage.setItem('id', response.data.data.userId);
+        localStorage.setItem('role', loggedInUserRole)
         setIsLoggedIn(true); // Update global state via context
         return true;
       } // I'll add a check here when a user has multiple roles
