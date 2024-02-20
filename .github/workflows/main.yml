@@ -56,5 +56,5 @@ jobs:
         script: |
           sudo chmod 666 /var/run/docker.sock
           cd Sanitrack
-          git pull origin main
-          docker-compose up -d
+          git pull github main
+          docker-compose up --build -d
