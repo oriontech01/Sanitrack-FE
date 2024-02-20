@@ -35,14 +35,14 @@ const AssignRole = () => {
     if (staffByName?._id?.length > 0) {
       fetchData();
     }
-  }, [staffByName]);
+  }, []);
 
   useEffect(() => {
     if (staffRoles && staffRoles.length > 0) {
       const initialRoles = staffRoles.map(role => role.role_id);
       setSelectedRoles(initialRoles);
     }
-  }, [staffRoles]);
+  }, []);
 
   return (
     <>

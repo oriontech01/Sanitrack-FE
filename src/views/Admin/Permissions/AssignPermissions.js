@@ -14,7 +14,7 @@ const AssignPermission = () => {
     getPermissions();
   }, []);
 
-  console.log('Roles', roles);
+  // console.log('Roles', roles);
 
   const handleRoleChange = e => {
     setSelectedRoleId(e.target.value);

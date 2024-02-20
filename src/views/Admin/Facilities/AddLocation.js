@@ -10,12 +10,13 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
   const [state, setState] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const token = localStorage.getItem("auth-token");
+  const BASE_URL = process.env.REACT_APP_BASE_URL
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/locations/add`,
+        `${BASE_URL}/locations/add`,
         {
           country,
           state,

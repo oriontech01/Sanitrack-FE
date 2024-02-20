@@ -23,7 +23,7 @@ const TaskDetails = () => {
     fetchAllCleaners();
     fetchAllInspectors();
     fetchSingleTask();
-  }, [getAllCleaners, getAllInspectors, getTaskById, taskId]);
+  }, []);
 
   const handleUpdate = async () => {
     await updateTask(taskId, selectedCleaner, selectedInspector, singleTaskDetail.assigned_room._id);

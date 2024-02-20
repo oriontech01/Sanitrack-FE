@@ -35,10 +35,10 @@ const RoomHistory = () => {
     };
 
     fetchRoomHistory();
-  }, [allRooms, isFetched, setRoomHistory]);
+  }, []);
 
 
-  console.log("History Data,", roomHistory)
+  // console.log("History Data,", roomHistory)
   return (
     <Box
       sx={{

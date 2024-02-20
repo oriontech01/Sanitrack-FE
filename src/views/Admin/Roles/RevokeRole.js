@@ -23,14 +23,14 @@ const RevokeRole = () => {
       await getStaffRoles(staffId);
     };
     fetchData();
-  }, [staffId]);
+  }, []);
 
   useEffect(() => {
     if (staffRoles && staffRoles.length > 0) {
       const initialRoles = staffRoles.map((role) => role.role_id);
       setSelectedRoles(initialRoles);
     }
-  }, [staffRoles]);
+  }, []);
 
   const handleRoleChange = (roleId) => {
     if (selectedRoles.includes(roleId)) {

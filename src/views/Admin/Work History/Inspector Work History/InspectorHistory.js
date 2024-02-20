@@ -31,7 +31,7 @@ const InspectorHistory = () => {
     };
 
     fetchInspectorHistory();
-  }, [getAllInspectors, getInspectorHistory, allInspectors]);
+  }, []);
 
   // Conditionally render content within one return statement
   return (

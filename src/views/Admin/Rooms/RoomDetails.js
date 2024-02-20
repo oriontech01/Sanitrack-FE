@@ -31,7 +31,7 @@ const RoomDetails = () => {
 
   useEffect(() => {
     getRoomById(roomId);
-  }, [roomId]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

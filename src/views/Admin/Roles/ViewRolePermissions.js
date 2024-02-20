@@ -15,7 +15,7 @@ const ViewRolePermissions = () => {
       await getPermissionByRole(roleId);
     };
     fetchPermission();
-  }, [roleId]);
+  }, []);
 
   return (
     <div>

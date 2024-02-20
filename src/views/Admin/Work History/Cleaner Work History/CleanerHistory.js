@@ -18,7 +18,7 @@ const CleanerHistory = () => {
       await getAllCleaners();
     };
     fetchAllStaffs();
-  }, [getAllCleaners]);
+  }, []);
 
   useEffect(() => {
     const fetchCleanerHistory = async () => {
@@ -38,7 +38,7 @@ const CleanerHistory = () => {
     };
 
     fetchCleanerHistory();
-  }, [allCleaners, getCleanerHistory, isFetched]);
+  }, []);
 
   return (
     <Box>

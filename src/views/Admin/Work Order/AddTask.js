@@ -12,7 +12,7 @@ const AddTask = () => {
     getUnAssignedRooms();
     getAllCleaners();
     getAllInspectors();
-  }, [getAllCleaners, getAllInspectors, getUnAssignedRooms]);
+  }, []);
 
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {

@@ -13,7 +13,6 @@ const useCleanerHook = () => {
           Authorization: `Bearer ${access_token}`
         }
       });
-      console.log('Cleaner Locations', res.data.data);
       setWorkOrderLocations(res.data.data);
     } catch (error) {
       console.log(error);

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import useStaff from "Hooks/useStaff";
 import useRoles from "Hooks/useRoles";
-import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Select, Typography,InputAdornment, IconButton } from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const AddUser = () => {
   const { addStaff, responseMessage } = useStaff();
   const { getRoles, roles } = useRoles();
-
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState({
@@ -18,13 +20,17 @@ const AddUser = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
       await getRoles();
     };
     fetchData();
-  }, [getRoles]);
+  }, []);
 
   const disableButton = (username, password, email, address, phoneNumber) => {
     return (
@@ -50,6 +56,7 @@ const AddUser = () => {
       role_name: roles.find((role) => role._id === selectedRole)?.role_name
     };
     await addStaff(dataToPass);
+    alert('Added staff Successfully')
   };
 
   return (
@@ -69,17 +76,28 @@ const AddUser = () => {
         </FormControl>
       </Grid>
       <Grid item xs={12}>
-        <FormControl fullWidth>
-          <InputLabel variant="h2">Password:</InputLabel>
-          <Input
-            placeholder="user default password"
-            type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </FormControl>
-      </Grid>
+      <FormControl fullWidth>
+        <InputLabel variant="h2" htmlFor="password">Password:</InputLabel>
+        <Input
+          id="password"
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="user default password"
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleTogglePasswordVisibility}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </Grid>
       <Grid item xs={12}>
         <FormControl fullWidth>
           <InputLabel variant="h2">Email:</InputLabel>

@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Tab, Tabs, Box, Typography, Paper } from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
 import { useCurrentRole } from 'context/UserRoleContext';
-import useCleanerHook from '../../../../Hooks/cleaner/useCleanerHook.js'
+import useCleanerHook from '../../../../Hooks/cleaner/useCleanerHook.js';
 
 const CleanerAndInspectorLandingPage = () => {
-  const {workOrderLocations, getWorkOrderLocationsForCleaner} = useCleanerHook()
+  const { workOrderLocations, getWorkOrderLocationsForCleaner } = useCleanerHook();
 
   useEffect(() => {
-    const fetchCleanerData = async () => {
-        await getWorkOrderLocationsForCleaner()
-    }
-    fetchCleanerData()
-  }, [])
+    const fetchData = async () => {
+      await getWorkOrderLocationsForCleaner();
+    };
+    fetchData();
+  }, []);
 
   return (
     <Box>
@@ -20,11 +20,21 @@ const CleanerAndInspectorLandingPage = () => {
         Welcome {localStorage.getItem('name')}!
       </Typography>
       <Typography variant="body1" marginTop={2}>
-        You are currently logged in as a {localStorage.getItem('role')}. View your dashboard below.
+        You are currently logged in with the role of {localStorage.getItem('role')}. View your dashboard below.
       </Typography>
-      {
-        console.log("LOCATIONS", workOrderLocations)
-      }
+      <Paper sx={{ width: '90%', mt: 5, gap: 10, padding: 5 }}>
+        <Typography variant="h3" color="primary">
+          Work Order Locations
+        </Typography>
+        {workOrderLocations.map((location, index) => {
+          return (
+            <Box key={location.id}>
+              <Typography marginTop={5}>{`${index + 1}. ${location.country}, ${location.state}, ${location.city}`}</Typography>
+            </Box>
+          );
+        })}
+      </Paper>
+      {console.log('LOCATIONS', workOrderLocations)}
     </Box>
   );
 };

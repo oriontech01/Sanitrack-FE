@@ -22,7 +22,7 @@ const Permissions = () => {
     fetchData();
   }, []);
 
-  console.log('Permissions', allPermissions);
+  // console.log('Permissions', allPermissions);
 
   return (
     <Container className="tab-display">
