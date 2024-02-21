@@ -8,6 +8,7 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -100,6 +101,20 @@ export default {
           type: 'item',
           icon: icons['HelpOutlineOutlinedIcon'], // Changed Icon
           url: '/dashboard/evidence' // Assuming URL should be unique and relevant
+        },
+        {
+          id: 'contact',
+          title: 'Contact Us',
+          type: 'item',
+          icon: icons['ContactSupportOutlinedIcon'], // Changed Icon
+          url: '/dashboard/contact' // Assuming URL should be unique and relevant
+        },
+        {
+          id: 'inventory',
+          title: 'Inventory',
+          type: 'item',
+          icon: icons['InventoryOutlinedIcon'], // Changed Icon
+          url: '/dashboard/inventory' // Assuming URL should be unique and relevant
         },
       ]
     },

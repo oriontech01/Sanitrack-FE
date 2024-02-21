@@ -2,6 +2,8 @@ import React, { lazy } from 'react';
 
 // project import
 import Loadable from 'component/Loadable';
+
+
 const AssignPermission = Loadable(lazy(() => import('views/Permissions/AssignPermissions')));
 const CreatePermissions = Loadable(lazy(() => import('views/Permissions/CreatePermissions')));
 const CreateRole = Loadable(lazy(() => import('views/Roles/CreateRole')));
@@ -25,6 +27,8 @@ const CleanerHistory = Loadable(lazy(() => import('views/Work History/Cleaner Wo
 const InspectorHistory = Loadable(lazy(() => import('views/Work History/Inspector Work History/InspectorHistory')));
 const RoomHistory = Loadable(lazy(() => import('views/Work History/Room Work History/RoomHistory')));
 const Evidence = Loadable(lazy(() => import('views/Evidence/Evidence')));
+const Contact = Loadable(lazy(() => import('views/Contact/Contact')));
+const Inventory = Loadable(lazy(() => import('views/Inventory/Inventory')));
 const ViewEvidence = Loadable(lazy(() => import('views/Evidence/ViewEvidence')));
 const Users = Loadable(lazy(() => import('views/Users/Users')));
 const AddUser = Loadable(lazy(() => import('views/Users/AddUser')));
@@ -69,6 +73,8 @@ const MainRoutes = {
     },
     { path: '/dashboard/evidence', element: <Evidence /> },
     { path: '/dashboard/evidence/view/:taskId', element: <ViewEvidence /> },
+    { path: '/dashboard/contact', element: <Contact /> },
+    { path: '/dashboard/inventory', element: <Inventory /> },
     { path: '/dashboard/users', element: <Users /> },
     { path: '/dashboard/add-user', element: <AddUser /> },
     {

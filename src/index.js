@@ -8,11 +8,12 @@ import 'assets/scss/style.scss';
 // third party
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-
+import "./index.css";
 // project import
 import App from 'layout/App';
 import reducer from 'store/reducer';
 import * as serviceWorker from 'serviceWorker';
+import { ItemProvider } from 'context/ItemContext';
 
 const store = configureStore({ reducer });
 
@@ -23,9 +24,11 @@ const root = createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <AuthProvider>
+      <ItemProvider>
       <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
         <App />
       </BrowserRouter>
+      </ItemProvider>
     </AuthProvider>
   </Provider>
 );
