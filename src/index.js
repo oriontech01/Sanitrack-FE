@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from 'context/AuthContext';
+import { RoleContextProvider } from 'context/UserRoleContext';
 // assets
 import 'assets/scss/style.scss';
 
@@ -23,13 +24,15 @@ const root = createRoot(document.getElementById('root'));
 
 root.render(
   <Provider store={store}>
-    <AuthProvider>
-      <ItemProvider>
-      <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
-        <App />
-      </BrowserRouter>
-      </ItemProvider>
-    </AuthProvider>
+
+    <RoleContextProvider>
+      <AuthProvider>
+        <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
+    </RoleContextProvider>
+
   </Provider>
 );
 
