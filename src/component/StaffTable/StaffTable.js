@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useStaff from "../../Hooks/useStaff";
+import useStaff from "Hooks/useStaff";
 import { useState } from "react";
 
 const StaffTable = ({ allStaffs }) => {

@@ -32,7 +32,7 @@ const Login = () => {
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/dashboard'); // Adjust the path as needed
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn]);
 
   if (isLoading) {
     return <Loader />;
