@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 
 // project import
 import Loadable from 'component/Loadable';
+
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const CreatePermissions = Loadable(lazy(() => import('views/Admin/Permissions/CreatePermissions')));
 const CreateRole = Loadable(lazy(() => import('views/Admin/Roles/CreateRole')));
@@ -33,6 +34,7 @@ const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permi
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
+
 
 // ==============================|| MAIN ROUTES ||============================== //
 const MainRoutes = {
@@ -68,6 +70,8 @@ const MainRoutes = {
     },
     { path: '/dashboard/evidence', element: <Evidence /> },
     { path: '/dashboard/evidence/view/:taskId', element: <ViewEvidence /> },
+    { path: '/dashboard/contact', element: <Contact /> },
+    { path: '/dashboard/inventory', element: <Inventory /> },
     { path: '/dashboard/users', element: <Users /> },
     { path: '/dashboard/add-user', element: <AddUser /> },
     {

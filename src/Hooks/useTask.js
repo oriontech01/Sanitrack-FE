@@ -38,7 +38,7 @@ const useTask = () => {
                 } else if(status === 403 && data && data.message){
                     console.log("An error with status 403 occured",data.message)
                     setResponseMessage(data.message)
-                    navigate('/')
+                    // navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -64,7 +64,7 @@ const useTask = () => {
                     console.log("An error with status 403 occured",data.message)
                     setResponseMessage(data.message)
                     // send user back to the login page!
-                    navigate('/')
+                    // navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -89,7 +89,7 @@ const useTask = () => {
                 } else if(status === 403 && data && data.message){
                     console.log("An error with status 403 occured",data.message)
                     setResponseMessage(data.message)
-                    navigate('/')
+                    // navigate('/')
                     // send user back to the login page!
                 } else {
                   console.log('Axios error:', error);
@@ -118,7 +118,7 @@ const useTask = () => {
                     setResponseMessage(data.message)
                     console.log("An error occured",data.message)
                 } else if(status === 403 && data && data.message){
-                    navigate('/')
+                    // navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -144,7 +144,7 @@ const useTask = () => {
     
             if (status === 403) {
               // Use navigate to redirect
-              navigate('/'); // Make sure navigate is passed correctly if used outside of a component
+            //   navigate('/'); // Make sure navigate is passed correctly if used outside of a component
             }
           } else {
             console.log('Network error:', error.message);
@@ -165,7 +165,7 @@ const useTask = () => {
                     setResponseMessage(data.message)
                     console.log("An error occured",data.message)
                 } else if(status === 403 && data && data.message){
-                    navigate('/')
+                    // navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -194,7 +194,7 @@ const useTask = () => {
                     setResponseMessage(data.message)
                     console.log("An error occured",data.message)
                 } else if(status === 403 && data && data.message){
-                    navigate('/')
+                    // navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }
@@ -216,7 +216,7 @@ const useTask = () => {
                     setResponseMessage(data.message)
                     console.log("An error occured",data.message)
                 } else if(status === 403 && data && data.message){
-                    navigate('/')
+                    // navigate('/')
                 } else {
                   console.log('Axios error:', error);
                 }

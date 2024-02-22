@@ -8,6 +8,7 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -20,6 +21,7 @@ const icons = {
   AppsOutlinedIcon: AppsOutlinedIcon,
   ContactSupportOutlinedIcon: ContactSupportOutlinedIcon
 };
+
 
 const currentRole = localStorage.getItem('role');
 
@@ -234,3 +236,4 @@ const inspectorSideNavItems = [
 };
 
 export default renderSideNavItemsByRole
+
