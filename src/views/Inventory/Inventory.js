@@ -58,7 +58,7 @@ let cleaningToolsInventory = [
 ];
 
 const Inventory = () => {
-  const { setInventory } = useItemState(); // Get setIsLoggedIn from context
+  // const { setInventory } = useItemState(); // Get setIsLoggedIn from context
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [component, setComponent] = useState(null);
@@ -133,7 +133,7 @@ const Inventory = () => {
                             value={'edit'}
                             onClick={e => {
                               openModal(e);
-                              setInventory(tools);
+                              // setInventory(tools);
                             }}
                             className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-gray-300 w-full rounded-lg mb-1.5 lg:h-[40px] text-base border-t-2 border-empWhite"
                           >
@@ -154,7 +154,7 @@ const Inventory = () => {
                             value={'view'}
                             onClick={e => {
                               openModal(e);
-                              setInventory(tools);
+                              // setInventory(tools);
                             }}
                             className="text-white flex justify-between   gap-x-2 items-center px-4 py-2 rounded-lg bg-green-500 w-full lg:h-[40px] text-base border-t-2 border-empWhite"
                           >
