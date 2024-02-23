@@ -52,7 +52,7 @@ const Tasks = () => {
   if(isLoading){
     return <Loader/>
   }
-
+console.log(allTasks)
   return (
     <Grid container spacing={2}>
     <Grid item xs={12}>
@@ -77,13 +77,13 @@ const Tasks = () => {
               </TableHead>
               <TableBody>
                 {allTasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((task) => (
-                  <TableRow key={task._id}>
-                    <TableCell>{task.roomName.roomName}</TableCell>
+                  <TableRow key={task?._id}>
+                    <TableCell>{task?.roomName.roomName}</TableCell>
                     <TableCell>
-                      {`${task.cleanerUsername.username.charAt(0).toUpperCase()}${task.cleanerUsername.username.slice(1)}`}
+                      {`${task?.cleanerUsername[0]?.username?.charAt(0).toUpperCase()}${task.cleanerUsername[0].username.slice(1)}`}
                     </TableCell>
                     <TableCell>
-                      {`${task.inspectorUsername.username.charAt(0).toUpperCase()}${task.inspectorUsername.username.slice(1)}`}
+                      {`${task?.inspectorUsername[0]?.username?.charAt(0).toUpperCase()}${task.inspectorUsername[0].username.slice(1)}`}
                     </TableCell>
                     <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
                       {task.isSubmitted ? 'Completed' : 'Pending'}
