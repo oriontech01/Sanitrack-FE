@@ -103,7 +103,7 @@ const Inventory = () => {
                 onClick={e => {
                   openModal(e);
                 }}
-                className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
+                className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 border-empWhite"
               >
                 Add to Inventory
               </button>
