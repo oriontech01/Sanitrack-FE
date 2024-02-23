@@ -22,6 +22,8 @@ const AddRoom = Loadable(lazy(() => import('views/Admin/Rooms/AddRoom')));
 const RoomDetails = Loadable(lazy(() => import('views/Admin/Rooms/RoomDetails')));
 const RoomView = Loadable(lazy(() => import('views/Admin/Rooms/RoomView')));
 const Messages = Loadable(lazy(() => import('views/Admin/Messages/Messages')));
+const Contact = Loadable(lazy(() => import('views/Admin/Contact/Contact')));
+const Inventory = Loadable(lazy(() => import('views/Admin/Inventory/Inventory')));
 const Facilities = Loadable(lazy(() => import('views/Admin/Facilities/Facilities')));
 const WorkHistory = Loadable(lazy(() => import('views/Admin/Work History/WorkHistory')));
 const CleanerHistory = Loadable(lazy(() => import('views/Admin/Work History/Cleaner Work History/CleanerHistory')));

@@ -11,6 +11,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useAuthState } from 'context/AuthContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const theme = useTheme();
@@ -39,6 +41,8 @@ const Login = () => {
   }
 
   return (
+    <>
+     <ToastContainer/>
     <Formik
       initialValues={{
         username: '',
@@ -112,13 +116,14 @@ const Login = () => {
           )}
 
           <Box mt={2}>
-            <Button color="primary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
+            <button className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite" disabled={isSubmitting}   type="submit" >
               Log In
-            </Button>
+            </button>
           </Box>
         </form>
       )}
     </Formik>
+    </>
   );
 };
 

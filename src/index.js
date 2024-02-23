@@ -15,6 +15,7 @@ import App from 'layout/App';
 import reducer from 'store/reducer';
 import * as serviceWorker from 'serviceWorker';
 import { ItemProvider } from 'context/ItemContext';
+import { AuthRolesProvider } from 'context/AuthRolesContext';
 
 const store = configureStore({ reducer });
 
@@ -26,11 +27,15 @@ root.render(
   <Provider store={store}>
 
     <RoleContextProvider>
+      <AuthRolesProvider>
       <AuthProvider>
+        <ItemProvider>
         <BrowserRouter basename={process.env.REACT_APP_BASE_NAME}>
           <App />
         </BrowserRouter>
+        </ItemProvider>
       </AuthProvider>
+      </AuthRolesProvider>
     </RoleContextProvider>
 
   </Provider>
