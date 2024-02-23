@@ -11,8 +11,7 @@ const StaffRoles = Loadable(lazy(() => import('views/Admin/Roles/StaffRoles')));
 const RevokeRole = Loadable(lazy(() => import('views/Admin/Roles/RevokeRole')));
 const ViewRolePermissions = Loadable(lazy(() => import('views/Admin/Roles/ViewRolePermissions')));
 const Roles = Loadable(lazy(() => import('views/Admin/Roles/Roles')));
-const Contact = Loadable(lazy(() => import('../views/Contact/Contact')));
-const Inventory = Loadable(lazy(() => import('../views/Inventory/Inventory')))
+
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
 const Tasks = Loadable(lazy(() => import('views/Admin/Work Order/Tasks')));
 const AddTask = Loadable(lazy(() => import('views/Admin/Work Order/AddTask')));
