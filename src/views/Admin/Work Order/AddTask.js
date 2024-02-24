@@ -73,7 +73,7 @@ const AddTask = () => {
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
 
-  console.log('filter me ooo', filteredItems);
+
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
@@ -82,9 +82,7 @@ const AddTask = () => {
   //   getAllCleaners();
   //   getAllInspectors();
   // }, []);
-  useEffect(() => {
-    console.log('rooms', allCleaners);
-  }, []);
+
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {
     maxHeight: '150px',
@@ -125,7 +123,7 @@ const AddTask = () => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
-    console.log(cleaners);
+  
   };
   const handleSelectInspectors = event => {
     const {
@@ -161,7 +159,7 @@ const AddTask = () => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
-    console.log('eheh', value);
+   
     const filteredItems = allRoomsById?.detail?.detail?.filter(obj => value.includes(obj._id));
     const modifiedItems = filteredItems.map(({ _id, name }) => ({
       roomDetailId: _id,
@@ -184,7 +182,7 @@ const AddTask = () => {
       quantity,
       unit
     }));
-    console.log(modifiedItems); // You can store or further process modifiedItems here
+ 
     setModifiedItem(modifiedItems);
   };
   const handleSubmit = e => {
@@ -203,7 +201,7 @@ const AddTask = () => {
       itemsToClean: filteredItems
     };
     addTask(data);
-    console.log('hello', data);
+
   };
   return (
     <Grid spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -220,6 +218,7 @@ const AddTask = () => {
                     name="location"
                     value={locationSelectId}
                     onClick={event => {
+                      console.log("clicked")
                       event.preventDefault();
                       getLocation();
                     }}

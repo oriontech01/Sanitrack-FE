@@ -30,9 +30,7 @@ const useTask = () => {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-        console.log('====================================');
-        console.log(response);
-        console.log('====================================');
+
         setUnAssignedRooms(response.data.data.roomsNotInTasks);
       })
       .catch(error => {
@@ -172,7 +170,7 @@ const useTask = () => {
         setTimeout(() => {
           navigate('/dashboard/work-order');
           console.log('5 seconds have passed!');
-        }, 5000);
+        }, 3000);
        
         // console.log(response.json())
       })

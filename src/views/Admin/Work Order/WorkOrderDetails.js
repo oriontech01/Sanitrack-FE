@@ -15,7 +15,7 @@ const WorkOrderDetails = () => {
     getUnassignedRoomById(params.locationId);
   }, []);
   const LocationName = localStorage.getItem('locationName');
-  console.log('ya', allUnassignedRoomsById);
+ 
   return (
     <>
       <header className="flex lg:flex-row flex-col justify-between items-center">
@@ -43,6 +43,7 @@ const WorkOrderDetails = () => {
           Add New <FaPlus />
         </Link>
       </header>
+      <p>Kindle select a location before you proceed</p>
       {allUnassignedRoomsById?.length >0 && <p className="text-sm text-gray-400 p-4">Number of Facilities :{allUnassignedRoomsById?.length}</p>}
       <main className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6 lg:mt-10 mt-5">
         {!isLoading &&
