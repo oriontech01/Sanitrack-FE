@@ -8,6 +8,7 @@ const useRoom = () => {
   const [responseMessage, setResponseMessage] = useState();
   const [allRooms, setAllRooms] = useState([]);
   const [allRoomsById, setAllRoomsById] = useState([]);
+  const [allUnassignedRoomsById, setAllUnaassignedRoomsById] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [roomsCount, setRoomCount] = useState();
@@ -77,17 +78,48 @@ const useRoom = () => {
       });
   };
 
-  const getRoomById = async (id) => {
+  const getRoomById = async id => {
     await axios
       .get(`${BASE_URL}/room/get-single?roomId=${id}`, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
         setAllRoomsById(response.data.data);
-        console.log("omah",response.data.data)
+        console.log('omah', response.data.data);
       })
       .catch(error => {
         if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
+  const getUnassignedRoomById = async id => {
+    setIsLoading(true);
+    await axios
+      .get(`${BASE_URL}/room/unassigned-rooms?locationId=${id}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        setAllUnaassignedRoomsById(response.data.data);
+        console.log('omah', response.data.data);
+        if (response.data.data) {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          setIsLoading(false);
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
@@ -171,7 +203,9 @@ const useRoom = () => {
     updateRoomDetail,
     deleteRoom,
     roomsCount,
-    isLoading
+    isLoading,
+    getUnassignedRoomById,
+    allUnassignedRoomsById
   };
 };
 

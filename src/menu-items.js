@@ -47,7 +47,7 @@ const adminSideNavItems = [
         title: 'Work Order',
         type: 'item',
         icon: icons['AccountTreeOutlinedIcon'], // Changed Icon
-        url: '/dashboard/tasks'
+        url: '/dashboard/work-order'
       },
       // Assuming "Rooms" might be a part of site or facility management
       {
