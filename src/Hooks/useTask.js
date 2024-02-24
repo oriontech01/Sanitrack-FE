@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { toast, Flip } from "react-toastify";
 const useTask = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -11,13 +11,13 @@ const useTask = () => {
   const [allInspectors, setAllInspectors] = useState([]);
   const [singleTaskDetail, setSingleTaskDetail] = useState([]);
   const [cleaningItems, setCleaningItems] = useState([]);
-
+  const [taskLoading, setTaskLoading] = useState(false);
   const [allTasks, setAllTasks] = useState([]);
   // eslint-disable-next-line no-unused-vars
 
   const [activeCleaners, setActiveCleaners] = useState();
   const [activeInspectors, setActiveInspectors] = useState();
-  const [activeCleaningItems,setActiveCleaningItems]=useState()
+  const [activeCleaningItems, setActiveCleaningItems] = useState();
   const [everyTask, setEveryTask] = useState();
 
   const navigate = useNavigate();
@@ -117,7 +117,7 @@ const useTask = () => {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-        console.log("dang",response);
+        console.log('dang', response);
         setActiveCleaningItems(response.data.data.allItems.length);
         console.log('aaa====================================');
         console.log(response);
@@ -143,25 +143,54 @@ const useTask = () => {
         }
       });
   };
-  const addTask = async (roomId, cleanerId, inspectorId) => {
+  const addTask = async data => {
+    setTaskLoading(true);
     await axios
       .post(
-        `${BASE_URL}task/create-task`,
-        {
-          inspectorId: inspectorId,
-          cleanerId: cleanerId,
-          roomId: roomId
-        },
+        `${BASE_URL}task/create`,
+
+        data,
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
       .then(response => {
+        console.log(response)
         // send user back to the task home page
-        navigate('/home/tasks');
+        if (response.data) {
+          toast.success("Task Created Successfully", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Flip,
+          });
+          setTaskLoading(false);
+        }
+        setTimeout(() => {
+          navigate('/dashboard/work-order');
+          console.log('5 seconds have passed!');
+        }, 5000);
+       
         // console.log(response.json())
       })
       .catch(error => {
         if (error.response) {
+          setTaskLoading(false);
           const { status, data } = error.response;
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Flip,
+          });
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
             console.log('An error occured', data.message);
@@ -171,6 +200,7 @@ const useTask = () => {
             console.log('Axios error:', error);
           }
         } else {
+          setTaskLoading(false);
           console.log('Network error:', error.message);
         }
       });
@@ -303,7 +333,8 @@ const useTask = () => {
     responseMessage,
     getCleaningItems,
     cleaningItems,
-    activeCleaningItems
+    activeCleaningItems,
+    taskLoading
   };
 };
 export default useTask;

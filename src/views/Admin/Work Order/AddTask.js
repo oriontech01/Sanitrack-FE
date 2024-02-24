@@ -21,6 +21,9 @@ import {
 } from '@mui/material';
 import { log } from 'util';
 import useRoom from 'Hooks/useRoom';
+import useLocation from '../../../Hooks/useLocation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import {Select as ReactSelect} from 'react-select';
 const allLocations = [
   { _id: 1, name: 'Abuja' },
@@ -47,15 +50,33 @@ const AddTask = () => {
     allCleaners,
     allInspectors,
     getCleaningItems,
-    cleaningItems
+    cleaningItems,
+    taskLoading
   } = useTask();
-
-  const { getRoomById, allRoomsById } = useRoom();
+  const { getLocation, allLocations, loading } = useLocation();
+  const { getRoomById, allRoomsById, getUnassignedRoomById, allUnassignedRoomsById } = useRoom();
   const [selectedRoom, setSelectedRoom] = useState('');
   const [selectedCleaner, setSelectedCleaner] = useState('');
   const [selectedInspector, setSelectedInspector] = useState('');
   const [id, setId] = useState('');
+  const [locationSelectId, setLocationSelectId] = useState('');
+  const [cleaners, setCleaners] = React.useState([]);
+  const [cleaningItem, setCleaningItem] = useState([]);
+  const [itesmToClean, setItemsToClean] = useState([]);
+  const [inspector, setAllInspectors] = useState([]);
+  const [clean_hours, setClean_hours] = useState('');
+  const [clean_minutes, setClean_minutes] = useState('');
+  const [preop_hours, setPreop_hours] = useState('');
+  const [preop_minutes, setPreop_minutes] = useState('');
+  const [filteredCleaning, setFilteredCleaning] = useState([]);
+  const [items, setItems] = useState([]);
+  const [modifiedItem, setModifiedItem] = useState([]);
+  const [filteredItems, setFilteredItems] = useState({});
 
+  console.log('filter me ooo', filteredItems);
+  useEffect(() => {
+    setItems(filteredCleaning);
+  }, [filteredCleaning]);
   // useEffect(() => {
   //   getUnAssignedRooms();
   //   getAllCleaners();
@@ -96,14 +117,6 @@ const AddTask = () => {
     'Kelly Snyder'
   ];
 
-  const [cleaners, setCleaners] = React.useState([]);
-  const [cleaningItem, setCleaningItem] = useState([]);
-  const [itesmToClean, setItemsToClean] = useState([]);
-  const [inspector, setAllInspectors] = useState('');
-  const [clean_hours, setClean_hours] = useState();
-  const [clean_minutes, setClean_minutes] = useState();
-  const [preop_hours, setPreop_hours] = useState();
-  const [preop_minutes, setPreop_minutes] = useState();
   const handleSelectCleaners = event => {
     const {
       target: { value }
@@ -114,9 +127,20 @@ const AddTask = () => {
     );
     console.log(cleaners);
   };
+  const handleSelectInspectors = event => {
+    const {
+      target: { value }
+    } = event;
+    setAllInspectors(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
   const handleSelectRoom = e => {
     setId(e.target.value);
-    console.log(e.target.value);
+  };
+  const handleSelectLocation = e => {
+    setLocationSelectId(e.target.value);
   };
   const handleSelectCleaningItem = event => {
     const {
@@ -124,16 +148,10 @@ const AddTask = () => {
     } = event;
     setCleaningItem(typeof value === 'string' ? value.split(',') : value);
 
-    const newValue = cleaningItem.filter((val) => {
-      return cleaningItems.filter((innerVal) => innerVal._id === val);
-    });
-
-
-    
-
+    const newValue = value.filter(val => !cleaningItems.some(innerVal => innerVal._id === val));
+    const filteredObjects = cleaningItems.filter(obj => value.includes(obj._id));
     // setCleaningItem(...newValue);
-    console.log('val', cleaningItem);
-    console.log('eheh', newValue);
+    setFilteredCleaning(filteredObjects);
   };
   const handleSelectItemToCleaning = event => {
     const {
@@ -141,61 +159,142 @@ const AddTask = () => {
     } = event;
     setItemsToClean(
       // On autofill we get a stringified value.
-      typeof value[0] === 'object' ? value.split(',') : value[0]
+      typeof value === 'string' ? value.split(',') : value
     );
-    console.log('eheh', value[0]);
+    console.log('eheh', value);
+    const filteredItems = allRoomsById?.detail?.detail?.filter(obj => value.includes(obj._id));
+    const modifiedItems = filteredItems.map(({ _id, name }) => ({
+      roomDetailId: _id,
+      name
+    }));
+    setFilteredItems(modifiedItems);
   };
+  const storedLocationId = localStorage.getItem('locationId');
+  const storedRoomId = localStorage.getItem('roomId');
 
+  const handleQuantityChange = (index, event) => {
+    const newItems = [...items];
+    newItems[index].quantity = event.target.value;
+    setItems(newItems);
+  };
+  const handleRenameAndStore = () => {
+    const modifiedItems = items.map(({ _id, equipment, quantity, unit }) => ({
+      cleaning_id: _id,
+      item_name: equipment,
+      quantity,
+      unit
+    }));
+    console.log(modifiedItems); // You can store or further process modifiedItems here
+    setModifiedItem(modifiedItems);
+  };
   const handleSubmit = e => {
     e.preventDefault();
 
     const data = {
-      roomId: id,
+      locationId: storedLocationId ? storedLocationId : locationSelectId,
+      roomId: storedRoomId ? storedRoomId : id,
       inspectors: inspector,
       cleaners: cleaners,
       clean_hours: clean_hours,
       clean_minutes: clean_minutes,
       preop_hours: preop_hours,
-      preop_minutes: preop_minutes
+      preop_minutes: preop_minutes,
+      cleaningData: modifiedItem,
+      itemsToClean: filteredItems
     };
-
+    addTask(data);
     console.log('hello', data);
   };
   return (
-    <Grid container spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <Grid spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <ToastContainer />
       <Grid item xs={12} md={10} lg={8}>
-        <Paper elevation={6} sx={{ p: 4, width: '100%', margin: 'auto', flexGrow: 1 }}>
-          <Typography variant="h4" gutterBottom textAlign="center" color="primary">
-            Add Task
-          </Typography>
-          <div className="form-group">
-            <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="location"> Unassigned Rooms</InputLabel>
-              <Select
-                id="location"
-                name="location"
-                value={id}
-                onClick={event => {
-                  getUnAssignedRooms();
-                }}
-                onChange={handleSelectRoom}
-                placeholder="Enter location"
-                label="Location"
-                sx={{ marginBottom: 2 }}
-              >
-                {unAssignedRooms?.map(rooms => {
-                  // const address = `${location.city}, ${location.state}, ${location.country}`;
-                  return (
-                    <MenuItem key={rooms?._id} value={rooms?._id}>
-                      {unAssignedRooms.length === 0 ? 'No rooms availablex' : `${rooms?.roomName}- ${rooms?._id}`}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
-          <div className="form-group">
-            <FormControl variant="outlined" fullWidth>
+        <div>
+          <Grid container spacing={4}>
+            {!storedLocationId && (
+              <Grid item lg={6} sm={6} xs={12}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel htmlFor="location"> Select Location</InputLabel>
+                  <Select
+                    id="location"
+                    name="location"
+                    value={locationSelectId}
+                    onClick={event => {
+                      event.preventDefault();
+                      getLocation();
+                    }}
+                    onChange={handleSelectLocation}
+                    placeholder="Enter location"
+                    label="Location"
+                    sx={{ marginBottom: 2 }}
+                  >
+                    {allLocations?.map(location => {
+                      // const address = `${location.city}, ${location.state}, ${location.country}`;
+                      return (
+                        <MenuItem key={location?._id} value={location?._id}>
+                          {`${location?.city}- ${location?.country}`}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
+            {!storedRoomId && (
+              <Grid item lg={6} sm={6} xs={12}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel htmlFor="location"> Select Facility</InputLabel>
+                  <Select
+                    id="location"
+                    name="location"
+                    value={id}
+                    onClick={event => {
+                      getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
+                    }}
+                    onChange={handleSelectRoom}
+                    placeholder="Enter location"
+                    label="Location"
+                    sx={{ marginBottom: 2 }}
+                  >
+                    {allUnassignedRoomsById?.map(rooms => {
+                      // const address = `${location.city}, ${location.state}, ${location.country}`;
+                      return (
+                        <MenuItem key={rooms?._id} value={rooms?._id}>
+                          {allUnassignedRoomsById?.length === 0 ? 'No rooms available' : `${rooms?.roomName}- ${rooms?._id}`}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            )}
+          </Grid>
+          <Grid container spacing={4}>
+            <Grid item lg={6} sm={6} xs={12}>
+              <div className="form-group">
+                <FormControl className="w-full">
+                  <InputLabel id="inspectors">Inspectors</InputLabel>
+                  <Select
+                    labelId="inspectors"
+                    id="inspectors"
+                    multiple
+                    onClick={event => {
+                      getAllInspectors();
+                    }}
+                    value={inspector}
+                    onChange={handleSelectInspectors}
+                    input={<OutlinedInput label="Cleaner" />}
+                    // renderValue={(selected) => selected.join(', ')}
+                    MenuProps={MenuProps}
+                  >
+                    {allInspectors.map(inspector => (
+                      <MenuItem key={inspector?._id} value={inspector?._id} className="capitalize">
+                        {allInspectors.length === 0 ? 'No inspector available' : `${inspector?.username}-(${inspector?.role_name})`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                {/* <FormControl variant="outlined" fullWidth>
               <InputLabel htmlFor="location"> Inspectors</InputLabel>
               <Select
                 id="inspector"
@@ -218,35 +317,35 @@ const AddTask = () => {
                   );
                 })}
               </Select>
-            </FormControl>
-          </div>
-
-          <FormControl className="w-full">
-            <InputLabel id="cleaners">Cleaners</InputLabel>
-            <Select
-              labelId="cleaners"
-              id="cleaners"
-              multiple
-              onClick={event => {
-                getAllCleaners();
-              }}
-              value={cleaners}
-              onChange={handleSelectCleaners}
-              input={<OutlinedInput label="Cleaner" />}
-              // renderValue={(selected) => selected.join(', ')}
-              MenuProps={MenuProps}
-            >
-              {allCleaners.map(cleaner => (
-                <MenuItem key={cleaner?._id} value={cleaner?._id} className="capitalize">
-                  {allCleaners.length === 0 ? 'No Cleaner available' : `${cleaner?.username}-(${cleaner?.role_name})`}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            </FormControl> */}
+              </div>
+            </Grid>
+            <Grid item lg={6} sm={6} xs={12}>
+              <FormControl className="w-full">
+                <InputLabel id="cleaners">Cleaners</InputLabel>
+                <Select
+                  labelId="cleaners"
+                  id="cleaners"
+                  multiple
+                  onClick={event => {
+                    getAllCleaners();
+                  }}
+                  value={cleaners}
+                  onChange={handleSelectCleaners}
+                  input={<OutlinedInput label="Cleaner" />}
+                  // renderValue={(selected) => selected.join(', ')}
+                  MenuProps={MenuProps}
+                >
+                  {allCleaners.map(cleaner => (
+                    <MenuItem key={cleaner?._id} value={cleaner?._id} className="capitalize">
+                      {allCleaners.length === 0 ? 'No Cleaner available' : `${cleaner?.username}-(${cleaner?.role_name})`}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
           <Box className="my-3">
-            <Typography variant="p" gutterBottom textAlign="left">
-              Cleaning time
-            </Typography>
             <Grid container spacing={4}>
               <Grid item lg={6} sm={6} xs={12}>
                 <Box sx={{ mb: 2 }}>
@@ -299,9 +398,6 @@ const AddTask = () => {
             </Grid>
           </Box>
           <Box className="my-3">
-            <Typography variant="p" gutterBottom textAlign="left">
-              Operational Hours
-            </Typography>
             <Grid container spacing={4}>
               <Grid item lg={6} sm={6} xs={12}>
                 <Box sx={{ mb: 2 }}>
@@ -375,23 +471,53 @@ const AddTask = () => {
               ))}
             </Select>
           </FormControl>
+          <div>
+            {items.map((item, index) => (
+              <div key={item._id} className="flex lg:flex-row flex-col items-center gap-3 my-3">
+                <span className="w-full lg:w-1/3">
+                  {' '}
+                  <p>{item?.equipment}:</p>
+                </span>
+                <span className="w-full lg:w-1/3">
+                  <input
+                    id="number"
+                    type="number"
+                    placeholder="m"
+                    className="border w-full h-10 md:h-10 px-5  md:text-sm rounded-[40px] outline-none focus:border-slate-400 "
+                    name="quan"
+                    value={item.quantity}
+                    onChange={event => handleQuantityChange(index, event)}
+                  />
+                </span>
+
+                <span>
+                  <button
+                    className="text-white flex justify-center   gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
+                    onClick={handleRenameAndStore}
+                  >
+                    Save
+                  </button>
+                </span>
+              </div>
+            ))}
+          </div>
           <FormControl className="w-full my-3">
-            <InputLabel id="cleaners"> Inventory</InputLabel>
+            <InputLabel id="itemstoclean"> Inventory</InputLabel>
             <Select
-              labelId="cleaners"
-              id="cleaners"
+              labelId="itemstoclean"
+              id="itemstoclean"
               multiple
               onClick={event => {
-                getRoomById(id);
+                getRoomById(storedRoomId ? storedRoomId : id);
               }}
               value={itesmToClean}
               onChange={handleSelectItemToCleaning}
-              input={<OutlinedInput label=" Item to Clean" />}
+              input={<OutlinedInput label=" Items to Clean" />}
               // renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
             >
               {allRoomsById?.detail?.detail?.map(item => (
-                <MenuItem key={item?._id} value={item} className="capitalize">
+                <MenuItem key={item?._id} value={item?._id} className="capitalize">
                   {allRoomsById.length === 0 ? 'No Cleaner Item available' : `${item?.name}-(${item?._id})`}
                 </MenuItem>
               ))}
@@ -429,17 +555,17 @@ const AddTask = () => {
             </RadioGroup>
           </FormControl> */}
 
-          <div className='flex justify-center'>
-            <button className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
-              
-              disabled={id && inspector && clean_hours}
+          <div className="flex justify-center">
+            <button
+              className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
+              // disabled={id && inspector && clean_hours}
+              disabled={taskLoading}
               onClick={handleSubmit}
-            
             >
-              Upload Task
+              {taskLoading ? 'Loading...' : 'Upload Task'}
             </button>
           </div>
-        </Paper>
+        </div>
       </Grid>
     </Grid>
   );
