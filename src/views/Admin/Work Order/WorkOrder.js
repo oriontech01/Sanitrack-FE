@@ -11,7 +11,7 @@ const WorkOrder = () => {
   useEffect(() => {
     getLocation();
   }, []);
-  console.log('first', allLocations);
+
   return (
     <>
       <header className="flex  lg:flex-row flex-col justify-between items-center">

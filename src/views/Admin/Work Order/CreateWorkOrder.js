@@ -26,6 +26,7 @@ const CreateWorkOrder = () => {
 
     
       </header>
+      <p className='pl-5'>Kindly select a location before you proceed. Click on input twice to generate data</p>
       <AddTask/>
     </>
   )
