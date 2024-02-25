@@ -23,7 +23,7 @@ const useTask = () => {
   const navigate = useNavigate();
 
   const access_token = localStorage.getItem('auth-token');
-
+const storedId = localStorage.getItem('roomId')
   const getUnAssignedRooms = async () => {
     await axios
       .get(`${BASE_URL}room/unassigned-rooms`, {
@@ -168,8 +168,8 @@ const useTask = () => {
           setTaskLoading(false);
         }
         setTimeout(() => {
-          navigate('/dashboard/work-order');
-          console.log('5 seconds have passed!');
+          navigate(`/dashboard/work-order-facility/${storedId}`);
+        
         }, 3000);
        
         // console.log(response.json())

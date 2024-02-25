@@ -187,7 +187,7 @@ const AddTask = () => {
   };
   const handleSubmit = e => {
     e.preventDefault();
-
+    localStorage.setItem('roomId', storedRoomId ? storedRoomId : id);
     const data = {
       locationId: storedLocationId ? storedLocationId : locationSelectId,
       roomId: storedRoomId ? storedRoomId : id,
