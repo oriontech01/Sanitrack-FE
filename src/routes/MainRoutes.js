@@ -19,6 +19,7 @@ const AddTask = Loadable(lazy(() => import('views/Admin/Work Order/AddTask')));
 const TaskDetails = Loadable(lazy(() => import('views/Admin/Work Order/TaskDetails')));
 const WorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrder')));
 const WorkOrderDetails = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrderDetails')));
+const WorkOrderFacility = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrderFacility')));
 const CreateWorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/CreateWorkOrder')));
 const Room = Loadable(lazy(() => import('views/Admin/Rooms/Rooms')));
 const AddRoom = Loadable(lazy(() => import('views/Admin/Rooms/AddRoom')));
@@ -61,6 +62,7 @@ const MainRoutes = {
     { path: '/dashboard/work-order', element: <WorkOrder /> },
     { path: '/dashboard/create-work-order', element: <CreateWorkOrder /> },
     { path: '/dashboard/work-order/:locationId', element: <WorkOrderDetails /> },
+    { path: '/dashboard/work-order-facility/:workId', element: <WorkOrderFacility /> },
     { path: '/dashboard/add-task', element: <AddTask /> },
     { path: '/dashboard/edit-task/:taskId', element: <TaskDetails /> },
     { path: '/dashboard/rooms', element: <Room /> },

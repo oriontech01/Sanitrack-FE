@@ -9,6 +9,7 @@ const useRoom = () => {
   const [allRooms, setAllRooms] = useState([]);
   const [allRoomsById, setAllRoomsById] = useState([]);
   const [allUnassignedRoomsById, setAllUnaassignedRoomsById] = useState([]);
+  const [singleRoomTask,setSinleRoomTask]=useState([])
   const [isLoading, setIsLoading] = useState(false);
 
   const [roomsCount, setRoomCount] = useState();
@@ -111,7 +112,40 @@ const useRoom = () => {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
+        console.log("firstone",response)
         setAllUnaassignedRoomsById(response.data.data);
+        console.log('omah', response.data.data);
+        if (response.data.data) {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          setIsLoading(false);
+        
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
+  const getSingleRoomTaskById = async id => {
+    setIsLoading(true);
+    await axios
+      .get(`${BASE_URL}/room/task?roomId=${id}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        setSinleRoomTask(response.data.data);
         console.log('omah', response.data.data);
         if (response.data.data) {
           setIsLoading(false);
@@ -131,11 +165,11 @@ const useRoom = () => {
             console.log('Axios error:', error);
           }
         } else {
+          setIsLoading(false)
           console.log('Network error:', error.message);
         }
       });
   };
-
   const updateRoomDetail = async formData => {
     await axios
       .put(`${BASE_URL}room/update-room`, formData, {
@@ -205,7 +239,10 @@ const useRoom = () => {
     roomsCount,
     isLoading,
     getUnassignedRoomById,
-    allUnassignedRoomsById
+    allUnassignedRoomsById,
+    getSingleRoomTaskById,
+    singleRoomTask,
+    
   };
 };
 
