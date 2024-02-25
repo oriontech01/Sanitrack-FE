@@ -73,7 +73,6 @@ const AddTask = () => {
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
 
-
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
@@ -123,7 +122,6 @@ const AddTask = () => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
-  
   };
   const handleSelectInspectors = event => {
     const {
@@ -159,7 +157,7 @@ const AddTask = () => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
-   
+
     const filteredItems = allRoomsById?.detail?.detail?.filter(obj => value.includes(obj._id));
     const modifiedItems = filteredItems.map(({ _id, name }) => ({
       roomDetailId: _id,
@@ -182,11 +180,14 @@ const AddTask = () => {
       quantity,
       unit
     }));
- 
+
     setModifiedItem(modifiedItems);
   };
   const handleSubmit = e => {
     e.preventDefault();
+    const filteredLocationName = allLocations.filter(loc => loc._id === locationSelectId);
+
+    localStorage.setItem('locationName', `${filteredLocationName[0]?.city}- ${filteredLocationName[0]?.country}`);
     localStorage.setItem('roomId', storedRoomId ? storedRoomId : id);
     const data = {
       locationId: storedLocationId ? storedLocationId : locationSelectId,
@@ -201,7 +202,6 @@ const AddTask = () => {
       itemsToClean: filteredItems
     };
     addTask(data);
-
   };
   return (
     <Grid spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -218,7 +218,7 @@ const AddTask = () => {
                     name="location"
                     value={locationSelectId}
                     onClick={event => {
-                      console.log("clicked")
+                      console.log('clicked');
                       event.preventDefault();
                       getLocation();
                     }}
