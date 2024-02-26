@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  sanitrack:
+    container_name: sanitrack_web
+    build: .   
+# image: oriontechmen/sanitrack-frontend
+    ports:
+      - "80:80"

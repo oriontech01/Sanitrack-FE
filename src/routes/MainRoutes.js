@@ -2,6 +2,8 @@ import React, { lazy } from 'react';
 
 // project import
 import Loadable from 'component/Loadable';
+
+
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const CreatePermissions = Loadable(lazy(() => import('views/Admin/Permissions/CreatePermissions')));
 const CreateRole = Loadable(lazy(() => import('views/Admin/Roles/CreateRole')));
@@ -10,15 +12,22 @@ const StaffRoles = Loadable(lazy(() => import('views/Admin/Roles/StaffRoles')));
 const RevokeRole = Loadable(lazy(() => import('views/Admin/Roles/RevokeRole')));
 const ViewRolePermissions = Loadable(lazy(() => import('views/Admin/Roles/ViewRolePermissions')));
 const Roles = Loadable(lazy(() => import('views/Admin/Roles/Roles')));
+
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
 const Tasks = Loadable(lazy(() => import('views/Admin/Work Order/Tasks')));
 const AddTask = Loadable(lazy(() => import('views/Admin/Work Order/AddTask')));
 const TaskDetails = Loadable(lazy(() => import('views/Admin/Work Order/TaskDetails')));
+const WorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrder')));
+const WorkOrderDetails = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrderDetails')));
+const WorkOrderFacility = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrderFacility')));
+const CreateWorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/CreateWorkOrder')));
 const Room = Loadable(lazy(() => import('views/Admin/Rooms/Rooms')));
 const AddRoom = Loadable(lazy(() => import('views/Admin/Rooms/AddRoom')));
 const RoomDetails = Loadable(lazy(() => import('views/Admin/Rooms/RoomDetails')));
 const RoomView = Loadable(lazy(() => import('views/Admin/Rooms/RoomView')));
 const Messages = Loadable(lazy(() => import('views/Admin/Messages/Messages')));
+const Contact = Loadable(lazy(() => import('views/Admin/Contact/Contact')));
+const Inventory = Loadable(lazy(() => import('views/Admin/Inventory/Inventory')));
 const Facilities = Loadable(lazy(() => import('views/Admin/Facilities/Facilities')));
 const WorkHistory = Loadable(lazy(() => import('views/Admin/Work History/WorkHistory')));
 const CleanerHistory = Loadable(lazy(() => import('views/Admin/Work History/Cleaner Work History/CleanerHistory')));
@@ -33,6 +42,7 @@ const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permi
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
+
 
 // ==============================|| MAIN ROUTES ||============================== //
 const MainRoutes = {
@@ -49,6 +59,10 @@ const MainRoutes = {
       ]
     },
     { path: '/dashboard/tasks', element: <Tasks /> },
+    { path: '/dashboard/work-order', element: <WorkOrder /> },
+    { path: '/dashboard/create-work-order', element: <CreateWorkOrder /> },
+    { path: '/dashboard/work-order/:locationId', element: <WorkOrderDetails /> },
+    { path: '/dashboard/work-order-facility/:workId', element: <WorkOrderFacility /> },
     { path: '/dashboard/add-task', element: <AddTask /> },
     { path: '/dashboard/edit-task/:taskId', element: <TaskDetails /> },
     { path: '/dashboard/rooms', element: <Room /> },
@@ -68,6 +82,8 @@ const MainRoutes = {
     },
     { path: '/dashboard/evidence', element: <Evidence /> },
     { path: '/dashboard/evidence/view/:taskId', element: <ViewEvidence /> },
+    { path: '/dashboard/contact', element: <Contact /> },
+    { path: '/dashboard/inventory', element: <Inventory /> },
     { path: '/dashboard/users', element: <Users /> },
     { path: '/dashboard/add-user', element: <AddUser /> },
     {

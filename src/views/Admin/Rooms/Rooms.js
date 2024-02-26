@@ -46,9 +46,9 @@ const Room = () => {
             <Typography variant="h2" gutterBottom>
               All Rooms
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleNavigate}>
+            <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 " onClick={handleNavigate}>
               Create New Room
-            </Button>
+            </button>
           </div>
 
           <div style={{ marginTop: '20px' }}>
@@ -66,19 +66,15 @@ const Room = () => {
                     <TableRow key={item._id}>
                       <TableCell>{item.roomName}</TableCell>
                       <TableCell>{`${item.location.city}, ${item.location.state} ${item.location.country}`}</TableCell>
-                      <TableCell>
-                        <Button variant="contained" color="primary" className="view-btn" onClick={() => handleViewDetails(item._id)}>
+                      <TableCell className='flex gap-x-3'>
+                        <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 " onClick={() => handleViewDetails(item._id)}>
                           View Details
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          style={{ margin: '10px' }}
-                          className="delete-btn"
+                        </button>
+                        <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-black w-auto lg:h-[40px] text-base border-t-2 "
                           onClick={() => handleRoomDelete(item._id)}
                         >
                           Delete
-                        </Button>
+                        </button>
                       </TableCell>
                     </TableRow>
                   ))}
