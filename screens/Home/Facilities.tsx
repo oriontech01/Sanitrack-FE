@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   StatusBar,
   StyleSheet,
@@ -14,11 +15,18 @@ import Select from '../../components/general/Select';
 import Button from '../../components/general/Button';
 import { ArrowLeftIcon, Location } from '../../assets/svg/Index';
 import FacilityList from './components/FacilityList';
+import useGetFacilities from './hooks/useGetFacilities';
 
-export default function Facilities({ navigation }) {
+export default function Facilities({ navigation, route }) {
+  const { location } = route.params;
+  const { getFacilities, facilityList, loadingFacilities } = useGetFacilities(
+    location.id
+  );
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.topBar}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.topBar}>
         <ArrowLeftIcon />
         <Text style={styles.haeding}>Facilities</Text>
       </TouchableOpacity>
@@ -29,18 +37,43 @@ export default function Facilities({ navigation }) {
 
         <Text style={{ marginTop: 10 }}>Work Order Address</Text>
         <Text style={styles.locationName}>
-          28 Aminu Kano Crescent, Wuse 2. Abuja
+          {location.state}, {location.city} {location.country}
         </Text>
       </View>
 
-      <Text style={[styles.haeding, { marginLeft: 0, marginTop: 20 }]}>
-        Facility List
-      </Text>
+      {loadingFacilities && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator color={colors.blue} />
+        </View>
+      )}
 
-      <FacilityList />
-      <FacilityList />
-      <FacilityList />
-      <FacilityList />
+      {!loadingFacilities && facilityList.length > 0 && (
+        <>
+          <Text style={[styles.haeding, { marginLeft: 0, marginTop: 20 }]}>
+            Facility List
+          </Text>
+
+          {facilityList.map((facility, index) => (
+            <FacilityList
+              key={index.toString()}
+              title={facility.roomName}
+              detail={location.city}
+              onPress={() => {
+                navigation.navigate('Rooms', {
+                  location,
+                  facility,
+                  taskId: facility.taskId,
+                });
+              }}
+            />
+          ))}
+        </>
+      )}
     </View>
   );
 }

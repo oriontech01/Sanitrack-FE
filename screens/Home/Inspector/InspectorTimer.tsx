@@ -10,36 +10,35 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/UserContext';
-import AppText from '../../components/AppText';
-import colors from '../../util/colors';
-import Select from '../../components/general/Select';
-import Button from '../../components/general/Button';
-import { ArrowLeftIcon, PlayIcon, StopIcon } from '../../assets/svg/Index';
+import { UserContext } from '../../../context/UserContext';
+import AppText from '../../../components/AppText';
+import colors from '../../../util/colors';
+import Select from '../../../components/general/Select';
+import Button from '../../../components/general/Button';
+import { ArrowLeftIcon, PlayIcon, StopIcon } from '../../../assets/svg/Index';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import RoomItems from './components/RoomItems';
+import RoomItems from '../components/RoomItems';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useGetCleaningItems from './hooks/useGetCleaningItems';
+import useGetCleaningItems from '../hooks/useGetCleaningItems';
 import { Camera, CameraType } from 'expo-camera';
-import useGetFacilityDetails from './hooks/useGetFacilityDetail';
-import useStartTime from './hooks/useStartTime';
-import useUploadTask from './hooks/useUploadTask';
-import useSubmitTask from './hooks/useSubmitTask';
+import useGetFacilityDetails from '../hooks/useGetFacilityDetail';
+import useStartTime from '../hooks/useStartTime';
+import useGetCleanerWork from '../hooks/useGetCleanerWork';
+import InspectorRoomItems from './components/InspectorRoomItems';
 
-export default function MainRoomDetails({ navigation, route }) {
+export default function InspectorTimer({ navigation, route }) {
   const { id, taskId } = route.params;
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
-  const [doneTask, setDoneTask] = useState(undefined);
   const [startedTime, setStartedTime] = useState(0);
+  const [doneTask, setDoneTask] = useState(undefined);
   const { saveStartTimer, confirming } = useStartTime();
   //   const { cleaningItems,task } = useGetCleaningItems(id);
-  const { detailList, loadingDetails } = useGetFacilityDetails(taskId);
+  //   const { detailList, loadingDetails } = useGetCleanerWork(id);
+  const { loadingDetails, task } = useGetFacilityDetails(taskId);
   //   TIMER LOGIC----------------------------------------------------------------
   const [timers, setTimers] = useState([]);
-  const { uploadTask, uploading } = useUploadTask();
-  const { submitTask, submitting } = useSubmitTask();
 
   const startTimer = async () => {
     const startTime = new Date().getTime();
@@ -183,7 +182,7 @@ export default function MainRoomDetails({ navigation, route }) {
     <View style={styles.container}>
       <TouchableOpacity style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Cleaner Timer</Text>
+        <Text style={styles.haeding}>Inspector Timer</Text>
       </TouchableOpacity>
       <View
         style={{
@@ -276,8 +275,8 @@ export default function MainRoomDetails({ navigation, route }) {
 
         {!loadingDetails && (
           <>
-            {detailList.map((det, ind) => (
-              <RoomItems item={det} key={ind.toString()} />
+            {task.map((det, ind) => (
+              <InspectorRoomItems item={det} key={ind.toString()} />
             ))}
           </>
         )}
@@ -285,42 +284,20 @@ export default function MainRoomDetails({ navigation, route }) {
 
       <View style={[styles.buttons, { justifyContent: 'space-between' }]}>
         <Button
-          isLoading={uploading || submitting}
-          onPress={async () => {
-            const taskUploadData = {
-              inputs: detailList.map((det, ind) => {
-                return {
-                  detail_id: det.roomDetailId,
-                  image_path:
-                    'https://www.theeconcierge.com/wp-content/uploads/2017/01/cleaning-bathroom.jpg',
-                };
-              }),
-            };
-
-            const bodyData = {
-              start_time: '00:00:00',
-              end_time: formatTimer(doneTask),
-              roomId: id,
-            };
-            const uploaded = await uploadTask(taskUploadData, taskId);
-            if (uploaded) {
-              const submitted = await submitTask(bodyData, taskId);
-              if (submitted) {
-                await AsyncStorage.removeItem(`done_${id}`);
-                navigation.navigate('Success');
-              }
-            }
-          }}
-          style={styles.submit}
-          label="Submit Task"
-        />
-        <Button
           onPress={() => {
             console.log(id);
           }}
           fontStyle={{ color: colors.blue }}
           style={{ ...styles.submit, backgroundColor: '#E0E8FF' }}
-          label="Next Task"
+          label="View All Images"
+        />
+        <Button
+          onPress={async () => {
+            await AsyncStorage.removeItem(`done_${id}`);
+            navigation.navigate('Success');
+          }}
+          style={styles.submit}
+          label="Approve Task"
         />
       </View>
     </View>

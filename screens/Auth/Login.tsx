@@ -1,4 +1,12 @@
-import { Alert, StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Modal,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, { useContext, useState } from 'react';
 import colors from '../../util/colors';
 import AppText from '../../components/AppText';
@@ -14,13 +22,18 @@ import Constants from 'expo-constants';
 export default function Login({ navigation }) {
   const { username, password, setPassword, setUserName } =
     useContext(AuthContext);
-  const { setUser, setUserRole, userRole } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [token, setToken] = useState('');
 
   const handleLogin = async () => {
     setIsLoading(true);
-    console.log('Base URL', Constants.expoConfig.extra.baseUrl);
+
     try {
       const res = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}login`,
@@ -33,19 +46,86 @@ export default function Login({ navigation }) {
       if (res.status === 200) {
         // Check for status code 200
         Alert.alert('Auth', 'Login successful, redirecting...');
-        console.log('user data', res.data.data);
+
+        if (res.data.data.requiredRoleSelection) {
+          const options = res.data.data.assignedRoles.map((role) => {
+            return { label: role.role_name, value: role.role_id };
+          });
+          setOptions(options);
+          setToken(res.data.data.token);
+          setModalVisible(true);
+          return;
+        }
+
         // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
-        setUser(res.data.data); // Set user object value to the user data gotten from the Backend API
+        setUser({
+          name: res.data.data.username,
+          role: '',
+          id: res.data.data.userId,
+          role_id: res.data.data.role_id,
+          token: res.data.data.token,
+          email: '',
+        }); // Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
-        if (res.data.data.username === 'manager')
-          navigation.navigate('AccessDenied');
-        else if (res.data.data.requiredRoleSelection) {
-          navigation.navigate('RoleSelection');
-        } else {
-          if (res.data.data.username === 'user add') setUserRole('Cleaner');
-          navigation.navigate('Home'); // Take user to WorkOrderSelection page
+        navigation.navigate('Home');
+        // if (res.data.data.username === 'manager')
+        //   navigation.navigate('AccessDenied');
+        // else if (res.data.data.requiredRoleSelection) {
+        //   navigation.navigate('RoleSelection');
+        // } else {
+        //   if (res.data.data.username === 'user add')
+        //     navigation.navigate('Home'); // Take user to WorkOrderSelection page
+        // }
+      } else {
+        Alert.alert('Error', res.data.message);
+      }
+    } catch (error) {
+      setIsLoading(false); // Stop loading indicator if there's an error
+      // Handle error here. Use error.response if you want to access the response
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      Alert.alert('Error', errorMessage);
+      console.error(error.message);
+    }
+  };
+
+  const handleRoleSelection = async () => {
+    setIsLoading2(true);
+    console.log('Base URL', Constants.expoConfig.extra.baseUrl);
+    try {
+      const res = await axios.post(
+        `${Constants.expoConfig.extra.baseUrl}select-role`,
+        {
+          selectedRoleId: selectedValue,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
         }
+      );
+      setIsLoading2(false); // Stop loading indicator when the request is done
+      if (res.status === 200) {
+        // Check for status code 200
+        Alert.alert('Auth', 'Login successful, redirecting...');
+        console.log('user data', res.data.data);
+        setModalVisible(false);
+        setUser({
+          name: res.data.data.username,
+          role: res.data.data.role_name,
+          id: res.data.data.userId,
+          role_id: res.data.data.role_id,
+          token: res.data.data.token,
+          email: '',
+        });
+
+        // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
+        //  Set user object value to the user data gotten from the Backend API
+        setPassword(''); // Clear password field
+        setUserName(''); // Clear username field
+        navigation.navigate('Home');
       } else {
         Alert.alert('Error', res.data.message);
       }
@@ -67,17 +147,7 @@ export default function Login({ navigation }) {
       <AppText style={styles.subHeader}>
         Enter your details to get access to your account
       </AppText>
-      <Select
-        placeHolder="Select Your Role"
-        options={[
-          { label: 'One', value: 'One' },
-          { label: 'Two', value: 'Two' },
-        ]}
-        label="Role"
-        onSelect={(val) => {
-          console.log(val);
-        }}
-      />
+
       <Input
         value={username}
         onChange={(val) => setUserName(val)}
@@ -116,6 +186,29 @@ export default function Login({ navigation }) {
         }}
         label="Create Account"
       />
+
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.overlay}>
+          <View style={styles.selectRole}>
+            <Select
+              options={options}
+              label="Select a role to continue"
+              onSelect={(val) => {
+                setSelectedValue(val.value);
+              }}
+            />
+            <Button
+              isLoading={isLoading2}
+              onPress={handleRoleSelection}
+              style={{
+                marginTop: 'auto',
+                marginBottom: 30,
+              }}
+              label="Proceed"
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -136,5 +229,18 @@ const styles = StyleSheet.create({
   subHeader: {
     color: '#999999',
     fontSize: 15,
+  },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0,0.5 )',
+    flex: 1,
+  },
+  selectRole: {
+    width: '100%',
+    height: Dimensions.get('window').height / 2,
+    backgroundColor: '#fff',
+    marginTop: 'auto',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    padding: 20,
   },
 });

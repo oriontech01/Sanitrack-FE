@@ -1,38 +1,55 @@
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
-import React, { useContext } from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, { useContext, useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
 import AppText from '../../components/AppText';
 import colors from '../../util/colors';
 import Select from '../../components/general/Select';
 import Button from '../../components/general/Button';
+import useGetLocation from './hooks/useGetLocation';
+import FacilityList from './components/FacilityList';
 
 export default function Home({ navigation }) {
-  const { userRole, user } = useContext(UserContext);
+  const user = useContext(UserContext);
+  const { locations, loadingLocation } = useGetLocation();
   return (
     <View style={styles.container}>
-      <AppText style={styles.haeding}>Welcome {user.username}</AppText>
+      <AppText style={styles.haeding}>Welcome {user.name}</AppText>
       <AppText style={styles.subHeader}>
-        Click below to get access to todays tasks
+        Below Are The Locations For Today's Task
       </AppText>
-
-      <Image
-        source={require('../../assets/images/bro.png')}
-        style={styles.image}
-      />
-      <Select
-        onSelect={() => {}}
-        placeHolder="Select Location"
-        label="Select Your Location To Start with"
-        options={[
-          { label: 'Wuse 2', value: 'Wuse' },
-          { label: 'Garki', value: 'Garki' },
-        ]}
-      />
-      <Button
-        onPress={() => navigation.navigate('Facilities')}
-        style={{ marginTop: 40 }}
-        label="Continue"
-      />
+      {loadingLocation && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator color={colors.blue} />
+        </View>
+      )}
+      {!loadingLocation && locations.length > 0 && (
+        <>
+          {locations.map((location, index) => (
+            <FacilityList
+              onPress={() =>
+                navigation.navigate('Facilities', {
+                  location: location,
+                })
+              }
+              title={location.city}
+              detail={location.state}
+              key={index.toString()}
+            />
+          ))}
+        </>
+      )}
     </View>
   );
 }

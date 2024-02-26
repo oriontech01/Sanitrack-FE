@@ -9,28 +9,26 @@ import {
   View,
 } from 'react-native';
 import React, { useContext } from 'react';
-import { UserContext } from '../../context/UserContext';
-import AppText from '../../components/AppText';
-import colors from '../../util/colors';
-import Select from '../../components/general/Select';
-import Button from '../../components/general/Button';
+import { UserContext } from '../../../context/UserContext';
+import AppText from '../../../components/AppText';
+import colors from '../../../util/colors';
+import Select from '../../../components/general/Select';
+import Button from '../../../components/general/Button';
 import {
   ArrowLeftIcon,
   EyeScan,
   Location,
   QrCode,
-} from '../../assets/svg/Index';
-import FacilityList from './components/FacilityList';
-import ItemList from './components/ItemList';
-import useGetFacilityDetails from './hooks/useGetFacilityDetail';
+} from '../../../assets/svg/Index';
+import FacilityList from '../components/FacilityList';
+import ItemList from '../components/ItemList';
+import useGetFacilityDetails from '../hooks/useGetFacilityDetail';
 
-export default function ItemsToClean({ navigation, route }) {
-  // const { location, facility, taskId, id } = route.params;
+export default function InspectorItemsToClean({ navigation, route }) {
   const { params } = route.params;
   const parsedParams = JSON.parse(params);
-  const { location, facility, taskId, id } = parsedParams;
-  const { getDetails, loadingDetails, detailList } =
-    useGetFacilityDetails(taskId);
+  const { location, facility, id } = parsedParams;
+  const { loadingDetails, task, taskId } = useGetFacilityDetails(id);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -53,25 +51,26 @@ export default function ItemsToClean({ navigation, route }) {
         </View>
       )}
 
-      {!loadingDetails && detailList.length > 0 && (
+      {!loadingDetails && task.length > 0 && (
         <>
           <Text style={{ color: '#999999', marginVertical: 10, fontSize: 12 }}>
-            Facilities to clean {`(${detailList.length})`}
+            Facilities to clean {`(${task.length})`}
           </Text>
-          {detailList.map((detail, index) => (
+          {task.map((detail, index) => (
             <ItemList key={index.toString()} item={detail.name} />
           ))}
         </>
       )}
 
       <Button
-        onPress={() => {
-          navigation.navigate('CleaningItems', {
+        onPress={() =>
+          navigation.navigate('InspectorTimer', {
             location,
             facility,
-            taskId: id,
-          });
-        }}
+            taskId,
+            id: facility.roomId,
+          })
+        }
         style={{
           marginTop: 'auto',
           marginBottom: 30,

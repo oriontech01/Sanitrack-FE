@@ -8,7 +8,7 @@
         "developmentClient": true,
         "distribution": "internal",
         "env":{
-          "SANITRACK_API_URI":"https://sanitrack-service.onrender.com/api/"
+          "SANITRACK_API_URI":"http://52.55.254.57:5000/api/"
         }
       },
       "preview": {
@@ -17,7 +17,7 @@
       "production": {
         "env": {
           "CLOUDINARY_API_KEY":"461774348614721",
-          "SANITRACK_API_URI":"https://sanitrack-service.onrender.com/api/",
+          "SANITRACK_API_URI":"http://52.55.254.57:5000/api/",
           "CLOUDINARY_URI":"https://api.cloudinary.com/v1_1/dyh4orev5/upload",
           "CLOUDINARY_CLOUD_NAME":"dyh4orev5",
           "JWT_KEY":"SANITRACK"

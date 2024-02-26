@@ -1,10 +1,12 @@
 import {
   Image,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
@@ -14,8 +16,18 @@ import Select from '../../components/general/Select';
 import Button from '../../components/general/Button';
 import { ArrowLeftIcon, Location } from '../../assets/svg/Index';
 import FacilityList from './components/FacilityList';
+import CleaningItemList from './components/CleaningItemList';
+import ItemList from './components/ItemList';
+import RoomItems from './components/RoomItems';
+import TaskDetails from './components/TaskDetails';
+import useGetCleaningItems from './hooks/useGetCleaningItems';
+import useGetFacilityDetails from './hooks/useGetFacilityDetail';
 
-export default function Summary({ navigation }) {
+export default function Summary({ navigation, route }) {
+  const { location, facility, cleanerItems, taskId } = route.params;
+  const { loadingItems, cleaningItems, task, planned_time } =
+    useGetCleaningItems(facility.roomId);
+  const { detailList, loadingDetails } = useGetFacilityDetails(taskId);
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.topBar}>
@@ -29,18 +41,78 @@ export default function Summary({ navigation }) {
 
         <Text style={{ marginTop: 10 }}>Work Order Address</Text>
         <Text style={styles.locationName}>
-          28 Aminu Kano Crescent, Wuse 2. Abuja
+          {location.city}, {location.state} {location.country}
         </Text>
       </View>
 
-      <Text style={[styles.haeding, { marginLeft: 0, marginTop: 20 }]}>
-        Facility Lis
-      </Text>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        {loadingDetails && (
+          <View
+            style={{
+              height: 300,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator color={colors.blue} />
+          </View>
+        )}
+        {!loadingDetails && (
+          <>
+            <Text
+              style={[
+                styles.haeding,
+                { marginLeft: 0, marginTop: 20, color: '#000' },
+              ]}>
+              Planned Time
+            </Text>
 
-      <FacilityList />
-      <FacilityList />
-      <FacilityList />
-      <FacilityList />
+            <View style={styles.time}>
+              <Text style={{ color: colors.blue }}>Clean</Text>
+              <Text style={{ color: colors.blue }}>{planned_time}</Text>
+            </View>
+
+            <Text
+              style={[
+                styles.haeding,
+                { marginLeft: 0, marginTop: 20, color: '#000' },
+              ]}>
+              Items To Clean
+            </Text>
+            {detailList.length > 0 && (
+              <>
+                {detailList.map((task, index) => (
+                  <ItemList key={index.toString()} item={task.name} />
+                ))}
+              </>
+            )}
+            <Text
+              style={[
+                styles.haeding,
+                { marginLeft: 0, marginTop: 20, color: '#000' },
+              ]}>
+              Cleaning Items
+            </Text>
+            {cleanerItems.map((item, index) => (
+              <ItemList
+                key={index.toString()}
+                item={item.name}
+                title={item.quantityReceived}
+              />
+            ))}
+          </>
+        )}
+
+        <Button
+          onPress={() => {
+            navigation.navigate('MainRoom', {
+              id: facility.roomId,
+              taskId,
+            });
+          }}
+          style={{ marginTop: 20 }}
+          label="Sart Timer"
+        />
+      </ScrollView>
     </View>
   );
 }
@@ -90,5 +162,10 @@ const styles = StyleSheet.create({
   locationName: {
     color: '#AF6D31',
     marginTop: 20,
+  },
+  time: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

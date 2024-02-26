@@ -4,20 +4,16 @@ import colors from '../../../util/colors';
 import { ArrowLeftIcon } from '../../../assets/svg/Index';
 import { useNavigation } from '@react-navigation/native';
 
-export default function FacilityList({ title = '', detail = '', onPress }) {
+export default function TaskDetails({ name, location }) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={onPress}
+      onPress={() => navigation.navigate('Rooms')}
       style={styles.container}>
       <View style={{ width: '80%' }}>
-        <Text style={{ color: colors.blue, marginBottom: 5 }}>{title}</Text>
-        <Text>{detail}</Text>
-      </View>
-
-      <View style={{ transform: [{ rotate: '180deg' }] }}>
-        <ArrowLeftIcon />
+        <Text style={{ color: colors.blue, marginBottom: 5 }}>{name}</Text>
+        <Text>{location}</Text>
       </View>
     </TouchableOpacity>
   );

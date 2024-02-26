@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
+  TextStyle,
 } from 'react-native';
 import Animated, {
   interpolateColor,
@@ -35,6 +36,7 @@ export interface InputProps {
   onBlur?: () => void;
   onFocus?: () => void;
   disabled?: boolean;
+  labelStyle?: TextStyle;
 }
 function Input({
   onChange,
@@ -50,6 +52,7 @@ function Input({
   value,
   IconLeft,
   disabled,
+  labelStyle,
 }: InputProps) {
   const borderWidthValue = useSharedValue(0);
 
@@ -87,7 +90,8 @@ function Input({
       style={[styles.mainContainer, { opacity: disabled ? 0.7 : 1 }, style]}>
       <View style={styles.labelContainer}>
         {label && (
-          <Animated.Text style={[styles.label, reanimatedLabelStyle]}>
+          <Animated.Text
+            style={[styles.label, labelStyle, reanimatedLabelStyle]}>
             {label}
           </Animated.Text>
         )}

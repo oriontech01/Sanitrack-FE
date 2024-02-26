@@ -21,12 +21,13 @@ import {
 } from '../../assets/svg/Index';
 import FacilityList from './components/FacilityList';
 
-export default function Rooms({ navigation }) {
+export default function Rooms({ navigation, route }) {
+  const { location, facility, taskId } = route.params;
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Room A</Text>
+        <Text style={styles.haeding}>{facility.roomName}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -42,7 +43,16 @@ export default function Rooms({ navigation }) {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('ItemsToClean')}
+        onPress={() => {
+          navigation.navigate('ItemsToClean', {
+            params: JSON.stringify({
+              location,
+              facility,
+              taskId,
+              id: taskId,
+            }),
+          });
+        }}
         style={styles.menu}>
         <ImageBackground
           resizeMode="contain"

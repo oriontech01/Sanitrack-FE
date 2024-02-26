@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import Login from "../screens/Login";
@@ -16,17 +16,20 @@ import InspectorTasks from './../components/inspector/InspectorTasks';
 import InspectorRooms from '../components/inspector/InspectorRoom';
 import Login from '../screens/Auth/Login';
 import HomeStack from '../navigations/HomeStack';
+import BottomTabNavigation from '../navigations/BottomTabNavigation';
+import { UserContext } from '../context/UserContext';
 
 const NavigationStack = () => {
+  const user = useContext(UserContext);
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName={user.token ? 'Home' : 'Login'}
         // defaultScreenOptions={Login}
         screenOptions={{ headerShown: false }}>
         <Stack.Screen component={Login} name="Login" />
-        <Stack.Screen component={HomeStack} name="Home" />
+        <Stack.Screen component={BottomTabNavigation} name="Home" />
         <Stack.Screen component={SelectRole} name="RoleSelection" />
         <Stack.Screen
           component={RoleBasedAccessDeniedScreen}

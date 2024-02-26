@@ -112,7 +112,7 @@ export default function Select({
             style={[styles.selectButton, { marginTop: 5 }]}>
             <View
               style={[styles.placeHolder, { justifyContent: 'flex-start' }]}>
-              {option.value == selectedValue ? (
+              {option.value == selectedValue?.value ? (
                 <IconParck />
               ) : (
                 <View style={styles.decoration} />

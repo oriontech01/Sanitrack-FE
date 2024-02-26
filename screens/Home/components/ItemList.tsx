@@ -2,10 +2,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import colors from '../../../util/colors';
 
-export default function ItemList({ item = '' }) {
+export default function ItemList({ item = '', title = '' }) {
   return (
     <View style={styles.container}>
       <Text style={{ color: colors.blue, fontSize: 18 }}>{item}</Text>
+      <Text style={{ color: 'gray', fontSize: 14 }}>{title}</Text>
     </View>
   );
 }

@@ -7,19 +7,31 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import colors from '../../../util/colors';
 import { Camera as CameraIcon, Trash } from '../../../assets/svg/Index';
 import { Camera, CameraType } from 'expo-camera';
 import Button from '../../../components/general/Button';
 
-export default function RoomItems() {
+export default function RoomItems({ item }) {
   const [type, setType] = useState(CameraType.back);
   const [capture, setCapture] = useState(false);
   const [camera, setCamera] = useState(false);
+  const [cameraPermission, setCameraPermission] = useState(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [modalVisible, setModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState(null);
+
+  const permisionFunction = async () => {
+    // here is how you can get the camera permission
+    const cameraPermission = await Camera.requestCameraPermissionsAsync();
+
+    setCameraPermission(cameraPermission.status === 'granted');
+
+    if (cameraPermission.status !== 'granted') {
+      alert('Permission for media access needed.');
+    }
+  };
   const takePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
@@ -35,7 +47,7 @@ export default function RoomItems() {
         { backgroundColor: imageUri ? '#FFF7F0' : 'transparent' },
       ]}>
       <View style={styles.camContainer}>
-        <Text style={{ fontSize: 16, color: colors.blue }}>RoomItems</Text>
+        <Text style={{ fontSize: 16, color: colors.blue }}>{item.name}</Text>
         <TouchableOpacity
           onPress={() => {
             setCapture(true);
@@ -205,3 +217,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
 });
+
+
+
