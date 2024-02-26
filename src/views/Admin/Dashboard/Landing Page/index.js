@@ -41,7 +41,7 @@ const CleanerAndInspectorLandingPage = () => {
 
 const SanitrackLandingPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const { currentRole } = useCurrentRole();
+  const currentRole = localStorage.getItem('role');
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -59,38 +59,40 @@ const SanitrackLandingPage = () => {
     }
   };
 
-  if (currentRole !== 'Admin') {
-    return <CleanerAndInspectorLandingPage />;
-  }
-
   return (
-    <Box>
-      <Box>
-        <Typography variant="h2" color="blue">
-          Welcome {localStorage.getItem('name')}!
-        </Typography>
-        <Typography variant="body1" marginTop={2}>
-          Keep track of all Cleaning Activities, Work Orders, Cleaners and Inspectors.
-        </Typography>
-      </Box>
-      <Box sx={{ width: '100%', bgcolor: 'background.paper', marginTop: 2 }}>
-        <Paper elevation={0} square>
-          <Tabs
-            value={selectedTab}
-            onChange={handleChange}
-            variant="fullWidth"
-            indicatorColor="primary" // Adjust the indicator color to match your design
-            textColor="primary"
-            centered
-          >
-            <Tab label="Facility Overview" component={Link} to="/dashboard/" sx={tabStyle} />
-            <Tab label="Master Sanitation Schedule" component={Link} to="/dashboard/sanitation-schedule" sx={tabStyle} />
-            <Tab label="Facility Cleaning Timer" component={Link} to="/dashboard/cleaning-timer" sx={tabStyle} />
-          </Tabs>
-        </Paper>
-      </Box>
-      <Outlet />
-    </Box>
+    <>
+      {currentRole !== 'Admin' ? (
+        <CleanerAndInspectorLandingPage />
+      ) : (
+        <Box>
+          <Box>
+            <Typography variant="h2" color="blue">
+              Welcome {localStorage.getItem('name')}!
+            </Typography>
+            <Typography variant="body1" marginTop={2}>
+              Keep track of all Cleaning Activities, Work Orders, Cleaners and Inspectors.
+            </Typography>
+          </Box>
+          <Box sx={{ width: '100%', bgcolor: 'background.paper', marginTop: 2 }}>
+            <Paper elevation={0} square>
+              <Tabs
+                value={selectedTab}
+                onChange={handleChange}
+                variant="fullWidth"
+                indicatorColor="primary" // Adjust the indicator color to match your design
+                textColor="primary"
+                centered
+              >
+                <Tab label="Facility Overview" component={Link} to="/dashboard/" sx={tabStyle} />
+                <Tab label="Master Sanitation Schedule" component={Link} to="/dashboard/sanitation-schedule" sx={tabStyle} />
+                <Tab label="Facility Cleaning Timer" component={Link} to="/dashboard/cleaning-timer" sx={tabStyle} />
+              </Tabs>
+            </Paper>
+          </Box>
+          <Outlet />
+        </Box>
+      )}
+    </>
   );
 };
 

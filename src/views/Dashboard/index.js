@@ -42,25 +42,25 @@ const Default = () => {
   const { roomsCount, getRoom } = useRoom();
   const { getCleanerSummary, cleanerSummary } = useWorkHistory();
   const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    setIsLoading(true); // Start loading before initiating asynchronous operations
+
+    try {
+      // Create an array of promises
+      const tasks = [getAllCleaners(), getAllInspectors(), getAllTasks(), getRoom(), getCleanerSummary()];
+
+      // Await all promises concurrently
+      await Promise.all(tasks);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+      // Handle any errors here, such as displaying an error message to the user
+    }
+
+    setIsLoading(false); // End loading after all promises are resolved
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true); // Start loading before initiating asynchronous operations
-
-      try {
-        // Create an array of promises
-        const tasks = [getAllCleaners(), getAllInspectors(), getAllTasks(), getRoom(), getCleanerSummary()];
-
-        // Await all promises concurrently
-        await Promise.all(tasks);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-        // Handle any errors here, such as displaying an error message to the user
-      }
-
-      setIsLoading(false); // End loading after all promises are resolved
-    };
-
+    
     fetchData();
   }, []); // Empty dependency array means this effect runs only once after the initial render
 
