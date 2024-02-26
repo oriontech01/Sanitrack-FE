@@ -7,8 +7,9 @@ const SpeedometerValue = ({ cleanTime }) => {
       <ReactSpeedometer
         width={300}
         needleHeightRatio={0.7}
+        segments={3}
         value={cleanTime} // Pass cleanTime directly as the value
-        customSegmentStops={[0, 25, 75, 100]}
+        customSegmentStops={[0, 50,75, 100]}
         segmentColors={['#ff0505', '#ffff05', '#138808']}
         customSegmentLabels={[
           {

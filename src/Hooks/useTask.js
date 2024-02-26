@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast, Flip } from "react-toastify";
+import { toast, Flip } from 'react-toastify';
 const useTask = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -23,14 +23,13 @@ const useTask = () => {
   const navigate = useNavigate();
 
   const access_token = localStorage.getItem('auth-token');
-const storedId = localStorage.getItem('roomId')
+  const storedId = localStorage.getItem('roomId');
   const getUnAssignedRooms = async () => {
     await axios
       .get(`${BASE_URL}room/unassigned-rooms`, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-
         setUnAssignedRooms(response.data.data.roomsNotInTasks);
       })
       .catch(error => {
@@ -151,27 +150,26 @@ const storedId = localStorage.getItem('roomId')
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
       .then(response => {
-        console.log(response)
+        console.log(response);
         // send user back to the task home page
         if (response.data) {
-          toast.success("Task Created Successfully", {
-            position: "top-center",
+          toast.success('Task Created Successfully', {
+            position: 'top-center',
             autoClose: 5000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "colored",
-            transition: Flip,
+            theme: 'colored',
+            transition: Flip
           });
           setTaskLoading(false);
         }
         setTimeout(() => {
           navigate(`/dashboard/work-order-facility/${storedId}`);
-        
         }, 3000);
-       
+
         // console.log(response.json())
       })
       .catch(error => {
@@ -179,15 +177,15 @@ const storedId = localStorage.getItem('roomId')
           setTaskLoading(false);
           const { status, data } = error.response;
           toast.error(data.message, {
-            position: "top-center",
+            position: 'top-center',
             autoClose: 5000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "colored",
-            transition: Flip,
+            theme: 'colored',
+            transition: Flip
           });
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
