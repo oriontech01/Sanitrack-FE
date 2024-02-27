@@ -21,6 +21,8 @@ import ViewInventory from './ViewInventory';
 import EditInventory from './EditInventory';
 import ModalComponent from 'component/Modals/Modal';
 import { useItemState } from 'context/ItemContext';
+import useItems from 'Hooks/useItems';
+import { useEffect } from 'react';
 let cleaningToolsInventory = [
   {
     name: 'Bleach',
@@ -63,6 +65,12 @@ const Inventory = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [component, setComponent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { allInventory, getInventory, inventoryLoading } = useItems();
+
+  useEffect(() => {
+    getInventory();
+  }, []);
+  console.log('fnfsndjfnadj', allInventory);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -107,75 +115,86 @@ const Inventory = () => {
               >
                 Add to Inventory
               </button>
-              <Paper>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Index</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell>Quantity</TableCell>
-                      <TableCell>Weight</TableCell>
-                      <TableCell>Action</TableCell>
-                      <TableCell>View</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {cleaningToolsInventory.map((tools, i) => (
-                      <TableRow key={tools.id}>
-                        <TableCell>{i + 1}</TableCell>
-                        <TableCell>{tools.name}</TableCell>
-                        <TableCell>{tools.description}</TableCell>
-                        <TableCell>{tools.quantity}</TableCell>
-                        <TableCell>{tools.unit}</TableCell>
-                        <TableCell>
-                          <button
-                            value={'edit'}
-                            onClick={e => {
-                              openModal(e);
-                              setInventory(tools);
-                            }}
-                            className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-gray-300 w-full rounded-lg mb-1.5 lg:h-[40px] text-base border-t-2 border-empWhite"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            value={'delete'}
-                            onClick={e => {
-                              openModal(e);
-                            }}
-                            className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 rounded-lg bg-red-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite"
-                          >
-                            Delete
-                          </button>
-                        </TableCell>
-                        <TableCell>
-                          <button
-                            value={'view'}
-                            onClick={e => {
-                              openModal(e);
-                              setInventory(tools);
-                            }}
-                            className="text-white flex justify-between   gap-x-2 items-center px-4 py-2 rounded-lg bg-green-500 w-full lg:h-[40px] text-base border-t-2 border-empWhite"
-                          >
-                            View
-                            <FaEye />
-                          </button>
-                        </TableCell>
+              {(allInventory && !inventoryLoading) && (
+                <Paper>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Index</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Description</TableCell>
+                        <TableCell>Quantity</TableCell>
+                        <TableCell>Unit</TableCell>
+                        <TableCell>Pairs</TableCell>
+                        <TableCell>Action</TableCell>
+
+                        <TableCell>View</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={cleaningToolsInventory.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-              </Paper>
+                    </TableHead>
+                    <TableBody>
+                      {allInventory.map((item, i) => (
+                        <TableRow key={item._id}>
+                          <TableCell>{i + 1}</TableCell>
+                          <TableCell>{item.equipment}</TableCell>
+                          <TableCell>{item.description}</TableCell>
+                          <TableCell>{item.quantity}</TableCell>
+                          <TableCell>{item.unit}</TableCell>
+                          <TableCell>{item.pair ? 'Pairs' : 'Single'}</TableCell>
+                          <TableCell>
+                            <button
+                              value={'edit'}
+                              onClick={e => {
+                                openModal(e);
+                                setInventory(item);
+                              }}
+                              className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-gray-300 w-full rounded-lg mb-1.5 lg:h-[40px] text-base border-t-2 border-empWhite"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              value={'delete'}
+                              onClick={e => {
+                                openModal(e);
+                                setInventory(item);
+                              }}
+                              className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 rounded-lg bg-red-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite"
+                            >
+                              Delete
+                            </button>
+                          </TableCell>
+                          <TableCell>
+                            <button
+                              value={'view'}
+                              onClick={e => {
+                                openModal(e);
+                                setInventory(item);
+                              }}
+                              className="text-white flex justify-between   gap-x-2 items-center px-4 py-2 rounded-lg bg-green-500 w-full lg:h-[40px] text-base border-t-2 border-empWhite"
+                            >
+                              View
+                              <FaEye />
+                            </button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={allInventory.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </Paper>
+              )}
+              {inventoryLoading && (
+                <div className="loader bg-[#fff]">
+                  <div className="justify-content-center jimu-primary-loading"></div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </Grid>

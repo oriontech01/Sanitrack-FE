@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, Input, InputLabel, TextField, Typography } from '@mui/material';
 import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
 import { IoClose } from "react-icons/io5";
 import { useItemState } from 'context/ItemContext';
@@ -37,58 +37,49 @@ const EditInventory = () => {
           Add Inventory Item
         </Typography>
         <form>
-          <Grid container spacing={4}>
+        <Grid container spacing={4}>
             <Grid item lg={6} sm={6} xs={12}>
-              <Box sx={{ mb: 2 }}>
-                <TextField fullWidth label=" Name" variant="outlined" value={inventory?.name}/>
+              <Box>
+                <FormControl fullWidth>
+                  <InputLabel variant="h2">Name:</InputLabel>
+                  <Input placeholder="Name" onChange={handleChange } value={inventory.equipment} name="name" variant="outlined" />
+                </FormControl>
               </Box>
             </Grid>
             <Grid item lg={6} sm={6} xs={12}>
-              <Box sx={{ mb: 2 }}>
-                <TextField fullWidth label="Quantity" variant="outlined" value={inventory.quantity} />
+              <Box>
+                <FormControl fullWidth>
+                  <InputLabel variant="h2">Quantity:</InputLabel>
+                  <Input placeholder="100" onChange={handleChange} name="quantity" value={inventory.quantity}  type="number" variant="outlined" />
+                </FormControl>
               </Box>
             </Grid>
           </Grid>
+          <Grid container spacing={4}>
+            <Grid item lg={6} sm={6} xs={12}>
+              <Box>
+                <FormControl fullWidth>
+                  <InputLabel variant="h2">Type:</InputLabel>
+                  <Input placeholder="consumable" onChange={handleChange} value={inventory.type}  name="type" type="text" variant="outlined" />
+                </FormControl>
+              </Box>
+            </Grid>
+            <Grid item lg={6} sm={6} xs={12}>
+              <div className="flex items-center space-x-3 py-6">
+                <input
+                  type="checkbox"
+                  className="border-gray-300 rounded h-5 w-5"
+                  onChange={e => setPairs(e.target.checked)}
+                  name="pairs"
+                  value={inventory.pairs}
+                />
 
-          <div className="flex items-center justify-between max-md:flex-col gap-3 w-full">
-            <div className="flex items-center space-x-3 py-3">
-              <input
-                type="radio"
-                value="kilos"
-                checked={selectedValue === 'kilos'}
-                onChange={handleChange}
-                className="border-gray-300 rounded h-5 w-5"
-              />
-
-              <div className="flex flex-col">
-                <h1 className="text-gray-700 font-medium leading-none">Kilograms</h1>
+                <div className="flex flex-col">
+                  <h1 className="text-gray-700 font-medium leading-none">Pairs</h1>
+                </div>
               </div>
-            </div>
-
-            <div className="flex items-center space-x-3 py-3">
-              <input
-                type="radio"
-                value="litres"
-                checked={selectedValue === 'liters'}
-                onChange={handleChange}
-                className="border-gray-300 rounded h-5 w-5"
-              />
-
-              <div className="flex flex-col">
-                <h1 className="text-gray-700 font-medium leading-none">Litres</h1>
-              </div>
-            </div>
-          </div>
-          {selectedValue === 'kilos' && (
-            <Box sx={{ mb: 2 }}>
-              <TextField fullWidth label="Value in Kilos" variant="outlined" value={inventory.unit}/>
-            </Box>
-          )}
-           {selectedValue === 'litres' && (
-            <Box sx={{ mb: 2 }}>
-              <TextField fullWidth label="Value in Litres" variant="outlined" value={inventory.unit} />
-            </Box>
-          )}
+            </Grid>
+          </Grid>
            {imagePreview && (
               <Box sx={{ mb: 2 }}>
               <div className="relative">
@@ -154,7 +145,7 @@ const EditInventory = () => {
               className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite"
               href="/contact"
             >
-             Add Item
+             Edit Item
             </button>{' '}
           </div>
         </form>

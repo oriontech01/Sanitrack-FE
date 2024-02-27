@@ -24,16 +24,16 @@ const ViewInventory = () => {
                </h3>
                <img
                 
-                src={inventory.img}
+                src={inventory.image}
                 alt="Preview"
                 className="w-full h-40 object-cover"
               />
                <div className="mt-2">
-                <p className="text-base leading-5 text-gray-500">{`Name: ${inventory.name}`}</p>
+                <p className="text-base leading-5 text-gray-500">{`Name: ${inventory.equipment}`}</p>
                 <p className="text-base leading-5 text-gray-500">{`Description: ${inventory.description}`}</p>
                 <p className="text-base leading-5 text-gray-500">{`Qunatity: ${inventory.quantity}`}</p>
                 <p className="text-base leading-5 text-gray-500">{`Weight: ${inventory.unit}`}</p>
-                 
+                <p className="text-base leading-5 text-gray-500">{inventory.pairs ?"This item comes in pairs":""}</p>
                </div>
              </div>
            </div>

@@ -19,7 +19,7 @@ const ModalComponent = ({ isOpen, onClose, children, setIsModalOpen }) => {
 
       {isOpen && (
 
-          <div className="fixed z-[1000] overflow-y-auto top-20 w-full left-0 " id="modal">
+          <div className="fixed z-[1000] overflow-y-auto top-10 w-full left-0 " id="modal">
           <div className="flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div className="fixed inset-0 transition-opacity">
               <div className="absolute inset-0 bg-gray-500 opacity-75 z-[1000]" onClick={closeModal}/>
