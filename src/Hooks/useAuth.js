@@ -82,7 +82,7 @@ const useAuth = () => {
         const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
         const loggedInUserRole = decodedResponse.role_id.role_name;
        
-        setCurrentRole(loggedInUserRole);
+        // setCurrentRole(loggedInUserRole);
         console.log("rl",loggedInUserRole)
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
