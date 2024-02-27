@@ -1,22 +1,35 @@
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 
-const ProgressBar = () => {
-  return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <CircularProgressbar
-        value={90}
-        text={'90%'}
-        strokeWidth={20}
-        styles={buildStyles({
-          textColor: '#162ee144',
-          pathColor: '#3366FF',
-          trailColor: '#5EDD3E',
-          fontSize: '5px'
-        })}
-      />
-    </div>
-  );
-};
+import React from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
-export default ProgressBar;
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+export default function ProgressBar({ stats }) {
+  const data = {
+    datasets: [
+      {
+        label: "User Ratio",
+        data: [90, 10],
+        backgroundColor: ["#5edd3e", "#3366ff"],
+
+        borderWidth: 1,
+      },
+    ],
+    labels: ["Active  ", "Registered"],
+  };
+  const options = {
+    plugins: {
+      legend: {
+        position: "bottom",
+        rtl: true,
+        labels: {
+          // usePointStyle: true,
+          // pointStyle: 'circle',
+          padding: 20,
+        },
+      },
+    },
+  };
+  return <Doughnut data={data} options={options} height={80} />;
+}
