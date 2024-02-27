@@ -20,7 +20,7 @@ const useGetFacilityDetails = (id) => {
     try {
       console.log('start', api, id);
       const response = await axios.get(
-        `${Constants.expoConfig.extra.baseUrl}${api}/room-task?taskId=65da1e912692779b1e61ca22`,
+        `${Constants.expoConfig.extra.baseUrl}${api}/room-task?taskId=${id}`,
         {
           headers: {
             Authorization: token,

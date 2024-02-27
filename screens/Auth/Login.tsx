@@ -56,11 +56,11 @@ export default function Login({ navigation }) {
           setModalVisible(true);
           return;
         }
-
+        console.log(res.data.data);
         // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser({
           name: res.data.data.username,
-          role: '',
+          role: res.data.data.role_name,
           id: res.data.data.userId,
           role_id: res.data.data.role_id,
           token: res.data.data.token,

@@ -3,17 +3,16 @@ import useLoading from '../../general_hooks/useLoading';
 import { UserContext } from '../../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
-const useConfirmCleaningItems = () => {
+const useApproveTask = () => {
   const { loading, startLoading, stopLoading } = useLoading();
 
   const { token } = useContext(UserContext);
-  const confirmCleaningItems = async (bodyData, id) => {
+  const approveTask = async (bodyData, id) => {
     startLoading();
-
+    console.log(bodyData);
     try {
-      console.log(bodyData, id);
-      const response = await axios.post(
-        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/confirm?taskId=${id}`,
+      const response = await axios.put(
+        `${Constants.expoConfig.extra.baseUrl}inspector/approve-task?taskId=${id}`,
         bodyData,
         {
           headers: {
@@ -21,7 +20,7 @@ const useConfirmCleaningItems = () => {
           },
         }
       );
-      console.log(response.data.data);
+      console.log(response.data.data, 'confirmed');
       stopLoading();
       return true;
     } catch (error) {
@@ -32,9 +31,9 @@ const useConfirmCleaningItems = () => {
   };
 
   return {
-    confirming: loading,
-    confirmCleaningItems,
+    approving: loading,
+    approveTask,
   };
 };
 
-export default useConfirmCleaningItems;
+export default useApproveTask;

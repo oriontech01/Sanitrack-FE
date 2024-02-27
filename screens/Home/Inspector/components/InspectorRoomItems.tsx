@@ -9,7 +9,11 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import colors from '../../../../util/colors';
-import { Camera as CameraIcon, Trash } from '../../../../assets/svg/Index';
+import {
+  Camera as CameraIcon,
+  IconParck,
+  Trash,
+} from '../../../../assets/svg/Index';
 import { Camera, CameraType } from 'expo-camera';
 import Button from '../../../../components/general/Button';
 
@@ -19,6 +23,7 @@ export default function InspectorRoomItems({ item }) {
   const [camera, setCamera] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [satisfied, setSatisfied] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState(
     'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg'
@@ -50,11 +55,42 @@ export default function InspectorRoomItems({ item }) {
       ]}>
       <View style={styles.camContainer}>
         <Text style={{ fontSize: 16, color: colors.blue }}>{item.name}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {satisfied ? (
+            <TouchableOpacity
+              onPress={() => {
+                setSatisfied(false);
+                item.satisfied = false;
+              }}>
+              <IconParck />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                setSatisfied(true);
+                item.satisfied = true;
+              }}
+              style={{
+                height: 20,
+                width: 20,
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: 'gray',
+              }}
+            />
+          )}
+
+          <Text style={{ marginLeft: 10 }}>Satisfied</Text>
+        </View>
       </View>
       <View style={styles.imageDetail}>
         <TouchableOpacity
           onPress={() => {
-            setModalVisible(true);
+            if (item.image_url !== 'empty') {
+              setModalVisible(true);
+            } else {
+              alert('Image not Uploaded yet');
+            }
           }}
           activeOpacity={0.7}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -74,21 +110,21 @@ export default function InspectorRoomItems({ item }) {
                 color: colors.blue,
                 fontSize: 14,
               }}>
-              JPEG
+              View
             </Text>
           </View>
-          <Text style={[styles.font]}>Image.png</Text>
+          <Text style={[styles.font]}>{item.name}.jpg</Text>
         </TouchableOpacity>
       </View>
 
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.cameraModal}>
           <View style={styles.mainCamera}>
-            {imageUri && (
+            {item.image_url && (
               <>
                 <Image
                   resizeMode="cover"
-                  source={{ uri: imageUri }}
+                  source={{ uri: item.image_url }}
                   style={{
                     height: Dimensions.get('window').height - 300,
                     width: '100%',
