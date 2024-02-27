@@ -8,8 +8,10 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
-import { ContactEmergencyOutlined } from '@mui/icons-material';
+import { TaskSharp } from '@mui/icons-material';
+import { InventoryRounded } from '@mui/icons-material';
+import { BrowseGallery } from '@mui/icons-material';
+import { MessageOutlined } from '@mui/icons-material';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -22,9 +24,6 @@ const icons = {
   AppsOutlinedIcon: AppsOutlinedIcon,
   ContactSupportOutlinedIcon: ContactSupportOutlinedIcon
 };
-
-
-const currentRole = localStorage.getItem('role');
 
 const adminSideNavItems = [
   {
@@ -80,7 +79,6 @@ const adminSideNavItems = [
         //   }
         // ]
       },
-      // Work History might involve documentation or reports
       {
         id: 'work history',
         title: 'Work History',
@@ -93,7 +91,7 @@ const adminSideNavItems = [
         id: 'messages',
         title: 'Messages',
         type: 'item',
-        icon: icons['ContactSupportOutlinedIcon'], // Changed Icon
+        icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' // Assuming URL should be unique and relevant
       },
       // Evidence might relate to documentation or verification
@@ -101,27 +99,25 @@ const adminSideNavItems = [
         id: 'evidence',
         title: 'Evidence',
         type: 'item',
-        icon: icons['HelpOutlineOutlinedIcon'], // Changed Icon
+        icon: BrowseGallery, // Changed Icon
         url: '/dashboard/evidence' // Assuming URL should be unique and relevant
       },
       {
 
-        id: 'contact',
-        title: 'Contact Us',
+        id: 'tasks',
+        title: 'Tasks',
         type: 'item',
-        icon: icons['ContactSupportOutlinedIcon'], // Changed Icon
-        url: '/dashboard/contact' // Assuming URL should be unique and relevant
+        icon: TaskSharp, // Changed Icon
+        url: '/dashboard/tasks' // Assuming URL should be unique and relevant
       },
       {
 
         id: 'inventory',
         title: 'Inventory',
         type: 'item',
-        icon: icons['InventoryOutlinedIcon'], // Changed Icon
+        icon: InventoryRounded, // Changed Icon
         url: '/dashboard/inventory' // Assuming URL should be unique and relevant
       },
-
-
     ]
   },
   {

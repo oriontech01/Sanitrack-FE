@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tab, Tabs, Box, Typography, Paper } from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
-import { useCurrentRole } from 'context/UserRoleContext';
 import useCleanerHook from '../../../../Hooks/cleaner/useCleanerHook.js';
 
 const CleanerAndInspectorLandingPage = () => {
@@ -41,7 +40,7 @@ const CleanerAndInspectorLandingPage = () => {
 
 const SanitrackLandingPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const { currentRole } = useCurrentRole();
+  const currentRole = localStorage.getItem('role')
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };

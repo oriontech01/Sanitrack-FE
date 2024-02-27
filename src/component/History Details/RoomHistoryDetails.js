@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 
 const RoomHistoryDetails = ({ name, roomHistory }) => {
   const [openModal, setOpenModal] = useState(false);
-
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   console.log('HISTORYYYYYYY', roomHistory.assigned_room)

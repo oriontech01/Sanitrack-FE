@@ -3,11 +3,11 @@ import useTask from 'Hooks/useTask';
 import useWorkHistory from 'Hooks/useWorkHistory';
 import useRoom from 'Hooks/useRoom';
 import Loader from 'component/Loader/Loader';
-import { useCurrentRole } from 'context/UserRoleContext';
+import useCleaningItems from 'Hooks/useCleaningItems';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Grid, Card, CardHeader, CardContent, Typography, Divider, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import Charts from './chart/Charts';
 
 //project import
@@ -37,9 +37,10 @@ const FlatCardBlock = styled(props => <Grid item sm={6} xs={12} {...props} />)((
 
 const Default = () => {
   const theme = useTheme();
-  const { activeCleaners, activeInspectors, everyTask, getAllCleaners, getAllInspectors, getAllTasks } = useTask();
+  const { activeCleaners, activeInspectors, everyTask, getAllCleaners, getAllInspectors, getAllTasks, pendingTasks, completedTasks } = useTask();
   const { roomsCount, getRoom } = useRoom();
   const { getCleanerSummary, cleanerSummary } = useWorkHistory();
+  const {getCleaningItems, cleaningItems} = useCleaningItems()
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const Default = () => {
 
       try {
         // Create an array of promises
-        const tasks = [getAllCleaners(), getAllInspectors(), getAllTasks(), getRoom(), getCleanerSummary()];
+        const tasks = [getAllCleaners(), getAllInspectors(), getAllTasks(), getRoom(), getCleanerSummary(), getCleaningItems()];
 
         // Await all promises concurrently
         await Promise.all(tasks);
@@ -66,7 +67,6 @@ const Default = () => {
   if (isLoading) {
     return <Loader />;
   }
-
   return (
     <Grid container marginTop={2} spacing={gridSpacing}>
       <Grid item xs={12}>
@@ -76,9 +76,7 @@ const Default = () => {
               primary={activeCleaners}
               secondary="All Cleaners"
               color={theme.palette.warning.main}
-              footerData="Total Number Of Active Cleaners."
               iconPrimary={GroupWorkRounded}
-              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
@@ -86,9 +84,7 @@ const Default = () => {
               primary={activeInspectors}
               secondary="All Inspectors"
               color={theme.palette.error.main}
-              footerData="Total Number Of Active inspectors."
               iconPrimary={SupervisorAccount}
-              // iconFooter={TrendingDownIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
@@ -96,9 +92,7 @@ const Default = () => {
               primary={everyTask}
               secondary="All Tasks"
               color={theme.palette.success.main}
-              footerData="All Available Tasks For Cleaners and Inspectors."
               iconPrimary={DescriptionTwoTone}
-              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
@@ -106,39 +100,34 @@ const Default = () => {
               primary={roomsCount}
               secondary="Total Room Count"
               color={theme.palette.primary.main}
-              footerData="All Rooms Listed For Cleaning."
               iconPrimary={RoomSharp}
-              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary={5}
+              primary={completedTasks.length}
               secondary="Completed Tasks"
               color={theme.palette.primary.dark}
-              footerData="All Completed Tasks."
               iconPrimary={TaskAltOutlined}
-              // iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary={5}
+              primary={cleaningItems.length}
               secondary="Cleaning Items"
               color={theme.palette.action.active}
-              footerData="Total Number Of Available Cleaning Items."
               iconPrimary={CleaningServicesSharp}
-              // iconFooter={TrendingUpIcon}
             />
+            {
+              console.log(cleaningItems.length)
+            }
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary={5}
+              primary={pendingTasks.length}
               secondary="Pending Tasks"
               color={theme.palette.action.focus}
-              footerData="Total Number Of Available Cleaning Items."
               iconPrimary={AddTaskSharp}
-              // iconFooter={TrendingUpIcon}
             />
           </Grid>
         </Grid>

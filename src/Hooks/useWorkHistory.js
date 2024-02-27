@@ -5,9 +5,10 @@ const useWorkHistory = () => {
   const [cleanerSummary, setCleanerSummary] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-//   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const token = localStorage.getItem('auth-token');
+
   const getRoomHistory = async (roomId) => {
+    console.log('CORRECT ID', roomId)
     try {
       const res = await axios.get(`${BASE_URL}work-history/rooms?roomId=${roomId}`, {
         headers: {

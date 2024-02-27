@@ -26,9 +26,14 @@ const TaskDetails = () => {
   }, []);
 
   const handleUpdate = async () => {
-    await updateTask(taskId, selectedCleaner, selectedInspector, singleTaskDetail.assigned_room._id);
+    try {
+      const res = await updateTask(taskId, selectedCleaner, selectedInspector, singleTaskDetail.assigned_room._id);
+      if (res) alert('Task updated successfully');
+    } catch (error) {
+      alert('Error updating Task');
+      return;
+    }
   };
-
   return (
     <Box
       sx={{
@@ -53,10 +58,10 @@ const TaskDetails = () => {
           <RadioGroup
             name="selectedCleaner"
             value={selectedCleaner}
-            onChange={(event) => setSelectedCleaner(event.target.value)}
+            onChange={event => setSelectedCleaner(event.target.value)}
             sx={{ display: 'flex', flexDirection: 'column' }}
           >
-            {allCleaners.map((cleaner) => (
+            {allCleaners.map(cleaner => (
               <FormControlLabel
                 key={cleaner._id}
                 value={cleaner._id}
@@ -72,10 +77,10 @@ const TaskDetails = () => {
           <RadioGroup
             name="selectedInspector"
             value={selectedInspector}
-            onChange={(event) => setSelectedInspector(event.target.value)}
+            onChange={event => setSelectedInspector(event.target.value)}
             sx={{ display: 'flex', flexDirection: 'column' }}
           >
-            {allInspectors.map((inspector) => (
+            {allInspectors.map(inspector => (
               <FormControlLabel
                 key={inspector._id}
                 value={inspector._id}
@@ -90,8 +95,9 @@ const TaskDetails = () => {
           <Button
             variant="contained"
             color="primary"
-            disabled={!selectedCleaner || !selectedInspector || singleTaskDetail.isSubmitted}
+            // disabled={!selectedCleaner || !selectedInspector || singleTaskDetail.isSubmitted}
             onClick={handleUpdate}
+            disabled={!selectedCleaner || !selectedInspector}
           >
             Update
           </Button>

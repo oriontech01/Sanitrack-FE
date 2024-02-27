@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast, Flip } from "react-toastify";
+import { toast, Flip } from 'react-toastify';
 const useTask = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -13,6 +13,8 @@ const useTask = () => {
   const [cleaningItems, setCleaningItems] = useState([]);
   const [taskLoading, setTaskLoading] = useState(false);
   const [allTasks, setAllTasks] = useState([]);
+  const [pendingTasks, setPendingTasks] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
   // eslint-disable-next-line no-unused-vars
 
   const [activeCleaners, setActiveCleaners] = useState();
@@ -23,14 +25,13 @@ const useTask = () => {
   const navigate = useNavigate();
 
   const access_token = localStorage.getItem('auth-token');
-const storedId = localStorage.getItem('roomId')
+  const storedId = localStorage.getItem('roomId');
   const getUnAssignedRooms = async () => {
     await axios
       .get(`${BASE_URL}room/unassigned-rooms`, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-
         setUnAssignedRooms(response.data.data.roomsNotInTasks);
       })
       .catch(error => {
@@ -151,27 +152,26 @@ const storedId = localStorage.getItem('roomId')
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
       .then(response => {
-        console.log(response)
+        console.log(response);
         // send user back to the task home page
         if (response.data) {
-          toast.success("Task Created Successfully", {
-            position: "top-center",
+          toast.success('Task Created Successfully', {
+            position: 'top-center',
             autoClose: 5000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "colored",
-            transition: Flip,
+            theme: 'colored',
+            transition: Flip
           });
           setTaskLoading(false);
         }
         setTimeout(() => {
           navigate(`/dashboard/work-order-facility/${storedId}`);
-        
         }, 3000);
-       
+
         // console.log(response.json())
       })
       .catch(error => {
@@ -179,15 +179,15 @@ const storedId = localStorage.getItem('roomId')
           setTaskLoading(false);
           const { status, data } = error.response;
           toast.error(data.message, {
-            position: "top-center",
+            position: 'top-center',
             autoClose: 5000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "colored",
-            transition: Flip,
+            theme: 'colored',
+            transition: Flip
           });
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
@@ -209,9 +209,11 @@ const storedId = localStorage.getItem('roomId')
       const response = await axios.get(`${BASE_URL}task/get`, {
         headers: { Authorization: `Bearer ${access_token}` }
       });
-      //   console.log("Task retrieved", response.data.data);
+      console.log('Task retrieved', response.data.data);
       setEveryTask(response.data.data.allTasks.length);
       setAllTasks(response.data.data.allTasks);
+      setPendingTasks(response.data.data.allTasks.filter((task) => task.isSubmitted === false ))
+      setCompletedTasks(response.data.data.allTasks.filter((task) => task.isSubmitted === true ))
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
@@ -267,7 +269,7 @@ const storedId = localStorage.getItem('roomId')
       )
       .then(response => {
         setResponseMessage(response.data.message);
-        navigate('/home/tasks');
+        navigate('/dashboard/tasks');
       })
       .catch(error => {
         if (error.response) {
@@ -332,7 +334,9 @@ const storedId = localStorage.getItem('roomId')
     getCleaningItems,
     cleaningItems,
     activeCleaningItems,
-    taskLoading
+    taskLoading,
+    pendingTasks,
+    completedTasks
   };
 };
 export default useTask;
