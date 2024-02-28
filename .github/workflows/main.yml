@@ -70,5 +70,5 @@ jobs:
           sudo chmod 666 /var/run/docker.sock
           cd Sanitrack
           git checkout main
-          git pull github main
+          git pull origin main
           docker-compose up -d
