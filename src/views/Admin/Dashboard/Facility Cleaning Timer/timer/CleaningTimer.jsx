@@ -107,7 +107,7 @@ const CleaningTimer = () => {
                 console.log('secf', newItem);
                 return (
                   <div className="shadow-lg" key={i}>
-                    <Link style={{ textDecoration: 'none' }} to={`/dashboard/view-room/${newItem?._id}`}>
+                    <Link style={{ textDecoration: 'none' }} to={`/dashboard/work-order-facility/${newItem?.assigned_room?._id}`}>
                       <div className="div-47">
                         <SpeedometerValue
                           cleanTime={

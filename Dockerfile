@@ -17,8 +17,11 @@ RUN yarn install
 # Copy the rest of your application's code
 COPY . .
 
+RUN yarn build
+
+#CMD yarn start
 # Build the application
-RUN npm run build
+#RUN npm run build
 
 #CMD npm run start
 # Stage 2: Serve the application with Nginx
@@ -32,7 +35,7 @@ COPY --from=build /app/dist/ /usr/share/nginx/html
 
 # Expose port 80 to the Docker host, so we can access it 
 # from the outside.
-EXPOSE 80
+#EXPOSE 80
 
 # Start Nginx and keep it running in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+#CMD ["nginx", "-g", "daemon off;"]
