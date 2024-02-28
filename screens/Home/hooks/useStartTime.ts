@@ -6,13 +6,14 @@ import Constants from 'expo-constants';
 const useStartTime = () => {
   const { loading, startLoading, stopLoading } = useLoading();
 
-  const { token } = useContext(UserContext);
+  const { token, role } = useContext(UserContext);
   const saveStartTimer = async (roomId, id) => {
+    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
     startLoading();
 
     try {
       const response = await axios.post(
-        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/save?taskId=${id}`,
+        `${Constants.expoConfig.extra.baseUrl}${api}/save?taskId=${id}`,
         {
           roomId,
         },

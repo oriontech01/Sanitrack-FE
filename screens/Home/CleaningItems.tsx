@@ -29,9 +29,7 @@ import useConfirmCleaningItems from './hooks/useConfirmCleaningItems';
 
 export default function CleaningItems({ navigation, route }) {
   const { location, facility, taskId } = route.params;
-  const { cleaningItems, loadingItems, task } = useGetCleaningItems(
-    facility.roomId
-  );
+  const { cleaningItems, loadingItems, task } = useGetCleaningItems(taskId);
   const [selected, setSelected] = useState(false);
   const [itemsToSubmit, setItemsToSubmit] = useState([]);
   const toggleSelect = () => setSelected((prev) => !prev);
@@ -88,64 +86,74 @@ export default function CleaningItems({ navigation, route }) {
           </>
         )}
       </ScrollView>
-      <Button
-        isLoading={confirming}
-        onPress={async () => {
-          if (!selected) {
-            return;
-          }
-          if (
-            cleaningItems.filter((item) => item.value == undefined).length > 0
-          ) {
-            alert('Pleaase input values');
-            return;
-          } else {
-            const bodyData = {
-              roomId: facility.roomId,
+      {cleaningItems.length > 0 ? (
+        <Button
+          isLoading={confirming}
+          onPress={async () => {
+            if (!selected) {
+              return;
+            }
+            if (
+              cleaningItems.filter((item) => item.value == undefined).length > 0
+            ) {
+              alert('Pleaase input values');
+              return;
+            } else {
+              const bodyData = {
+                roomId: facility.roomId,
+                cleanerItems: cleaningItems.map((cleaningItem) => {
+                  return {
+                    cleaning_id: cleaningItem.cleaning_id,
+                    quantityReceived: cleaningItem.value,
+                  };
+                }),
+              };
+              const confirmed = await confirmCleaningItems(bodyData, taskId);
+
+              if (confirmed) {
+                navigation.navigate('Summary', {
+                  facility,
+                  location,
+                  cleanerItems: cleaningItems.map((cleaningItem) => {
+                    return {
+                      quantityReceived: cleaningItem.value,
+                      name: cleaningItem.item_name,
+                    };
+                  }),
+                  taskId,
+                });
+              } else {
+                console.log('lll');
+              }
+            }
+
+            // confirmCleaningItems(bodyData, task.id);
+          }}
+          style={{
+            marginTop: 'auto',
+            marginBottom: 30,
+            opacity: selected ? 1 : 0.4,
+          }}
+          label="Next"
+        />
+      ) : (
+        <Button
+          onPress={() => {
+            navigation.navigate('Summary', {
+              facility,
+              location,
               cleanerItems: cleaningItems.map((cleaningItem) => {
                 return {
-                  cleaning_id: cleaningItem.cleaning_id,
                   quantityReceived: cleaningItem.value,
+                  name: cleaningItem.item_name,
                 };
               }),
-            };
-            const confirmed = await confirmCleaningItems(bodyData, taskId);
-            if (confirmed) {
-              navigation.navigate('Summary', {
-                facility,
-                location,
-                cleanerItems: cleaningItems.map((cleaningItem) => {
-                  return {
-                    quantityReceived: cleaningItem.value,
-                    name: cleaningItem.item_name,
-                  };
-                }),
-                taskId,
-              });
-            } else {
-              navigation.navigate('Summary', {
-                facility,
-                location,
-                cleanerItems: cleaningItems.map((cleaningItem) => {
-                  return {
-                    quantityReceived: cleaningItem.value,
-                    name: cleaningItem.item_name,
-                  };
-                }),
-                taskId,
-              });
-            }
-          }
-
-          // confirmCleaningItems(bodyData, task.id);
-        }}
-        style={{
-          marginTop: 'auto',
-          marginBottom: 30,
-          opacity: selected ? 1 : 0.4,
-        }}
-        label="Next"
-      />
+              taskId,
+            });
+          }}
+          label="Next"
+        />
+      )}
     </View>
   );
 }

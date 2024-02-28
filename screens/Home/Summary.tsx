@@ -39,7 +39,7 @@ export default function Summary({ navigation, route }) {
           <Location />
         </View>
 
-        <Text style={{ marginTop: 10 }}>Work Order Address</Text>
+        <Text style={{ marginTop: 10 }}>Work Order Addresss</Text>
         <Text style={styles.locationName}>
           {location.city}, {location.state} {location.country}
         </Text>
@@ -107,6 +107,7 @@ export default function Summary({ navigation, route }) {
             navigation.navigate('MainRoom', {
               id: facility.roomId,
               taskId,
+              roomName: facility.roomName,
             });
           }}
           style={{ marginTop: 20 }}

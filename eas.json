@@ -10,7 +10,7 @@
         "env":{
           "SANITRACK_API_URI":"http://52.55.254.57:5000/api/"
         }
-      },
+      },  
       "preview": {
         "distribution": "internal"
       },

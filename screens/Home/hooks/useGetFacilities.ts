@@ -24,7 +24,7 @@ const useGetFacilities = (id) => {
           },
         }
       );
-      console.log(response.data.data.cleanerRooms);
+      console.log(response.data.data.inspectorRooms);
       stopLoading();
 
       setFacilities(

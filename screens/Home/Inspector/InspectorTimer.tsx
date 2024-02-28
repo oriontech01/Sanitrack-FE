@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../context/UserContext';
@@ -25,10 +27,13 @@ import useGetFacilityDetails from '../hooks/useGetFacilityDetail';
 import useStartTime from '../hooks/useStartTime';
 import useGetCleanerWork from '../hooks/useGetCleanerWork';
 import InspectorRoomItems from './components/InspectorRoomItems';
+import useApproveTask from '../hooks/useApproveTask';
 
 export default function InspectorTimer({ navigation, route }) {
-  const { id, taskId } = route.params;
+  const { id, taskId, roomName } = route.params;
   const [seconds, setSeconds] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [active, setActive] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
   const [startedTime, setStartedTime] = useState(0);
@@ -37,6 +42,7 @@ export default function InspectorTimer({ navigation, route }) {
   //   const { cleaningItems,task } = useGetCleaningItems(id);
   //   const { detailList, loadingDetails } = useGetCleanerWork(id);
   const { loadingDetails, task } = useGetFacilityDetails(taskId);
+  const { approveTask, approving } = useApproveTask();
   //   TIMER LOGIC----------------------------------------------------------------
   const [timers, setTimers] = useState([]);
 
@@ -45,7 +51,12 @@ export default function InspectorTimer({ navigation, route }) {
     const timerId = startTime.toString();
     await AsyncStorage.setItem(
       `timerStartTime_${timerId}`,
-      JSON.stringify({ start: startTime.toString(), id: id })
+      JSON.stringify({
+        start: startTime.toString(),
+        id: id,
+        taskId,
+        taskName: roomName,
+      })
     );
     setStartedTime(startTime);
     setIsActive(true);
@@ -57,7 +68,21 @@ export default function InspectorTimer({ navigation, route }) {
     clearInterval(timerId);
     await AsyncStorage.removeItem(`timerStartTime_${timerId}`);
   };
+  const formatTimer = (milliseconds) => {
+    const hours = Math.floor(milliseconds / 3600000);
+    const remainingMinutes = Math.floor((milliseconds % 3600000) / 60000);
+    const remainingSeconds = ((milliseconds % 60000) / 1000).toFixed(0);
 
+    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+    const formattedMinutes =
+      remainingMinutes < 10 ? `0${remainingMinutes}` : `${remainingMinutes}`;
+    const formattedSeconds =
+      Number(remainingSeconds) < 10
+        ? `0${remainingSeconds}`
+        : `${remainingSeconds}`;
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -109,23 +134,9 @@ export default function InspectorTimer({ navigation, route }) {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const formatTimer = (milliseconds) => {
-    const hours = Math.floor(milliseconds / 3600000);
-    const remainingMinutes = Math.floor((milliseconds % 3600000) / 60000);
-    const remainingSeconds = ((milliseconds % 60000) / 1000).toFixed(0);
-
-    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
-    const formattedMinutes =
-      remainingMinutes < 10 ? `0${remainingMinutes}` : `${remainingMinutes}`;
-    const formattedSeconds =
-      Number(remainingSeconds) < 10
-        ? `0${remainingSeconds}`
-        : `${remainingSeconds}`;
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-  };
-  const handleStart = () => {
+  const handleStart = async () => {
     if (startedTime == 0) {
+      await saveStartTimer(id, taskId);
       startTimer();
       return;
     }
@@ -285,21 +296,111 @@ export default function InspectorTimer({ navigation, route }) {
       <View style={[styles.buttons, { justifyContent: 'space-between' }]}>
         <Button
           onPress={() => {
-            console.log(id);
+            setModalVisible(true);
           }}
           fontStyle={{ color: colors.blue }}
           style={{ ...styles.submit, backgroundColor: '#E0E8FF' }}
           label="View All Images"
         />
         <Button
+          isLoading={approving}
           onPress={async () => {
-            await AsyncStorage.removeItem(`done_${id}`);
-            navigation.navigate('Success');
+            const approvedlist = task.filter((t) => t.satisfied == true);
+
+            if (doneTask) {
+              if (approvedlist.length > 0) {
+                const bodyData = {
+                  roomId: id,
+                  timer: doneTask,
+                  passedTasks: approvedlist.map((t) => {
+                    return {
+                      taskId: t.task_id,
+                    };
+                  }),
+                };
+                const approved = await approveTask(bodyData, taskId);
+
+                if (approved) {
+                  await AsyncStorage.removeItem(`done_${id}`);
+                  navigation.navigate('Success');
+                }
+              } else {
+                alert('At Least one task must be approved');
+              }
+            } else {
+              alert('Please Stop Your Timer before Submiting');
+            }
           }}
           style={styles.submit}
-          label="Approve Task"
+          label="Approve Tasks"
         />
       </View>
+
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.cameraModal}>
+          <View style={styles.mainCamera}>
+            {task
+              .filter((task) => task.image_url !== 'empty')
+              .map((oneTask, ind) => (
+                <View key={oneTask.image_url}>
+                  {ind == active && (
+                    <Image
+                      resizeMode="cover"
+                      source={{ uri: oneTask.image_url }}
+                      style={{
+                        height: Dimensions.get('window').height - 350,
+                        width: '100%',
+                      }}
+                    />
+                  )}
+
+                  <View>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        marginVertical: 10,
+                      }}>
+                      {ind + 1} of{' '}
+                      {task.filter((task) => task.image_url !== 'empty').length}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <Button
+                        style={{ width: '45%' }}
+                        onPress={() => {
+                          if (
+                            ind ==
+                            task.filter((task) => task.image_url !== 'empty')
+                              .length -
+                              1
+                          ) {
+                            setActive(0);
+                          } else {
+                            setActive((prev) => prev + 1);
+                          }
+                        }}
+                        label="Next"
+                      />
+                      <Button
+                        style={{ width: '45%', backgroundColor: '#6D0808' }}
+                        onPress={() => {
+                          setModalVisible(false);
+                        }}
+                        label="Close"
+                      />
+                    </View>
+                  </View>
+                </View>
+              ))}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -358,5 +459,19 @@ const styles = StyleSheet.create({
   },
   submit: {
     width: '45%',
+  },
+  cameraModal: {
+    height: Dimensions.get('window').height,
+    width: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  mainCamera: {
+    width: '100%',
+    height: Dimensions.get('window').height - 200,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor: '#fff',
+    marginTop: 'auto',
+    padding: 20,
   },
 });

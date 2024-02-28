@@ -12,7 +12,7 @@ const useUploadTask = () => {
 
     try {
       const response = await axios.post(
-        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/room-details?taskId=${id}`,
+        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/room-details`,
         bodyData,
         {
           headers: {
@@ -24,6 +24,7 @@ const useUploadTask = () => {
       stopLoading();
       return true;
     } catch (error) {
+      console.log(error);
       stopLoading();
       return false;
     }

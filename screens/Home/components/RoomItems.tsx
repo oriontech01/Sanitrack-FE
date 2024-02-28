@@ -12,8 +12,10 @@ import colors from '../../../util/colors';
 import { Camera as CameraIcon, Trash } from '../../../assets/svg/Index';
 import { Camera, CameraType } from 'expo-camera';
 import Button from '../../../components/general/Button';
+import axios from 'axios';
+import useUploadTask from '../hooks/useUploadTask';
 
-export default function RoomItems({ item }) {
+export default function RoomItems({ item, fileInputs, setFileInputs, taskId }) {
   const [type, setType] = useState(CameraType.back);
   const [capture, setCapture] = useState(false);
   const [camera, setCamera] = useState(false);
@@ -21,7 +23,62 @@ export default function RoomItems({ item }) {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [modalVisible, setModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState(null);
+  const [base64Url, setBase64Url] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const { uploadTask, uploading } = useUploadTask();
 
+  const uploadImage = async (detailId) => {
+    try {
+      setUploadingImage(true);
+      const photo = {
+        uri: imageUri,
+      };
+      let base64Img = `data:image/jpg;base64,${base64Url}`;
+      let data = {
+        file: base64Img,
+        upload_preset: 'img_upload',
+      };
+
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/dyh4orev5/upload`,
+        data,
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+        }
+      );
+      setUploadingImage(false);
+
+      if (response.status == 200) {
+        const newFileInput = {
+          detail_id: detailId,
+          image_path: response.data.secure_url,
+        };
+
+        // Correctly updating the state and logging the updated value
+        setFileInputs((prevFileInputs) => {
+          const updatedFileInputs = [...prevFileInputs, newFileInput];
+          return updatedFileInputs;
+        });
+        const bodyData = {
+          inputs: [newFileInput],
+        };
+        const uploaded = await uploadTask(bodyData, taskId);
+        if (uploaded) {
+          item.uploaded = true;
+          setModalVisible(false);
+        }
+      }
+      return true;
+    } catch (error) {
+      setUploadingImage(false);
+      alert('OOPS. An ERROR occurred');
+      console.error('Upload error:', error);
+
+      return false;
+    }
+  };
   const permisionFunction = async () => {
     // here is how you can get the camera permission
     const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -34,8 +91,17 @@ export default function RoomItems({ item }) {
   };
   const takePicture = async () => {
     if (camera) {
-      const data = await camera.takePictureAsync(null);
-      console.log(data.uri);
+      const data = await camera.takePictureAsync({
+        base64: true,
+        quality: 0.1,
+
+        skipProcessing: true, // Skip extra processing
+        pictureSize: 'Low', // Adjust picture size if necessary
+        autoFocus: 'off', // Disable auto-focus
+        flashMode: 'off', // Disable flash
+        orientation: 'auto', // Set auto orientation
+      });
+      setBase64Url(data.base64);
       setImageUri(data.uri);
     }
   };
@@ -74,7 +140,10 @@ export default function RoomItems({ item }) {
 
                   <View style={styles.buttons}>
                     <Button
-                      onPress={() => setModalVisible(false)}
+                      isLoading={uploadingImage || uploading}
+                      onPress={() => {
+                        uploadImage(item._id);
+                      }}
                       style={styles.button}
                       label="Proceed"
                     />
@@ -140,6 +209,7 @@ export default function RoomItems({ item }) {
           <TouchableOpacity
             onPress={() => {
               setImageUri(null);
+              item.uploaded = false;
             }}
             activeOpacity={0.7}
             style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -217,6 +287,3 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
 });
-
-
-

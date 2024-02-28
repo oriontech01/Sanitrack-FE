@@ -69,6 +69,7 @@ export default function InspectorItemsToClean({ navigation, route }) {
             facility,
             taskId,
             id: facility.roomId,
+            roomName: facility.roomName,
           })
         }
         style={{

@@ -19,7 +19,7 @@ const useGetCleaningItems = (id) => {
 
     try {
       const response = await axios.get(
-        `${Constants.expoConfig.extra.baseUrl}${api}/cleaning-items?roomId=${id}`,
+        `${Constants.expoConfig.extra.baseUrl}${api}/cleaning-items?taskId=${id}`,
         {
           headers: {
             Authorization: token,
@@ -28,7 +28,7 @@ const useGetCleaningItems = (id) => {
       );
 
       stopLoading();
-
+      console.log(response.data);
       setPlanned_time('50');
       setCleaningItems(response.data.data);
       setTask([]);
