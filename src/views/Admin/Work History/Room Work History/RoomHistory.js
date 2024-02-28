@@ -53,7 +53,6 @@ const RoomHistory = () => {
         <Loader />
       ) : allRooms.length > 0 ? (
         allRooms.map(room => {
-          {/* console.log('UNDEFINED?????????', roomHistory[room._id]); */}
           return <HistoryDetails key={room._id} name={room.roomName} detailId={room._id} historyData={roomHistory[room._id]} />;
         })
       ) : (

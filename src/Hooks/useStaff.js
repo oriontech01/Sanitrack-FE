@@ -26,7 +26,7 @@ const useStaff = () => {
       .then(response => {
         setResponseMessage('Staff Added.');
         console.log('Here is staff added response', response.json());
-        navigate('/home/user');
+        navigate('/dashboard/user');
       })
       .catch(error => {
         if (error.response) {
@@ -120,7 +120,7 @@ const useStaff = () => {
       )
       .then(response => {
         console.log(response.data);
-        navigate('/home/user');
+        navigate('/dashboard/user');
       })
       .catch(error => {
         if (error.response) {
@@ -150,7 +150,7 @@ const useStaff = () => {
       )
       .then(response => {
         console.log(response.data);
-        navigate('/home/user');
+        navigate('/dashboard/user');
       })
       .catch(error => {
         if (error.response) {
