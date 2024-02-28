@@ -52,7 +52,7 @@ const Tasks = () => {
   if(isLoading){
     return <Loader/>
   }
-console.log(allTasks)
+console.log("ALL TASKS-----------------", allTasks)
   return (
     <Grid container spacing={2}>
     <Grid item xs={12}>
@@ -80,10 +80,10 @@ console.log(allTasks)
                   <TableRow key={task?._id}>
                     <TableCell>{task?.roomName.roomName}</TableCell>
                     <TableCell>
-                      {`${task?.cleanerUsername[0]?.username?.charAt(0).toUpperCase()}${task.cleanerUsername[0].username.slice(1)}`}
+                      {`${task?.cleanerUsername?.username?.charAt(0).toUpperCase()}${task?.cleanerUsername?.username?.slice(1)}`}
                     </TableCell>
                     <TableCell>
-                      {`${task?.inspectorUsername[0]?.username?.charAt(0).toUpperCase()}${task.inspectorUsername[0].username.slice(1)}`}
+                      {`${task?.inspectorUsername?.username?.charAt(0).toUpperCase()}${task?.inspectorUsername?.username?.slice(1)}`}
                     </TableCell>
                     <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
                       {task.isSubmitted ? 'Completed' : 'Pending'}
