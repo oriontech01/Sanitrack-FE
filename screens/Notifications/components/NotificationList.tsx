@@ -2,17 +2,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import colors from '../../../util/colors';
 
-export default function NotificationList() {
+export default function NotificationList({date, title, body}) {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{ color: colors.blue }}>New Work Order</Text>
+        <Text style={{ color: colors.blue }}>{title}</Text>
         <Text style={{ color: '#595959' }}>
-          Adewale has assigne a task to you
+         {body}
         </Text>
       </View>
 
-      <Text>21/02/24</Text>
+      <Text>{date}</Text>
     </View>
   );
 }

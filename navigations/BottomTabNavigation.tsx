@@ -13,7 +13,7 @@ import colors from '../util/colors';
 import TimerHome from '../screens/Timer/TimerHome';
 import NotificationHome from '../screens/Notifications/NotificationsHome';
 import ProfileHome from '../screens/Profile/ProfileHome';
-import { UserContext } from '../context/UserContext';
+
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {

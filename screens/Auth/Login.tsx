@@ -18,6 +18,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import registerForPushNotificationsAsync from '../../util/notifications';
 
 export default function Login({ navigation }) {
   const { username, password, setPassword, setUserName } =
@@ -46,7 +47,7 @@ export default function Login({ navigation }) {
       if (res.status === 200) {
         // Check for status code 200
         Alert.alert('Auth', 'Login successful, redirecting...');
-
+        console.log(res.data.data)
         if (res.data.data.requiredRoleSelection) {
           const options = res.data.data.assignedRoles.map((role) => {
             return { label: role.role_name, value: role.role_id };
@@ -56,8 +57,6 @@ export default function Login({ navigation }) {
           setModalVisible(true);
           return;
         }
-
-        // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser({
           name: res.data.data.username,
           role: '',
@@ -68,6 +67,7 @@ export default function Login({ navigation }) {
         }); // Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
+        registerForPushNotificationsAsync(res.data.data.token)
         navigation.navigate('Home');
         // if (res.data.data.username === 'manager')
         //   navigation.navigate('AccessDenied');
