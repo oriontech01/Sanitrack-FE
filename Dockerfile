@@ -17,18 +17,18 @@ RUN yarn install
 # Copy the rest of your application's code
 COPY . .
 
-EXPOSE 3000
+RUN yarn build
 
-CMD yarn start
+#CMD yarn start
 # Build the application
 #RUN npm run build
 
 #CMD npm run start
 # Stage 2: Serve the application with Nginx
-#FROM nginx:stable-alpine as serve
+FROM nginx:stable-alpine as serve
 
 # Copy the build output to replace the default nginx contents.
-#COPY --from=build /app/dist/ /usr/share/nginx/html
+COPY --from=build /app/dist/ /usr/share/nginx/html
 
 # Copy nginx configuration (optional)
 # COPY nginx.conf /etc/nginx/conf.d/default.conf
