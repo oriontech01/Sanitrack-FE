@@ -17,6 +17,8 @@ RUN yarn install
 # Copy the rest of your application's code
 COPY . .
 
+EXPOSE 3000
+
 CMD yarn start
 # Build the application
 #RUN npm run build
