@@ -40,7 +40,8 @@ const CleanerAndInspectorLandingPage = () => {
 
 const SanitrackLandingPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const { currentRole } = useCurrentRole();
+  // const { currentRole } = useCurrentRole();
+  const currentRole = localStorage.getItem('role')
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };

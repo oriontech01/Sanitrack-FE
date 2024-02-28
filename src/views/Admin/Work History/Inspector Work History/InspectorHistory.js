@@ -17,7 +17,7 @@ const InspectorHistory = () => {
       await getAllInspectors();
 
       if (allInspectors.length > 0) {
-        const historyPromises = allInspectors.map((inspector) => getInspectorHistory(inspector._id));
+        const historyPromises = allInspectors.map(inspector => getInspectorHistory(inspector._id));
         const histories = await Promise.all(historyPromises);
 
         const newHistory = {};
@@ -35,14 +35,19 @@ const InspectorHistory = () => {
 
   // Conditionally render content within one return statement
   return (
-    <Box>
+    <Box
+      sx={{
+        maxHeight: '600px', // Set a max height for the Box
+        overflow: 'auto' // Enable scrolling
+      }}
+    >
       <Typography variant="h3" p={2} gutterBottom>
         Inspector History
       </Typography>
       {loading ? (
         <Loader />
       ) : allInspectors.length > 0 ? (
-        allInspectors.map((inspector) => (
+        allInspectors.map(inspector => (
           <HistoryDetails
             key={inspector._id}
             name={inspector.username}

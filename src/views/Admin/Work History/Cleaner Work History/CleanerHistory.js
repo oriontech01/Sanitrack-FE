@@ -26,29 +26,33 @@ const CleanerHistory = () => {
         setLoading(true); // Move setLoading here
         const historyPromises = allCleaners.map(cleaner => getCleanerHistory(cleaner._id));
         const histories = await Promise.all(historyPromises);
-  
+
         const newHistory = {};
         allCleaners.forEach((cleaner, index) => {
           newHistory[cleaner._id] = histories[index];
         });
-  
+
         setCleanerHistory(newHistory);
         setIsFetched(true);
         setLoading(false); // Ensure this is called after async operations
       }
     };
-  
+
     fetchCleanerHistory();
     // Do not call setLoading(false) here as it would not wait for fetchCleanerHistory to complete
   }, [allCleaners]); // Depend on allCleaners to re-run this effect when they are updated
 
-  if(loading){
-    return <Loader/>
+  if (loading) {
+    return <Loader />;
   }
-  
-  return (
-    <Box>
 
+  return (
+    <Box
+      sx={{
+        maxHeight: '600px', // Set a max height for the Box
+        overflow: 'auto' // Enable scrolling
+      }}
+    >
       <Typography variant="h3" p={2} gutterBottom>
         Cleaner History
       </Typography>
