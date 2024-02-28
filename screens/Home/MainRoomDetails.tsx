@@ -26,7 +26,7 @@ import useStartTime from './hooks/useStartTime';
 import useUploadTask from './hooks/useUploadTask';
 import useSubmitTask from './hooks/useSubmitTask';
 
-export default function MainRoomDetails({ navigation, route }) {
+export default function MainRoomDetails({ navigation, route, roomName }) {
   const { id, taskId } = route.params;
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
@@ -34,6 +34,7 @@ export default function MainRoomDetails({ navigation, route }) {
   const [doneTask, setDoneTask] = useState(undefined);
   const [startedTime, setStartedTime] = useState(0);
   const { saveStartTimer, confirming } = useStartTime();
+  const [fileInputs, setFileInputs] = useState([]);
   //   const { cleaningItems,task } = useGetCleaningItems(id);
   const { detailList, loadingDetails } = useGetFacilityDetails(taskId);
   //   TIMER LOGIC----------------------------------------------------------------
@@ -46,7 +47,12 @@ export default function MainRoomDetails({ navigation, route }) {
     const timerId = startTime.toString();
     await AsyncStorage.setItem(
       `timerStartTime_${timerId}`,
-      JSON.stringify({ start: startTime.toString(), id: id })
+      JSON.stringify({
+        start: startTime.toString(),
+        id: id,
+        taskId,
+        taskName: roomName,
+      })
     );
     setStartedTime(startTime);
     setIsActive(true);
@@ -125,8 +131,9 @@ export default function MainRoomDetails({ navigation, route }) {
 
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
-  const handleStart = () => {
+  const handleStart = async () => {
     if (startedTime == 0) {
+      await saveStartTimer(id, taskId);
       startTimer();
       return;
     }
@@ -277,7 +284,13 @@ export default function MainRoomDetails({ navigation, route }) {
         {!loadingDetails && (
           <>
             {detailList.map((det, ind) => (
-              <RoomItems item={det} key={ind.toString()} />
+              <RoomItems
+                taskId={taskId}
+                fileInputs={fileInputs}
+                setFileInputs={setFileInputs}
+                item={det}
+                key={ind.toString()}
+              />
             ))}
           </>
         )}
@@ -287,28 +300,25 @@ export default function MainRoomDetails({ navigation, route }) {
         <Button
           isLoading={uploading || submitting}
           onPress={async () => {
-            const taskUploadData = {
-              inputs: detailList.map((det, ind) => {
-                return {
-                  detail_id: det.roomDetailId,
-                  image_path:
-                    'https://www.theeconcierge.com/wp-content/uploads/2017/01/cleaning-bathroom.jpg',
-                };
-              }),
-            };
-
+            const imageUpload = detailList.filter(
+              (detail) => detail.uploaded == undefined
+            );
             const bodyData = {
-              start_time: '00:00:00',
-              end_time: formatTimer(doneTask),
+              cleanTime: doneTask,
               roomId: id,
             };
-            const uploaded = await uploadTask(taskUploadData, taskId);
-            if (uploaded) {
+            if (doneTask) {
+              if (imageUpload.length > 0) {
+                alert('Please Upload reference before submitting');
+                return;
+              }
               const submitted = await submitTask(bodyData, taskId);
               if (submitted) {
                 await AsyncStorage.removeItem(`done_${id}`);
                 navigation.navigate('Success');
               }
+            } else {
+              alert('Pleas stop the timer before submitting');
             }
           }}
           style={styles.submit}

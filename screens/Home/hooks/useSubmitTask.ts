@@ -12,7 +12,7 @@ const useSubmitTask = () => {
 
     try {
       const response = await axios.post(
-        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/save?taskId=${id}`,
+        `${Constants.expoConfig.extra.baseUrl}task/submit?taskId=${id}`,
         bodyData,
         {
           headers: {
@@ -20,10 +20,11 @@ const useSubmitTask = () => {
           },
         }
       );
-      console.log(response, 'confirmed');
+      console.log(response.data.data, 'confirmed');
       stopLoading();
       return true;
     } catch (error) {
+      console.log(error);
       stopLoading();
       return false;
     }

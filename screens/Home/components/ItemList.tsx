@@ -5,8 +5,18 @@ import colors from '../../../util/colors';
 export default function ItemList({ item = '', title = '' }) {
   return (
     <View style={styles.container}>
-      <Text style={{ color: colors.blue, fontSize: 18 }}>{item}</Text>
-      <Text style={{ color: 'gray', fontSize: 14 }}>{title}</Text>
+      <Text
+        style={{
+          color: colors.blue,
+          fontSize: 18,
+          textTransform: 'capitalize',
+        }}>
+        {item}
+      </Text>
+      <Text
+        style={{ color: 'gray', fontSize: 14, textTransform: 'capitalize' }}>
+        {title}
+      </Text>
     </View>
   );
 }
