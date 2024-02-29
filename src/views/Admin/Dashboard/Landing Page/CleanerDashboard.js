@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import useCleanerHook from '../../../../Hooks/cleaner/useCleanerHook.js';
-import { Box, Typography, List, ListItem, ListItemText, Divider, Card, CardContent, Grid } from '@mui/material';
-import TimerIcon from '@mui/icons-material/Timer';
+import { Box, Typography, List, ListItem, ListItemText, Card, CardContent, Grid } from '@mui/material';
 import { LibraryBooksSharp, HouseOutlined, BarChart, ArrowForwardIos } from '@mui/icons-material';
 import ActiveTimer from 'component/Active Timer/ActiveTimer.js';
 
@@ -70,10 +69,14 @@ const CleanerDashboard = () => {
           <Grid container spacing={2}>
             {workOrderLocations.map((location, index) => (
               <Grid item xs={12} sm={6} key={location.id}>
-                <ListItem style={{backgroundColor: 'lightblue', borderRadius: 10}}>
+                <ListItem style={{ backgroundColor: 'lightblue', borderRadius: 10 }}>
                   <Box sx={{ flexGrow: 1 }}>
-                    <ListItemText primary={location.city} primaryTypographyProps={{ fontWeight: 'bold', color: 'blue' }} />
-                    <ListItemText primary="Floor, Windows, Bathroom..." secondaryTypographyProps={{ color: 'blue' }} />
+                    <ListItemText
+                      primary={location.city}
+                      primaryTypographyProps={{ fontWeight: 'bold', color: 'blue' }}
+                      secondary="Floor, Windows, Bathroom..."
+                      secondaryTypographyProps={{ color: 'blue' }}
+                    />
                   </Box>
                   <ArrowForwardIos />
                 </ListItem>

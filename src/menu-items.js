@@ -13,7 +13,6 @@ import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
 import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
 
-
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
   HomeOutlinedIcon: HomeOutlinedIcon,
@@ -104,7 +103,6 @@ const adminSideNavItems = [
         url: '/dashboard/evidence' // Assuming URL should be unique and relevant
       },
       {
-
         id: 'tasks',
         title: 'Tasks',
         type: 'item',
@@ -112,13 +110,12 @@ const adminSideNavItems = [
         url: '/dashboard/tasks' // Assuming URL should be unique and relevant
       },
       {
-
         id: 'inventory',
         title: 'Inventory',
         type: 'item',
         icon: InventoryRounded, // Changed Icon
         url: '/dashboard/inventory' // Assuming URL should be unique and relevant
-      },
+      }
     ]
   },
   {
@@ -175,7 +172,6 @@ const cleanerSideNavItems = [
         icon: PunchClockRounded, // Changed Icon
         url: '/dashboard/timer'
       },
-      // Assuming "Rooms" might be a part of site or facility management
       {
         id: 'notifications',
         title: 'Notifications',
@@ -196,7 +192,7 @@ const cleanerSideNavItems = [
         type: 'item',
         icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' // Assuming URL should be unique and relevant
-      },
+      }
     ]
   }
 ];
@@ -216,47 +212,35 @@ const inspectorSideNavItems = [
         icon: icons['HomeOutlinedIcon'], // Specific Icon
         url: '/dashboard'
       },
-      // Assuming "Work Order" might be related to tasks or projects
       {
-        id: 'work order',
-        title: 'Work Order',
+        id: 'notifications',
+        title: 'Notifications',
         type: 'item',
-        icon: icons['AccountTreeOutlinedIcon'], // Changed Icon
-        url: '/dashboard/tasks'
+        icon: NotificationAdd, // Changed Icon
+        url: '/dashboard/notifications'
       },
-      // Assuming "Rooms" might be a part of site or facility management
       {
-        id: 'rooms',
-        title: 'Rooms',
+        id: 'learning',
+        title: 'Learning',
         type: 'item',
-        icon: icons['AppsOutlinedIcon'], // Changed Icon
-        url: '/dashboard/rooms'
+        icon: LibraryAddOutlined, // Changed Icon
+        url: '/dashboard/learning' // Assuming URL should be unique and relevant
       },
-      // Messages could use a communication-related icon
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
-        icon: icons['ContactSupportOutlinedIcon'], // Changed Icon
+        icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' // Assuming URL should be unique and relevant
-      },
-      // Evidence might relate to documentation or verification
-      {
-        id: 'evidence',
-        title: 'Evidence',
-        type: 'item',
-        icon: icons['HelpOutlineOutlinedIcon'], // Changed Icon
-        url: '/dashboard/evidence' // Assuming URL should be unique and relevant
       }
     ]
   }
 ];
 
- const renderSideNavItemsByRole = (role) => {
+const renderSideNavItemsByRole = role => {
   if (role === 'Admin') return adminSideNavItems;
   else if (role === 'Cleaner') return cleanerSideNavItems;
   else return inspectorSideNavItems;
 };
 
-export default renderSideNavItemsByRole
-
+export default renderSideNavItemsByRole;
