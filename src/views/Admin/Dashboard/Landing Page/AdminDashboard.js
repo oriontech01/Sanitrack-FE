@@ -20,12 +20,12 @@ const AdminDashboard = () => {
       backgroundColor: 'rgba(100, 95, 228, 0.32)' // Adjust focus color if necessary
     }
   };
-
+  let username = localStorage.getItem('name');
   return (
     <Box>
       <Box>
         <Typography variant="h2" color="blue">
-          Welcome {localStorage.getItem('name')}!
+          Welcome {`${username.charAt(0).toUpperCase()}${username.slice(1)}`}!
         </Typography>
         <Typography variant="body1" marginTop={2}>
           Keep track of all Cleaning Activities, Work Orders, Cleaners and Inspectors.

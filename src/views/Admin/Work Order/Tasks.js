@@ -80,10 +80,10 @@ console.log("ALL TASKS-----------------", allTasks)
                   <TableRow key={task?._id}>
                     <TableCell>{task?.roomName.roomName}</TableCell>
                     <TableCell>
-                      {`${task?.cleanerUsername?.username?.charAt(0).toUpperCase()}${task?.cleanerUsername?.username?.slice(1)}`}
+                      {`${task?.cleanerUsername[0].username?.charAt(0).toUpperCase()}${task?.cleanerUsername[0].username?.slice(1)}`}
                     </TableCell>
                     <TableCell>
-                      {`${task?.inspectorUsername?.username?.charAt(0).toUpperCase()}${task?.inspectorUsername?.username?.slice(1)}`}
+                      {`${task?.inspectorUsername[0].username?.charAt(0).toUpperCase()}${task?.inspectorUsername[0].username?.slice(1)}`}
                     </TableCell>
                     <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
                       {task.isSubmitted ? 'Completed' : 'Pending'}
