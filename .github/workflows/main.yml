@@ -71,4 +71,4 @@ jobs:
           cd Sanitrack
           git checkout main
           git pull origin main
-          docker-compose up -d
+          docker-compose up --pull -d
