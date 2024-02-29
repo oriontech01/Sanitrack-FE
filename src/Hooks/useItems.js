@@ -59,6 +59,7 @@ const useItems = () => {
         console.log(response);
         // send user back to the task home page
         if (response.data) {
+          setSus(true)
           toast.success('Inventory Created Successfully', {
             position: 'top-center',
             autoClose: 5000,
