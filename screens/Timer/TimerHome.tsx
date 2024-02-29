@@ -7,15 +7,15 @@ export default function TimerHome() {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Timer</Text>
+      {/* <TimerList />
       <TimerList />
-      <TimerList />
-      <TimerList />
+      <TimerList /> */}
       <View style={styles.label}>
         <Text style={{ color: '#809997' }}>Yesterday</Text>
       </View>
 
-      <TimerList />
-      <TimerList />
+      {/* <TimerList />
+      <TimerList /> */}
     </View>
   );
 }

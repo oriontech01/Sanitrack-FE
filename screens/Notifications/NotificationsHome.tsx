@@ -2,15 +2,22 @@ import { StatusBar, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect } from "react";
 import colors from "../../util/colors";
 import { NotificationContext } from "../../context/NotificationContext";
+import formatDate from "../../util/formatDate";
 
 import NotificationList from "./components/NotificationList";
 
 export default function NotificationHome() {
   const { notifications } = useContext(NotificationContext);
+
   useEffect(() => {
-    console.log('Notifications updated:', notifications);
+    console.log(
+      "Notifications updated:--------------------------",
+      notifications
+    );
   }, [notifications]);
-  
+
+  console.log("Notifications array length----", notifications.length);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Notifications</Text>
@@ -18,10 +25,10 @@ export default function NotificationHome() {
         notifications.map((notification) => {
           return (
             <NotificationList
-              body={notification.body}
-              title={notification.title}
+              body={notification.request.content.body}
+              title={notification.request.content.title}
               key={notification.id}
-              date={notification.date.toDate()}
+              date={formatDate(notification.date)}
             />
           );
         })

@@ -19,6 +19,7 @@ import HomeCard from './components/HomeCard';
 import TimerList from '../Timer/components/TimerList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default function Home({ navigation }) {
   const user = useContext(UserContext);
   const [timers, setTimers] = useState([]);
@@ -67,7 +68,7 @@ export default function Home({ navigation }) {
   }, []);
   return (
     <View style={styles.container}>
-      <AppText style={styles.haeding}>Welcome {user.name}</AppText>
+      <AppText style={styles.heading}>Welcome {user.name}</AppText>
       <ScrollView
         style={{
           flex: 1,
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     padding: 20,
   },
-  haeding: {
+  heading: {
     color: colors.blue,
     fontSize: 22,
     fontWeight: 'bold',

@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 // Create context
 export const NotificationContext = createContext({
   notifications: [],
-  setNotifications: () => {},
+  setNotifications: (notification) => {},
 });
 
 // Provider component

@@ -13,10 +13,12 @@ import colors from '../util/colors';
 import TimerHome from '../screens/Timer/TimerHome';
 import NotificationHome from '../screens/Notifications/NotificationsHome';
 import ProfileHome from '../screens/Profile/ProfileHome';
-
+import { NotificationContext } from '../context/NotificationContext';
+import NotificationIconWithBadge from '../assets/svg/NotificationIconWithBadge';
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
+  const {notifications} = useContext(NotificationContext)
   return (
     <Tab.Navigator
       screenOptions={{
@@ -50,7 +52,7 @@ const BottomTabNavigation = () => {
 
       <Tab.Screen
         options={{
-          tabBarIcon: (props) => <NotificationIcon {...props} />,
+          tabBarIcon: (props) => notifications.length > 0 ? <NotificationIconWithBadge unreadCount={notifications.length}/> : <NotificationIcon {...props} /> ,
           tabBarLabel: 'Notification',
         }}
         name="CleanerNotifications"
