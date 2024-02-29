@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from 'context/AuthContext';
 import { RoleContextProvider } from 'context/UserRoleContext';
+import { registerCustomSW } from 'serviceWorker';
 // assets
 import 'assets/scss/style.scss';
 
@@ -45,4 +46,5 @@ root.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
+registerCustomSW();
 serviceWorker.unregister();

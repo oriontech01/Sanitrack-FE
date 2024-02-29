@@ -4,15 +4,16 @@ import JWT from 'jsonwebtoken';
 import { useNavigate } from 'react-router';
 import { useCurrentRole } from 'context/UserRoleContext';
 import { useAuthRolesState } from 'context/AuthRolesContext';
-import { toast, Flip } from "react-toastify";
+import { toast, Flip } from 'react-toastify';
+import urlBase64ToUint8Array from 'utils/urlBase64ToUintArray';
 
 const useAuth = () => {
   const { setModal, setToken, setId, setRoles } = useAuthRolesState();
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   console.log(BASE_URL);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { currentRole, setCurrentRole } = useCurrentRole();
+  // const navigate = useNavigate();
+  // const { currentRole, setCurrentRole } = useCurrentRole();
   // No longer manage loginState here; it will be managed by AuthProvider via context
 
   const login = async (username, password, setIsLoggedIn) => {
@@ -34,18 +35,48 @@ const useAuth = () => {
         }
       );
 
+      // In a useEffect or a function after ensuring the user is authenticated
+      navigator.serviceWorker.ready.then(function (registration) {
+        const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY);
+
+        console.log('VAPID', convertedVapidKey);
+
+        registration.pushManager
+          .subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedVapidKey
+          })
+          .then(function (subscription) {
+            // Send subscription to your server
+            console.log('Make it HAPPEN', JSON.stringify(subscription));
+            const subscribed = axios.post(`${BASE_URL}notification/subscribe-to-push-notifications`, subscription, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${response.data.data.token}`
+              }
+            });
+            console.log('HEY I HAVE SUBBED', subscribed);
+          })
+          .catch(function (err) {
+            console.log('Failed to subscribe the user: ', err);
+          });
+        registration.pushManager.getSubscription().then(function (subscription) {
+          console.log('Current subscription:', subscription);
+        });
+      });
+
       if (response?.data?.data?.requiredRoleSelection === true) {
         console.log('first one');
-        toast.success("Complete your login", {
-          position: "top-center",
+        toast.success('Complete your login', {
+          position: 'top-center',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",
-          transition: Flip,
+          theme: 'colored',
+          transition: Flip
         });
         localStorage.setItem('assignedRoles', response?.data?.data?.assignedRoles);
         setRoles(response?.data?.data?.assignedRoles);
@@ -66,24 +97,24 @@ const useAuth = () => {
       // console.log('Response data', response.data);
       // console.log('My role buddy', currentRole);
       else if (response?.data?.data?.requiredRoleSelection === false) {
-        toast.success("Login Successful !!!", {
-          position: "top-center",
+        toast.success('Login Successful !!!', {
+          position: 'top-center',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "colored",
-          transition: Flip,
+          theme: 'colored',
+          transition: Flip
         });
 
         const JWT_KEY = process.env.REACT_APP_JWT_KEY;
         const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
         const loggedInUserRole = decodedResponse.role_id.role_name;
-       
+
         // setCurrentRole(loggedInUserRole);
-        console.log("rl",loggedInUserRole)
+        console.log('rl', loggedInUserRole);
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
         localStorage.setItem('auth-token', response.data.data.token);
@@ -101,15 +132,15 @@ const useAuth = () => {
     } catch (error) {
       // alert(error.message);
       toast.error(error?.response?.data?.message, {
-        position: "top-center",
+        position: 'top-center',
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
-        transition: Flip,
+        theme: 'colored',
+        transition: Flip
       });
       console.log('Error', error);
     } finally {

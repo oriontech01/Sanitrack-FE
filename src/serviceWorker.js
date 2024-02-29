@@ -128,3 +128,17 @@ export function unregister() {
       });
   }
 }
+
+
+// src/customSWRegistration.js
+export const registerCustomSW = () => {
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/custom-service-worker.js').then(registration => {
+        console.log('Custom SW registered: ', registration.scope);
+      }).catch(registrationError => {
+        console.log('Custom SW registration failed: ', registrationError);
+      });
+    });
+  }
+};
