@@ -8,10 +8,11 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { TaskSharp } from '@mui/icons-material';
+import { LibraryAddOutlined, NotificationAdd, TaskSharp } from '@mui/icons-material';
 import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
-import { MessageOutlined } from '@mui/icons-material';
+import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
+
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -168,25 +169,32 @@ const cleanerSideNavItems = [
       },
       // Assuming "Work Order" might be related to tasks or projects
       {
-        id: 'work order',
-        title: 'Work Order',
+        id: 'timer',
+        title: 'Timer',
         type: 'item',
-        icon: icons['AccountTreeOutlinedIcon'], // Changed Icon
-        url: '/dashboard/tasks'
+        icon: PunchClockRounded, // Changed Icon
+        url: '/dashboard/timer'
       },
       // Assuming "Rooms" might be a part of site or facility management
       {
-        id: 'rooms',
-        title: 'Rooms',
+        id: 'notifications',
+        title: 'Notifications',
         type: 'item',
-        icon: icons['AppsOutlinedIcon'], // Changed Icon
-        url: '/dashboard/rooms'
+        icon: NotificationAdd, // Changed Icon
+        url: '/dashboard/notifications'
+      },
+      {
+        id: 'learning',
+        title: 'Learning',
+        type: 'item',
+        icon: LibraryAddOutlined, // Changed Icon
+        url: '/dashboard/learning' // Assuming URL should be unique and relevant
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
-        icon: icons['ContactSupportOutlinedIcon'], // Changed Icon
+        icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' // Assuming URL should be unique and relevant
       },
     ]
