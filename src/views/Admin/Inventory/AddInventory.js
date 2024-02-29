@@ -7,7 +7,7 @@ import { toast, Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useItems from 'Hooks/useItems';
 
-const AddInventory = () => {
+const AddInventory = ({closeModal}) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -17,8 +17,8 @@ const AddInventory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const access_token = localStorage.getItem('auth-token');
-
-  const { addInventory, inLoading } = useItems();
+  let url = 'rrr';
+  const { addInventory, inLoading,sus } = useItems();
   const handleImageChange = async e => {
     e.preventDefault();
 
@@ -28,44 +28,45 @@ const AddInventory = () => {
     // Create a temporary URL for image preview
     const previewURL = URL.createObjectURL(file);
     setImagePreview(previewURL);
-
+    console.log('klll', file);
     const formData = new FormData();
-    formData.append('file', file);
-    try {
-      const response = await axios.post(
-        `${BASE_URL}documents/upload`,
+    formData.append('form', file);
+    console.log('klll', formData);
+    // try {
+    //   const response = await axios.post(
+    //     `${BASE_URL}documents/upload`,
 
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`
-          }
-        }
-      );
+    //     formData,
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${access_token}`
+    //       }
+    //     }
+    //   );
 
-      const imageData = await response.data.image;
-      console.log('first', imageData);
-      setImgUrl(imageData);
-      if (response.data.image) {
-        setImage(file);
-      }
-    } catch (error) {
-      if (error) {
-        console.log(error);
-        setImage('');
-        toast.error(error.response.data.message, {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-          transition: Flip
-        });
-      }
-    }
+    //   // const imageData = await response?.data?.image;
+    //   console.log('first', response);
+    //   // setImgUrl(imageData);
+    //   // if (response?.data?.image) {
+    //   //   setImage(file);
+    //   // }
+    // } catch (error) {
+    //   if (error) {
+    //     console.log(error);
+    //     setImage('');
+    //     toast.error(error?.message, {
+    //       position: 'top-center',
+    //       autoClose: 5000,
+    //       hideProgressBar: true,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: 'colored',
+    //       transition: Flip
+    //     });
+    //   }
+    // }
   };
 
   const handleValueChange = event => {
@@ -78,9 +79,20 @@ const AddInventory = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const newData = { ...data, pairs: pairs };
+    const newData = { ...data, pairs: pairs, image: image };
     console.log('first', newData);
-    addInventory(newData);
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('pairs', pairs);
+    formData.append('name',data.name)
+    formData.append('unit',data.unit)
+    formData.append('type',data.type)
+    formData.append('quantity',data.quantity)
+    formData.append('description',data.description)
+    addInventory(formData);
+    if(sus){
+      closeModal()
+    }
   };
   return (
     <>
