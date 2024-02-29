@@ -7,5 +7,3 @@ services:
     image: oriontechmen/sanitrack-frontend
     ports:
       - "80:80"
-    deploy:  
-      pull_policy: always
