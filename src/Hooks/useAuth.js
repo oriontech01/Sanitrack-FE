@@ -110,16 +110,16 @@ const useAuth = () => {
         });
 
         const JWT_KEY = process.env.REACT_APP_JWT_KEY;
-        const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
+        const decodedResponse = JWT.decode(response?.data?.data?.token, JWT_KEY);
         const loggedInUserRole = decodedResponse.role_id.role_name;
 
         // setCurrentRole(loggedInUserRole);
         console.log('rl', loggedInUserRole);
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
-        localStorage.setItem('auth-token', response.data.data.token);
-        localStorage.setItem('name', response.data.data.username);
-        localStorage.setItem('id', response.data.data.userId);
+        localStorage.setItem('auth-token', response?.data?.data?.token);
+        localStorage.setItem('name', response?.data?.data?.username);
+        localStorage.setItem('id', response?.data?.data?.userId);
         localStorage.setItem('role', loggedInUserRole);
         setIsLoggedIn(true); // Update global state via context
       } // I'll add a check here when a user has multiple roles
