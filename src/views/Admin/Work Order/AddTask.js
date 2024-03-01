@@ -76,11 +76,13 @@ const AddTask = () => {
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
-  // useEffect(() => {
-  //   getUnAssignedRooms();
-  //   getAllCleaners();
-  //   getAllInspectors();
-  // }, []);
+  useEffect(() => {
+    getUnAssignedRooms();
+    getAllCleaners();
+    getAllInspectors();
+    getLocation();
+    getCleaningItems();
+  }, []);
 
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {
@@ -217,11 +219,11 @@ const AddTask = () => {
                     id="location"
                     name="location"
                     value={locationSelectId}
-                    onClick={event => {
-                      console.log('clicked');
-                      event.preventDefault();
-                      getLocation();
-                    }}
+                    // onClick={event => {
+                    //   console.log('clicked');
+                    //   event.preventDefault();
+                    //   getLocation();
+                    // }}
                     onChange={handleSelectLocation}
                     placeholder="Enter location"
                     label="Location"
@@ -277,9 +279,9 @@ const AddTask = () => {
                     labelId="inspectors"
                     id="inspectors"
                     multiple
-                    onClick={event => {
-                      getAllInspectors();
-                    }}
+                    // onClick={event => {
+                    //   getAllInspectors();
+                    // }}
                     value={inspector}
                     onChange={handleSelectInspectors}
                     input={<OutlinedInput label="Cleaner" />}
@@ -454,9 +456,9 @@ const AddTask = () => {
               labelId="cleanersItem"
               id="cleanersItem"
               multiple
-              onClick={event => {
-                getCleaningItems();
-              }}
+              // onClick={event => {
+              //   getCleaningItems();
+              // }}
               value={cleaningItem}
               onChange={handleSelectCleaningItem}
               input={<OutlinedInput label="Cleaning Item" />}
