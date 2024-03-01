@@ -44,7 +44,7 @@ const Users = () => {
         <Container>
           <Box display="flex" justifyContent="space-between" alignItems="center" paddingTop={5} paddingBottom={5}>
             <Typography variant="h2">All Staffs</Typography>
-            <Button variant="contained" onClick={handleNavigate}>
+            <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleNavigate}>
               Create New Staff
             </Button>
           </Box>

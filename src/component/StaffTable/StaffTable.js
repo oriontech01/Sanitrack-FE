@@ -42,7 +42,7 @@ const StaffTable = ({ allStaffs }) => {
                 <TableCell>{staff.phone_number}</TableCell>
                 <TableCell>
                   {staff.flag === "INACTIVE" ? (
-                    <Button variant="contained" className="view-btn" onClick={() => handleRestore(staff._id)}>
+                    <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={() => handleRestore(staff._id)}>
                       Restore
                     </Button>
                   ) : (

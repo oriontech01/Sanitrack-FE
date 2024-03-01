@@ -98,7 +98,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
           <Box sx={{ mb: 2 }}>
             <TextField fullWidth label="Postal Code" variant="outlined" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
           </Box>
-          <Button type="submit" variant="contained" color="primary">
+          <Button style={{backgroundColor: 'blue'}} type="submit" variant="contained" color="primary">
             Add Location
           </Button>
         </form>

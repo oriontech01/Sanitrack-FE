@@ -32,10 +32,10 @@ const Permissions = () => {
             All Permissions
           </Typography>
           <Box>
-            <Button variant="contained" color="primary" onClick={handleCreateNavigate} sx={{ mr: 1 }}>
+            <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleCreateNavigate} sx={{ mr: 1 }}>
               Create New Permission
             </Button>
-            <Button variant="contained" color="primary" onClick={handleAssignNavigate}>
+            <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleAssignNavigate}>
               Assign Permission
             </Button>
           </Box>

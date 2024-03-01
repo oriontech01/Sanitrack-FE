@@ -55,13 +55,13 @@ const Roles = () => {
               All Roles
             </Typography>
             <Box>
-              <Button variant="contained" onClick={handleCreateNavigate} sx={{ mr: 1 }}>
+              <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleCreateNavigate} sx={{ mr: 1 }}>
                 Create New Role
               </Button>
-              <Button variant="contained" onClick={handleAssignNavigate} sx={{ mr: 1 }}>
+              <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleAssignNavigate} sx={{ mr: 1 }}>
                 Assign Role
               </Button>
-              <Button variant="contained" onClick={handleViewNavigate}>
+              <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleViewNavigate}>
                 View Staff Role
               </Button>
             </Box>
