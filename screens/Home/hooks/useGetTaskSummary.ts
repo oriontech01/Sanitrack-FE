@@ -3,52 +3,46 @@ import useLoading from '../../general_hooks/useLoading';
 import { UserContext } from '../../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
-const useGetCleaningItems = (id) => {
+const useGetTaskSummary = (id) => {
   const { loading, startLoading, stopLoading } = useLoading();
-  const [cleaningItems, setCleaningItems] = useState([]);
-  const [planned_time, setPlanned_time] = useState('');
-  const [task, setTask] = useState([]);
+  const [summary, setSummary] = useState(null);
   const [refresh, setRefresh] = useState(0);
   const refetch = () => {
     setRefresh((prev) => prev + 1);
   };
   const { token, role } = useContext(UserContext);
-  const getCleaningItems = async () => {
+  const getSummary = async () => {
     const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
     startLoading();
 
     try {
-      console.log(id);
+      console.log('start');
       const response = await axios.get(
-        `${Constants.expoConfig.extra.baseUrl}${api}/cleaning-items?taskId=${id}`,
+        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/summary?taskId=${id}`,
         {
           headers: {
             Authorization: token,
           },
         }
       );
-
+      console.log(response.data.data);
       stopLoading();
-      console.log(response.data.data, 'ooooo');
-      setPlanned_time(response.data.data.planned_time);
-      setCleaningItems(response.data.data);
-      setTask([]);
+
+      setSummary(response.data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       stopLoading();
     }
   };
 
   useEffect(() => {
-    getCleaningItems();
+    getSummary();
   }, []);
   return {
-    loadingItems: loading,
-    getCleaningItems,
-    cleaningItems,
-    task,
-    planned_time,
+    loadingSummary: loading,
+    getSummary,
+    summary,
   };
 };
 
-export default useGetCleaningItems;
+export default useGetTaskSummary;

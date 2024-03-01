@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import Input from '../../../components/general/Input';
 import colors from '../../../util/colors';
 
-export default function CleaningItemList({ item }) {
-  const [initialValue, setInitalValue] = useState('');
+export default function CleaningItemList({ item, inspector = false }) {
+  const [initialValue, setInitalValue] = useState(
+    inspector ? item.quantity : ''
+  );
 
   return (
     <View style={styles.container}>
@@ -17,6 +19,7 @@ export default function CleaningItemList({ item }) {
         label={`${item.item_name} (${item.unit})`}
         value={initialValue}
       />
+      
     </View>
   );
 }

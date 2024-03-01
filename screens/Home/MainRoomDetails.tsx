@@ -28,6 +28,7 @@ import useSubmitTask from './hooks/useSubmitTask';
 
 export default function MainRoomDetails({ navigation, route, roomName }) {
   const { id, taskId } = route.params;
+  const { id: staffId } = useContext(UserContext);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
@@ -48,10 +49,11 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
     await AsyncStorage.setItem(
       `timerStartTime_${timerId}`,
       JSON.stringify({
-        start: startTime.toString(),
+        startTime: startTime.toString(),
         id: id,
         taskId,
         taskName: roomName,
+        userId: staffId,
       })
     );
     setStartedTime(startTime);
@@ -87,7 +89,7 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
           for (const timerKey of timerKeys) {
             const values = await AsyncStorage.getItem(timerKey);
             const timerId = timerKey.split('_')[1];
-            const startTime = parseInt(JSON.parse(values).start);
+            const startTime = parseInt(JSON.parse(values).startTime);
 
             const currentTime = new Date().getTime() - startTime;
             console.log(startTime, values, currentTime, 'new');
@@ -326,7 +328,7 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
         />
         <Button
           onPress={() => {
-            console.log(id);
+            navigation.navigate('HomeIndex');
           }}
           fontStyle={{ color: colors.blue }}
           style={{ ...styles.submit, backgroundColor: '#E0E8FF' }}

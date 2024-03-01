@@ -2,6 +2,7 @@ import NavigationStack from './util/NavigationStack';
 import React from 'react';
 import TopLevelContext from './context/index';
 import * as Notifications from 'expo-notifications';
+import 'react-native-gesture-handler';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -11,19 +12,19 @@ Notifications.setNotificationHandler({
   }),
 });
 
-Notifications.addNotificationReceivedListener(notification => {
+Notifications.addNotificationReceivedListener((notification) => {
   console.log(notification);
 });
 
 // Called when a user interacts with a notification (app can be foregrounded, backgrounded, or killed)
-Notifications.addNotificationResponseReceivedListener(response => {
+Notifications.addNotificationResponseReceivedListener((response) => {
   console.log(response);
 });
 
 export default function App() {
   return (
     <TopLevelContext>
-        <NavigationStack/>
+      <NavigationStack />
     </TopLevelContext>
   );
 }

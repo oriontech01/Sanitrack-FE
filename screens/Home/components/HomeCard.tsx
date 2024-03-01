@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-export default function HomeCard() {
+export default function HomeCard({ Icon, label, value, color, loading }) {
   return (
     <View style={styles.container}>
       <View
@@ -9,8 +9,12 @@ export default function HomeCard() {
           height: 32,
           width: 32,
           borderRadius: 32,
-          backgroundColor: 'rgba(0, 172, 108, 0.3)',
-        }}></View>
+          backgroundColor: `rgba(${color}, 0.3)`,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {<Icon />}
+      </View>
 
       <Text
         style={{
@@ -19,16 +23,20 @@ export default function HomeCard() {
           textAlign: 'center',
           color: '#595959',
         }}>
-        Number of Active tasks
+        {label}
       </Text>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          color: 'rgba(0, 172, 108, 1)',
-          fontSize: 20,
-        }}>
-        5
-      </Text>
+      {loading ? (
+        <ActivityIndicator color="#000" />
+      ) : (
+        <Text
+          style={{
+            fontWeight: 'bold',
+            color: `rgba(${color}, 1)`,
+            fontSize: 20,
+          }}>
+          {value}
+        </Text>
+      )}
     </View>
   );
 }
@@ -36,12 +44,13 @@ export default function HomeCard() {
 const styles = StyleSheet.create({
   container: {
     height: 140,
-    width: '48%',
+    width: 191,
     elevation: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
     borderRadius: 5,
+    marginRight: 10,
   },
 });

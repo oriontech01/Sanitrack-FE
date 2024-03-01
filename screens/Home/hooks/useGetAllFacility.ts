@@ -4,29 +4,29 @@ import { UserContext } from '../../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { useFocusEffect } from '@react-navigation/native';
-const useGetLocation = () => {
+const useGetAllFacility = () => {
   const { loading, startLoading, stopLoading } = useLoading();
-  const [locations, setLocations] = useState([]);
+  const [facilities, setFacilities] = useState(0);
   const [refresh, setRefresh] = useState(0);
   const refetch = () => {
     setRefresh((prev) => prev + 1);
   };
   const { token, role } = useContext(UserContext);
-  const getLocations = async () => {
+  const getAllFacilities = async () => {
     const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
     startLoading();
 
     try {
       const response = await axios.get(
-        `${Constants.expoConfig.extra.baseUrl}${api}`,
+        `${Constants.expoConfig.extra.baseUrl}${api}/all-facility`,
         {
           headers: {
             Authorization: token,
           },
         }
       );
-      setLocations(response.data.data);
-      console.log(response.data.data);
+      setFacilities(response.data.data);
+      console.log(response.data, 'iooo');
       stopLoading();
     } catch (error) {
       stopLoading();
@@ -34,15 +34,15 @@ const useGetLocation = () => {
   };
   useFocusEffect(
     React.useCallback(() => {
-      getLocations();
+      getAllFacilities();
     }, [refresh])
   );
 
   return {
-    loadingLocation: loading,
-    getLocations,
-    locations,
+    loadingFacilities: loading,
+    getAllFacilities,
+    facilities,
   };
 };
 
-export default useGetLocation;
+export default useGetAllFacility;

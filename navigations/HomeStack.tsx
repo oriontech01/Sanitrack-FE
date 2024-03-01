@@ -15,6 +15,8 @@ import SuccessScree from '../screens/Home/SuccessScree';
 import { UserContext } from '../context/UserContext';
 import InspectorItemsToClean from '../screens/Home/Inspector/InspectorItemsToClean';
 import InspectorTimer from '../screens/Home/Inspector/InspectorTimer';
+import CloseWorkOrder from '../screens/Home/Inspector/CloseWorkOrder';
+import InspectorSummary from '../screens/Home/Inspector/InspectorSummary';
 
 const HomeStack = () => {
   const Stack = createNativeStackNavigator();
@@ -34,6 +36,8 @@ const HomeStack = () => {
       <Stack.Screen component={Summary} name="Summary" />
       <Stack.Screen component={SuccessScree} name="Success" />
       <Stack.Screen component={InspectorTimer} name="InspectorTimer" />
+      <Stack.Screen component={CloseWorkOrder} name="CloseOrder" />
+      <Stack.Screen component={InspectorSummary} name="InspectorSummary" />
     </Stack.Navigator>
   );
 };

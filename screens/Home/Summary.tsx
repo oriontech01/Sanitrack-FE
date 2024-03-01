@@ -26,7 +26,7 @@ import useGetFacilityDetails from './hooks/useGetFacilityDetail';
 export default function Summary({ navigation, route }) {
   const { location, facility, cleanerItems, taskId } = route.params;
   const { loadingItems, cleaningItems, task, planned_time } =
-    useGetCleaningItems(facility.roomId);
+    useGetCleaningItems(taskId);
   const { detailList, loadingDetails } = useGetFacilityDetails(taskId);
   return (
     <View style={styles.container}>

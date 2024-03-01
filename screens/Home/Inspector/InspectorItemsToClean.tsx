@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Image,
   ImageBackground,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -23,12 +24,16 @@ import {
 import FacilityList from '../components/FacilityList';
 import ItemList from '../components/ItemList';
 import useGetFacilityDetails from '../hooks/useGetFacilityDetail';
+import useGetTaskSummary from '../hooks/useGetTaskSummary';
+import CleaningItemList from '../components/CleaningItemList';
+import moment from 'moment';
 
 export default function InspectorItemsToClean({ navigation, route }) {
   const { params } = route.params;
   const parsedParams = JSON.parse(params);
-  const { location, facility, id } = parsedParams;
-  const { loadingDetails, task, taskId } = useGetFacilityDetails(id);
+  const { location, facility, id, taskId } = parsedParams;
+  const { summary, loadingSummary } = useGetTaskSummary(taskId);
+  const { loadingDetails, task } = useGetFacilityDetails(id);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -37,47 +42,105 @@ export default function InspectorItemsToClean({ navigation, route }) {
         }}
         style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Facility Details</Text>
+        <Text style={styles.haeding}>Task Summary</Text>
       </TouchableOpacity>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {(loadingDetails || loadingSummary) && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 200,
+            }}>
+            <ActivityIndicator color={colors.blue} />
+          </View>
+        )}
 
-      {loadingDetails && (
-        <View
+        {!loadingDetails && task.length > 0 && (
+          <>
+            <Text
+              style={{
+                color: '#999999',
+                marginVertical: 10,
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              Facilities to clean {`(${task.length})`}
+            </Text>
+            {task.map((detail, index) => (
+              <ItemList key={index.toString()} item={detail.name} />
+            ))}
+          </>
+        )}
+        {!loadingSummary && (
+          <View>
+            <Text
+              style={{
+                color: '#999999',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              Cleaning Items{' '}
+              {`(${summary?.cleaningItems.cleaning_items.length})`}
+            </Text>
+            {summary?.cleaningItems.cleaning_items.map((item, ind) => (
+              <CleaningItemList inspector item={item} key={ind.toString()} />
+            ))}
+          </View>
+        )}
+
+        {!loadingSummary && (
+          <View>
+            <Text
+              style={{
+                color: '#999999',
+                fontSize: 18,
+                fontWeight: 'bold',
+                marginTop: 20,
+              }}>
+              Date Assigned
+            </Text>
+            <Text style={{ color: colors.blue }}>
+              {moment(summary?.taskDetails.date_added).format('DD-MM-YYYY')}
+            </Text>
+          </View>
+        )}
+
+        {!loadingSummary && (
+          <View>
+            <Text
+              style={{
+                color: '#999999',
+                fontSize: 18,
+                fontWeight: 'bold',
+                marginTop: 20,
+              }}>
+              Time Taken
+            </Text>
+            <Text style={{ color: colors.blue }}>
+              {summary?.taskDetails.times_approved}
+            </Text>
+          </View>
+        )}
+
+        <Button
+          onPress={() =>
+            navigation.navigate('InspectorTimer', {
+              location,
+              facility,
+              taskId,
+              id: facility.roomId,
+              roomName: facility.roomName,
+            })
+          }
           style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <ActivityIndicator color={colors.blue} />
-        </View>
-      )}
-
-      {!loadingDetails && task.length > 0 && (
-        <>
-          <Text style={{ color: '#999999', marginVertical: 10, fontSize: 12 }}>
-            Facilities to clean {`(${task.length})`}
-          </Text>
-          {task.map((detail, index) => (
-            <ItemList key={index.toString()} item={detail.name} />
-          ))}
-        </>
-      )}
-
-      <Button
-        onPress={() =>
-          navigation.navigate('InspectorTimer', {
-            location,
-            facility,
-            taskId,
-            id: facility.roomId,
-            roomName: facility.roomName,
-          })
-        }
-        style={{
-          marginTop: 'auto',
-          marginBottom: 30,
-        }}
-        label="Next"
-      />
+            marginTop: 20,
+            marginBottom: 30,
+          }}
+          label="Next"
+        />
+      </ScrollView>
     </View>
   );
 }

@@ -85,6 +85,23 @@ export default function CleaningItems({ navigation, route }) {
             </View>
           </>
         )}
+
+        {!loadingItems && cleaningItems.length == 0 && (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              style={{
+                width: '100%',
+                height: 200,
+              }}
+              source={require('../../assets/images/bro.png')}
+            />
+            <Text>OOPS! No cleaning items</Text>
+          </View>
+        )}
       </ScrollView>
       {cleaningItems.length > 0 ? (
         <Button
@@ -151,7 +168,7 @@ export default function CleaningItems({ navigation, route }) {
               taskId,
             });
           }}
-          label="Next"
+          label="Request Cleaning Items"
         />
       )}
     </View>

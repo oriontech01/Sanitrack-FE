@@ -94,26 +94,15 @@ export default function InspectorRoomItems({ item }) {
           }}
           activeOpacity={0.7}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View
+          <Image
             style={{
-              height: 43,
-              width: 84,
-              backgroundColor: '#EBF0FF',
-              borderWidth: 0.5,
-              borderColor: colors.blue,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text
-              style={{
-                color: colors.blue,
-                fontSize: 14,
-              }}>
-              View
-            </Text>
-          </View>
-          <Text style={[styles.font]}>{item.name}.jpg</Text>
+              height: 30,
+              width: 30,
+              borderRadius: 4,
+            }}
+            source={{ uri: item.image_url }}
+          />
+          <Text style={[styles.font, { color: colors.blue }]}>View Image</Text>
         </TouchableOpacity>
       </View>
 
@@ -135,7 +124,7 @@ export default function InspectorRoomItems({ item }) {
                   <Button
                     onPress={() => setModalVisible(false)}
                     style={styles.button}
-                    label="Proceed"
+                    label="Close"
                   />
                 </View>
               </>

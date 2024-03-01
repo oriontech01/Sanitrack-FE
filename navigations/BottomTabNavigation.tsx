@@ -14,6 +14,7 @@ import TimerHome from '../screens/Timer/TimerHome';
 import NotificationHome from '../screens/Notifications/NotificationsHome';
 import ProfileHome from '../screens/Profile/ProfileHome';
 import { UserContext } from '../context/UserContext';
+import DrawerNav from './DrawerNav';
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
@@ -36,7 +37,7 @@ const BottomTabNavigation = () => {
           tabBarLabel: 'Home',
         }}
         name="CleanerHome"
-        component={HomeStack}
+        component={DrawerNav}
       />
 
       <Tab.Screen

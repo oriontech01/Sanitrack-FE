@@ -35,6 +35,7 @@ export default function Login({ navigation }) {
     setIsLoading(true);
 
     try {
+      console.log(Constants.expoConfig.extra.baseUrl);
       const res = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}login`,
         {

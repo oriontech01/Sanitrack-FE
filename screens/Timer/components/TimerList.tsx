@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import colors from '../../../util/colors';
 import Animated, {
   useAnimatedStyle,
@@ -8,10 +8,13 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
+import { UserContext } from '../../../context/UserContext';
 
-export default function TimerList({ item }) {
+export default function TimerList({ item, active }) {
   const scaleValue = useSharedValue(1);
   const navigation = useNavigation();
+  const { role } = useContext(UserContext);
   const AnimatedStatus = useAnimatedStyle(() => {
     return {
       transform: [{ scale: scaleValue.value }],
@@ -42,7 +45,8 @@ export default function TimerList({ item }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('InspectorTimer', {
+        const nav = role == 'Inspector' ? 'InspectorTimer' : 'MainRoom';
+        navigation.navigate(nav, {
           taskId: item.taskId,
           id: item.id,
           roomName: item.roomName,
@@ -51,15 +55,21 @@ export default function TimerList({ item }) {
       style={styles.container}>
       <View>
         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-          {formatTimer(Date.now() - item.start)}
+          {formatTimer(Date.now() - item.startTime)}
         </Text>
-        <Text style={{ color: colors.blue }}>{item.taskName}</Text>
+        <Text style={{ color: colors.blue }}>
+          {active ? item.taskName : 'Done'}
+        </Text>
       </View>
       <View>
         <Animated.View
-          style={[styles.status, { backgroundColor: 'red' }, AnimatedStatus]}
+          style={[
+            styles.status,
+            { backgroundColor: active ? 'red' : 'green' },
+            AnimatedStatus,
+          ]}
         />
-        <Text>21/02/24</Text>
+        <Text>{moment(item.startTime).format('DD-MM-YYYY')}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -31,6 +31,7 @@ import useApproveTask from '../hooks/useApproveTask';
 
 export default function InspectorTimer({ navigation, route }) {
   const { id, taskId, roomName } = route.params;
+  const { id: staffId } = useContext(UserContext);
   const [seconds, setSeconds] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [active, setActive] = useState(0);
@@ -52,10 +53,11 @@ export default function InspectorTimer({ navigation, route }) {
     await AsyncStorage.setItem(
       `timerStartTime_${timerId}`,
       JSON.stringify({
-        start: startTime.toString(),
+        startTime: startTime.toString(),
         id: id,
         taskId,
         taskName: roomName,
+        userId: staffId,
       })
     );
     setStartedTime(startTime);
@@ -105,7 +107,7 @@ export default function InspectorTimer({ navigation, route }) {
           for (const timerKey of timerKeys) {
             const values = await AsyncStorage.getItem(timerKey);
             const timerId = timerKey.split('_')[1];
-            const startTime = parseInt(JSON.parse(values).start);
+            const startTime = parseInt(JSON.parse(values).startTime);
 
             const currentTime = new Date().getTime() - startTime;
             console.log(startTime, values, currentTime, 'new');
@@ -144,7 +146,7 @@ export default function InspectorTimer({ navigation, route }) {
 
   const handleStop = async () => {
     if (startedTime !== 0) {
-      await AsyncStorage.removeItem(`timerStartTime_${startedTime}`);
+      await AsyncStorage.removeItem(`timerStartTime_${startedTime.toString()}`);
       await AsyncStorage.setItem(
         `done_${id}`,
         JSON.stringify({
@@ -322,7 +324,11 @@ export default function InspectorTimer({ navigation, route }) {
 
                 if (approved) {
                   await AsyncStorage.removeItem(`done_${id}`);
-                  navigation.navigate('Success');
+                  if (approvedlist.length == task.length) {
+                    navigation.navigate('CloseOrder');
+                  } else {
+                    navigation.navigate('Success');
+                  }
                 }
               } else {
                 alert('At Least one task must be approved');
@@ -353,51 +359,50 @@ export default function InspectorTimer({ navigation, route }) {
                       }}
                     />
                   )}
-
-                  <View>
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        fontSize: 20,
-                        marginVertical: 10,
-                      }}>
-                      {ind + 1} of{' '}
-                      {task.filter((task) => task.image_url !== 'empty').length}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}>
-                      <Button
-                        style={{ width: '45%' }}
-                        onPress={() => {
-                          if (
-                            ind ==
-                            task.filter((task) => task.image_url !== 'empty')
-                              .length -
-                              1
-                          ) {
-                            setActive(0);
-                          } else {
-                            setActive((prev) => prev + 1);
-                          }
-                        }}
-                        label="Next"
-                      />
-                      <Button
-                        style={{ width: '45%', backgroundColor: '#6D0808' }}
-                        onPress={() => {
-                          setModalVisible(false);
-                        }}
-                        label="Close"
-                      />
-                    </View>
-                  </View>
                 </View>
               ))}
+
+            <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  fontSize: 20,
+                  marginVertical: 10,
+                }}>
+                {active + 1} of
+                {task.filter((task) => task.image_url !== 'empty').length}
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Button
+                  style={{ width: '45%' }}
+                  onPress={() => {
+                    if (
+                      active ==
+                      task.filter((task) => task.image_url !== 'empty').length -
+                        1
+                    ) {
+                      setActive(0);
+                    } else {
+                      setActive((prev) => prev + 1);
+                    }
+                  }}
+                  label="Next"
+                />
+                <Button
+                  style={{ width: '45%', backgroundColor: '#6D0808' }}
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
+                  label="Close"
+                />
+              </View>
+            </View>
           </View>
         </View>
       </Modal>
