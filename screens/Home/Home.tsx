@@ -123,8 +123,9 @@ export default function Home({ navigation }) {
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <HamburgerMenu />
         </TouchableOpacity>
-        <AppText style={styles.haeding}>Welcome {user.name}</AppText>
+        <AppText style={styles.heading}>Welcome {user.name}</AppText>
       </View>
+      <AppText style={styles.heading}>Welcome {user.name}</AppText>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: StatusBar.currentHeight,
   },
-  haeding: {
+  heading: {
     color: colors.blue,
     fontSize: 18,
     fontWeight: 'bold',
