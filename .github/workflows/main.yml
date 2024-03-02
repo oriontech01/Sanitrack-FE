@@ -68,7 +68,7 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           sudo chmod 666 /var/run/docker.sock
-          cd Sanitrack
+          cd Sanitrack-FE
           git checkout main
           git pull origin main
           docker-compose stop
