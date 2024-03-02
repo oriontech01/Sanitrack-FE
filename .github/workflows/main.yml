@@ -52,7 +52,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: oriontechmen/sanitrack-frontend
+          tags: oriontechmen/sanitrack-frontend:dev
 
   deploy:
     needs: build
@@ -63,14 +63,14 @@ jobs:
     - name: Deploy to Ec2 Instance
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST }}
+        host: ${{ secrets.HOST_DEV }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           sudo chmod 666 /var/run/docker.sock
-          cd Sanitrack
-          git checkout main
-          git pull origin main
+          cd Sanitrack-FE
+          git checkout development
+          git pull origin development
           docker-compose stop
           docker-compose rm -f
           docker-compose pull   

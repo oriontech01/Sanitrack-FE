@@ -4,6 +4,6 @@ services:
   sanitrack:
     container_name: sanitrack_web
     #build: .   
-    image: oriontechmen/sanitrack-frontend
+    image: oriontechmen/sanitrack-frontend:dev
     ports:
       - "80:3000"
