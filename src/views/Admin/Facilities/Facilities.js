@@ -1,89 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import axios from 'axios';
-import { Container, Typography, Button, Box } from '@mui/material';
-import { FaLocationDot } from 'react-icons/fa6';
-import AddLocation from './AddLocation';
+import React, { useEffect, useState } from 'react';
 import Loader from 'component/Loader/Loader';
+import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TablePagination } from '@mui/material';
 
-const Facilities = () => {
-  const [locationData, setLocationData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem('auth-token');
-  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-  const containerStyle = {
-    width: '800px',
-    height: '400px'
-  };
-
-  const center = {
-    lat: 9.05785,
-    lng: 7.49508 // Longitude for Nigeria
-  };
-
-  useEffect(() => {
-    const getFacilitiesLocation = async () => {
-      setLoading(true);
-      const res = await axios.get(`${BASE_URL}locations/`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const locations = res.data.data.allLocations;
-
-      for (const location of locations) {
-        const address = `${location.city}, ${location.state}, ${location.country}`;
-        const geoRes = await axios.get(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${googleMapsApiKey}`
-        );
-        const geoData = geoRes.data.results[0].geometry.location;
-        location.lat = geoData.lat;
-        location.lng = geoData.lng;
+const allFacilities = [
+    {
+      _id: '1',
+      roomName: 'Conference Room A',
+      location: {
+        city: 'New York',
+        state: 'NY',
+        country: 'USA'
       }
+    },
+    {
+      _id: '2',
+      roomName: 'Executive Suite',
+      location: {
+        city: 'Los Angeles',
+        state: 'CA',
+        country: 'USA'
+      }
+    },
+    {
+      _id: '3',
+      roomName: 'Banquet Hall',
+      location: {
+        city: 'Chicago',
+        state: 'IL',
+        country: 'USA'
+      }
+    },
+    {
+      _id: '4',
+      roomName: 'Meeting Room 101',
+      location: {
+        city: 'Houston',
+        state: 'TX',
+        country: 'USA'
+      }
+    },
+    {
+      _id: '5',
+      roomName: 'VIP Lounge',
+      location: {
+        city: 'Phoenix',
+        state: 'AZ',
+        country: 'USA'
+      }
+    }
+  ];
+const Facilities = () => {
+    return (
+      <Container maxWidth="lg">
+        <div className="center-me">
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h2" gutterBottom>
+              All Facilities
+            </Typography>
+            <button  className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 ">
+              Create New Facility
+            </button>
+          </div>
 
-      setLocationData(locations);
-      setLoading(false);
-    };
-
-    getFacilitiesLocation();
-  }, []);
-
-  return loading ? (
-    <Loader />
-  ) : (
-    <Container className="tracker-container">
-      <Box className="location-header" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h2">Facilities</Typography>
-        <Button style={{ backgroundColor: 'blue' }} onClick={() => setIsModalOpen(true)} variant="contained">
-          Add Location
-        </Button>
-      </Box>
-
-      <Box className="map-container" justifyContent="center" alignContent={'center'} display={'flex'} padding="20px">
-        <LoadScript googleMapsApiKey={googleMapsApiKey}>
-          <GoogleMap mapContainerClassName="google-map" mapContainerStyle={containerStyle} center={center} zoom={10}>
-            {locationData.map(facility => (
-              <Marker key={facility._id} position={{ lat: facility.lat, lng: facility.lng }} />
-            ))}
-          </GoogleMap>
-        </LoadScript>
-      </Box>
-      <AddLocation isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
-      {/* Add the legend */}
-      <Box className="legend" sx={{ textAlign: 'center', marginTop: 4 }}>
-        <Typography variant="h3" sx={{ marginBottom: 2 }}>
-          Legend
-        </Typography>
-        <Box className="legend-item" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <FaLocationDot fill="red" />
-          <Typography variant="body1">Facility Location</Typography>
-        </Box>
-      </Box>
-    </Container>
-  );
-};
+          <div style={{ marginTop: '20px' }}>
+            <TableContainer>
+              <Table id="taskTable">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Facility Name</TableCell>
+                    <TableCell>Location</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {allFacilities.map((item) => (
+                    <TableRow key={item._id}>
+                      <TableCell>{item.roomName}</TableCell>
+                      <TableCell>{`${item.location.city}, ${item.location.state} ${item.location.country}`}</TableCell>
+                      <TableCell className='flex gap-x-3'>
+                        <button  className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 " onClick={() => handleViewDetails(item._id)}>
+                          View Details
+                        </button>
+                        <button style={{backgroundColor: 'red'}}  className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 w-auto lg:h-[40px] text-base border-t-2"
+                          onClick={() => handleRoomDelete(item._id)}
+                        >
+                          Delete
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              {/* <TablePagination
+                component="div"
+                count={allFacilities.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
+              /> */}
+            </TableContainer>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
 export default Facilities;
