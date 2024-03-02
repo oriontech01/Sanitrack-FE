@@ -4,6 +4,7 @@ import useWorkHistory from 'Hooks/useWorkHistory';
 import useRoom from 'Hooks/useRoom';
 import Loader from 'component/Loader/Loader';
 import useCleaningItems from 'Hooks/useCleaningItems';
+import { Box } from '@mui/material';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -19,6 +20,7 @@ import DescriptionTwoTone from '@mui/icons-material/DescriptionTwoTone';
 import { AddTaskSharp, CleaningServicesSharp, RoomSharp, TaskAltOutlined } from '@mui/icons-material';
 import { GroupWorkRounded } from '@mui/icons-material';
 import { SupervisorAccount } from '@mui/icons-material';
+import FacilityCleaningOverviewChart from './chart/FacilityCleaningOverviewChart';
 
 // custom style
 const FlatCardBlock = styled(props => <Grid item sm={6} xs={12} {...props} />)(({ theme }) => ({
@@ -37,10 +39,11 @@ const FlatCardBlock = styled(props => <Grid item sm={6} xs={12} {...props} />)((
 
 const Default = () => {
   const theme = useTheme();
-  const { activeCleaners, activeInspectors, everyTask, getAllCleaners, getAllInspectors, getAllTasks, pendingTasks, completedTasks } = useTask();
+  const { activeCleaners, activeInspectors, everyTask, getAllCleaners, getAllInspectors, getAllTasks, pendingTasks, completedTasks } =
+    useTask();
   const { roomsCount, getRoom } = useRoom();
   const { getCleanerSummary, cleanerSummary } = useWorkHistory();
-  const {getCleaningItems, cleaningItems} = useCleaningItems()
+  const { getCleaningItems, cleaningItems } = useCleaningItems();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -73,6 +76,7 @@ const Default = () => {
         <Grid container spacing={gridSpacing}>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
+              to={'/dashboard/users'}
               primary={activeCleaners}
               secondary="All Cleaners"
               color={theme.palette.warning.main}
@@ -81,6 +85,7 @@ const Default = () => {
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
+              to={'/dashboard/users'}
               primary={activeInspectors}
               secondary="All Inspectors"
               color={theme.palette.error.main}
@@ -89,6 +94,7 @@ const Default = () => {
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
+              to={'/dashboard/tasks'}
               primary={everyTask}
               secondary="All Tasks"
               color={theme.palette.success.main}
@@ -97,6 +103,7 @@ const Default = () => {
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
+              to={'/dashboard/rooms'}
               primary={roomsCount}
               secondary="Total Room Count"
               color={theme.palette.primary.main}
@@ -113,14 +120,12 @@ const Default = () => {
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
+              to={'/dashboard/inventory'}
               primary={cleaningItems.length}
               secondary="Cleaning Items"
               color={theme.palette.action.active}
               iconPrimary={CleaningServicesSharp}
             />
-            {
-              console.log(cleaningItems.length)
-            }
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
@@ -132,7 +137,10 @@ const Default = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Charts data={cleanerSummary} />
+      <Box display={'flex'} alignContent={'center'} width={'100%'} justifyContent={'center'}  alignItems={'center'}>
+        <Charts data={cleanerSummary} />
+        <FacilityCleaningOverviewChart />
+      </Box>
     </Grid>
   );
 };

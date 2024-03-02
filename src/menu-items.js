@@ -8,10 +8,11 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { LibraryAddOutlined, NotificationAdd, TaskSharp } from '@mui/icons-material';
+import { LibraryAddOutlined, LocationCity, NotificationAdd, TaskSharp } from '@mui/icons-material';
 import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
 import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
+import { FaBuilding } from 'react-icons/fa6';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -40,15 +41,20 @@ const adminSideNavItems = [
         icon: icons['HomeOutlinedIcon'], // Specific Icon
         url: '/dashboard'
       },
-      // Assuming "Work Order" might be related to tasks or projects
       {
-        id: 'work order',
-        title: 'Work Order',
+        id: 'locations',
+        title: 'Locations',
         type: 'item',
-        icon: icons['AccountTreeOutlinedIcon'], // Changed Icon
-        url: '/dashboard/work-order'
+        icon: LocationCity, // Changed Icon
+        url: '/dashboard/locations'
       },
-      // Assuming "Rooms" might be a part of site or facility management
+      {
+        id: 'facilities',
+        title: 'Facilities',
+        type: 'item',
+        icon: FaBuilding, // Main Icon for Facilities
+        url: '/dashboard/facilities' // Base URL for Facilities
+      },
       {
         id: 'rooms',
         title: 'Rooms',
@@ -57,27 +63,11 @@ const adminSideNavItems = [
         url: '/dashboard/rooms'
       },
       {
-        id: 'facilities',
-        title: 'Facilities',
+        id: 'work schedule',
+        title: 'Work Schedule',
         type: 'item',
-        icon: icons['SecurityOutlinedIcon'], // Main Icon for Facilities
-        url: '/dashboard/facilities' // Base URL for Facilities
-        // children: [
-        //   {
-        //     id: 'facility locations',
-        //     title: 'Facility Locations',
-        //     type: 'item',
-        //     icon: icons['LocationCityTwoTone'], // Correctly referencing the new icon
-        //     url: '/dashboard/facilities/locations'
-        //   },
-        //   {
-        //     id: 'maps',
-        //     title: 'View Facilities',
-        //     type: 'item',
-        //     icon: icons['LocationCityTwoTone'], // Correctly referencing the new icon
-        //     url: '/dashboard/facilities/maps'
-        //   }
-        // ]
+        icon: icons['AccountTreeOutlinedIcon'], // Changed Icon
+        url: '/dashboard/work-schedule'
       },
       {
         id: 'work history',
@@ -86,7 +76,6 @@ const adminSideNavItems = [
         icon: icons['ChromeReaderModeOutlinedIcon'], // Changed Icon
         url: '/dashboard/work-history'
       },
-      // Messages could use a communication-related icon
       {
         id: 'messages',
         title: 'Messages',
@@ -94,20 +83,12 @@ const adminSideNavItems = [
         icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' // Assuming URL should be unique and relevant
       },
-      // Evidence might relate to documentation or verification
       {
         id: 'evidence',
         title: 'Evidence',
         type: 'item',
         icon: BrowseGallery, // Changed Icon
         url: '/dashboard/evidence' // Assuming URL should be unique and relevant
-      },
-      {
-        id: 'tasks',
-        title: 'Tasks',
-        type: 'item',
-        icon: TaskSharp, // Changed Icon
-        url: '/dashboard/tasks' // Assuming URL should be unique and relevant
       },
       {
         id: 'inventory',

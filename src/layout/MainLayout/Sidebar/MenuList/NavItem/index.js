@@ -1,28 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-// material-ui
+import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-
-// third party
 import { useSelector, useDispatch } from 'react-redux';
-
-// project import
 import * as actionTypes from 'store/actions';
-
-// assets
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-// ==============================|| NAV ITEM ||============================== //
-
-const NaREACT_APPm = ({ item, level }) => {
+const NavItem = ({ item, level }) => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const dispatch = useDispatch();
+  const location = useLocation();
   const Icon = item.icon;
   const itemIcon = item.icon ? <Icon color="inherit" /> : <ArrowForwardIcon color="inherit" fontSize={level > 0 ? 'inherit' : 'default'} />;
+
+  // Determine if the current route matches the item URL
+  const isSelected = location.pathname === item.url;
 
   let itemTarget = '';
   if (item.target) {
@@ -42,17 +36,14 @@ const NaREACT_APPm = ({ item, level }) => {
         marginBottom: '5px',
         pl: `${level * 16}px`
       }}
-      selected={customization.isOpen === item.id}
-      component={Link}
+      selected={isSelected} // Set based on current route
       onClick={() => dispatch({ type: actionTypes.MENU_OPEN, isOpen: item.id })}
-      to={item.url}
-      target={itemTarget}
       {...listItemProps}
     >
       <ListItemIcon sx={{ minWidth: 25 }}>{itemIcon}</ListItemIcon>
       <ListItemText
         primary={
-          <Typography sx={{ pl: 1.4 }} variant={customization.isOpen === item.id ? 'subtitle1' : 'body1'} color="inherit">
+          <Typography sx={{ pl: 1.4 }} variant={isSelected ? 'subtitle1' : 'body1'} color="inherit">
             {item.title}
           </Typography>
         }
@@ -77,20 +68,9 @@ const NaREACT_APPm = ({ item, level }) => {
   );
 };
 
-NaREACT_APPm.propTypes = {
+NavItem.propTypes = {
   item: PropTypes.object,
-  level: PropTypes.number,
-  icon: PropTypes.object,
-  target: PropTypes.object,
-  url: PropTypes.string,
-  disabled: PropTypes.bool,
-  id: PropTypes.string,
-  title: PropTypes.string,
-  caption: PropTypes.string,
-  chip: PropTypes.object,
-  color: PropTypes.string,
-  label: PropTypes.string,
-  avatar: PropTypes.object
+  level: PropTypes.number
 };
 
-export default NaREACT_APPm;
+export default NavItem;

@@ -70,7 +70,7 @@ const Room = () => {
                         <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 " onClick={() => handleViewDetails(item._id)}>
                           View Details
                         </button>
-                        <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-black w-auto lg:h-[40px] text-base border-t-2 "
+                        <button disabled={isLoading} style={{backgroundColor: 'red'}}  className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 w-auto lg:h-[40px] text-base border-t-2"
                           onClick={() => handleRoomDelete(item._id)}
                         >
                           Delete

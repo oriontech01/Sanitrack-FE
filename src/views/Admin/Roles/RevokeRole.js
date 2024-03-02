@@ -78,9 +78,8 @@ const RevokeRole = () => {
           </div>
           <Button
             variant="contained"
-            color="secondary"
+            style={{backgroundColor: 'blue', marginTop: "12px"}}
             onClick={handleRevoke}
-            style={{ marginTop: "12px" }}
           >
             Revoke Role
           </Button>
