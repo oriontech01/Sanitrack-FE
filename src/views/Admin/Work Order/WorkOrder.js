@@ -23,7 +23,7 @@ const WorkOrder = () => {
   return (
     <>
       <header className="flex  lg:flex-row flex-col justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold text-[#3366FF]">Work Orders</h1>
+        <h1 className="text-3xl font-bold text-[#3366FF]">Work Schedule</h1>
         <Link
           to={`/dashboard/create-work-order`}
           onClick={() => {
