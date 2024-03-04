@@ -102,7 +102,7 @@ const ProfileSection = () => {
                     borderRadius: '10px'
                   }}
                 >
-                  <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
+                  {/* <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
                     <ListItemIcon>
                       <SettingsTwoToneIcon />
                     </ListItemIcon>
@@ -125,7 +125,8 @@ const ProfileSection = () => {
                       <LockOpenTwoTone />
                     </ListItemIcon>
                     <ListItemText primary="Lock Screen" />
-                  </ListItemButton>
+                  </ListItemButton> */}
+
                   <ListItemButton onClick={() => {
                       logout(setIsLoggedIn)
                       navigate('/')

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/heading-has-content */
 import React, { useContext, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import useLocation from '../../../Hooks/useLocation';

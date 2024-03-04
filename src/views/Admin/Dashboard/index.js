@@ -137,7 +137,7 @@ const Default = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Box display={'flex'} alignContent={'center'} width={'100%'} justifyContent={'center'}  alignItems={'center'}>
+      <Box display={'flex'} alignContent={'center'} width={'100%'} paddingTop={10} justifyContent={'center'} gap={5} alignItems={'center'}>
         <Charts data={cleanerSummary} />
         <FacilityCleaningOverviewChart />
       </Box>
