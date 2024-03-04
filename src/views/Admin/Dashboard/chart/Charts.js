@@ -79,8 +79,8 @@ function Charts({ data }) {
   };
 
   return (
-    <ChartContainer style={{ margin: '0 auto', marginTop: 50}}>
-      <Typography variant="h4" component="h4" gutterBottom style={{ fontWeight: 600, marginBottom: 20 }}>
+    <ChartContainer style={{ width: '100%'}}>
+      <Typography variant="h4" component="h4" gutterBottom style={{ fontWeight: 'bold', marginBottom: 80 }}>
         Cleaning Data Overview
       </Typography>
       <ChartControls>

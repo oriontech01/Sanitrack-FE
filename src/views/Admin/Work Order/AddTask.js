@@ -1,26 +1,18 @@
+
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
+
 import useTask from '../../../Hooks/useTask';
 import {
   Grid,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
   FormControl,
-  FormLabel,
-  Button,
   Box,
-  Paper,
   InputLabel,
   Select,
   MenuItem,
-  TextField,
   OutlinedInput,
-  Checkbox,
-  ListItemText
+  CircularProgress
 } from '@mui/material';
-import { log } from 'util';
 import useRoom from 'Hooks/useRoom';
 import useLocation from '../../../Hooks/useLocation';
 import { ToastContainer } from 'react-toastify';
@@ -72,6 +64,7 @@ const AddTask = () => {
   const [items, setItems] = useState([]);
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
+
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleDateChange = event => {
@@ -79,6 +72,7 @@ const AddTask = () => {
   };
 
   const formattedDate = selectedDate.toISOString().slice(0, 10);
+
 
   useEffect(() => {
     getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
@@ -92,7 +86,18 @@ const AddTask = () => {
     getAllInspectors();
     getLocation();
     getCleaningItems();
+    
   }, []);
+
+  useEffect(() => {
+    getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
+  }, [locationSelectId])
+
+  useEffect(() => {
+    getRoomById(storedRoomId ? storedRoomId : id);
+  }, [id])
+  
+  
 
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {
@@ -177,9 +182,6 @@ const AddTask = () => {
     }));
     setFilteredItems(modifiedItems);
   };
-  const storedLocationId = localStorage.getItem('locationId');
-  const storedRoomId = localStorage.getItem('roomId');
-
   const handleQuantityChange = (index, event) => {
     const newItems = [...items];
     newItems[index].quantity = event.target.value;
@@ -241,11 +243,6 @@ const AddTask = () => {
                     id="location"
                     name="location"
                     value={locationSelectId}
-                    // onClick={event => {
-                    //   console.log('clicked');
-                    //   event.preventDefault();
-                    //   getLocation();
-                    // }}
                     onChange={handleSelectLocation}
                     style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ced4da' }}
                   >
@@ -272,21 +269,25 @@ const AddTask = () => {
                     id="facilities"
                     name="facilities"
                     value={id}
+
                     // onClick={event => {
                     //   getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
                     // }}
+
                     onChange={handleSelectRoom}
                     style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ced4da' }}
                   >
-                    {allUnassignedRoomsById?.length === 0 ? (
-                      <option>Select a location first</option>
-                    ) : (
-                      allUnassignedRoomsById?.map(rooms => (
-                        <option key={rooms._id} value={rooms._id}>
-                          {`${rooms.roomName}`}
-                        </option>
-                      ))
-                    )}
+                   
+                      {allUnassignedRoomsById?.length === 0 ? (
+                        <option>Select a location first</option>
+                      ) : (
+                        allUnassignedRoomsById?.map(rooms => (
+                          <option key={rooms._id} value={rooms._id}>
+                            {`${rooms.roomName}`}
+                          </option>
+                        ))
+                      )}
+                
                   </select>
                 </div>
               </Grid>
@@ -317,30 +318,7 @@ const AddTask = () => {
                     ))}
                   </Select>
                 </FormControl>
-                {/* <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="location"> Inspectors</InputLabel>
-              <Select
-                id="inspector"
-                name="inspector"
-                // value={formData.location_id}
-                onClick={event => {
-                  getAllInspectors();
-                }}
-                onChange={e => setSelectedInspector(e.target.value)}
-                placeholder="Select Inspector"
-                label="Inspector"
-                sx={{ marginBottom: 2 }}
-              >
-                {allInspectors?.map(inspector => {
-                  // const address = `${location.city}, ${location.state}, ${location.country}`;
-                  return (
-                    <MenuItem key={inspector?._id} value={inspector?._id} className="capitalize">
-                      {allInspectors.length === 0 ? 'No Inspectors available' : `${inspector?.username}-(${inspector?.role_name})`}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl> */}
+
               </div>
             </Grid>
             <Grid item lg={6} sm={6} xs={12}>
@@ -490,9 +468,6 @@ Scheduled Date
               labelId="cleanersItem"
               id="cleanersItem"
               multiple
-              // onClick={event => {
-              //   getCleaningItems();
-              // }}
               value={cleaningItem}
               onChange={handleSelectCleaningItem}
               input={<OutlinedInput label="Cleaning Item" />}
@@ -563,38 +538,6 @@ Scheduled Date
               )}
             </Select>
           </FormControl>
-          {/* <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
-              Cleaners
-            </FormLabel>
-            <RadioGroup
-              name="selectedCleaner"
-              value={selectedCleaner}
-              onChange={event => setSelectedCleaner(event.target.value)}
-              sx={scrollableGroupStyle}
-            >
-              {allCleaners.map(cleaner => (
-                <FormControlLabel key={cleaner._id} value={cleaner._id} control={<Radio />} label={cleaner?.username} />
-              ))}
-            </RadioGroup>
-          </FormControl> */}
-
-          {/* <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
-              Inspectors
-            </FormLabel>
-            <RadioGroup
-              name="selectedInspector"
-              value={selectedInspector}
-              onChange={event => setSelectedInspector(event.target.value)}
-              sx={scrollableGroupStyle}
-            >
-              {allInspectors.map(inspector => (
-                <FormControlLabel key={inspector._id} value={inspector._id} control={<Radio />} label={inspector.username} />
-              ))}
-            </RadioGroup>
-          </FormControl> */}
-
           <div className="flex justify-center">
             <button
               className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
