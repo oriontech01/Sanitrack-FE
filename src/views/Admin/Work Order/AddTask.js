@@ -1,4 +1,3 @@
-
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import useTask from '../../../Hooks/useTask';
@@ -45,7 +44,7 @@ const AddTask = () => {
   const [locationSelectId, setLocationSelectId] = useState('');
   const [cleaners, setCleaners] = React.useState([]);
   const [cleaningItem, setCleaningItem] = useState([]);
-  const [itesmToClean, setItemsToClean] = useState([]);
+  const [itemsToClean, setItemsToClean] = useState([]);
   const [inspector, setAllInspectors] = useState([]);
   const [clean_hours, setClean_hours] = useState('');
   const [clean_minutes, setClean_minutes] = useState('');
@@ -55,7 +54,6 @@ const AddTask = () => {
   const [items, setItems] = useState([]);
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
-
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -163,8 +161,6 @@ const AddTask = () => {
     }));
     setFilteredItems(modifiedItems);
   };
-  const storedLocationId = localStorage.getItem('locationId');
-  const storedRoomId = localStorage.getItem('roomId');
 
   const handleQuantityChange = (index, event) => {
     const newItems = [...items];
@@ -256,7 +252,6 @@ const AddTask = () => {
                     id="facilities"
                     name="facilities"
                     value={id}
-
                     // onClick={event => {
                     //   getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
                     // }}
@@ -264,17 +259,15 @@ const AddTask = () => {
                     onChange={handleSelectRoom}
                     style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ced4da' }}
                   >
-                   
-                      {allUnassignedRoomsById?.length === 0 ? (
-                        <option>Select a location first</option>
-                      ) : (
-                        allUnassignedRoomsById?.map(rooms => (
-                          <option key={rooms._id} value={rooms._id}>
-                            {`${rooms.roomName}`}
-                          </option>
-                        ))
-                      )}
-                
+                    {allUnassignedRoomsById?.length === 0 ? (
+                      <option>Select a location first</option>
+                    ) : (
+                      allUnassignedRoomsById?.map(rooms => (
+                        <option key={rooms._id} value={rooms._id}>
+                          {`${rooms.roomName}`}
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
               </Grid>
@@ -327,8 +320,8 @@ const AddTask = () => {
             </Grid>
           </Grid>
           <div className="relative my-3">
-            <label htmlFor='date' className='font-bold text-xs'>
-Scheduled Date
+            <label htmlFor="date" className="font-bold text-xs">
+              Scheduled Date
             </label>
             <input
               type="date"
