@@ -1,4 +1,7 @@
-import React, { useEffect, useState, Suspense } from 'react';
+
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useEffect, useState } from 'react';
+
 import useTask from '../../../Hooks/useTask';
 import {
   Grid,
@@ -61,13 +64,19 @@ const AddTask = () => {
   const [items, setItems] = useState([]);
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
-  const storedLocationId = localStorage.getItem('locationId');
-  const storedRoomId = localStorage.getItem('roomId');
 
-  console.log('LOC ID', storedLocationId);
-  console.log('SENT ID', storedRoomId);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDateChange = event => {
+    setSelectedDate(new Date(event.target.value));
+  };
+
+  const formattedDate = selectedDate.toISOString().slice(0, 10);
 
 
+  useEffect(() => {
+    getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
+  }, [locationSelectId]);
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
@@ -204,10 +213,20 @@ const AddTask = () => {
       preop_hours: preop_hours,
       preop_minutes: preop_minutes,
       cleaningData: modifiedItem,
-      itemsToClean: filteredItems
+      itemsToClean: filteredItems,
+      scheduled_date: formattedDate
     };
     addTask(data);
   };
+
+  useEffect(() => {
+    getUnassignedRoomById(storedLocationId);
+    getAllInspectors();
+    getAllCleaners();
+    getCleaningItems();
+    getRoomById(storedRoomId);
+  }, []);
+  console.log('first hjhjh', allRoomsById);
   return (
     <Grid spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <ToastContainer />
@@ -247,13 +266,18 @@ const AddTask = () => {
                     Select Facility
                   </label>
                   <select
-                    id="location"
-                    name="location"
+                    id="facilities"
+                    name="facilities"
                     value={id}
+
+                    // onClick={event => {
+                    //   getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
+                    // }}
+
                     onChange={handleSelectRoom}
                     style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ced4da' }}
                   >
-                    <Suspense fallback={<CircularProgress />}>
+                   
                       {allUnassignedRoomsById?.length === 0 ? (
                         <option>Select a location first</option>
                       ) : (
@@ -263,7 +287,7 @@ const AddTask = () => {
                           </option>
                         ))
                       )}
-                    </Suspense>
+                
                   </select>
                 </div>
               </Grid>
@@ -279,7 +303,7 @@ const AddTask = () => {
                     id="inspectors"
                     multiple
                     // onClick={event => {
-                    //   getAllInspectors();
+                    //
                     // }}
                     value={inspector}
                     onChange={handleSelectInspectors}
@@ -304,9 +328,9 @@ const AddTask = () => {
                   labelId="cleaners"
                   id="cleaners"
                   multiple
-                  onClick={event => {
-                    getAllCleaners();
-                  }}
+                  // onClick={event => {
+
+                  // }}
                   value={cleaners}
                   onChange={handleSelectCleaners}
                   input={<OutlinedInput label="Cleaner" />}
@@ -322,6 +346,18 @@ const AddTask = () => {
               </FormControl>
             </Grid>
           </Grid>
+          <div className="relative my-3">
+            <label htmlFor='date' className='font-bold text-xs'>
+Scheduled Date
+            </label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 rounded-lg h-12  bg-transparent shadow-sm border border-gray-400"
+              value={formattedDate}
+              onChange={handleDateChange}
+              min={new Date().toISOString().slice(0, 10)} // Set minimum date to today
+            />
+          </div>
           <Box className="my-3">
             <Grid container spacing={4}>
               <Grid item lg={6} sm={6} xs={12}>
@@ -481,24 +517,24 @@ const AddTask = () => {
               labelId="itemstoclean"
               id="itemstoclean"
               multiple
-              onClick={event => {
-                event.preventDefault();
-                getRoomById(storedRoomId ? storedRoomId : id);
-              }}
+              // onClick={event => {
+              //   event.preventDefault();
+              //   getRoomById(storedRoomId ? storedRoomId : id);
+              // }}
               value={itemsToClean}
               onChange={handleSelectItemToCleaning}
               input={<OutlinedInput label=" Items to Clean" />}
               // renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
             >
-              {allRoomsById.length > 0 ? (
+              {allRoomsById?.detail?.detail.length > 0 ? (
                 allRoomsById?.detail?.detail?.map(item => (
                   <MenuItem key={item?._id} value={item?._id} className="capitalize">
-                    {allRoomsById.length === 0 ? 'No Cleaner Item available' : `${item?.name})`}
+                    {`${item?.name}`}
                   </MenuItem>
                 ))
               ) : (
-                <MenuItem> Select a Room First </MenuItem>
+                <MenuItem>No Cleaner Item available</MenuItem>
               )}
             </Select>
           </FormControl>

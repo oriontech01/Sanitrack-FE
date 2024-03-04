@@ -66,7 +66,7 @@ const WorkOrderFacility = () => {
               </span>
               <span className="flex flex-col gap-y-2">
                 <p className="text-lg text-black">Facility Location</p>
-                <p className="text-lg text-blue-500">{LocationName}</p>
+                <p className="text-lg text-blue-500">{`${singleRoomTask?.taskDetails?.assigned_location?.city}- ${singleRoomTask?.taskDetails?.assigned_location?.country}`}</p>
               </span>
               <span className="flex flex-col gap-y-2">
                 <p className="text-lg text-black">Number of Items in Facility </p>
