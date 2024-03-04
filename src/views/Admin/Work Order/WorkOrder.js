@@ -24,7 +24,7 @@ const WorkOrder = () => {
     <>
       <header className="flex  lg:flex-row flex-col justify-between items-center mb-4">
         <h1 className="text-3xl font-bold text-[#3366FF]">Work Schedule</h1>
-        <Link
+        {/* <Link
           to={`/dashboard/create-work-order`}
           onClick={() => {
             localStorage.removeItem('roomId');
@@ -33,11 +33,9 @@ const WorkOrder = () => {
           }}
           className="text-white flex justify-center   gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
 
-          //   disabled={id && inspector && clean_hours}
-          //   onClick={handleSubmit}
-        >
+         >
           Add New <FaPlus />
-        </Link>
+        </Link> */}
       </header>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

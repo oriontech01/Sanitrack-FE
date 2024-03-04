@@ -80,8 +80,15 @@ const CleaningTimer = () => {
     getCleanerTimer();
   }, []);
 
-  console.log('first order', allCleanerTimer);
   const cleanTime = 96;
+  const convertSecondsToHMS = totalSeconds => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSecondsAfterHours = totalSeconds % 3600;
+    const minutes = Math.floor(remainingSecondsAfterHours / 60);
+    const remainingSeconds = remainingSecondsAfterHours % 60;
+
+    return <p>{`${hours} :hours ${minutes} :mins ${remainingSeconds} :secs`}</p>;
+  };
 
   return (
     <>
@@ -149,12 +156,12 @@ const CleaningTimer = () => {
                               <div className="div-69">Release</div>
                             </div>
                             <div className="div-70">
-                              <div className="div-71">{newItem?.planned_time?.clean_time ?? '-'}</div>
-                              <div className="div-72">{newItem?.planned_time?.preOp_time ?? '-'}</div>
-                              <div className="div-73">{newItem?.planned_time?.release_time ?? '-'}</div>
-                              <div className="div-74">{item?.actual_time?.clean_time ?? '-'}</div>
-                              <div className="div-75">{item?.actual_time?.clean_time ?? '-'}</div>
-                              <div className="div-76">{item?.actual_time?.clean_time ?? '-'}</div>
+                              <div className="div-71">{convertSecondsToHMS(newItem?.planned_time?.clean_time) ?? '-'}</div>
+                              <div className="div-72">{convertSecondsToHMS(newItem?.planned_time?.preOp_time) ?? '-'}</div>
+                              <div className="div-73">{convertSecondsToHMS(newItem?.planned_time?.release_time) ?? '-'}</div>
+                              <div className="div-74">{convertSecondsToHMS(item?.actual_time?.clean_time ?? 0) ?? '-'}</div>
+                              <div className="div-75">{convertSecondsToHMS(item?.actual_time?.preOp_time ?? 0) ?? '-'}</div>
+                              <div className="div-76">{convertSecondsToHMS(item?.actual_time?.release_time ?? 0) ?? '-'}</div>
                             </div>
                           </div>
                         </div>
