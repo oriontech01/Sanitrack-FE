@@ -5,8 +5,8 @@ import { Box, Typography } from '@mui/material';
 
 const FacilityCleaningOverviewChart = () => {
   return (
-    <Box textAlign={'center'}>
-      <Typography fontWeight={'bold'} variant="h4">Facility Cleaning Overview</Typography>
+    <Box textAlign={'center'} height={'100%'} width={'100%'} display={'flex'} flexDirection={'column'} justifyContent={'flex-end'} >
+      <Typography fontWeight={'bold'} marginBottom={10} variant="h4">Facility Cleaning Overview</Typography>
       <BarChart
         width={500}
         height={300}
