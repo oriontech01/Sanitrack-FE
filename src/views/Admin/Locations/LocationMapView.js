@@ -34,7 +34,10 @@ const LocationMapView = () => {
         const geoData = geoRes.data.results[0].geometry.location;
         location.lat = geoData.lat;
         location.lng = geoData.lng;
+        console.log('============', location)
       }
+
+      
 
       setLocationData(locations);
     };

@@ -1,23 +1,13 @@
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
-
 import useTask from '../../../Hooks/useTask';
-import {
-  Grid,
-  FormControl,
-  Box,
-  InputLabel,
-  Select,
-  MenuItem,
-  OutlinedInput,
-  CircularProgress
-} from '@mui/material';
+import { Grid, FormControl, Box, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
+import { log } from 'util';
 import useRoom from 'Hooks/useRoom';
 import useLocation from '../../../Hooks/useLocation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import {Select as ReactSelect} from 'react-select';
 const allLocations = [
   { _id: 1, name: 'Abuja' },
   { _id: 2, name: 'Aba' }
@@ -39,6 +29,7 @@ const AddTask = () => {
     getAllCleaners,
     getAllInspectors,
     addTask,
+    unAssignedRooms,
     allCleaners,
     allInspectors,
     getCleaningItems,
@@ -54,7 +45,7 @@ const AddTask = () => {
   const [locationSelectId, setLocationSelectId] = useState('');
   const [cleaners, setCleaners] = React.useState([]);
   const [cleaningItem, setCleaningItem] = useState([]);
-  const [itemsToClean, setItemsToClean] = useState([]);
+  const [itesmToClean, setItemsToClean] = useState([]);
   const [inspector, setAllInspectors] = useState([]);
   const [clean_hours, setClean_hours] = useState('');
   const [clean_minutes, setClean_minutes] = useState('');
@@ -64,6 +55,7 @@ const AddTask = () => {
   const [items, setItems] = useState([]);
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
+
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -76,31 +68,17 @@ const AddTask = () => {
 
   const formattedDate = selectedDate.toISOString().slice(0, 10);
 
-
   useEffect(() => {
     getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
   }, [locationSelectId]);
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
-  useEffect(() => {
-    getUnAssignedRooms();
-    getAllCleaners();
-    getAllInspectors();
-    getLocation();
-    getCleaningItems();
-    
-  }, []);
-
-  useEffect(() => {
-    getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
-  }, [locationSelectId])
-
-  useEffect(() => {
-    getRoomById(storedRoomId ? storedRoomId : id);
-  }, [id])
-  
-  
+  // useEffect(() => {
+  //   getUnAssignedRooms();
+  //   getAllCleaners();
+  //   getAllInspectors();
+  // }, []);
 
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {
@@ -185,6 +163,9 @@ const AddTask = () => {
     }));
     setFilteredItems(modifiedItems);
   };
+  const storedLocationId = localStorage.getItem('locationId');
+  const storedRoomId = localStorage.getItem('roomId');
+
   const handleQuantityChange = (index, event) => {
     const newItems = [...items];
     newItems[index].quantity = event.target.value;
@@ -238,25 +219,28 @@ const AddTask = () => {
           <Grid container spacing={4}>
             {!storedLocationId && (
               <Grid item lg={6} sm={6} xs={12}>
-                <div style={{ marginBottom: '16px', width: '100%' }}>
-                  <label htmlFor="location" style={{ display: 'block', marginBottom: '8px' }}>
-                    Select Location
-                  </label>
+                <div className="form-control" style={{ width: '100%' }}>
+                  <label htmlFor="location">Select Location</label>
                   <select
                     id="location"
                     name="location"
                     value={locationSelectId}
+                    onClick={event => {
+                      console.log('clicked');
+                      event.preventDefault();
+                      getLocation();
+                    }}
                     onChange={handleSelectLocation}
-                    style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ced4da' }}
+                    style={{ marginBottom: '16px', width: '100%', padding: '10px', borderRadius: '4px' }}
                   >
-                    {allLocations?.length === 0 ? (
-                      <option>Click here to choose a location</option>
-                    ) : (
+                    {allLocations.length > 0 ? (
                       allLocations?.map(location => (
-                        <option key={location._id} value={location._id}>
-                          {`${location.city}- ${location.country}`}
+                        <option key={location?._id} value={location?._id}>
+                          {`${location?.city}- ${location?.country}`}
                         </option>
                       ))
+                    ) : (
+                      <option>Click here to select a location</option>
                     )}
                   </select>
                 </div>
@@ -305,9 +289,6 @@ const AddTask = () => {
                     labelId="inspectors"
                     id="inspectors"
                     multiple
-                    // onClick={event => {
-                    //
-                    // }}
                     value={inspector}
                     onChange={handleSelectInspectors}
                     input={<OutlinedInput label="Cleaner" />}
@@ -321,7 +302,6 @@ const AddTask = () => {
                     ))}
                   </Select>
                 </FormControl>
-
               </div>
             </Grid>
             <Grid item lg={6} sm={6} xs={12}>
@@ -331,9 +311,6 @@ const AddTask = () => {
                   labelId="cleaners"
                   id="cleaners"
                   multiple
-                  // onClick={event => {
-
-                  // }}
                   value={cleaners}
                   onChange={handleSelectCleaners}
                   input={<OutlinedInput label="Cleaner" />}
@@ -466,11 +443,14 @@ Scheduled Date
             </Grid>
           </Box>
           <FormControl className="w-full">
-            <InputLabel id="cleanersItem">Cleaning Items Inventory</InputLabel>
+            <InputLabel id="cleanersItem">Cleaning Item</InputLabel>
             <Select
               labelId="cleanersItem"
               id="cleanersItem"
               multiple
+              onClick={event => {
+                getCleaningItems();
+              }}
               value={cleaningItem}
               onChange={handleSelectCleaningItem}
               input={<OutlinedInput label="Cleaning Item" />}
@@ -515,7 +495,7 @@ Scheduled Date
             ))}
           </div>
           <FormControl className="w-full my-3">
-            <InputLabel id="itemstoclean">Item to be Cleaned</InputLabel>
+            <InputLabel id="itemstoclean"> Inventory</InputLabel>
             <Select
               labelId="itemstoclean"
               id="itemstoclean"

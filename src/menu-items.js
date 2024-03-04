@@ -106,8 +106,8 @@ const adminSideNavItems = [
     icon: icons['AccountTreeOutlinedIcon'], // Group Icon
     children: [
       {
-        id: 'user',
-        title: 'User',
+        id: 'users',
+        title: 'Users',
         type: 'item',
         icon: icons['AppsOutlinedIcon'], // Assuming it relates to user management
         url: '/dashboard/users'

@@ -83,7 +83,7 @@ const MainRoutes = {
     { path: '/dashboard/contact', element: <Contact /> },
     { path: '/dashboard/inventory', element: <Inventory /> },
     { path: '/dashboard/users', element: <Users /> },
-    { path: '/dashboard/add-user', element: <AddUser /> },
+    // { path: '/dashboard/add-user', element: <AddUser /> },
     {
       path: '/dashboard/permissions',
       element: <Permissions />
