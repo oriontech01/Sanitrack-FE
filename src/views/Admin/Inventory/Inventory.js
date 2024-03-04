@@ -116,7 +116,7 @@ const Inventory = () => {
                 Add to Inventory
               </button>
               {(allInventory && !inventoryLoading) && (
-                <Paper>
+                <Paper style={{overflowX: 'auto'}}>
                   <Table>
                     <TableHead>
                       <TableRow>
