@@ -67,6 +67,9 @@ const AddTask = () => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const storedLocationId = localStorage.getItem('locationId');
+  const storedRoomId = localStorage.getItem('roomId');
+
   const handleDateChange = event => {
     setSelectedDate(new Date(event.target.value));
   };
