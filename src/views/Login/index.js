@@ -57,7 +57,7 @@ const Login = () => {
                   <Grid container justifyContent="space-between">
                     <Grid item>
                       <Typography color="textPrimary" gutterBottom variant="h2">
-                        Sign in
+                        Sign ins
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
                         To Sanitrack

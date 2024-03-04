@@ -2,9 +2,9 @@ name: CI/CD Pipeline Sanitrack-Web
 
 on:
   push:
-    branches: [ main ]
+    branches: [ development ]
   pull_request:
-    branches: [ main ]
+    branches: [ development ]
 
 jobs:
   test:
@@ -31,7 +31,7 @@ jobs:
       - name: Create Env File
         run: |
           touch .env
-          echo REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }} >> .env
+          echo REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL_DEV }} >> .env
           echo REACT_APP_GOOGLE_API_KEY=${{ secrets.REACT_APP_GOOGLE_API_KEY }} >> .env        
           echo REACT_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }} >> .env
           echo REACT_APP_FIREBASE_PROJECT_ID=${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }} >> .env
@@ -52,7 +52,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: oriontechmen/sanitrack-frontend
+          tags: oriontechmen/sanitrack-frontend:dev
 
   deploy:
     needs: build
@@ -63,12 +63,15 @@ jobs:
     - name: Deploy to Ec2 Instance
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST }}
+        host: ${{ secrets.HOST_DEV }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           sudo chmod 666 /var/run/docker.sock
           cd Sanitrack
-          git checkout main
-          git pull origin main
-          docker-compose up --force-recreate -d
+          git checkout development
+          git pull origin development
+          docker-compose stop
+          docker-compose rm -f
+          docker-compose pull   
+          docker-compose up -d
