@@ -19,23 +19,23 @@ COPY . .
 
 RUN yarn build
 
-#CMD yarn start
-# Build the application
-#RUN npm run build
+CMD yarn start
+# # Build the application
+# #RUN npm run build
 
-#CMD npm run start
-# Stage 2: Serve the application with Nginx
-FROM nginx:stable-alpine as serve
+# #CMD npm run start
+# # Stage 2: Serve the application with Nginx
+# FROM nginx:stable-alpine as serve
 
-# Copy the build output to replace the default nginx contents.
-COPY --from=build /app/dist/ /usr/share/nginx/html
+# # Copy the build output to replace the default nginx contents.
+# COPY --from=build /app/dist/ /usr/share/nginx/html
 
-# Copy nginx configuration (optional)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# # Copy nginx configuration (optional)
+# # COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80 to the Docker host, so we can access it 
-# from the outside.
-#EXPOSE 80
+# # Expose port 80 to the Docker host, so we can access it 
+# # from the outside.
+# #EXPOSE 80
 
-# Start Nginx and keep it running in the foreground
-#CMD ["nginx", "-g", "daemon off;"]
+# # Start Nginx and keep it running in the foreground
+# #CMD ["nginx", "-g", "daemon off;"]

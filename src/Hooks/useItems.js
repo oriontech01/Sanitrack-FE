@@ -12,7 +12,7 @@ const useItems = () => {
   const [allInventory, setAllInventory] = useState([]);
   const [inventoryLoading, setAllInventoryLoading] = useState(false);
   const [inLoading, setInLoading] = useState(false);
-  const [sus,setSus]=useState(false)
+  const [sus, setSus] = useState(false);
 
   const getInventory = async () => {
     setAllInventoryLoading(true);
@@ -57,9 +57,9 @@ const useItems = () => {
       )
       .then(response => {
         console.log(response);
-        // send user back to the task home page
+     
         if (response.data) {
-          setSus(true)
+          window.location.reload()
           toast.success('Inventory Created Successfully', {
             position: 'top-center',
             autoClose: 5000,
@@ -105,7 +105,7 @@ const useItems = () => {
         }
       });
   };
-  const deleteInventory = async (data) => {
+  const deleteInventory = async data => {
     setInLoading(true);
     await axios
       .delete(`${BASE_URL}cleaning-items/delete`, {
@@ -114,9 +114,11 @@ const useItems = () => {
       })
       .then(response => {
         console.log(response);
+        
         if (response.data) {
           setInLoading(false);
-          setSus(true)
+        
+          window.location.reload()
           toast.success('Inventory Item Deleted  Successfully', {
             position: 'top-center',
             autoClose: 5000,
@@ -166,7 +168,8 @@ const useItems = () => {
     inventoryLoading,
     addInventory,
     inLoading,
-    deleteInventory,sus
+    deleteInventory,
+    sus
   };
 };
 

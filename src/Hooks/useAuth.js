@@ -36,34 +36,34 @@ const useAuth = () => {
       );
 
       // In a useEffect or a function after ensuring the user is authenticated
-      navigator.serviceWorker.ready.then(function (registration) {
-        const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY);
+      // navigator.serviceWorker.ready.then(function (registration) {
+      //   const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY);
 
-        console.log('VAPID', convertedVapidKey);
+      //   console.log('VAPID', convertedVapidKey);
 
-        registration.pushManager
-          .subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: convertedVapidKey
-          })
-          .then(function (subscription) {
-            // Send subscription to your server
-            console.log('Make it HAPPEN', JSON.stringify(subscription));
-            const subscribed = axios.post(`${BASE_URL}notification/subscribe-to-push-notifications`, subscription, {
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${response.data.data.token}`
-              }
-            });
-            console.log('HEY I HAVE SUBBED', subscribed);
-          })
-          .catch(function (err) {
-            console.log('Failed to subscribe the user: ', err);
-          });
-        registration.pushManager.getSubscription().then(function (subscription) {
-          console.log('Current subscription:', subscription);
-        });
-      });
+      //   registration.pushManager
+      //     .subscribe({
+      //       userVisibleOnly: true,
+      //       applicationServerKey: convertedVapidKey
+      //     })
+      //     .then(function (subscription) {
+      //       // Send subscription to your server
+      //       console.log('Make it HAPPEN', JSON.stringify(subscription));
+      //       const subscribed = axios.post(`${BASE_URL}notification/subscribe-to-push-notifications`, subscription, {
+      //         headers: {
+      //           'Content-Type': 'application/json',
+      //           Authorization: `Bearer ${response.data.data.token}`
+      //         }
+      //       });
+      //       console.log('HEY I HAVE SUBBED', subscribed);
+      //     })
+      //     .catch(function (err) {
+      //       console.log('Failed to subscribe the user: ', err);
+      //     });
+      //   registration.pushManager.getSubscription().then(function (subscription) {
+      //     console.log('Current subscription:', subscription);
+      //   });
+      // });
 
       if (response?.data?.data?.requiredRoleSelection === true) {
         console.log('first one');
@@ -110,16 +110,16 @@ const useAuth = () => {
         });
 
         const JWT_KEY = process.env.REACT_APP_JWT_KEY;
-        const decodedResponse = JWT.decode(response.data.data.token, JWT_KEY);
+        const decodedResponse = JWT.decode(response?.data?.data?.token, JWT_KEY);
         const loggedInUserRole = decodedResponse.role_id.role_name;
 
         // setCurrentRole(loggedInUserRole);
         console.log('rl', loggedInUserRole);
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
-        localStorage.setItem('auth-token', response.data.data.token);
-        localStorage.setItem('name', response.data.data.username);
-        localStorage.setItem('id', response.data.data.userId);
+        localStorage.setItem('auth-token', response?.data?.data?.token);
+        localStorage.setItem('name', response?.data?.data?.username);
+        localStorage.setItem('id', response?.data?.data?.userId);
         localStorage.setItem('role', loggedInUserRole);
         setIsLoggedIn(true); // Update global state via context
       } // I'll add a check here when a user has multiple roles

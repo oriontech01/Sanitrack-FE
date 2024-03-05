@@ -51,13 +51,13 @@ const ReportCard = ({ primary, secondary, iconPrimary, color, iconFooter, to }) 
   );
 };
 
-ReportCard.propTypes = {
-  primary: PropTypes.string,
-  secondary: PropTypes.string,
-  iconPrimary: PropTypes.object,
-  footerData: PropTypes.string,
-  iconFooter: PropTypes.object,
-  color: PropTypes.string
-};
+// ReportCard.propTypes = {
+//   primary: PropTypes.string,
+//   secondary: PropTypes.string,
+//   iconPrimary: PropTypes.object,
+//   footerData: PropTypes.string,
+//   iconFooter: PropTypes.object,
+//   color: PropTypes.string
+// };
 
 export default ReportCard;
