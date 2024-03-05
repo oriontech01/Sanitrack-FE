@@ -1,12 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Container, FormControl, Grid, Input, InputLabel, MenuItem, Select, Typography, InputAdornment, IconButton, Modal, Slide, useTheme, useMediaQuery } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
+import { useState, useEffect } from 'react';
 import useStaff from 'Hooks/useStaff';
 import useRoles from 'Hooks/useRoles';
+import {
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  InputAdornment,
+  IconButton,
+  Container
+} from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Modal from '@mui/material/Modal';
+import Slide from '@mui/material/Slide';
+import { toast, Flip, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddUser = ({ isOpen, onRequestClose }) => {
-  const { addStaff } = useStaff();
+  const { addStaff, responseMessage, isLoadings } = useStaff();
+
   const { getRoles, roles } = useRoles();
   const [showPassword, setShowPassword] = useState(false);
   const [userDetails, setUserDetails] = useState({
@@ -27,32 +45,43 @@ const AddUser = ({ isOpen, onRequestClose }) => {
   const isXsScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
-    getRoles();
-  }, [getRoles]);
 
+    getRoles()
+  }, []);
   const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
-
-  const handleChange = (prop) => (event) => {
-    if (['country', 'state', 'city', 'home_address'].includes(prop)) {
-      setUserDetails({ ...userDetails, address: { ...userDetails.address, [prop]: event.target.value } });
-    } else {
-      setUserDetails({ ...userDetails, [prop]: event.target.value });
-    }
+  const disableButton = (username, password, email, address, phoneNumber) => {
+    return (
+      username === '' ||
+      password.length < 3 ||
+      email === '' ||
+      address.country === '' ||
+      address.state === '' ||
+      address.city === '' ||
+      phoneNumber.length < 5 ||
+      selectedRole === '' ||
+      isLoading
+    );
   };
 
   const handleUpload = async () => {
-    await addStaff({ ...userDetails, role_name: roles.find(role => role._id === userDetails.selectedRole)?.role_name });
-    alert('Added staff Successfully');
-    onRequestClose(); // Close modal after adding user
-  };
+    const dataToPass = {
+      username: username,
+      password: password,
+      email: email,
+      address: { country: address.country, state: address.state, city: address.city, home_address: address.home_address },
+      phone_number: phoneNumber,
+      role_id: selectedRole,
+      role_name: roles.find(role => role._id === selectedRole)?.role_name
+    };
+    await addStaff(dataToPass);
+   
 
-  const disableButton = () => {
-    const { username, password, email, phoneNumber, address, selectedRole } = userDetails;
-    return !username || password.length < 3 || !email || !address.country || !address.state || !phoneNumber || phoneNumber.length < 5 || !selectedRole;
   };
 
   return (
-    <Modal
+    <>
+       <ToastContainer />
+        <Modal
       open={isOpen}
       onClose={onRequestClose}
       aria-labelledby="add-user-modal"
@@ -61,75 +90,154 @@ const AddUser = ({ isOpen, onRequestClose }) => {
       TransitionComponent={Slide}
       TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
     >
-      <Container sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: isXsScreen ? '90%' : '50%',
-        bgcolor: 'background.paper',
-        boxShadow: 24,
-        p: 4,
-        borderRadius: 2,
-        maxHeight: '90vh',
-        overflowY: 'auto',
-      }}>
-        <Typography id="add-user-modal-title" variant="h6" component="h2" marginBottom={2}>
-          Add User
-        </Typography>
-        <Grid container spacing={2}>
-          {['username', 'password', 'email', 'phoneNumber', 'country', 'state', 'city', 'home_address'].map((field, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>{field.charAt(0).toUpperCase() + field.slice(1).replace('_', ' ')}</InputLabel>
-                <Input
-                  type={field === 'password' ? (showPassword ? 'text' : 'password') : 'text'}
-                  value={userDetails[field]}
-                  onChange={handleChange(field)}
-                  endAdornment={field === 'password' ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleTogglePasswordVisibility}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null}
-                />
-              </FormControl>
-            </Grid>
-          ))}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel id="role-select-label">Role</InputLabel>
-              <Select
-                labelId="role-select-label"
-                id="role-select"
-                value={userDetails.selectedRole}
-                label="Role"
-                onChange={handleChange('selectedRole')}
-              >
-                {roles.map((role) => (
-                  <MenuItem key={role._id} value={role._id}>{role.role_name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Button 
-              fullWidth 
-              variant="contained" 
-              onClick={handleUpload} 
-              disabled={disableButton()}
-              sx={{ mt: 2 }}
+
+    
+      <Container
+        spacing={2}
+        style={{
+          padding: '20px',
+          borderRadius: 10,
+          marginTop: 10,
+          backgroundColor: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          width: '30%'
+        }}
+      >
+        <Grid item xs={12}>
+          <Typography variant="h2">Add User</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel variant="h2">Name:</InputLabel>
+            <Input
+              placeholder="user name"
+              onChange={e => {
+                setUserName(e.target.value);
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel color="primary" variant="h2" htmlFor="password">
+              Password:
+            </InputLabel>
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="user default password"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle password visibility" onClick={handleTogglePasswordVisibility} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel variant="h2">Email:</InputLabel>
+            <Input
+              placeholder="john@doe.com"
+              onChange={e => {
+                setEmail(e.target.value);
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel fullWidth variant="h2">Phone Number:</InputLabel>
+            <Input
+              placeholder="000000000"
+              onChange={e => {
+                setPhoneNumber(e.target.value);
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel variant="h2">Country:</InputLabel>
+            <Input
+              placeholder="Country"
+              onChange={e => {
+                setAddress({ ...address, country: e.target.value });
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel variant="h2">State:</InputLabel>
+            <Input
+              placeholder="State"
+              onChange={e => {
+                setAddress({ ...address, state: e.target.value });
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel variant="h2">City:</InputLabel>
+            <Input
+              placeholder="City"
+              onChange={e => {
+                setAddress({ ...address, city: e.target.value });
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel variant="h2">Home Address:</InputLabel>
+            <Input
+              placeholder="Home Address"
+              onChange={e => {
+                setAddress({ ...address, home_address: e.target.value });
+              }}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <Typography variant="h4">Role:</Typography>
+            <Select
+              value={selectedRole}
+              onChange={e => {
+                setSelectedRole(e.target.value);
+              }}
+              style={{ width: '100%' }} // Reduce the width of the dropdown
             >
-              Add User
-            </Button>
-          </Grid>
+              {roles ? (
+                roles.map(allroles => (
+                  <MenuItem key={allroles._id} value={allroles._id}>
+                    {allroles.role_name}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>No Roles Available</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <button   className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite" onClick={handleUpload} disabled={isLoadings}>
+            {isLoadings ? 'Loading...' : ' Add User'}
+          </button>
+
         </Grid>
       </Container>
     </Modal>
+    </>
+
   );
 };
 
