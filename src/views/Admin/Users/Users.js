@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Typography, Box, TablePagination, Tabs, Tab } from '@mui/material';
+import { Button, Container, Typography, Box, TablePagination, Tabs, Tab, useTheme, useMediaQuery } from '@mui/material';
 import useStaff from 'Hooks/useStaff';
 import StaffTable from 'component/StaffTable/StaffTable';
 import Loader from 'component/Loader/Loader';
@@ -11,85 +11,81 @@ const Users = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const theme = useTheme();
+  const matchesSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    getAllCleaners();
+    getAllInspectors();
+  }, []);
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
 
-  // State for pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // Effect to fetch all staff members
-  useEffect(() => {
-    getAllCleaners();
-    getAllInspectors();
-  }, []); // Fetch staff members only once
-
-  // Handle change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  // Handle change rows per page
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset to the first page
+    setPage(0);
   };
+
 
   // Calculate the current slice of staffs to display
   const currentCleaners = allCleaners?.reverse().slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   const currentInspectors = allInspectors?.reverse().slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
 
   return (
     <Container>
       {isLoading ? (
         <Loader />
       ) : (
-        <Container>
+        <>
           <AddUser isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
-          <Box display="flex" justifyContent="space-between" alignItems="center" paddingTop={5} paddingBottom={5}>
-            <Typography variant="h2">Users</Typography>
-            <Button 
-              variant='contained'
-              onClick={() => {
-                setIsModalOpen(true);
-                console.log('Clicked');
-                console.log(isModalOpen)
-              }}
+          <Box
+            display="flex"
+            flexDirection={matchesSmallScreen ? 'column' : 'row'}
+            justifyContent="space-between"
+            alignItems="center"
+            paddingTop={5}
+            paddingBottom={5}
+            textAlign={matchesSmallScreen ? 'center' : 'left'}
+          >
+            <Typography variant={matchesSmallScreen ? 'h4' : 'h2'}>Users</Typography>
+            <Button
+              variant="contained"
+              onClick={() => setIsModalOpen(true)}
               style={{ backgroundColor: 'blue' }}
+              sx={{ marginTop: matchesSmallScreen ? 2 : 0 }}
             >
               Add New +
             </Button>
           </Box>
 
           <Tabs
-            centered
             value={selectedTab}
             onChange={handleTabChange}
-            aria-label="Cleaners and Inspectors"
+            variant="fullWidth"
+            centered
             sx={{
-              backgroundColor: 'lightgray',
-              borderRadius: '10px',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)', // subtle shadow
-              '.MuiTabs-indicator': {
-                display: 'none' // Hide the default indicator
-              },
               '& .MuiTab-root': {
-                // Apply styles to all tabs
-                width: '50%', // Equal width for symmetry
-                borderRadius: '10px', // rounded corners for the first tab
-                '&:last-of-type': {
-                  borderRadius: '10px' // rounded corners for the last tab
-                },
-                '&.Mui-selected': {
-                  color: 'blue', // Text color for selected tab
-                  backgroundColor: 'white', // Background color for selected tab
-                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)' // subtle inset shadow for active tab
-                }
+                flex: 1 // Ensure tabs take equal width on all screen sizes
+              },
+              '& .Mui-selected': {
+                color: 'blue',
+                backgroundColor: 'white'
               }
             }}
           >
+
             <Tab style={{ width: '50%' }} label="Inspectors" />
+
             <Tab label="Cleaners" />
           </Tabs>
 
@@ -102,7 +98,7 @@ const Users = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              rowsPerPageOptions={[5, 10, 25, 100]}
+              rowsPerPageOptions={[5, 10, 25]}
             />
           </TabPanel>
           <TabPanel value={selectedTab} index={1}>
@@ -114,10 +110,10 @@ const Users = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              rowsPerPageOptions={[5, 10, 25, 100]}
+              rowsPerPageOptions={[5, 10, 25]}
             />
           </TabPanel>
-        </Container>
+        </>
       )}
     </Container>
   );

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import useStaff from 'Hooks/useStaff';
 import useRoles from 'Hooks/useRoles';
@@ -23,27 +24,31 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const AddUser = ({ isOpen, onRequestClose }) => {
   const { addStaff, responseMessage, isLoadings } = useStaff();
+
   const { getRoles, roles } = useRoles();
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const [address, setAddress] = useState({
-    country: '',
-    state: '',
-    city: '',
-    home_address: ''
+  const [userDetails, setUserDetails] = useState({
+    username: '',
+    password: '',
+    email: '',
+    phoneNumber: '',
+    address: {
+      country: '',
+      state: '',
+      city: '',
+      home_address: '',
+    },
+    selectedRole: '',
   });
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+
+  const theme = useTheme();
+  const isXsScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
+
     getRoles()
   }, []);
-
+  const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
   const disableButton = (username, password, email, address, phoneNumber) => {
     return (
       username === '' ||
@@ -70,6 +75,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
     };
     await addStaff(dataToPass);
    
+
   };
 
   return (
@@ -81,10 +87,10 @@ const AddUser = ({ isOpen, onRequestClose }) => {
       aria-labelledby="add-user-modal"
       aria-describedby="add-user-form"
       closeAfterTransition
-      // sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%', height: '50%', margin: '0 auto',p: 4, backgroundColor: 'background.paper', transformOrigin: 'top' }}
       TransitionComponent={Slide}
       TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
     >
+
     
       <Container
         spacing={2}
@@ -226,6 +232,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           <button   className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite" onClick={handleUpload} disabled={isLoadings}>
             {isLoadings ? 'Loading...' : ' Add User'}
           </button>
+
         </Grid>
       </Container>
     </Modal>
