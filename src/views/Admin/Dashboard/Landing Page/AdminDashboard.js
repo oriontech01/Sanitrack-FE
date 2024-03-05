@@ -41,8 +41,7 @@ const AdminDashboard = () => {
           <Tabs
             value={selectedTab}
             onChange={handleChange}
-            variant="scrollable" // Allows scrolling through tabs on small screens
-            scrollButtons={isSmallScreen ? "auto" : false} // Only show scroll buttons on small screens
+            // scrollButtons={isSmallScreen ? "auto" : false} // Only show scroll buttons on small screens
             allowScrollButtonsMobile // Better scrolling on mobile
             indicatorColor="primary"
             textColor="primary"

@@ -1,5 +1,5 @@
-import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import useRole from 'Hooks/useRole';
 import Loader from 'component/Loader/Loader';
@@ -34,11 +34,11 @@ const Roles = () => {
     await deleteRole(roleId);
   };
 
-  const handleViewPermissions = async roleId => {
+  const handleViewPermissions = roleId => {
     navigate(`/dashboard/roles/permissions/${roleId}`);
   };
 
-  const handleViewNavigate = async () => {
+  const handleViewNavigate = () => {
     navigate('/dashboard/roles/staff');
   };
 
@@ -47,60 +47,74 @@ const Roles = () => {
   }
 
   return (
-    <Container className="tab-display">
-      <Box>
-        <Container maxWidth="md">
-          <Box display={'flex'} textAlign={'center'} justifyContent={'space-between'} alignItems={'center'}>
-            <Typography variant="h2" gutterBottom>
+    <Container>
+      <Box sx={{ my: 4 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} display="flex" flexDirection={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems="center">
+            <Typography variant="h4" gutterBottom textAlign={{ xs: 'center', sm: 'left' }}>
               All Roles
             </Typography>
-            <Box>
-              <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleCreateNavigate} sx={{ mr: 1 }}>
+            <Box sx={{ mt: { xs: 2, sm: 0 }, textAlign: 'center'}}>
+              <Button
+                variant="contained"
+                onClick={handleCreateNavigate}
+                style={{ backgroundColor: 'blue' }}
+                sx={{ mr: 1, '&:hover': { backgroundColor: 'primary.dark' } }}
+              >
                 Create New Role
               </Button>
-              <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleAssignNavigate} sx={{ mr: 1 }}>
+              <Button
+                variant="contained"
+                onClick={handleAssignNavigate}
+                style={{ backgroundColor: 'blue' }}
+                sx={{ mr: 1, '&:hover': { backgroundColor: 'primary.dark' } }}
+              >
                 Assign Role
               </Button>
-              <Button variant="contained" style={{backgroundColor: 'blue'}} onClick={handleViewNavigate}>
+              <Button
+                variant="contained"
+                onClick={handleViewNavigate}
+                style={{ backgroundColor: 'blue' }}
+                sx={{ '&:hover': { backgroundColor: 'primary.dark' } }}
+              >
                 View Staff Role
               </Button>
             </Box>
-          </Box>
-
-          <TableContainer style={{ marginTop: 20 }}>
-            <Table id="taskTable">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Role Id</TableCell>
-                  <TableCell>Role Name</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {roles ? (
-                  roles.map(item => (
-                    <TableRow key={item._id}>
-                      <TableCell>{item._id}</TableCell>
-                      <TableCell>{item.role_name}</TableCell>
-                      <TableCell>
-                        <div>
+          </Grid>
+          <Grid item xs={12}>
+            <TableContainer>
+              <Table id="taskTable">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Role Id</TableCell>
+                    <TableCell>Role Name</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {roles ? (
+                    roles.map(item => (
+                      <TableRow key={item._id}>
+                        <TableCell>{item._id}</TableCell>
+                        <TableCell>{item.role_name}</TableCell>
+                        <TableCell style={{ display: 'flex', flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
                           <Button onClick={() => handleViewPermissions(item._id)}>View Permissions</Button>
-                          <Button color="secondary" onClick={() => handleRoomDelete(item._id)}>
+                          <Button color="error" onClick={() => handleRoomDelete(item._id)}>
                             Delete
                           </Button>
-                        </div>
-                      </TableCell>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={3}>No roles available</TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan="3">No roles available</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Container>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );
