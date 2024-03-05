@@ -112,6 +112,7 @@
     "react-error-overlay": "^6.0.9",
     "sass": "^1.71.0",
     "shx": "^0.3.4",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "vm-browserify": "^1.1.2"
   }
 }
