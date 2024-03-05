@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
-import { Container, Typography, TextField, Button, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Container, Typography, TextField, Button, Box, FormControl, InputLabel, Select, MenuItem, useTheme, useMediaQuery } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import axios from 'axios';
-import {cityData, countryData} from '../../../constants/locationData'
+import { cityData, countryData } from '../../../constants/locationData';
+
 const AddLocation = ({ isOpen, onRequestClose }) => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
@@ -13,6 +14,9 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
   const [cities, setCities] = useState([]);
   const token = localStorage.getItem('auth-token');
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   // Update states when country changes
   useEffect(() => {
@@ -26,7 +30,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
     setCity('');
   }, [state]);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(
@@ -50,11 +54,20 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
       aria-labelledby="add-location-modal"
       aria-describedby="add-location-form"
       closeAfterTransition
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
       TransitionComponent={Slide}
       TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
     >
-      <Container maxWidth="sm" sx={{ p: 4, bgcolor: 'background.paper', transformOrigin: 'top' }}>
+      <Container maxWidth="sm" sx={{
+        p: 4,
+        bgcolor: 'background.paper',
+        borderRadius: 2,
+        ...(fullScreen && { maxHeight: '100vh', overflowY: 'auto' })
+      }}>
         <Typography variant="h5" component="h2" gutterBottom>
           Add a New Facility Location
         </Typography>
@@ -98,7 +111,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
           <Box sx={{ mb: 2 }}>
             <TextField fullWidth label="Postal Code" variant="outlined" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
           </Box>
-          <Button style={{backgroundColor: 'blue'}} type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" style={{backgroundColor: 'blue'}}>
             Add Location
           </Button>
         </form>
