@@ -37,6 +37,15 @@ const WorkOrderFacility = () => {
 
     return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
   };
+  const convertMilliSecondsToHMS = milli => {
+    const totalSeconds = Math.floor(milli / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSecondsAfterHours = totalSeconds % 3600;
+    const minutes = Math.floor(remainingSecondsAfterHours / 60);
+    const remainingSeconds = remainingSecondsAfterHours % 60;
+
+    return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
+  };
   return (
     <>
       <header className="flex  lg:flex-row flex-col justify-between items-center mb-10">
@@ -126,15 +135,15 @@ const WorkOrderFacility = () => {
               <div className="flex flex-col gap-y-4 pt-3">
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Clean </p>
-                  <p className="text-lg text-red-500">{convertSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.clean_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
+                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.clean_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Preop </p>
-                  <p className="text-lg text-red-500">{convertSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.preOp_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
+                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.preOp_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Release </p>
-                  <p className="text-lg text-red-500">{convertSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.release_time : 0)}</p>
+                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.release_time : 0)}</p>
                 </div>
               </div>
             </div>
