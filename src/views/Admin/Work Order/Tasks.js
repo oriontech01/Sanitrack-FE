@@ -13,7 +13,8 @@ import {
   TableRow,
   Button,
   Paper,
-  TablePagination
+  TablePagination,
+  useMediaQuery
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Loader from 'component/Loader/Loader';
@@ -22,6 +23,7 @@ const Tasks = () => {
   const { getAllTasks, allTasks, deleteTask } = useTask();
   const navigate = useNavigate();
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -50,7 +52,6 @@ const Tasks = () => {
         await getAllTasks(); // Wait for all tasks to be fetched
       } catch (error) {
         console.error('Failed to fetch tasks:', error);
-        // Handle any errors here, such as displaying an error message to the user
       }
       setIsLoading(false); // End loading after tasks are fetched
     };
@@ -61,17 +62,18 @@ const Tasks = () => {
   if (isLoading) {
     return <Loader />;
   }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Card style={{width: '100%' }}>
+        <Card>
           <CardContent>
-            <Paper>
-              <Table>
+            <Paper style={{overflowX: 'auto'}}>
+              <Table size={isSmallScreen ? 'small' : 'medium'}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Room name</TableCell>
-                    <TableCell>Assigned Supervisor</TableCell>
+                    {isSmallScreen ? null : <TableCell>Assigned Supervisor</TableCell>}
                     <TableCell>Assigned Cleaner</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Action</TableCell>
@@ -81,9 +83,11 @@ const Tasks = () => {
                   {allTasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(task => (
                     <TableRow key={task?._id}>
                       <TableCell>{task?.roomName.roomName}</TableCell>
-                      <TableCell>
-                        {`${task?.cleanerUsername[0].username?.charAt(0).toUpperCase()}${task?.cleanerUsername[0].username?.slice(1)}`}
-                      </TableCell>
+                      {isSmallScreen ? null : (
+                        <TableCell>
+                          {`${task?.cleanerUsername[0].username?.charAt(0).toUpperCase()}${task?.cleanerUsername[0].username?.slice(1)}`}
+                        </TableCell>
+                      )}
                       <TableCell>
                         {`${task?.inspectorUsername[0].username?.charAt(0).toUpperCase()}${task?.inspectorUsername[0].username?.slice(1)}`}
                       </TableCell>
@@ -93,9 +97,6 @@ const Tasks = () => {
                       <TableCell>
                         <Button color="primary" onClick={() => handleTaskEdit(task.taskId)}>
                           Edit
-                        </Button>
-                        <Button color="secondary" onClick={() => handleTaskDelete(task._id)}>
-                          Delete
                         </Button>
                       </TableCell>
                     </TableRow>

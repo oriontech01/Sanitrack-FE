@@ -6,6 +6,7 @@ import Chart from 'chart.js/auto';
 const ChartContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'center',
   alignItems: 'center',
   marginTop: 20,
   width: '95%', // Use a percentage to make the width responsive
@@ -87,8 +88,8 @@ function Charts({ data }) {
   };
 
   return (
-    <ChartContainer>
-      <Typography variant="h4" component="h4" gutterBottom style={{ fontWeight: 'bold', marginBottom: 20 }}>
+    <ChartContainer style={{textAlign: 'center'}}>
+      <Typography variant="h4" component="h4" gutterBottom style={{ fontWeight: 'bold' }}>
         Cleaning Data Overview
       </Typography>
       <ChartControls>

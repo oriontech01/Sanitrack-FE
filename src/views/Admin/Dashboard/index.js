@@ -66,7 +66,7 @@ const Default = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Box sx={{ display: 'flex', width: '100%', border: 'solid 3px blue', paddingTop: 10, justifyContent: 'center', gap: 5, alignItems: 'center', flexDirection: { xs: 'column', md: 'row' } }}>
+      <Box sx={{ display: 'flex', width: '100%', paddingTop: 10, justifyContent: 'center', gap: 5, alignItems: 'center', flexDirection: { xs: 'column', md: 'row', alignContent: 'center' } }}>
         <Charts data={cleanerSummary} />
         <FacilityCleaningOverviewChart />
       </Box>
