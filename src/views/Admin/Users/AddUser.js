@@ -1,14 +1,28 @@
 import { useState, useEffect } from 'react';
 import useStaff from 'Hooks/useStaff';
 import useRoles from 'Hooks/useRoles';
-import { Button, FormControl, Grid, Input, InputLabel, MenuItem, Select, Typography, InputAdornment, IconButton, Container } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  InputAdornment,
+  IconButton,
+  Container
+} from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Modal from '@mui/material/Modal';
 import Slide from '@mui/material/Slide';
+import { toast, Flip, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddUser = ({ isOpen, onRequestClose }) => {
-  const { addStaff, responseMessage } = useStaff();
+  const { addStaff, responseMessage, isLoadings } = useStaff();
   const { getRoles, roles } = useRoles();
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUserName] = useState('');
@@ -27,10 +41,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getRoles();
-    };
-    fetchData();
+    getRoles()
   }, []);
 
   const disableButton = (username, password, email, address, phoneNumber) => {
@@ -42,7 +53,8 @@ const AddUser = ({ isOpen, onRequestClose }) => {
       address.state === '' ||
       address.city === '' ||
       phoneNumber.length < 5 ||
-      selectedRole === ''
+      selectedRole === '' ||
+      isLoading
     );
   };
 
@@ -57,11 +69,13 @@ const AddUser = ({ isOpen, onRequestClose }) => {
       role_name: roles.find(role => role._id === selectedRole)?.role_name
     };
     await addStaff(dataToPass);
-    alert('Added staff Successfully');
+   
   };
 
   return (
-    <Modal
+    <>
+       <ToastContainer />
+        <Modal
       open={isOpen}
       onClose={onRequestClose}
       aria-labelledby="add-user-modal"
@@ -71,12 +85,25 @@ const AddUser = ({ isOpen, onRequestClose }) => {
       TransitionComponent={Slide}
       TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
     >
-      <Container spacing={2} style={{ padding: '20px', borderRadius: 10, marginTop: 10, backgroundColor: 'white', display: 'flex', flexDirection: 'column', gap: 10, width: '30%' }}>
+    
+      <Container
+        spacing={2}
+        style={{
+          padding: '20px',
+          borderRadius: 10,
+          marginTop: 10,
+          backgroundColor: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 10,
+          width: '30%'
+        }}
+      >
         <Grid item xs={12}>
           <Typography variant="h2">Add User</Typography>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
+          <FormControl fullWidth>
             <InputLabel variant="h2">Name:</InputLabel>
             <Input
               placeholder="user name"
@@ -87,8 +114,8 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl>
-            <InputLabel color='primary' variant="h2" htmlFor="password">
+          <FormControl fullWidth>
+            <InputLabel color="primary" variant="h2" htmlFor="password">
               Password:
             </InputLabel>
             <Input
@@ -108,7 +135,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
+          <FormControl fullWidth>
             <InputLabel variant="h2">Email:</InputLabel>
             <Input
               placeholder="john@doe.com"
@@ -119,8 +146,8 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
-            <InputLabel variant="h2">Phone Number:</InputLabel>
+          <FormControl fullWidth>
+            <InputLabel fullWidth variant="h2">Phone Number:</InputLabel>
             <Input
               placeholder="000000000"
               onChange={e => {
@@ -130,7 +157,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
+          <FormControl fullWidth>
             <InputLabel variant="h2">Country:</InputLabel>
             <Input
               placeholder="Country"
@@ -141,7 +168,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
+          <FormControl fullWidth>
             <InputLabel variant="h2">State:</InputLabel>
             <Input
               placeholder="State"
@@ -152,7 +179,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
+          <FormControl fullWidth>
             <InputLabel variant="h2">City:</InputLabel>
             <Input
               placeholder="City"
@@ -163,7 +190,7 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl >
+          <FormControl fullWidth>
             <InputLabel variant="h2">Home Address:</InputLabel>
             <Input
               placeholder="Home Address"
@@ -174,14 +201,14 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <FormControl fullWidth >
+          <FormControl fullWidth>
             <Typography variant="h4">Role:</Typography>
             <Select
               value={selectedRole}
               onChange={e => {
                 setSelectedRole(e.target.value);
               }}
-              style={{ width: '30%' }} // Reduce the width of the dropdown
+              style={{ width: '100%' }} // Reduce the width of the dropdown
             >
               {roles ? (
                 roles.map(allroles => (
@@ -196,12 +223,14 @@ const AddUser = ({ isOpen, onRequestClose }) => {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Button variant="contained" onClick={handleUpload} disabled={disableButton(username, password, email, address, phoneNumber)}>
-            Add User
-          </Button>
+          <button   className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite" onClick={handleUpload} disabled={isLoadings}>
+            {isLoadings ? 'Loading...' : ' Add User'}
+          </button>
         </Grid>
       </Container>
     </Modal>
+    </>
+
   );
 };
 

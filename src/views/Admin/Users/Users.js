@@ -37,8 +37,8 @@ const Users = () => {
   };
 
   // Calculate the current slice of staffs to display
-  const currentCleaners = allCleaners.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  const currentInspectors = allInspectors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const currentCleaners = allCleaners?.reverse().slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const currentInspectors = allInspectors?.reverse().slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Container>
@@ -89,7 +89,7 @@ const Users = () => {
               }
             }}
           >
-            <Tab style={{ width: '500px' }} label="Inspectors" />
+            <Tab style={{ width: '50%' }} label="Inspectors" />
             <Tab label="Cleaners" />
           </Tabs>
 
