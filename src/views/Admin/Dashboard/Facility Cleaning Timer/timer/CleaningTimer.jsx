@@ -117,7 +117,10 @@ const CleaningTimer = () => {
           </div>
           <div className="">
             <div className="grid lg:grid-cols-3 gap-6 mt-4 grid-cols-1">
-              {currentItems?.map((item, i) => {
+            {
+              console.log(currentItems)
+            }
+              { currentItems === true ? currentItems?.map((item, i) => {
                 const newItem = item?.allTask[0];
                 console.log('secf', item);
                 return (
@@ -237,7 +240,7 @@ const CleaningTimer = () => {
                     </Link>
                   </div>
                 );
-              })}
+              }): <Typography variant='h2'>No tasks available</Typography>}
             </div>
           </div>
           <FreePagination
