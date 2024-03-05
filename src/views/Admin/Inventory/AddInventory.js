@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, FormControl, Grid, Input, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, Input, InputLabel, OutlinedInput, Typography, MenuItem, Select } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import { toast, Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useItems from 'Hooks/useItems';
 
-const AddInventory = ({closeModal}) => {
+const AddInventory = ({ closeModal }) => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -15,10 +15,11 @@ const AddInventory = ({closeModal}) => {
   const [pairs, setPairs] = useState(false);
   const [imgurl, setImgUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedType,setSelectedType]= useState('');
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const access_token = localStorage.getItem('auth-token');
   let url = 'rrr';
-  const { addInventory, inLoading,sus } = useItems();
+  const { addInventory, inLoading, sus } = useItems();
   const handleImageChange = async e => {
     e.preventDefault();
 
@@ -84,14 +85,14 @@ const AddInventory = ({closeModal}) => {
     const formData = new FormData();
     formData.append('image', image);
     formData.append('pairs', pairs);
-    formData.append('name',data.name)
-    formData.append('unit',data.unit)
-    formData.append('type',data.type)
-    formData.append('quantity',data.quantity)
-    formData.append('description',data.description)
+    formData.append('name', data.name);
+    formData.append('unit', data.unit);
+    formData.append('type',selectedType);
+    formData.append('quantity', data.quantity);
+    formData.append('description', data.description);
     addInventory(formData);
-    if(sus){
-      closeModal()
+    if (sus) {
+      closeModal();
     }
   };
   return (
@@ -124,9 +125,23 @@ const AddInventory = ({closeModal}) => {
             <Grid item lg={6} sm={6} xs={12}>
               <Box>
                 <FormControl fullWidth>
+                  <Typography variant="p">Type:</Typography>
+                  <Select
+                    value={selectedType}
+                    onChange={e => {
+                      setSelectedType(e.target.value);
+                    }}
+                    variant='outlined'
+                    style={{ width: '100%' }} // Reduce the width of the dropdown
+                  >
+                    <MenuItem value="consumable">Consumable</MenuItem>
+                    <MenuItem value="tool">Tool</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* <FormControl fullWidth>
                   <InputLabel variant="h2">Type:</InputLabel>
                   <Input placeholder="consumable" onChange={handleChange} name="type" type="text" variant="outlined" />
-                </FormControl>
+                </FormControl> */}
               </Box>
             </Grid>
             <Grid item lg={6} sm={6} xs={12}>
