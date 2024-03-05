@@ -23,7 +23,7 @@ const CleaningTimer = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = allCleanerTimer?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = allCleanerTimer?.slice(indexOfFirstItem, indexOfLastItem).reverse()
 
   const paginate = pageNumber => {
     setCurrentPage(pageNumber);
@@ -87,7 +87,7 @@ const CleaningTimer = () => {
     const minutes = Math.floor(remainingSecondsAfterHours / 60);
     const remainingSeconds = remainingSecondsAfterHours % 60;
 
-    return <p>{`${hours} :hours ${minutes} :mins ${remainingSeconds} :secs`}</p>;
+    return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
   };
 
   return (
@@ -111,7 +111,7 @@ const CleaningTimer = () => {
             <div className="grid lg:grid-cols-3 gap-6 mt-4 grid-cols-1">
               {currentItems?.map((item, i) => {
                 const newItem = item?.allTask[0];
-                console.log('secf', newItem);
+                console.log('secf', item);
                 return (
                   <div className="shadow-lg" key={i}>
                     <Link style={{ textDecoration: 'none' }} to={`/dashboard/work-order-facility/${newItem?.assigned_room?._id}`}>
@@ -159,9 +159,9 @@ const CleaningTimer = () => {
                               <div className="div-71">{convertSecondsToHMS(newItem?.planned_time?.clean_time) ?? '-'}</div>
                               <div className="div-72">{convertSecondsToHMS(newItem?.planned_time?.preOp_time) ?? '-'}</div>
                               <div className="div-73">{convertSecondsToHMS(newItem?.planned_time?.release_time) ?? '-'}</div>
-                              <div className="div-74">{convertSecondsToHMS(item?.actual_time?.clean_time ?? 0) ?? '-'}</div>
-                              <div className="div-75">{convertSecondsToHMS(item?.actual_time?.preOp_time ?? 0) ?? '-'}</div>
-                              <div className="div-76">{convertSecondsToHMS(item?.actual_time?.release_time ?? 0) ?? '-'}</div>
+                              <div className="div-74">{convertSecondsToHMS(item?.actualTime ? item?.actualTime?.clean_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</div>
+                              <div className="div-75">{convertSecondsToHMS(item?.actualTime ? item?.actualTime?.preOp_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</div>
+                              <div className="div-76">{convertSecondsToHMS(item?.actualTime ? item?.actualTime?.release_time : 0)}</div>
                             </div>
                           </div>
                         </div>
