@@ -164,9 +164,9 @@ const CleaningTimer = () => {
                               <div className="div-69">Release</div>
                             </div>
                             <div className="div-70">
-                              <div className="div-71">{convertSecondsToHMS(newItem?.planned_time?.clean_time) ?? '-'}</div>
-                              <div className="div-72">{convertSecondsToHMS(newItem?.planned_time?.preOp_time) ?? '-'}</div>
-                              <div className="div-73">{convertSecondsToHMS(newItem?.planned_time?.release_time) ?? '-'}</div>
+                              <div className="div-71">{ convertSecondsToHMS(newItem ?newItem?.planned_time?.clean_time: 0) ?? '-' }</div>
+                              <div className="div-72">{ convertSecondsToHMS(newItem ?newItem?.planned_time?.preOp_time:0) ?? '-'}</div>
+                              <div className="div-73">{convertSecondsToHMS(newItem ?newItem?.planned_time?.release_time :0) ?? '-'}</div>
                               <div className="div-74">
                                 {convertMilliSecondsToHMS(
                                   item?.actualTime
@@ -181,7 +181,9 @@ const CleaningTimer = () => {
                                     : 0
                                 )}
                               </div>
-                              <div className="div-76">{convertMilliSecondsToHMS(item?.actualTime ? item?.actualTime?.release_time : 0)}</div>
+                              <div className="div-76">
+                                {convertMilliSecondsToHMS(item?.actualTime ? item?.actualTime?.release_time : 0)}
+                              </div>
                             </div>
                           </div>
                         </div>
