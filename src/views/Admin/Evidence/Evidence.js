@@ -47,6 +47,7 @@ const Evidence = () => {
                         <Button
                           variant="contained"
                           color="primary"
+                          style={{backgroundColor: 'blue'}}
                           onClick={() => {
                             handleViewImages(item.task_id);
                           }}

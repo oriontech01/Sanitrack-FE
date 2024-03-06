@@ -2,8 +2,6 @@ import React, { lazy } from 'react';
 
 // project import
 import Loadable from 'component/Loadable';
-
-
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const CreatePermissions = Loadable(lazy(() => import('views/Admin/Permissions/CreatePermissions')));
 const CreateRole = Loadable(lazy(() => import('views/Admin/Roles/CreateRole')));
@@ -27,6 +25,7 @@ const RoomView = Loadable(lazy(() => import('views/Admin/Rooms/RoomView')));
 const Messages = Loadable(lazy(() => import('views/Admin/Messages/Messages')));
 const Contact = Loadable(lazy(() => import('views/Admin/Contact/Contact')));
 const Inventory = Loadable(lazy(() => import('views/Admin/Inventory/Inventory')));
+const Locations = Loadable(lazy(() => import('views/Admin/Locations/Locations')));
 const Facilities = Loadable(lazy(() => import('views/Admin/Facilities/Facilities')));
 const WorkHistory = Loadable(lazy(() => import('views/Admin/Work History/WorkHistory')));
 const CleanerHistory = Loadable(lazy(() => import('views/Admin/Work History/Cleaner Work History/CleanerHistory')));
@@ -57,8 +56,7 @@ const MainRoutes = {
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
     },
-    { path: '/dashboard/tasks', element: <Tasks /> },
-    { path: '/dashboard/work-order', element: <WorkOrder /> },
+    { path: '/dashboard/work-schedule', element: <WorkOrder /> },
     { path: '/dashboard/create-work-order', element: <CreateWorkOrder /> },
     { path: '/dashboard/work-order/:locationId', element: <WorkOrderDetails /> },
     { path: '/dashboard/work-order-facility/:workId', element: <WorkOrderFacility /> },
@@ -69,6 +67,7 @@ const MainRoutes = {
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
     { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
     { path: '/dashboard/messages', element: <Messages /> },
+    { path: '/dashboard/locations', element: <Locations /> },
     { path: '/dashboard/facilities', element: <Facilities /> },
     {
       path: '/dashboard/work-history',
@@ -84,7 +83,7 @@ const MainRoutes = {
     { path: '/dashboard/contact', element: <Contact /> },
     { path: '/dashboard/inventory', element: <Inventory /> },
     { path: '/dashboard/users', element: <Users /> },
-    { path: '/dashboard/add-user', element: <AddUser /> },
+    // { path: '/dashboard/add-user', element: <AddUser /> },
     {
       path: '/dashboard/permissions',
       element: <Permissions />

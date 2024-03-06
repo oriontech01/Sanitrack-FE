@@ -1,30 +1,12 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import useTask from '../../../Hooks/useTask';
-import {
-  Grid,
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Button,
-  Box,
-  Paper,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  OutlinedInput,
-  Checkbox,
-  ListItemText
-} from '@mui/material';
+import { Grid, FormControl, Box, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
 import { log } from 'util';
 import useRoom from 'Hooks/useRoom';
 import useLocation from '../../../Hooks/useLocation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import {Select as ReactSelect} from 'react-select';
 const allLocations = [
   { _id: 1, name: 'Abuja' },
   { _id: 2, name: 'Aba' }
@@ -62,7 +44,7 @@ const AddTask = () => {
   const [locationSelectId, setLocationSelectId] = useState('');
   const [cleaners, setCleaners] = React.useState([]);
   const [cleaningItem, setCleaningItem] = useState([]);
-  const [itesmToClean, setItemsToClean] = useState([]);
+  const [itemsToClean, setItemsToClean] = useState([]);
   const [inspector, setAllInspectors] = useState([]);
   const [clean_hours, setClean_hours] = useState('');
   const [clean_minutes, setClean_minutes] = useState('');
@@ -72,7 +54,24 @@ const AddTask = () => {
   const [items, setItems] = useState([]);
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
+  const [viewDate, setViewDate] = useState(new Date());
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const storedLocationId = localStorage.getItem('locationId');
+  const storedRoomId = localStorage.getItem('roomId');
+
+  const handleDateChange = event => {
+    console.log("first",event.target.value)
+    // setViewDate(event.target.value);
+    setSelectedDate(event.target.value)
+  };
+
+
+
+  useEffect(() => {
+    getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
+  }, [locationSelectId]);
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
@@ -165,8 +164,6 @@ const AddTask = () => {
     }));
     setFilteredItems(modifiedItems);
   };
-  const storedLocationId = localStorage.getItem('locationId');
-  const storedRoomId = localStorage.getItem('roomId');
 
   const handleQuantityChange = (index, event) => {
     const newItems = [...items];
@@ -199,10 +196,20 @@ const AddTask = () => {
       preop_hours: preop_hours,
       preop_minutes: preop_minutes,
       cleaningData: modifiedItem,
-      itemsToClean: filteredItems
+      itemsToClean: filteredItems,
+      scheduled_date: selectedDate
     };
     addTask(data);
   };
+
+  useEffect(() => {
+    getUnassignedRoomById(storedLocationId);
+    getAllInspectors();
+    getAllCleaners();
+    getCleaningItems();
+    getRoomById(storedRoomId);
+  }, []);
+  console.log('first hjhjh', allRoomsById);
   return (
     <Grid spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <ToastContainer />
@@ -211,9 +218,9 @@ const AddTask = () => {
           <Grid container spacing={4}>
             {!storedLocationId && (
               <Grid item lg={6} sm={6} xs={12}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel htmlFor="location"> Select Location</InputLabel>
-                  <Select
+                <div className="form-control" style={{ width: '100%' }}>
+                  <label htmlFor="location">Select Location</label>
+                  <select
                     id="location"
                     name="location"
                     value={locationSelectId}
@@ -223,48 +230,49 @@ const AddTask = () => {
                       getLocation();
                     }}
                     onChange={handleSelectLocation}
-                    placeholder="Enter location"
-                    label="Location"
-                    sx={{ marginBottom: 2 }}
+                    style={{ marginBottom: '16px', width: '100%', padding: '10px', borderRadius: '4px' }}
                   >
-                    {allLocations?.map(location => {
-                      // const address = `${location.city}, ${location.state}, ${location.country}`;
-                      return (
-                        <MenuItem key={location?._id} value={location?._id}>
+                    {allLocations.length > 0 ? (
+                      allLocations?.map(location => (
+                        <option key={location?._id} value={location?._id}>
                           {`${location?.city}- ${location?.country}`}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+                        </option>
+                      ))
+                    ) : (
+                      <option>Click here to select a location</option>
+                    )}
+                  </select>
+                </div>
               </Grid>
             )}
             {!storedRoomId && (
               <Grid item lg={6} sm={6} xs={12}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel htmlFor="location"> Select Facility</InputLabel>
-                  <Select
-                    id="location"
-                    name="location"
+                <div style={{ marginBottom: '16px', width: '100%' }}>
+                  <label htmlFor="location" style={{ display: 'block', marginBottom: '8px' }}>
+                    Select Facility
+                  </label>
+                  <select
+                    id="facilities"
+                    name="facilities"
                     value={id}
-                    onClick={event => {
-                      getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
-                    }}
+                    // onClick={event => {
+                    //   getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
+                    // }}
+
                     onChange={handleSelectRoom}
-                    placeholder="Enter location"
-                    label="Location"
-                    sx={{ marginBottom: 2 }}
+                    style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ced4da' }}
                   >
-                    {allUnassignedRoomsById?.map(rooms => {
-                      // const address = `${location.city}, ${location.state}, ${location.country}`;
-                      return (
-                        <MenuItem key={rooms?._id} value={rooms?._id}>
-                          {allUnassignedRoomsById?.length === 0 ? 'No rooms available' : `${rooms?.roomName}- ${rooms?._id}`}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+                    {allUnassignedRoomsById?.length === 0 ? (
+                      <option>Select a location first</option>
+                    ) : (
+                      allUnassignedRoomsById?.map(rooms => (
+                        <option key={rooms._id} value={rooms._id}>
+                          {`${rooms.roomName}`}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                </div>
               </Grid>
             )}
           </Grid>
@@ -277,9 +285,6 @@ const AddTask = () => {
                     labelId="inspectors"
                     id="inspectors"
                     multiple
-                    onClick={event => {
-                      getAllInspectors();
-                    }}
                     value={inspector}
                     onChange={handleSelectInspectors}
                     input={<OutlinedInput label="Cleaner" />}
@@ -293,30 +298,6 @@ const AddTask = () => {
                     ))}
                   </Select>
                 </FormControl>
-                {/* <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="location"> Inspectors</InputLabel>
-              <Select
-                id="inspector"
-                name="inspector"
-                // value={formData.location_id}
-                onClick={event => {
-                  getAllInspectors();
-                }}
-                onChange={e => setSelectedInspector(e.target.value)}
-                placeholder="Select Inspector"
-                label="Inspector"
-                sx={{ marginBottom: 2 }}
-              >
-                {allInspectors?.map(inspector => {
-                  // const address = `${location.city}, ${location.state}, ${location.country}`;
-                  return (
-                    <MenuItem key={inspector?._id} value={inspector?._id} className="capitalize">
-                      {allInspectors.length === 0 ? 'No Inspectors available' : `${inspector?.username}-(${inspector?.role_name})`}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl> */}
               </div>
             </Grid>
             <Grid item lg={6} sm={6} xs={12}>
@@ -326,9 +307,6 @@ const AddTask = () => {
                   labelId="cleaners"
                   id="cleaners"
                   multiple
-                  onClick={event => {
-                    getAllCleaners();
-                  }}
                   value={cleaners}
                   onChange={handleSelectCleaners}
                   input={<OutlinedInput label="Cleaner" />}
@@ -344,6 +322,18 @@ const AddTask = () => {
               </FormControl>
             </Grid>
           </Grid>
+          <div className="relative my-3">
+            <label htmlFor="date" className="font-bold text-xs">
+              Scheduled Date
+            </label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 rounded-lg h-12  bg-transparent shadow-sm border border-gray-400"
+              value={selectedDate}
+              onChange={handleDateChange}
+              min={new Date().toISOString().slice(0, 10)} // Set minimum date to today
+            />
+          </div>
           <Box className="my-3">
             <Grid container spacing={4}>
               <Grid item lg={6} sm={6} xs={12}>
@@ -506,54 +496,27 @@ const AddTask = () => {
               labelId="itemstoclean"
               id="itemstoclean"
               multiple
-              onClick={event => {
-                getRoomById(storedRoomId ? storedRoomId : id);
-              }}
-              value={itesmToClean}
+              // onClick={event => {
+              //   event.preventDefault();
+              //   getRoomById(storedRoomId ? storedRoomId : id);
+              // }}
+              value={itemsToClean}
               onChange={handleSelectItemToCleaning}
               input={<OutlinedInput label=" Items to Clean" />}
               // renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
             >
-              {allRoomsById?.detail?.detail?.map(item => (
-                <MenuItem key={item?._id} value={item?._id} className="capitalize">
-                  {allRoomsById.length === 0 ? 'No Cleaner Item available' : `${item?.name}-(${item?._id})`}
-                </MenuItem>
-              ))}
+              {allRoomsById?.detail?.detail.length > 0 ? (
+                allRoomsById?.detail?.detail?.map(item => (
+                  <MenuItem key={item?._id} value={item?._id} className="capitalize">
+                    {`${item?.name}`}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem>No Cleaner Item available</MenuItem>
+              )}
             </Select>
           </FormControl>
-          {/* <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
-              Cleaners
-            </FormLabel>
-            <RadioGroup
-              name="selectedCleaner"
-              value={selectedCleaner}
-              onChange={event => setSelectedCleaner(event.target.value)}
-              sx={scrollableGroupStyle}
-            >
-              {allCleaners.map(cleaner => (
-                <FormControlLabel key={cleaner._id} value={cleaner._id} control={<Radio />} label={cleaner?.username} />
-              ))}
-            </RadioGroup>
-          </FormControl> */}
-
-          {/* <FormControl component="fieldset" fullWidth sx={{ mb: 3 }}>
-            <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
-              Inspectors
-            </FormLabel>
-            <RadioGroup
-              name="selectedInspector"
-              value={selectedInspector}
-              onChange={event => setSelectedInspector(event.target.value)}
-              sx={scrollableGroupStyle}
-            >
-              {allInspectors.map(inspector => (
-                <FormControlLabel key={inspector._id} value={inspector._id} control={<Radio />} label={inspector.username} />
-              ))}
-            </RadioGroup>
-          </FormControl> */}
-
           <div className="flex justify-center">
             <button
               className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "

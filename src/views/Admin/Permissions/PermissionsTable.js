@@ -130,10 +130,10 @@ const PermissionTable = ({ permissions, showCheckBox, showButton, roleId, showRe
       {showRevoke && (
         <Button
           variant="contained"
-          color="secondary"
+          color='primary'
           onClick={revokePermissions}
           disabled={roleId === 'Select Role' || checkedPermissions.length < 1}
-          style={{ marginTop: 12 }}
+          // style={{ marginTop: 12, backgroundColor: 'blue' }}
         >
           Revoke Permission
         </Button>

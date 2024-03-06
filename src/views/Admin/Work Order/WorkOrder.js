@@ -1,12 +1,21 @@
-/* eslint-disable jsx-a11y/heading-has-content */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import useLocation from '../../../Hooks/useLocation';
 import { Link } from 'react-router-dom';
-import { useWorkOrderState } from 'context/WorkOrderContext';
+import { Tabs, Tab, Box, useMediaQuery, useTheme } from '@mui/material';
+import TabPanel from 'component/Tab Panel/TabPanel';
+import Tasks from './Tasks';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 
 const WorkOrder = () => {
   const { getLocation, allLocations, loading } = useLocation();
+  const [selectedTab, setSelectedTab] = useState(0);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
   useEffect(() => {
     getLocation();
@@ -14,48 +23,44 @@ const WorkOrder = () => {
 
   return (
     <>
-      <header className="flex  lg:flex-row flex-col justify-between items-center">
-        <h1 className="text-3xl font-bold text-[#3366FF]">Work Orders</h1>
-
-        <Link
-          to={`/dashboard/create-work-order`}
-          onClick={()=>{
-            localStorage.removeItem('roomId');
-            localStorage.removeItem('locationId');
-            localStorage.removeItem('locationName');
-          }}
-          className="text-white flex justify-center   gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
-
-          //   disabled={id && inspector && clean_hours}
-          //   onClick={handleSubmit}
-        >
-          Add New <FaPlus />
-        </Link>
+      <header className={`flex ${matches ? 'flex-col' : 'lg:flex-row'} justify-between items-center mb-4`}>
+        <h1 className="text-3xl font-bold text-[#3366FF]">Work Schedule</h1>
+        {/* Conditionally render or adjust styles for your link based on `matches` */}
       </header>
 
-      <main className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6 lg:mt-10 mt-5">
-        {!loading &&
-          allLocations.map(location => (
-            <Link
-              onClick={() => {
-                localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
-                localStorage.setItem('locationId', `${location?._id}`);
-              }}
-              to={`/dashboard/work-order/${location?._id}`}
-              key={location?._id}
-              className="bg-[#EBF0FF] px-3 py-3 flex justify-between items-center w-full text-[#3366FF] font-bold shadow-sm"
-            >
-              <span>{`${location?.city}- ${location?.country}`}</span>
-              <span>
-                <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 11L6 6L1 1" stroke="#999999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-            </Link>
-          ))}
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={selectedTab} onChange={handleTabChange} aria-label="Work order and tasks tabs" variant="scrollable" scrollButtons="auto">
+          <Tab label="Work Orders" />
+          <Tab label="Tasks List" />
+        </Tabs>
+      </Box>
+
+      <main>
+        <TabPanel value={selectedTab} index={0}>
+          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', marginTop: 5, gap: 2 }}>
+              {!loading &&
+                allLocations.map(location => (
+                  <Link
+                    onClick={() => {
+                      localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
+                      localStorage.setItem('locationId', `${location?._id}`);
+                    }}
+                    to={`/dashboard/work-order/${location?._id}`}
+                    key={location?._id}
+                    className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center ${matches ? 'w-full' : 'w-1/2'} text-[#3366FF] font-bold shadow-sm`}
+                  >
+                    <span>{`${location?.city}- ${location?.country}`}</span>
+                    <span><ArrowForward/></span>
+                  </Link>
+                ))}
+          </Box>
+        </TabPanel>
+        <TabPanel value={selectedTab} index={1}>
+          <Tasks />
+        </TabPanel>
         {loading && (
           <div className="loader">
-            <div className="justify-content-center jimu-primary-loading"></div>
+            {/* Loader content */}
           </div>
         )}
       </main>

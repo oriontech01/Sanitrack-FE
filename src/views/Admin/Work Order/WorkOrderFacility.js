@@ -29,6 +29,23 @@ const WorkOrderFacility = () => {
   }, []);
   console.log('second', singleRoomTask);
   const LocationName = localStorage.getItem('locationName');
+  const convertSecondsToHMS = totalSeconds => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSecondsAfterHours = totalSeconds % 3600;
+    const minutes = Math.floor(remainingSecondsAfterHours / 60);
+    const remainingSeconds = remainingSecondsAfterHours % 60;
+
+    return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
+  };
+  const convertMilliSecondsToHMS = milli => {
+    const totalSeconds = Math.floor(milli / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const remainingSecondsAfterHours = totalSeconds % 3600;
+    const minutes = Math.floor(remainingSecondsAfterHours / 60);
+    const remainingSeconds = remainingSecondsAfterHours % 60;
+
+    return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
+  };
   return (
     <>
       <header className="flex  lg:flex-row flex-col justify-between items-center mb-10">
@@ -66,7 +83,7 @@ const WorkOrderFacility = () => {
               </span>
               <span className="flex flex-col gap-y-2">
                 <p className="text-lg text-black">Facility Location</p>
-                <p className="text-lg text-blue-500">{LocationName}</p>
+                <p className="text-lg text-blue-500">{`${singleRoomTask?.taskDetails?.assigned_location?.city}- ${singleRoomTask?.taskDetails?.assigned_location?.country}`}</p>
               </span>
               <span className="flex flex-col gap-y-2">
                 <p className="text-lg text-black">Number of Items in Facility </p>
@@ -101,15 +118,15 @@ const WorkOrderFacility = () => {
               <div className="flex flex-col gap-y-4 pt-3">
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-blue-500">Clean </p>
-                  <p className="text-lg text-blue-500">{singleRoomTask?.taskDetails?.planned_time?.clean_time}</p>
+                  <p className="text-lg text-blue-500">{convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.clean_time) ?? '-'}</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-blue-500">Preop </p>
-                  <p className="text-lg text-blue-500">{singleRoomTask?.taskDetails?.planned_time?.preOp_time}</p>
+                  <p className="text-lg text-blue-500">{convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.preOp_time) ?? '-'}</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-blue-500">Release </p>
-                  <p className="text-lg text-blue-500">{singleRoomTask?.taskDetails?.planned_time?.release_time}</p>
+                  <p className="text-lg text-blue-500">{convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.release_time) ?? '-'}</p>
                 </div>
               </div>
             </div>
@@ -118,15 +135,15 @@ const WorkOrderFacility = () => {
               <div className="flex flex-col gap-y-4 pt-3">
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Clean </p>
-                  <p className="text-lg text-red-500">{singleRoomTask?.taskDetails?.actual_time?.clean_time}</p>
+                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.clean_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Preop </p>
-                  <p className="text-lg text-red-500">{singleRoomTask?.taskDetails?.actual_time?.preOp_time}</p>
+                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.preOp_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Release </p>
-                  <p className="text-lg text-red-500">{singleRoomTask?.taskDetails?.actual_time?.release_time}</p>
+                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.release_time : 0)}</p>
                 </div>
               </div>
             </div>

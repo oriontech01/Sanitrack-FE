@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import { Tab, Tabs, Box, Typography, Paper } from '@mui/material';
+import { Tab, Tabs, Box, Typography, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
+
   const tabStyle = {
     flex: 1,
-    fontSize: '1rem',
+    fontSize: isSmallScreen ? '0.75rem' : '1rem', // Smaller font size on small screens
     fontWeight: 'bold',
     textTransform: 'none',
     color: 'gray', // Adjust the color to match your design
     '&.Mui-selected': {
-      color: 'primary' // Adjust the selected tab color to match your design
+      color: theme.palette.primary.main, // Ensure using the theme's primary color
     },
     '&.Mui-focusVisible': {
-      backgroundColor: 'rgba(100, 95, 228, 0.32)' // Adjust focus color if necessary
-    }
+      backgroundColor: 'rgba(100, 95, 228, 0.32)', // Adjust focus color if necessary
+    },
   };
-  let username = localStorage.getItem('name');
+
+  let username = localStorage.getItem('name') || 'User'; // Added default value to avoid null reference errors
   return (
     <Box>
-      <Box>
-        <Typography variant="h2" color="blue">
+      <Box sx={{ padding: isSmallScreen ? 1 : 3 }}>
+        <Typography variant={isSmallScreen ? 'h4' : 'h2'} color="blue" gutterBottom>
           Welcome {`${username.charAt(0).toUpperCase()}${username.slice(1)}`}!
         </Typography>
         <Typography variant="body1" marginTop={2}>
@@ -36,10 +41,11 @@ const AdminDashboard = () => {
           <Tabs
             value={selectedTab}
             onChange={handleChange}
-            variant="fullWidth"
-            indicatorColor="primary" // Adjust the indicator color to match your design
+            // scrollButtons={isSmallScreen ? "auto" : false} // Only show scroll buttons on small screens
+            allowScrollButtonsMobile // Better scrolling on mobile
+            indicatorColor="primary"
             textColor="primary"
-            centered
+            centered={!isSmallScreen} // Center tabs on larger screens only
           >
             <Tab label="Facility Overview" component={Link} to="/dashboard/" sx={tabStyle} />
             <Tab label="Master Sanitation Schedule" component={Link} to="/dashboard/sanitation-schedule" sx={tabStyle} />

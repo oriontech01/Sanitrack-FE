@@ -1,7 +1,7 @@
-import { Button, Container, Typography, Box } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Container, Typography, Box, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import usePermission from 'Hooks/usePermission';
-import { useEffect } from 'react';
 import PermissionTable from './PermissionsTable';
 
 const Permissions = () => {
@@ -11,6 +11,7 @@ const Permissions = () => {
   const handleCreateNavigate = () => {
     navigate('/dashboard/permissions/create');
   };
+
   const handleAssignNavigate = () => {
     navigate('/dashboard/permissions/assign');
   };
@@ -22,27 +23,34 @@ const Permissions = () => {
     fetchData();
   }, []);
 
-  // console.log('Permissions', allPermissions);
-
   return (
-    <Container className="tab-display">
-      <Container>
-        <Box display={'flex'} justifyContent={'space-between'} alignContent={'center'} alignItems={'center'}>
-          <Typography variant="h2" gutterBottom>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} display="flex" justifyContent="space-between" alignItems="center" flexDirection={{ xs: 'column', sm: 'row' }}>
+          <Typography variant="h4" gutterBottom component="div" sx={{ mb: { xs: 2, sm: 0 } }}>
             All Permissions
           </Typography>
-          <Box>
-            <Button variant="contained" color="primary" onClick={handleCreateNavigate} sx={{ mr: 1 }}>
+          <Box  display={'flex'} justifyContent={'center'} alignContent={'center'} flexDirection={'column'} padding={2} gap={5}>
+            <Button 
+              variant="contained" 
+              onClick={handleCreateNavigate}
+              style={{backgroundColor: 'blue'}} 
+            >
               Create New Permission
             </Button>
-            <Button variant="contained" color="primary" onClick={handleAssignNavigate}>
+            <Button 
+              variant="contained" 
+              style={{backgroundColor: 'blue'}} 
+              onClick={handleAssignNavigate}
+            >
               Assign Permission
             </Button>
           </Box>
-        </Box>
-
-        <PermissionTable permissions={allPermissions} showCheckBox={false} showButton={false} showRevoke={false} roleId={0} />
-      </Container>
+        </Grid>
+        <Grid item xs={12}>
+          <PermissionTable permissions={allPermissions} showCheckBox={false} showButton={false} showRevoke={false} roleId={0} />
+        </Grid>
+      </Grid>
     </Container>
   );
 };

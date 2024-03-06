@@ -100,21 +100,20 @@ const AddRoom = () => {
             </FormControl>
           </div>
           <div className="details-container">
-            <Typography variant="h6" gutterBottom>
-              Details:
+            <Typography variant="h6" marginBottom={3} gutterBottom>
+              Add Items to be cleaned:
             </Typography>
             {formData.details.map((detail, index) => (
-              <div className="detail-item" key={index}>
+              <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 10}} key={index}>
                 <TextField
-                  label="Detail Name"
+                  label="Item Name"
                   type="text"
                   name="name"
                   value={detail.name}
                   onChange={event => handleInputChange(index, event)}
-                  placeholder="Detail name"
+                  placeholder="Item name"
                   variant="outlined"
-                  fullWidth
-                  sx={{ marginBottom: 2 }}
+                  sx={{ marginBottom: 2, width: '50%' }}
                 />
                 {index > 0 && (
                   <Button type="button" variant="outlined" color="error" className="remove-btn" onClick={() => handleRemoveDetail(index)}>
@@ -131,7 +130,7 @@ const AddRoom = () => {
               onClick={handleAddDetail}
               sx={{ marginBottom: 2 }}
             >
-              + Add Detail
+              + Add Another Item
             </Button>
           </div>
           {formData.details.some(item => item.name === '') ||

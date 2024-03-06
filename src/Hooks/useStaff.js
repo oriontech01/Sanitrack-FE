@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { toast, Flip } from 'react-toastify';
 const useStaff = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -13,32 +13,74 @@ const useStaff = () => {
   // const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadings, setIsLoadings] = useState(false);
   const [allCleaners, setAllCleaners] = useState([]);
   const [allInspectors, setAllInspectors] = useState([]);
 
   const access_token = localStorage.getItem('auth-token');
 
   const addStaff = async dataToPass => {
+    setIsLoadings(true);
     await axios
       .post(`${BASE_URL}create-user`, dataToPass, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
+        if (response) {
+          setIsLoadings(false);
+          toast.success('Staff Added Successfully', {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+        }
+
         setResponseMessage('Staff Added.');
-        console.log('Here is staff added response', response.json());
-        navigate('/dashboard/user');
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       })
       .catch(error => {
         if (error.response) {
+          setIsLoadings(false);
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
+            toast.error(data.message, {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+              transition: Flip
+            });
             console.log('An error occured', data.message);
           } else {
             console.log('Axios error:', data.err.details[0].message);
-            alert(data.err.details[0].message);
+            toast.error(data.err.details[0].message, {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+              transition: Flip
+            });
           }
         } else {
+          setIsLoadings(false);
           console.log('Network error:', error.message);
         }
       });
@@ -207,7 +249,8 @@ const useStaff = () => {
     getAllCleaners,
     getAllInspectors,
     allCleaners,
-    allInspectors
+    allInspectors,
+    isLoadings
   };
 };
 
