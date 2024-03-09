@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { registerCustomSW } from 'serviceWorker';
 
 // material-ui
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
@@ -16,6 +17,10 @@ import NavigationScroll from './NavigationScroll';
 
 const App = () => {
   const customization = useSelector((state) => state.customization);
+  useEffect(() => {
+    registerCustomSW()
+  }, [])
+  
 
   return (
     <>

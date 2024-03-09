@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import JWT from 'jsonwebtoken';
-import { useNavigate } from 'react-router';
-import { useCurrentRole } from 'context/UserRoleContext';
 import { useAuthRolesState } from 'context/AuthRolesContext';
 import { toast, Flip } from 'react-toastify';
-import urlBase64ToUint8Array from 'utils/urlBase64ToUintArray';
+import { subscribeUser } from 'utils/subscription';
 
 const useAuth = () => {
   const { setModal, setToken, setId, setRoles } = useAuthRolesState();
@@ -35,35 +33,7 @@ const useAuth = () => {
         }
       );
 
-      // In a useEffect or a function after ensuring the user is authenticated
-      // navigator.serviceWorker.ready.then(function (registration) {
-      //   const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY);
-
-      //   console.log('VAPID', convertedVapidKey);
-
-      //   registration.pushManager
-      //     .subscribe({
-      //       userVisibleOnly: true,
-      //       applicationServerKey: convertedVapidKey
-      //     })
-      //     .then(function (subscription) {
-      //       // Send subscription to your server
-      //       console.log('Make it HAPPEN', JSON.stringify(subscription));
-      //       const subscribed = axios.post(`${BASE_URL}notification/subscribe-to-push-notifications`, subscription, {
-      //         headers: {
-      //           'Content-Type': 'application/json',
-      //           Authorization: `Bearer ${response.data.data.token}`
-      //         }
-      //       });
-      //       console.log('HEY I HAVE SUBBED', subscribed);
-      //     })
-      //     .catch(function (err) {
-      //       console.log('Failed to subscribe the user: ', err);
-      //     });
-      //   registration.pushManager.getSubscription().then(function (subscription) {
-      //     console.log('Current subscription:', subscription);
-      //   });
-      // });
+      subscribeUser(response.data.data.token);
 
       if (response?.data?.data?.requiredRoleSelection === true) {
         console.log('first one');

@@ -1,8 +1,8 @@
 // custom-service-worker.js
 self.addEventListener('push', event => {
     const data = event.data.json();
-    const { title, body } = data;
     console.log("Notification Data", data)
+    const { title, body } = data;
     event.waitUntil(self.registration.showNotification(title, { body }));
   });
   
