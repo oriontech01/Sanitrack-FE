@@ -1,6 +1,8 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeStack from './HomeStack';
 import Schedules from '../screens/Schedules/Schedules';
+import BottomTabNavigation from './BottomTabNavigation';
+import ScheduleStack from './ScheduleStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -15,7 +17,7 @@ function DrawerNav() {
           drawerLabel: 'Dashboard',
         }}
         name="MainDashboard"
-        component={HomeStack}
+        component={BottomTabNavigation}
       />
 
       <Drawer.Screen
@@ -23,7 +25,7 @@ function DrawerNav() {
           drawerLabel: 'Schedules',
         }}
         name="Schedules"
-        component={Schedules}
+        component={ScheduleStack}
       />
     </Drawer.Navigator>
   );

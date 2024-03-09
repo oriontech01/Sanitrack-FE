@@ -31,9 +31,15 @@ import moment from 'moment';
 export default function InspectorItemsToClean({ navigation, route }) {
   const { params } = route.params;
   const parsedParams = JSON.parse(params);
-  const { location, facility, id, taskId } = parsedParams;
+  const { location, facility, id, taskId, cleaner_time } = parsedParams;
   const { summary, loadingSummary } = useGetTaskSummary(taskId);
   const { loadingDetails, task } = useGetFacilityDetails(id);
+  function secondsToHoursMinutes(seconds) {
+    var hours = Math.floor(seconds / 3600);
+    var remainingSeconds = seconds % 3600;
+    var minutes = Math.floor(remainingSeconds / 60);
+    return `${hours} hours:${minutes}  minutes`;
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -119,21 +125,26 @@ export default function InspectorItemsToClean({ navigation, route }) {
               Time Taken
             </Text>
             <Text style={{ color: colors.blue }}>
-              {summary?.taskDetails.times_approved}
+              {/* {secondsToHoursMinutes(
+                (Date.now() - new Date(cleaner_time).getMilliseconds()) / 1000
+              )} */}
+              {secondsToHoursMinutes(
+                Number(summary?.taskDetails.planned_time.clean_time)
+              )}
             </Text>
           </View>
         )}
 
         <Button
-          onPress={() =>
+          onPress={() => {
             navigation.navigate('InspectorTimer', {
               location,
               facility,
               taskId,
               id: facility.roomId,
               roomName: facility.roomName,
-            })
-          }
+            });
+          }}
           style={{
             marginTop: 20,
             marginBottom: 30,

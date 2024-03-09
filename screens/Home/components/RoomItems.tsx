@@ -15,12 +15,19 @@ import Button from '../../../components/general/Button';
 import axios from 'axios';
 import useUploadTask from '../hooks/useUploadTask';
 
-export default function RoomItems({ item, fileInputs, setFileInputs, taskId }) {
+export default function RoomItems({
+  item,
+  fileInputs,
+  setFileInputs,
+  taskId,
+  startedTime,
+  done,
+}) {
   const [type, setType] = useState(CameraType.back);
   const [capture, setCapture] = useState(false);
   const [camera, setCamera] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [uploaded, setUploaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState(null);
   const [base64Url, setBase64Url] = useState(null);
@@ -70,6 +77,7 @@ export default function RoomItems({ item, fileInputs, setFileInputs, taskId }) {
           setModalVisible(false);
         }
       }
+      setUploaded(true);
       return true;
     } catch (error) {
       setUploadingImage(false);
@@ -116,6 +124,10 @@ export default function RoomItems({ item, fileInputs, setFileInputs, taskId }) {
         <Text style={{ fontSize: 16, color: colors.blue }}>{item.name}</Text>
         <TouchableOpacity
           onPress={() => {
+            if (startedTime == 0 && !done) {
+              alert('Please Start Your Timer!');
+              return;
+            }
             setCapture(true);
             setModalVisible(true);
           }}
@@ -142,14 +154,19 @@ export default function RoomItems({ item, fileInputs, setFileInputs, taskId }) {
                     <Button
                       isLoading={uploadingImage || uploading}
                       onPress={() => {
+                        if (uploaded) {
+                          setModalVisible(false);
+                          return;
+                        }
                         uploadImage(item._id);
                       }}
                       style={styles.button}
-                      label="Proceed"
+                      label={uploaded ? 'Close' : 'Proceed'}
                     />
                     <Button
                       onPress={() => {
                         setImageUri(null);
+                        setUploaded(false);
                       }}
                       style={{ ...styles.button, backgroundColor: '#AF6D31' }}
                       label="Retake"
@@ -200,10 +217,9 @@ export default function RoomItems({ item, fileInputs, setFileInputs, taskId }) {
                   color: colors.blue,
                   fontSize: 14,
                 }}>
-                JPEG
+                View
               </Text>
             </View>
-            <Text style={[styles.font]}>Image.png</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

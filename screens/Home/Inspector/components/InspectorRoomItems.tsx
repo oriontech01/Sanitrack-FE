@@ -17,7 +17,7 @@ import {
 import { Camera, CameraType } from 'expo-camera';
 import Button from '../../../../components/general/Button';
 
-export default function InspectorRoomItems({ item }) {
+export default function InspectorRoomItems({ item, startTime, done }) {
   const [type, setType] = useState(CameraType.back);
   const [capture, setCapture] = useState(false);
   const [camera, setCamera] = useState(false);
@@ -59,6 +59,10 @@ export default function InspectorRoomItems({ item }) {
           {satisfied ? (
             <TouchableOpacity
               onPress={() => {
+                if (startTime == 0 && !done) {
+                  alert('Please Start Your Timer');
+                  return;
+                }
                 setSatisfied(false);
                 item.satisfied = false;
               }}>
@@ -67,6 +71,10 @@ export default function InspectorRoomItems({ item }) {
           ) : (
             <TouchableOpacity
               onPress={() => {
+                if (startTime == 0 && !done) {
+                  alert('Please Start Your Timer');
+                  return;
+                }
                 setSatisfied(true);
                 item.satisfied = true;
               }}
@@ -86,6 +94,10 @@ export default function InspectorRoomItems({ item }) {
       <View style={styles.imageDetail}>
         <TouchableOpacity
           onPress={() => {
+            if (startTime == 0 && !done) {
+              alert('Please Start Your Timer');
+              return;
+            }
             if (item.image_url !== 'empty') {
               setModalVisible(true);
             } else {

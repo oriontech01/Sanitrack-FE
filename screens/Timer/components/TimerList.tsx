@@ -69,7 +69,7 @@ export default function TimerList({ item, active }) {
             AnimatedStatus,
           ]}
         />
-        <Text>{moment(item.startTime).format('DD-MM-YYYY')}</Text>
+        <Text>{moment(Number(item.startTime)).format('DD-MM-YYYY')}</Text>
       </View>
     </TouchableOpacity>
   );

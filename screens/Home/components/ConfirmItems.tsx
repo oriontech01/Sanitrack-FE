@@ -2,8 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Input from '../../../components/general/Input';
 import colors from '../../../util/colors';
+import ItemList from './ItemList';
 
 export default function ConfirmItems({ item, inspector = false }) {
+  const [damaged, setDamaged] = useState(false);
   const [initialValue, setInitalValue] = useState(
     inspector ? item.quantity : ''
   );
@@ -12,18 +14,29 @@ export default function ConfirmItems({ item, inspector = false }) {
   const toggleSelect = () => setSelected((prev) => !prev);
   return (
     <View style={styles.container}>
-      <Input
-        labelStyle={{ textTransform: 'capitalize' }}
-        onChange={(val) => {
-          setInitalValue(val);
-          item.value = val;
-        }}
-        label={`${item.item_name} (${item.unit})`}
-        value={initialValue}
-      />
+      <ItemList item={item.item_name} />
+      {selected ? (
+        <Input
+          labelStyle={{ textTransform: 'capitalize' }}
+          placeholder="Quantity of Damaged Item"
+          onChange={(val) => {
+            setInitalValue(val);
+            item.damagedQuantity = val;
+          }}
+          label={`${item.unit})`}
+          value={initialValue}
+        />
+      ) : null}
       <View style={styles.selectible}>
         <TouchableOpacity
-          onPress={toggleSelect}
+          onPress={() => {
+            if (selected) {
+              item.damaged = false;
+            } else {
+              item.damaged = true;
+            }
+            toggleSelect();
+          }}
           style={{
             height: 20,
             width: 20,

@@ -4,29 +4,29 @@ import { UserContext } from '../../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { useFocusEffect } from '@react-navigation/native';
-const useGetActiveTask = () => {
+const useGetRequestDetail = (id) => {
   const { loading, startLoading, stopLoading } = useLoading();
-  const [activeTask, setActiveTask] = useState(0);
+  const [item, setItems] = useState([]);
   const [refresh, setRefresh] = useState(0);
   const refetch = () => {
     setRefresh((prev) => prev + 1);
   };
-  const { token, role } = useContext(UserContext);
-  const useGetActiveTask = async () => {
-    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
+  const { token } = useContext(UserContext);
+  const useGetItemDetail = async () => {
     startLoading();
 
     try {
       const response = await axios.get(
-        `${Constants.expoConfig.extra.baseUrl}${api}/active-task`,
+        `${Constants.expoConfig.extra.baseUrl}inspector/cleaning-items?taskId=${id}`,
         {
           headers: {
             Authorization: token,
           },
         }
       );
-      setActiveTask(response.data.data);
-      console.log(response.data, 'iooo');
+
+      setItems(response.data.data);
+
       stopLoading();
     } catch (error) {
       stopLoading();
@@ -34,15 +34,15 @@ const useGetActiveTask = () => {
   };
   useFocusEffect(
     React.useCallback(() => {
-      useGetActiveTask();
+      useGetItemDetail();
     }, [refresh])
   );
 
   return {
-    loadingActiveTask: loading,
-    useGetActiveTask,
-    activeTask,
+    loadingItem: loading,
+    useGetItemDetail,
+    item,
   };
 };
 
-export default useGetActiveTask;
+export default useGetRequestDetail;

@@ -19,6 +19,7 @@ import {
   ArrowLeftIcon,
   EyeScan,
   Location,
+  LocationIcon,
   QrCode,
 } from '../../../assets/svg/Index';
 
@@ -27,15 +28,16 @@ import useGetCleaningItems from '../hooks/useGetCleaningItems';
 import useConfirmCleaningItems from '../hooks/useConfirmCleaningItems';
 import useGetTaskSummary from '../hooks/useGetTaskSummary';
 import ConfirmItems from '../components/ConfirmItems';
+import useCloseWorkOrder from '../hooks/useCloseWorkOrder';
+import useGetOrderItems from '../hooks/useGetOrderItems';
 
 export default function CloseWorkOrder({ navigation, route }) {
-  const { location, facility, id } = route.params;
-  const { cleaningItems, task } = useGetCleaningItems(id);
-  const [selected, setSelected] = useState(false);
-  const [itemsToSubmit, setItemsToSubmit] = useState([]);
-  const toggleSelect = () => setSelected((prev) => !prev);
+  const { id } = route.params;
+
   const { summary, loadingSummary } = useGetTaskSummary(id);
-  const { confirmCleaningItems, confirming } = useConfirmCleaningItems();
+  const { items, loadingItems } = useGetOrderItems(id);
+
+  const { closeWorkOrder, closing } = useCloseWorkOrder();
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -46,7 +48,7 @@ export default function CloseWorkOrder({ navigation, route }) {
       </TouchableOpacity>
 
       <ScrollView style={{ flex: 1 }}>
-        {loadingSummary && (
+        {loadingItems && (
           <View
             style={{
               height: 200,
@@ -57,18 +59,48 @@ export default function CloseWorkOrder({ navigation, route }) {
           </View>
         )}
 
-        {!loadingSummary &&
-          summary?.cleaningItems.cleaning_items.length > 0 && (
-            <>
-              {summary?.cleaningItems.cleaning_items.map((items, index) => (
-                <ConfirmItems item={items} key={index.toString()} />
-              ))}
-            </>
-          )}
+        {!loadingItems && items.length > 0 && (
+          <>
+            {items.map((items, index) => {
+              items.damaged = false;
+              items.damagedQuantity = '';
+              return <ConfirmItems item={items} key={index.toString()} />;
+            })}
+          </>
+        )}
+        {!loadingItems && items.length == 0 && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+
+              height: 400,
+            }}>
+            <LocationIcon />
+            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+              All Items Are Confirmed!
+            </Text>
+          </View>
+        )}
       </ScrollView>
       <Button
-        onPress={() => {
-          navigation.navigate('Success');
+        isLoading={closing}
+        onPress={async () => {
+          const bodyData = {
+            cleaningItemsData: items.map((item) => {
+              return {
+                cleaning_id: item.cleaning_id,
+                quantity: item.quantity,
+                damaged: item.damaged,
+                damaged_quantity: item.damagedQuantity,
+              };
+            }),
+          };
+          const confirmed = await closeWorkOrder(bodyData, id);
+          if (confirmed) {
+            navigation.navigate('Success');
+          }
         }}
         label="Close work order"
       />

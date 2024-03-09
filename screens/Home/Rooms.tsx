@@ -22,9 +22,9 @@ import {
 import FacilityList from './components/FacilityList';
 
 export default function Rooms({ navigation, route }) {
-  const { location, facility, taskId } = route.params;
-  const {role}=useContext(UserContext)
-  
+  const { location, facility, taskId, cleaner_time } = route.params;
+  const { role } = useContext(UserContext);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.topBar}>
@@ -46,13 +46,13 @@ export default function Rooms({ navigation, route }) {
 
       <TouchableOpacity
         onPress={() => {
-      
           navigation.navigate('ItemsToClean', {
             params: JSON.stringify({
               location,
               facility,
               taskId,
               id: taskId,
+              cleaner_time,
             }),
           });
         }}

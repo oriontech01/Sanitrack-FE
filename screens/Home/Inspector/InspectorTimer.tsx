@@ -48,7 +48,7 @@ export default function InspectorTimer({ navigation, route }) {
   const [timers, setTimers] = useState([]);
 
   const startTimer = async () => {
-    const startTime = new Date().getTime();
+    const startTime = Date.now();
     const timerId = startTime.toString();
     await AsyncStorage.setItem(
       `timerStartTime_${timerId}`,
@@ -109,11 +109,11 @@ export default function InspectorTimer({ navigation, route }) {
             const timerId = timerKey.split('_')[1];
             const startTime = parseInt(JSON.parse(values).startTime);
 
-            const currentTime = new Date().getTime() - startTime;
+            const currentTime = Date.now() - startTime;
             console.log(startTime, values, currentTime, 'new');
             if (JSON.parse(values).id == id) {
               setStartedTime(startTime);
-              setSeconds(new Date().getTime() - startTime);
+              setSeconds(Date.now() - startTime);
               setIsActive(true);
             }
           }
@@ -289,7 +289,12 @@ export default function InspectorTimer({ navigation, route }) {
         {!loadingDetails && (
           <>
             {task.map((det, ind) => (
-              <InspectorRoomItems item={det} key={ind.toString()} />
+              <InspectorRoomItems
+                done={doneTask}
+                startTime={startedTime}
+                item={det}
+                key={ind.toString()}
+              />
             ))}
           </>
         )}
@@ -298,6 +303,10 @@ export default function InspectorTimer({ navigation, route }) {
       <View style={[styles.buttons, { justifyContent: 'space-between' }]}>
         <Button
           onPress={() => {
+            if (startedTime == 0) {
+              alert('Please Start Your Timer');
+              return;
+            }
             setModalVisible(true);
           }}
           fontStyle={{ color: colors.blue }}
@@ -312,8 +321,7 @@ export default function InspectorTimer({ navigation, route }) {
             if (doneTask) {
               if (approvedlist.length > 0) {
                 const bodyData = {
-                  roomId: id,
-                  timer: doneTask,
+                  timer: Math.floor(Number(doneTask) / 1000),
                   passedTasks: approvedlist.map((t) => {
                     return {
                       taskId: t.task_id,
@@ -325,7 +333,9 @@ export default function InspectorTimer({ navigation, route }) {
                 if (approved) {
                   await AsyncStorage.removeItem(`done_${id}`);
                   if (approvedlist.length == task.length) {
-                    navigation.navigate('CloseOrder');
+                    navigation.navigate('CloseOrder', {
+                      id: taskId,
+                    });
                   } else {
                     navigation.navigate('Success');
                   }

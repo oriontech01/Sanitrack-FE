@@ -26,8 +26,8 @@ import useStartTime from './hooks/useStartTime';
 import useUploadTask from './hooks/useUploadTask';
 import useSubmitTask from './hooks/useSubmitTask';
 
-export default function MainRoomDetails({ navigation, route, roomName }) {
-  const { id, taskId } = route.params;
+export default function MainRoomDetails({ navigation, route }) {
+  const { id, taskId, roomName } = route.params;
   const { id: staffId } = useContext(UserContext);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
@@ -44,7 +44,7 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
   const { submitTask, submitting } = useSubmitTask();
 
   const startTimer = async () => {
-    const startTime = new Date().getTime();
+    const startTime = Date.now();
     const timerId = startTime.toString();
     await AsyncStorage.setItem(
       `timerStartTime_${timerId}`,
@@ -91,11 +91,11 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
             const timerId = timerKey.split('_')[1];
             const startTime = parseInt(JSON.parse(values).startTime);
 
-            const currentTime = new Date().getTime() - startTime;
+            const currentTime = Date.now() - startTime;
             console.log(startTime, values, currentTime, 'new');
             if (JSON.parse(values).id == id) {
               setStartedTime(startTime);
-              setSeconds(new Date().getTime() - startTime);
+              setSeconds(Date.now() - startTime);
               setIsActive(true);
             }
           }
@@ -148,10 +148,10 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
         `done_${id}`,
         JSON.stringify({
           startTime: startedTime,
-          endTime: new Date().getTime() - startedTime,
+          endTime: Date.now() - startedTime,
         })
       );
-      setDoneTask(new Date().getTime() - startedTime);
+      setDoneTask(Date.now() - startedTime);
       setIsActive(false);
       setStartedTime(0);
     }
@@ -287,6 +287,8 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
           <>
             {detailList.map((det, ind) => (
               <RoomItems
+                done={doneTask}
+                startedTime={startedTime}
                 taskId={taskId}
                 fileInputs={fileInputs}
                 setFileInputs={setFileInputs}
@@ -306,7 +308,7 @@ export default function MainRoomDetails({ navigation, route, roomName }) {
               (detail) => detail.uploaded == undefined
             );
             const bodyData = {
-              cleanTime: doneTask,
+              cleanTime: Number(doneTask) / 1000,
               roomId: id,
             };
             if (doneTask) {

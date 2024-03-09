@@ -68,6 +68,9 @@ export default function Facilities({ navigation, route }) {
                   location,
                   facility,
                   taskId: facility.taskId,
+                  cleaner_time: facility.cleaner_time
+                    ? facility.cleaner_time[0]
+                    : null,
                 });
               }}
             />

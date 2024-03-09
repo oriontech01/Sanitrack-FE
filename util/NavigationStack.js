@@ -18,6 +18,7 @@ import Login from '../screens/Auth/Login';
 import HomeStack from '../navigations/HomeStack';
 import BottomTabNavigation from '../navigations/BottomTabNavigation';
 import { UserContext } from '../context/UserContext';
+import DrawerNav from '../navigations/DrawerNav';
 
 const NavigationStack = () => {
   const user = useContext(UserContext);
@@ -29,7 +30,7 @@ const NavigationStack = () => {
         // defaultScreenOptions={Login}
         screenOptions={{ headerShown: false }}>
         <Stack.Screen component={Login} name="Login" />
-        <Stack.Screen component={BottomTabNavigation} name="Home" />
+        <Stack.Screen component={DrawerNav} name="Home" />
         <Stack.Screen component={SelectRole} name="RoleSelection" />
         <Stack.Screen
           component={RoleBasedAccessDeniedScreen}

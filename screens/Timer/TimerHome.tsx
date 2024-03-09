@@ -13,19 +13,18 @@ export default function TimerHome() {
   const [id, setId] = useState('');
   const [doneTask, setDoneTask] = useState([]);
   const { id: staffId } = useContext(UserContext);
-  const [activeData, setActiveData] = useState(null);
 
   const fetchData = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
-
+      let activeData = null;
       for (const key of keys) {
         const data = await AsyncStorage.getItem(key);
         const parsedData = JSON.parse(data);
         parsedData.currentTime = Date.now() - parsedData.startTime;
         if (key.startsWith('timerStartTime_')) {
           if (parsedData.userId == staffId) {
-            setActiveData(parsedData);
+            activeData = parsedData;
             setTimers((prev) => [...prev, parsedData]);
           }
         }

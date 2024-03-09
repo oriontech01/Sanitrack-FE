@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StatusBar,
@@ -6,60 +7,53 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import AppText from '../../components/AppText';
 import colors from '../../util/colors';
-import Select from '../../components/general/Select';
-import Button from '../../components/general/Button';
-import { ArrowLeftIcon, Location } from '../../assets/svg/Index';
-import FacilityList from './components/FacilityList';
-import CleaningItemList from './components/CleaningItemList';
-import ItemList from './components/ItemList';
-import RoomItems from './components/RoomItems';
-import TaskDetails from './components/TaskDetails';
-import useGetCleaningItems from './hooks/useGetCleaningItems';
-import useGetFacilityDetails from './hooks/useGetFacilityDetail';
-import useGetTaskSummary from './hooks/useGetTaskSummary';
 
-export default function Summary({ navigation, route }) {
-  const { location, facility, cleanerItems, taskId } = route.params;
+import {
+  ArrowLeftIcon,
+  HamburgerMenu,
+  LocationIcon,
+} from '../../assets/svg/Index';
+import useGetTaskSummary from '../Home/hooks/useGetTaskSummary';
+import ItemList from '../Home/components/ItemList';
 
-  const { summary, loadingSummary } = useGetTaskSummary(taskId);
+export default function ScheduleDetails({ navigation, route }) {
+  const user = useContext(UserContext);
+  const { id } = route.params;
   function secondsToHoursMinutes(seconds) {
     var hours = Math.floor(seconds / 3600);
     var remainingSeconds = seconds % 3600;
     var minutes = Math.floor(remainingSeconds / 60);
     return `${hours}hours: ${minutes} minutes`;
   }
+  const { summary, loadingSummary } = useGetTaskSummary(id);
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}
-        style={styles.topBar}>
-        <ArrowLeftIcon />
-        <Text style={styles.haeding}>Summary</Text>
-      </TouchableOpacity>
-      <View style={styles.locationDetails}>
-        <View style={styles.location}>
-          <Location />
-        </View>
+      <View
+        style={{
+          flexDirection: 'row',
 
-        <Text style={{ marginTop: 10 }}>Work Order Addresss</Text>
-        <Text style={styles.locationName}>
-          {location.city}, {location.state} {location.country}
-        </Text>
+          alignItems: 'center',
+          paddingTop: 20,
+        }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ArrowLeftIcon />
+        </TouchableOpacity>
+        <AppText style={styles.haeding}>Schedule Details</AppText>
       </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          flex: 1,
+        }}>
         {loadingSummary && (
           <View
             style={{
-              height: 300,
+              height: 200,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -106,27 +100,15 @@ export default function Summary({ navigation, route }) {
               ]}>
               Cleaning Items
             </Text>
-            {cleanerItems.map((item, index) => (
+            {summary.cleaningItems.cleaning_items.map((item, index) => (
               <ItemList
                 key={index.toString()}
-                item={item.name}
-                title={item.quantityReceived}
+                item={item.item_name}
+                title={item.quantity}
               />
             ))}
           </>
         )}
-
-        <Button
-          onPress={() => {
-            navigation.navigate('MainRoom', {
-              id: facility.roomId,
-              taskId,
-              roomName: facility.roomName,
-            });
-          }}
-          style={{ marginTop: 20 }}
-          label="Start Timer"
-        />
       </ScrollView>
     </View>
   );
@@ -137,13 +119,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: StatusBar.currentHeight,
-    padding: 20,
+    paddingHorizontal: 20,
   },
   haeding: {
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginLeft: 10,
+
+    textTransform: 'capitalize',
+    marginLeft: 20,
   },
   subHeader: {
     color: '#999999',
@@ -154,29 +138,14 @@ const styles = StyleSheet.create({
     height: 231,
     marginVertical: 70,
   },
-  topBar: {
-    flexDirection: 'row',
-    marginTop: 10,
-  },
-  locationDetails: {
-    height: 136,
+  cardsSlider: {
+    maxHeight: 170,
     width: '100%',
-    backgroundColor: '#FFF7F0',
-    borderRadius: 10,
-    marginTop: 40,
-    padding: 10,
-  },
-  location: {
-    height: 40,
-    width: 40,
-    backgroundColor: '#fff',
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  locationName: {
-    color: '#AF6D31',
-    marginTop: 20,
+    marginVertical: 20,
+    minHeight: 170,
+    paddingVertical: 10,
+    backgroundColor: '#f9f9f9',
+    paddingHorizontal: 10,
   },
   time: {
     flexDirection: 'row',

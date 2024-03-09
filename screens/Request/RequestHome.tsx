@@ -13,15 +13,15 @@ import { UserContext } from '../../context/UserContext';
 import AppText from '../../components/AppText';
 import colors from '../../util/colors';
 
-import { HamburgerMenu, LocationIcon } from '../../assets/svg/Index';
-
+import { HamburgerMenu } from '../../assets/svg/Index';
+import useGetRequestCleaningItems from './hooks/useGetRequestCleaningItems';
 import FacilityList from '../Home/components/FacilityList';
 import moment from 'moment';
-import useGetTaksHistory from '../Home/hooks/useGetTaskHistory';
 
-export default function Schedules({ navigation }) {
+export default function RequestHome({ navigation }) {
   const user = useContext(UserContext);
-  const { history, loadingHistory } = useGetTaksHistory();
+
+  const { useGetItems, items, loadingItems } = useGetRequestCleaningItems();
   return (
     <View style={styles.container}>
       <View
@@ -34,14 +34,14 @@ export default function Schedules({ navigation }) {
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <HamburgerMenu />
         </TouchableOpacity>
-        <AppText style={styles.haeding}>Schedules</AppText>
+        <AppText style={styles.haeding}>Requests</AppText>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
         }}>
-        {loadingHistory && (
+        {loadingItems && (
           <View
             style={{
               height: 200,
@@ -51,37 +51,22 @@ export default function Schedules({ navigation }) {
             <ActivityIndicator color={colors.blue} />
           </View>
         )}
-
-        {!loadingHistory && history.length == 0 && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-
-              height: 400,
-            }}>
-            <LocationIcon />
-            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-              No Task Allocatd To You!
-            </Text>
-          </View>
-        )}
-
-        {!loadingHistory && history.length > 0 && (
+        {!loadingItems && items.length > 0 && (
           <>
-            {history.map((location, index) => (
-              <FacilityList
-                onPress={() => {
-                  navigation.navigate('ScheduleDetail', {
-                    id: location._id,
-                  });
-                }}
-                title={'Task Stage'}
-                detail={location.task_stage}
-                key={index.toString()}
-              />
-            ))}
+            {items
+              .filter((item) => item !== 'No request')
+              .map((data, index) => (
+                <FacilityList
+                  key={index.toString()}
+                  detail={moment(data.task.date_added).format('DD-MM-YYYY')}
+                  title={data.task.assigned_room.roomName}
+                  onPress={() => {
+                    navigation.navigate('RequestDetail', {
+                      id: data.task._id,
+                    });
+                  }}
+                />
+              ))}
           </>
         )}
       </ScrollView>

@@ -35,7 +35,7 @@ export default function Home({ navigation }) {
   const [timers, setTimers] = useState([]);
   const [doneTask, setDoneTask] = useState([]);
   const [id, setId] = useState('');
-  const [activeData, setActiveData] = useState(null);
+  // const [activeData, setActiveData] = useState(null);
   const { locations, loadingLocation } = useGetLocation();
   const { activeTask, loadingActiveTask } = useGetActiveTask();
   const { getAllFacilities, loadingFacilities, facilities } =
@@ -43,14 +43,15 @@ export default function Home({ navigation }) {
   const fetchData = async () => {
     try {
       const keys = await AsyncStorage.getAllKeys();
-
+      let activeData = null;
       for (const key of keys) {
         const data = await AsyncStorage.getItem(key);
         const parsedData = JSON.parse(data);
         parsedData.currentTime = Date.now() - parsedData.startTime;
         if (key.startsWith('timerStartTime_')) {
           if (parsedData.userId == user.id) {
-            setActiveData(parsedData);
+            activeData = parsedData;
+
             setTimers((prev) => [...prev, parsedData]);
           }
         }
@@ -71,13 +72,12 @@ export default function Home({ navigation }) {
             interverlId = setInterval(() => {
               setTimers((prev) => {
                 const updated = prev.map((item) => {
-                  item.currentTime = Date.now() - item.startTime;
                   return {
                     ...item,
                     currentTime: Date.now() - item.startTime,
                   };
                 });
-                console.log(updated);
+                console.log(updated, 'updated');
 
                 return updated;
                 // return updated;
@@ -182,16 +182,16 @@ export default function Home({ navigation }) {
             loading={loadingFacilities}
             color="193, 163, 55"
             Icon={() => <FacilitiesIcon />}
-            label="TOTAL FACILITIES ASSIGNED"
+            label="TOTAL TASK DONE"
             value={facilities}
           />
-          <HomeCard
+          {/* <HomeCard
             loading={loadingFacilities || loadingActiveTask}
             color="255, 64, 55"
             Icon={() => <PerformanceIcon />}
             label="TOTAL DONE TASK"
             value={facilities - activeTask}
-          />
+          /> */}
         </ScrollView>
 
         <View
@@ -288,3 +288,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
+
+// Cleaner task summary: cleaner-dashboard/task-summary
