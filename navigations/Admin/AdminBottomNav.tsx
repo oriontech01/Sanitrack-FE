@@ -1,23 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet} from 'react-native'
+import AdminStack from './AdminStack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useContext, useEffect } from 'react';
-import HomeStack from './HomeStack';
+import React, { useContext } from 'react';
 import {
   ClockIcon,
   ClockIcon2,
   HomeIcon2,
   NotificationIcon,
   ProfileIcon,
-} from '../assets/svg/Index';
-import colors from '../util/colors';
-import TimerHome from '../screens/Timer/TimerHome';
-import NotificationHome from '../screens/Notifications/NotificationsHome';
-import ProfileHome from '../screens/Profile/ProfileHome';
-import { UserContext } from '../context/UserContext';
-
+} from '../../assets/svg/Index';
+import colors from '../../util/colors';
+import ProfileHome from '../../screens/Profile/ProfileHome';
+import Location from '../../screens/Admin/Location';
+import Users from '../../screens/Admin/Users';
+import WorkOrders from '../../screens/Admin/WorkOrders';
 
 const Tab = createBottomTabNavigator();
-const BottomTabNavigation = () => {
+const AdminBottomNav = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,32 +29,42 @@ const BottomTabNavigation = () => {
         tabBarInactiveTintColor: '#999999',
         tabBarActiveTintColor: colors.blue,
       }}
-      initialRouteName="CleanerHome">
+      initialRouteName="AdminHome">
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <HomeIcon2 {...props} />,
           tabBarLabel: 'Home',
         }}
-        name="CleanerHome"
-        component={HomeStack}
+        name="Home"
+        component={AdminStack}
       />
 
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <ClockIcon {...props} />,
-          tabBarLabel: 'Timer',
+          tabBarLabel: 'Users',
         }}
-        name="CleanerTimer"
-        component={TimerHome}
+        name="Users"
+        component={Users}
       />
 
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <NotificationIcon {...props} />,
-          tabBarLabel: 'Notification',
+          tabBarLabel: 'Locations',
         }}
-        name="CleanerNotifications"
-        component={NotificationHome}
+        name="Locations"
+        component={Location}
+      />
+
+      <Tab.Screen
+        options={{
+          tabBarIcon: (props) => <NotificationIcon {...props} />,
+          tabBarLabel: 'Work Orders',
+        }}
+        name="Work Orders"
+        component={WorkOrders
+        }
       />
 
       <Tab.Screen
@@ -70,6 +79,6 @@ const BottomTabNavigation = () => {
   );
 };
 
-export default BottomTabNavigation;
+export default AdminBottomNav;
 
 const styles = StyleSheet.create({});

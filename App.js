@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
-import NavigationStack from './util/NavigationStack';
 import TopLevelContext from './context/index';
 import * as Notifications from 'expo-notifications';
 import { NotificationContext } from './context/NotificationContext';
+import { UserContext } from './context/UserContext';
+import RootNavigator from './util/RootNavigator';
 
 export default function App() {
   const { notifications, setNotifications } = useContext(NotificationContext);
+  const user = useContext(UserContext)
 
   useEffect(() => {
     // Set the notification handler
@@ -41,7 +43,7 @@ export default function App() {
 
   return (
     <TopLevelContext>
-      <NavigationStack />
+        <RootNavigator/>
     </TopLevelContext>
   );
 }

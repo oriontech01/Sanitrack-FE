@@ -70,7 +70,7 @@ export default function Login({ navigation }) {
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
         registerForPushNotificationsAsync(res.data.data.token)
-        navigation.navigate('Home');
+        console.log("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
         // if (res.data.data.username === 'manager')
         //   navigation.navigate('AccessDenied');
         // else if (res.data.data.requiredRoleSelection) {
@@ -127,7 +127,7 @@ export default function Login({ navigation }) {
         //  Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
-        navigation.navigate('Home');
+        res.data.data.role_name === 'Admin' ? navigation.navigate('AdminHome', {screen: 'Admin'}): navigation.navigate('User', {screen: 'User'})
       } else {
         Alert.alert('Error', res.data.message);
       }
