@@ -26,6 +26,7 @@ const WorkOrderDetails = () => {
     console.log('first', filtered);
   }, []);
   const filtered = allRooms.filter(room => room.location_id === LocationId);
+  const unFiltered = allRooms.filter(room => room.location_id !== LocationId);
   const LocationName = localStorage.getItem('locationName');
 
   return (
@@ -130,14 +131,14 @@ const WorkOrderDetails = () => {
       </>
 
       <>
-        {filtered.length > 0 && (
+        {unFiltered.length > 0 && (
           <div className="mt-10">
             <h1 className="text-xl font-bold text-[#3366FF]">Assigned Rooms</h1>
           </div>
         )}
         <main className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6 lg:mt-10 mt-5">
           {!isLoading &&
-            filtered.map(room => (
+            unFiltered.map(room => (
               <Link
                 onClick={() => {
                   localStorage.setItem('roomId', `${room?._id}`);

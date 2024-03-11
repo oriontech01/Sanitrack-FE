@@ -16,7 +16,7 @@ const useAuth = () => {
   // const { currentRole, setCurrentRole } = useCurrentRole();
   // No longer manage loginState here; it will be managed by AuthProvider via context
 
-  const login = async (username, password, setIsLoggedIn) => {
+  const login = async (email, password, setIsLoggedIn) => {
     console.log('first');
     // Add setIsLoggedIn as parameter
     setIsLoading(true);
@@ -24,7 +24,7 @@ const useAuth = () => {
       const response = await axios.post(
         `${BASE_URL}login`,
         {
-          username,
+          email,
           password
         },
         {

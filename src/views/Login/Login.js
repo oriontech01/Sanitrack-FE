@@ -45,17 +45,17 @@ const Login = () => {
      <ToastContainer/>
     <Formik
       initialValues={{
-        username: '',
+        email: '',
         password: '',
         submit: null
       }}
       validationSchema={Yup.object().shape({
-        username: Yup.string().max(255).required('Username is required'),
+        email: Yup.string().max(255).required('Email is required'),
         password: Yup.string().max(255).required('Password is required')
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         try {
-          const res = await login(values.username, values.password, setIsLoggedIn); // Pass setIsLoggedIn to login
+          const res = await login(values.email, values.password, setIsLoggedIn); // Pass setIsLoggedIn to login
           if (res) {
             setStatus({ success: true });
             setSubmitting(false);
@@ -70,16 +70,16 @@ const Login = () => {
       {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
         <form noValidate onSubmit={handleSubmit}>
           <TextField
-            error={Boolean(touched.username && errors.username)}
+            error={Boolean(touched.email && errors.email)}
             fullWidth
-            helperText={touched.username && errors.username}
-            label="Username"
+            helperText={touched.email && errors.email}
+            label="Email"
             margin="normal"
-            name="username"
+            name="email"
             onBlur={handleBlur}
             onChange={handleChange}
-            type="text"
-            value={values.username}
+            type="email"
+            value={values.email}
             variant="outlined"
           />
 
