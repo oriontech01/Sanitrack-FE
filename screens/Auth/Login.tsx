@@ -34,6 +34,7 @@ export default function Login({ navigation }) {
 
   const handleLogin = async () => {
     setIsLoading(true);
+    console.log(Constants.expoConfig.extra.baseUrl)
 
     try {
       const res = await axios.post(
@@ -66,11 +67,11 @@ export default function Login({ navigation }) {
           role_id: res.data.data.role_id,
           token: res.data.data.token,
           email: '',
+          secret: res.data.data.username
         }); // Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
         registerForPushNotificationsAsync(res.data.data.token)
-        console.log("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
         // if (res.data.data.username === 'manager')
         //   navigation.navigate('AccessDenied');
         // else if (res.data.data.requiredRoleSelection) {

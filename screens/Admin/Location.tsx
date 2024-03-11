@@ -1,92 +1,65 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, useWindowDimensions } from "react-native";
+import useLocation from "../../Hooks/useLocation";
+import useLoading from "../general_hooks/useLoading";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import colors from "../../util/colors";
+import LocationListView from "../../components/Admin/Locations/LocationListView";
+import LocationMapView from "../../components/Admin/Locations/LocationMapView";
 
-const locations = [
-  { id: "1", name: "Discovery Mall" },
-  { id: "2", name: "Aso Villa" },
-  { id: "3", name: "First Bank, Wuse 2" },
-  { id: "4", name: "Aso Villa" },
-];
-
-const LocationItem = ({ name, onPress }) => {
-  return (
-    <TouchableOpacity style={styles.item} onPress={onPress}>
-      <Text style={styles.title}>{name}</Text>
-      <Ionicons name="chevron-forward-outline" size={24} color="gray" />
-    </TouchableOpacity>
-  );
-};
+const renderTabBar = (props) => (
+  <TabBar
+    {...props}
+    indicatorStyle={{ backgroundColor: "white" }}
+    style={{ backgroundColor: colors.blue }}
+    labelStyle={{ color: "white" }}
+  />
+);
 
 const Location = () => {
-  const renderItem = ({ item }) => (
-    <LocationItem
-      name={item.name}
-      onPress={() => console.log("Navigate to location details")}
-    />
-  );
+  const { allLocations, getLocation } = useLocation();
+  const { loading, startLoading, stopLoading } = useLoading();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "map", title: "Map View" },
+    { key: "list", title: "List View" },
+  ]);
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      <FlatList
-        data={locations}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={
-          <View style={styles.listHeader}>
-            <Text style={styles.header}>Locations</Text>
-            <Ionicons name="globe" size={20} />
-          </View>
-        }
+  useEffect(() => {
+    const fetchLocations = async () => {
+      startLoading();
+      await getLocation();
+      stopLoading();
+    };
+    fetchLocations();
+  }, []);
+  const RenderLocationMapView = () => {
+    return <LocationMapView locationData={allLocations}/>
+  }
+  const RenderLocationListView = () => {
+    return <LocationListView locationData={allLocations}/>
+  }
+
+  const renderScene = SceneMap({
+    map: RenderLocationMapView,
+    list: RenderLocationListView,
+  });
+
+  const layout = useWindowDimensions();
+
+  return loading ? (
+    <ActivityIndicator size={"large"} color={colors.blue} />
+  ) : (
+    <>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
       />
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    paddingTop: 50, // adjust the padding as needed
-  },
-  item: {
-    backgroundColor: colors.primary,
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 10, // adjust the border radius as needed
-  },
-  title: {
-    fontSize: 18,
-    color: colors.blue,
-  },
-  header: {
-    fontSize: 32,
-    fontWeight: "bold",
-    padding: 20,
-  },
-  listHeader: {
-    display: 'flex',
-    // borderWidth: 2,
-    flexDirection: 'row',
-    alignContent: 'center',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 2,
-    paddingRight: 20
-  }
-});
 
 export default Location;

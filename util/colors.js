@@ -12,4 +12,5 @@ export default colors = {
   darkblue: '#0d47a1',
   red: '#b80000',
   blue: '#3366FF',
+  lightblue: '#EBF0FF'
 };
