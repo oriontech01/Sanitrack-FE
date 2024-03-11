@@ -115,12 +115,14 @@ const useAuth = () => {
 
         // setCurrentRole(loggedInUserRole);
         console.log('rl', loggedInUserRole);
+        console.log("HEY HEY", response.data)
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
         localStorage.setItem('auth-token', response?.data?.data?.token);
         localStorage.setItem('name', response?.data?.data?.username);
         localStorage.setItem('id', response?.data?.data?.userId);
         localStorage.setItem('role', loggedInUserRole);
+        localStorage.setItem('secret', response?.data?.data?.chat_engine_payload.first_name);
         setIsLoggedIn(true); // Update global state via context
       } // I'll add a check here when a user has multiple roles
 
