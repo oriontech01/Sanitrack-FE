@@ -54,6 +54,7 @@ const AddTask = () => {
   const [items, setItems] = useState([]);
   const [modifiedItem, setModifiedItem] = useState([]);
   const [filteredItems, setFilteredItems] = useState({});
+  const [viewDate, setViewDate] = useState(new Date());
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -61,10 +62,12 @@ const AddTask = () => {
   const storedRoomId = localStorage.getItem('roomId');
 
   const handleDateChange = event => {
-    setSelectedDate(new Date(event.target.value));
+    console.log("first",event.target.value)
+    // setViewDate(event.target.value);
+    setSelectedDate(event.target.value)
   };
 
-  const formattedDate = selectedDate.toISOString().slice(0, 10);
+
 
   useEffect(() => {
     getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
@@ -194,7 +197,7 @@ const AddTask = () => {
       preop_minutes: preop_minutes,
       cleaningData: modifiedItem,
       itemsToClean: filteredItems,
-      scheduled_date: formattedDate
+      scheduled_date: selectedDate
     };
     addTask(data);
   };
@@ -326,7 +329,7 @@ const AddTask = () => {
             <input
               type="date"
               className="w-full px-3 py-2 rounded-lg h-12  bg-transparent shadow-sm border border-gray-400"
-              value={formattedDate}
+              value={selectedDate}
               onChange={handleDateChange}
               min={new Date().toISOString().slice(0, 10)} // Set minimum date to today
             />
