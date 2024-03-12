@@ -18,6 +18,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import registerForPushNotificationsAsync from '../../util/notifications';
 
 export default function Login({ navigation }) {
   const { username, password, setPassword, setUserName } =
@@ -39,7 +40,7 @@ export default function Login({ navigation }) {
       const res = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}login`,
         {
-          username,
+          email: username,
           password,
         }
       );
@@ -47,7 +48,7 @@ export default function Login({ navigation }) {
       if (res.status === 200) {
         // Check for status code 200
         Alert.alert('Auth', 'Login successful, redirecting...');
-
+        console.log(res.data.data);
         if (res.data.data.requiredRoleSelection) {
           const options = res.data.data.assignedRoles.map((role) => {
             return { label: role.role_name, value: role.role_id };
@@ -69,7 +70,8 @@ export default function Login({ navigation }) {
         }); // Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
-        navigation.navigate('Home');
+        registerForPushNotificationsAsync(res.data.data.token);
+        console.log('WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
         // if (res.data.data.username === 'manager')
         //   navigation.navigate('AccessDenied');
         // else if (res.data.data.requiredRoleSelection) {
@@ -126,7 +128,9 @@ export default function Login({ navigation }) {
         //  Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field
-        navigation.navigate('Home');
+        res.data.data.role_name === 'Admin'
+          ? navigation.navigate('AdminHome', { screen: 'Admin' })
+          : navigation.navigate('User', { screen: 'User' });
       } else {
         Alert.alert('Error', res.data.message);
       }

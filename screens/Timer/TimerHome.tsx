@@ -121,6 +121,14 @@ export default function TimerHome() {
         </>
       )}
 
+      <Text style={styles.header}>Timer</Text>
+      {/* <TimerList />
+      <TimerList />
+      <TimerList /> */}
+      <View style={styles.label}>
+        <Text style={{ color: '#809997' }}>Yesterday</Text>
+      </View>
+
       {/* <TimerList />
       <TimerList /> */}
     </View>

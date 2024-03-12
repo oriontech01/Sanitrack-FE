@@ -113,6 +113,7 @@ export default function Home({ navigation }) {
   // }, []);
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <View
         style={{
           flexDirection: 'row',
@@ -259,7 +260,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: StatusBar.currentHeight,
   },
   haeding: {
     color: colors.blue,

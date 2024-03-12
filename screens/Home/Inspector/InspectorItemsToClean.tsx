@@ -122,7 +122,7 @@ export default function InspectorItemsToClean({ navigation, route }) {
                 fontWeight: 'bold',
                 marginTop: 20,
               }}>
-              Time Taken
+              Planned Time
             </Text>
             <Text style={{ color: colors.blue }}>
               {/* {secondsToHoursMinutes(
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: StatusBar.currentHeight,
     padding: 20,
   },
   haeding: {

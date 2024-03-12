@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import Login from "../screens/Login";
-
 import Home from '../screens/Home/Home';
 import Facilities from '../screens/Home/Facilities';
 import Rooms from '../screens/Home/Rooms';

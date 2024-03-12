@@ -33,7 +33,7 @@ export default function ProfileHome({ navigation }) {
             token: '',
             email: '',
           });
-          navigation.navigate('Login');
+          // navigation.navigate('Login', {screen: 'Auth'});
         }}
         fontStyle={{ color: '#6D0808' }}
         style={{
