@@ -24,9 +24,7 @@ const InspectorRequests = () => {
             (requestedItems.length > 0 ? (
               requestedItems.map((location, index) => {
                 return typeof(location) === "string" ? (
-                  <span key={location} className="flex flex-col gap-y-3 gap-x-4 bg-blue-50 w-full p-2 ">
-                    <p className="text-red-400 font-bold px-2">No Requests Available</p>
-                  </span>
+                 null
                 ) : (
                   <Grid item xs={12} sm={6} key={location?.task?._id}>
                     <Link

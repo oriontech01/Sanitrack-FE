@@ -80,7 +80,7 @@ const CleanerDashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item lg={4} sm={6} xs={12}>
+        {/* <Grid item lg={4} sm={6} xs={12}>
           <Card style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
             <CardContent
               style={{ display: 'flex', alignContent: 'center', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
@@ -94,7 +94,7 @@ const CleanerDashboard = () => {
               <p className="text-2xl text-red-500 font-bold">5</p>
             </CardContent>
           </Card>
-        </Grid>
+        </Grid> */}
         {/* Repeat for other summary cards */}
       </Grid>
       {/* Locations List */}

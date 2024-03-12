@@ -153,13 +153,13 @@ const cleanerSideNavItems = [
         icon: PunchClockRounded, // Changed Icon
         url: '/dashboard/timer'
       },
-      {
-        id: 'notifications',
-        title: 'Notifications',
-        type: 'item',
-        icon: NotificationAdd, // Changed Icon
-        url: '/dashboard/notifications'
-      },
+      // {
+      //   id: 'notifications',
+      //   title: 'Notifications',
+      //   type: 'item',
+      //   icon: NotificationAdd, // Changed Icon
+      //   url: '/dashboard/notifications'
+      // },
       {
         id: 'learning',
         title: 'Learning',
@@ -193,13 +193,13 @@ const inspectorSideNavItems = [
         icon: icons['HomeOutlinedIcon'], // Specific Icon
         url: '/dashboard'
       },
-      {
-        id: 'notifications',
-        title: 'Notifications',
-        type: 'item',
-        icon: NotificationAdd, // Changed Icon
-        url: '/dashboard/notifications'
-      },
+      // {
+      //   id: 'notifications',
+      //   title: 'Notifications',
+      //   type: 'item',
+      //   icon: NotificationAdd, // Changed Icon
+      //   url: '/dashboard/notifications'
+      // },
       {
         id: 'learning',
         title: 'Learning',

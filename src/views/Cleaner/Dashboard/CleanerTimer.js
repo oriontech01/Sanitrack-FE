@@ -174,7 +174,7 @@ const CleanerTimer = () => {
           </button> */}
         </div>
       </div>
-      <CleanerItemsUpload />
+   {isRunning &&   <CleanerItemsUpload />}
 
       <button
         onClick={handleSubmit}

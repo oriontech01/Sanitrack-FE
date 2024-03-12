@@ -141,12 +141,12 @@ const CleanerTimer = () => {
             theme: 'colored',
             transition: Flip
           });
-       
+       localStorage.removeItem("stopwatchStartTime")
           setTimeout(() => {
             if (selectedTasks.length === rooms.length) {
               navigate(`/dashboard/inspector/close-work-order`);
             } else navigate(`/dashboard`);
-          }, 1500);
+          }, 2000);
         }
 
         // console.log(response.json())

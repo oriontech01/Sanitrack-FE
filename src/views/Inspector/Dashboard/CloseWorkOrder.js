@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const CloseWorkOrder = () => {
   const navigate = useNavigate();
   const { getInventory, inventoryLoading, allInventory } = useItems();
-  const { getCleaningItemsForInspector, loading, cleaningItems,closeTask ,itemsLoading} = useInspectorHook();
+  const { getCleaningItemsForInspector, loading, cleaningItems, closeTask, itemsLoading } = useInspectorHook();
   const [submittingInventory, setSubmittingInventory] = useState([]);
   useEffect(() => {
     getCleaningItemsForInspector();
@@ -22,13 +22,15 @@ const CloseWorkOrder = () => {
       cleaning_id: item?.cleaning_id,
       quantity: item?.quantity,
       damaged: false,
-    
+
       damaged_quantity: 0
     }));
 
     console.log('data', newItem);
     setSubmittingInventory(() => newItem);
   }, [cleaningItems]);
+
+  console.log('thirf', submittingInventory);
 
   //   console.log('first', newItem);
   const handleChange = (event, index) => {
@@ -39,6 +41,7 @@ const CloseWorkOrder = () => {
     }
     if (event.target.name === `damaged-${index}`) {
       submittingInventory[index].damaged = event.target.checked;
+
       setSubmittingInventory(submittingInventory);
     }
   };
@@ -48,7 +51,7 @@ const CloseWorkOrder = () => {
     // Implement your logic to handle submission, e.g., send data to server
     const data = { cleaningItemsData: submittingInventory };
     console.log('Quantities:', submittingInventory);
-    closeTask(data)
+    closeTask(data);
     // requestCleaningItems(data);
   };
   return (
@@ -78,37 +81,41 @@ const CloseWorkOrder = () => {
                 className="flex justify-between items-center  cursor-pointer select-none w-full outline-none text-lg font-medium
             "
               >
-                <span className='flex items-center gap-x-2'><p> {item?.item_name}</p><p> {`${item?.quantity} ${item?.unit}`}</p></span>
-                <span  className="flex items-center justify-end gap-x-2 ">
+                <span className="flex items-center gap-x-2">
+                  <p> {item?.item_name}</p>
+                  <p> {`${item?.quantity} ${item?.unit}`}</p>
+                </span>
+                <span className="flex items-center justify-end gap-x-2 ">
                   {' '}
                   <input
-                   type="checkbox"
+                    type="checkbox"
                     id={`damaged-${index}`}
                     defaultValue={submittingInventory[index]?.damaged}
                     onChange={event => handleChange(event, index)}
                     name={`damaged-${index}`}
-                   
                     className="border-2 p-2 outline-none border-none text-[#999999] bg-gray-300 rounded-md w-full"
                   />
-                    <label className="flex items-center h-10  rounded cursor-pointer group" htmlFor={`imageUpload_${index}`}>
-                        {/* <span className="checkbox-inner flex items-center justify-center w-5 h-5 text-transparent border-2 border-gray-300 rounded-full peer-[.is-checked]:peer-checked:bg-blue-500"></span> */}
-                        <span className=" text-sm font-bold text-blue-500">Damaged</span>
-                      </label>
+                  <label className="flex items-center h-10  rounded cursor-pointer group" htmlFor={`imageUpload_${index}`}>
+                    {/* <span className="checkbox-inner flex items-center justify-center w-5 h-5 text-transparent border-2 border-gray-300 rounded-full peer-[.is-checked]:peer-checked:bg-blue-500"></span> */}
+                    <span className=" text-sm font-bold text-blue-500">Damaged</span>
+                  </label>
                 </span>
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 mt-5">
-                <div className="pb-2 flex flex-col gap-y-4 w-full" key={item?._id}>
-                  <input
-                    type="number"
-                    id={`quantity-${index}`}
-                    disabled={submittingInventory[index]?.damaged === true}
-                    defaultValue={submittingInventory[index]?.damaged_quantity}
-                    onChange={event => handleChange(event, index)}
-                    name={`quantity-${index}`}
-                    placeholder="Enter Damaged Qunatity"
-                    className="border-2 p-2 outline-none border-none text-[#999999] bg-gray-300 rounded-md w-full"
-                  />
-                </div>
+                
+                  <div className="pb-2 flex flex-col gap-y-4 w-full" key={item?._id}>
+                    <input
+                      type="number"
+                      id={`quantity-${index}`}
+                      disabled={submittingInventory[index]?.damaged_quantity === true}
+                      defaultValue={submittingInventory[index]?.damaged_quantity}
+                      onChange={event => handleChange(event, index)}
+                      name={`quantity-${index}`}
+                      placeholder="Enter Damaged Qunatity"
+                      className="border-2 p-2 outline-none border-none text-[#999999] bg-gray-300 rounded-md w-full"
+                    />
+                  </div>
+            
               </div>
             </div>
           ))}
