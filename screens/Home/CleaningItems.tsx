@@ -85,74 +85,136 @@ export default function CleaningItems({ navigation, route }) {
             </View>
           </>
         )}
-      </ScrollView>
-      {cleaningItems.length > 0 ? (
-        <Button
-          isLoading={confirming}
-          onPress={async () => {
-            if (!selected) {
-              return;
-            }
-            if (
-              cleaningItems.filter((item) => item.value == undefined).length > 0
-            ) {
-              alert('Pleaase input values');
-              return;
-            } else {
-              const bodyData = {
-                roomId: facility.roomId,
-                cleanerItems: cleaningItems.map((cleaningItem) => {
-                  return {
-                    cleaning_id: cleaningItem.cleaning_id,
-                    quantityReceived: cleaningItem.value,
-                  };
-                }),
-              };
-              const confirmed = await confirmCleaningItems(bodyData, taskId);
 
-              if (confirmed) {
-                navigation.navigate('Summary', {
-                  facility,
-                  location,
+        {!loadingItems && cleaningItems.length == 0 && (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              style={{
+                width: '100%',
+                height: 200,
+              }}
+              source={require('../../assets/images/bro.png')}
+            />
+            <Text>OOPS! No cleaning items</Text>
+          </View>
+        )}
+      </ScrollView>
+      {!loadingItems && cleaningItems.length > 0 ? (
+        <View style={{ gap: 10 }}>
+          <Button
+            isLoading={confirming}
+            onPress={async () => {
+              if (!selected) {
+                return;
+              }
+              if (
+                cleaningItems.filter((item) => item.value == undefined).length >
+                0
+              ) {
+                alert('Pleaase input values');
+                return;
+              } else {
+                const bodyData = {
+                  roomId: facility.roomId,
                   cleanerItems: cleaningItems.map((cleaningItem) => {
                     return {
+                      cleaning_id: cleaningItem.cleaning_id,
                       quantityReceived: cleaningItem.value,
-                      name: cleaningItem.item_name,
                     };
                   }),
-                  taskId,
-                });
-              } else {
-                console.log('lll');
-              }
-            }
-
-            // confirmCleaningItems(bodyData, task.id);
-          }}
-          style={{
-            marginTop: 'auto',
-            marginBottom: 30,
-            opacity: selected ? 1 : 0.4,
-          }}
-          label="Next"
-        />
-      ) : (
-        <Button
-          onPress={() => {
-            navigation.navigate('Summary', {
-              facility,
-              location,
-              cleanerItems: cleaningItems.map((cleaningItem) => {
-                return {
-                  quantityReceived: cleaningItem.value,
-                  name: cleaningItem.item_name,
                 };
-              }),
-              taskId,
-            });
-          }}
-          label="Next"
-        />
+                const confirmed = await confirmCleaningItems(bodyData, taskId);
+
+                if (confirmed) {
+                  navigation.navigate('Summary', {
+                    facility,
+                    location,
+                    cleanerItems: cleaningItems.map((cleaningItem) => {
+                      return {
+                        quantityReceived: cleaningItem.value,
+                        name: cleaningItem.item_name,
+                      };
+                    }),
+                    taskId,
+                  });
+                } else {
+                  console.log('lll');
+                }
+              }
+
+              // confirmCleaningItems(bodyData, task.id);
+            }}
+            style={{
+              marginTop: 'auto',
+              marginBottom: 30,
+              opacity: selected ? 1 : 0.4,
+            }}
+            label="Next"
+          />
+          <Button
+            fontStyle={{
+              color: colors.blue,
+            }}
+            style={{
+              backgroundColor: '#fff',
+              borderWidth: 1,
+              borderColor: colors.blue,
+            }}
+            onPress={() => {
+              navigation.navigate('RequestItems', {
+                taskId,
+                facility,
+                location,
+              });
+            }}
+            label="Request Cleaning Items"
+          />
+        </View>
+      ) : (
+        <View
+          style={{
+            gap: 10,
+          }}>
+          <Button
+            fontStyle={{
+              color: colors.blue,
+            }}
+            style={{
+              backgroundColor: '#fff',
+              borderWidth: 1,
+              borderColor: colors.blue,
+            }}
+            onPress={() => {
+              navigation.navigate('RequestItems', {
+                taskId,
+                facility,
+                location,
+              });
+            }}
+            label="Request Cleaning Items"
+          />
+
+          <Button
+            onPress={() => {
+              navigation.navigate('Summary', {
+                facility,
+                location,
+                cleanerItems: cleaningItems.map((cleaningItem) => {
+                  return {
+                    quantityReceived: cleaningItem.value,
+                    name: cleaningItem.item_name,
+                  };
+                }),
+                taskId,
+              });
+            }}
+            label="Next"
+          />
+        </View>
       )}
     </View>
   );

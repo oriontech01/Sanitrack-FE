@@ -68,6 +68,9 @@ export default function Facilities({ navigation, route }) {
                   location,
                   facility,
                   taskId: facility.taskId,
+                  cleaner_time: facility.cleaner_time
+                    ? facility.cleaner_time[0]
+                    : null,
                 });
               }}
             />
@@ -82,7 +85,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: StatusBar.currentHeight,
     padding: 20,
   },
   haeding: {

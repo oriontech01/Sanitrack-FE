@@ -7,7 +7,7 @@ import RootNavigator from './util/RootNavigator';
 
 export default function App() {
   const { notifications, setNotifications } = useContext(NotificationContext);
-  const user = useContext(UserContext)
+  const user = useContext(UserContext);
 
   useEffect(() => {
     // Set the notification handler
@@ -20,14 +20,20 @@ export default function App() {
     });
 
     // Subscribe to notification received events
-    const subscription = Notifications.addNotificationReceivedListener((notification) => {
-      setNotifications((prevNotifications) => [...prevNotifications, notification]);
-    });
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          notification,
+        ]);
+      }
+    );
 
     // Subscribe to notification response events (user interaction)
-    const responseSubscription = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log(response);
-    });
+    const responseSubscription =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
 
     // Cleanup subscriptions on component unmount
     return () => {
@@ -43,7 +49,7 @@ export default function App() {
 
   return (
     <TopLevelContext>
-        <RootNavigator/>
+      <RootNavigator />
     </TopLevelContext>
   );
 }

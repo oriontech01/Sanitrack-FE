@@ -17,7 +17,7 @@ import {
 import { Camera, CameraType } from 'expo-camera';
 import Button from '../../../../components/general/Button';
 
-export default function InspectorRoomItems({ item }) {
+export default function InspectorRoomItems({ item, startTime, done }) {
   const [type, setType] = useState(CameraType.back);
   const [capture, setCapture] = useState(false);
   const [camera, setCamera] = useState(false);
@@ -59,6 +59,10 @@ export default function InspectorRoomItems({ item }) {
           {satisfied ? (
             <TouchableOpacity
               onPress={() => {
+                if (startTime == 0 && !done) {
+                  alert('Please Start Your Timer');
+                  return;
+                }
                 setSatisfied(false);
                 item.satisfied = false;
               }}>
@@ -67,6 +71,10 @@ export default function InspectorRoomItems({ item }) {
           ) : (
             <TouchableOpacity
               onPress={() => {
+                if (startTime == 0 && !done) {
+                  alert('Please Start Your Timer');
+                  return;
+                }
                 setSatisfied(true);
                 item.satisfied = true;
               }}
@@ -86,6 +94,10 @@ export default function InspectorRoomItems({ item }) {
       <View style={styles.imageDetail}>
         <TouchableOpacity
           onPress={() => {
+            if (startTime == 0 && !done) {
+              alert('Please Start Your Timer');
+              return;
+            }
             if (item.image_url !== 'empty') {
               setModalVisible(true);
             } else {
@@ -94,26 +106,15 @@ export default function InspectorRoomItems({ item }) {
           }}
           activeOpacity={0.7}
           style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View
+          <Image
             style={{
-              height: 43,
-              width: 84,
-              backgroundColor: '#EBF0FF',
-              borderWidth: 0.5,
-              borderColor: colors.blue,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text
-              style={{
-                color: colors.blue,
-                fontSize: 14,
-              }}>
-              View
-            </Text>
-          </View>
-          <Text style={[styles.font]}>{item.name}.jpg</Text>
+              height: 30,
+              width: 30,
+              borderRadius: 4,
+            }}
+            source={{ uri: item.image_url }}
+          />
+          <Text style={[styles.font, { color: colors.blue }]}>View Image</Text>
         </TouchableOpacity>
       </View>
 
@@ -135,7 +136,7 @@ export default function InspectorRoomItems({ item }) {
                   <Button
                     onPress={() => setModalVisible(false)}
                     style={styles.button}
-                    label="Proceed"
+                    label="Close"
                   />
                 </View>
               </>

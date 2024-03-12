@@ -22,7 +22,9 @@ import {
 import FacilityList from './components/FacilityList';
 
 export default function Rooms({ navigation, route }) {
-  const { location, facility, taskId } = route.params;
+  const { location, facility, taskId, cleaner_time } = route.params;
+  const { role } = useContext(UserContext);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.topBar}>
@@ -50,6 +52,7 @@ export default function Rooms({ navigation, route }) {
               facility,
               taskId,
               id: taskId,
+              cleaner_time,
             }),
           });
         }}
@@ -70,7 +73,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: StatusBar.currentHeight,
     padding: 20,
   },
   haeding: {

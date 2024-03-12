@@ -8,16 +8,22 @@ import {
   HomeIcon2,
   NotificationIcon,
   ProfileIcon,
+  RequestIcon,
 } from '../assets/svg/Index';
 import colors from '../util/colors';
 import TimerHome from '../screens/Timer/TimerHome';
 import NotificationHome from '../screens/Notifications/NotificationsHome';
 import ProfileHome from '../screens/Profile/ProfileHome';
 import { UserContext } from '../context/UserContext';
+import DrawerNav from './DrawerNav';
+import RequestStack from './RequestStack';
+import useGetRequestCleaningItems from '../screens/Request/hooks/useGetRequestCleaningItems';
 
 
 const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
+  const { role } = useContext(UserContext);
+  const { useGetItems, items, loadingItems } = useGetRequestCleaningItems();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,7 +54,17 @@ const BottomTabNavigation = () => {
         name="CleanerTimer"
         component={TimerHome}
       />
-
+      {role == 'Inspector' && (
+        <Tab.Screen
+          options={{
+            tabBarIcon: (props) => <RequestIcon {...props} />,
+            tabBarLabel: 'Request',
+            tabBarBadge: items.filter((item) => item !== 'No request').length,
+          }}
+          name="Request"
+          component={RequestStack}
+        />
+      )}
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <NotificationIcon {...props} />,

@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useLoading from '../../general_hooks/useLoading';
 import { UserContext } from '../../../context/UserContext';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { useFocusEffect } from '@react-navigation/native';
 const useGetLocation = () => {
   const { loading, startLoading, stopLoading } = useLoading();
   const [locations, setLocations] = useState([]);
@@ -31,10 +32,12 @@ const useGetLocation = () => {
       stopLoading();
     }
   };
+  useFocusEffect(
+    React.useCallback(() => {
+      getLocations();
+    }, [refresh])
+  );
 
-  useEffect(() => {
-    getLocations();
-  }, []);
   return {
     loadingLocation: loading,
     getLocations,
