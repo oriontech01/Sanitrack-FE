@@ -55,6 +55,8 @@ const InspectorLocationDetails = Loadable(lazy(() => import('../views/Inspector/
 const InspectorFacilityCleaningItems = Loadable(lazy(() => import('../views/Inspector/Dashboard/InspectorFacilityCleaningItems')));
 const InspectorTimer = Loadable(lazy(() => import('../views/Inspector/Dashboard/InspectorTimer')));
 const CloseWorkOrder = Loadable(lazy(() => import('../views/Inspector/Dashboard/CloseWorkOrder')));
+const InspectorRequests = Loadable(lazy(() => import('../views/Inspector/Requests/InspectorRequests')));
+const InspectorRequestsDetails = Loadable(lazy(() => import('../views/Inspector/Requests/RequestDetails')));
 // ==============================|| MAIN ROUTES ||============================== //
 const MainRoutes = {
   path: '/',
@@ -124,6 +126,8 @@ const MainRoutes = {
     { path: '/dashboard/inspector/inspector-facility-items-details/:id', element: <InspectorFacilityCleaningItems /> },
     { path: '/dashboard/inspector/inspector-timer', element: <InspectorTimer /> },
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
+    { path: '/dashboard/requests', element: <InspectorRequests /> },
+    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
   ]
 };
 

@@ -12,7 +12,7 @@ import { LibraryAddOutlined, LocationCity, NotificationAdd, TaskSharp } from '@m
 import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
 import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
-import { FaBuilding } from 'react-icons/fa6';
+import { FaBagShopping, FaBuilding } from 'react-icons/fa6';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -213,6 +213,13 @@ const inspectorSideNavItems = [
         type: 'item',
         icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' // Assuming URL should be unique and relevant
+      },
+      {
+        id: 'requests',
+        title: 'Requests',
+        type: 'item',
+        icon: FaBagShopping, // Changed Icon
+        url: '/dashboard/requests' // Assuming URL should be unique and relevant
       }
     ]
   }

@@ -20,6 +20,8 @@ const useInspectorHook = () => {
   const [activeLoading, setActiveLoading] = useState(false);
   const [facility, setFacilties] = useState('');
   const [faciltiyLoading, setFaciityLoading] = useState(false);
+  const [requestedItems, setRequestedItems] = useState([]);
+  const [requestedSingleItems, setRequestedSingleItems] = useState([]);
   const navigate = useNavigate();
 
   const getFacilitiesForInspector = async () => {
@@ -207,6 +209,41 @@ const useInspectorHook = () => {
       console.log(error);
     }
   };
+  const getRequestedCleaningItems = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${BASE_URL}inspector/requested-cleaning-items`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      if (res.data) {
+        setLoading(false);
+        setRequestedItems(res.data.data);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  const getSingleRequestedCleaningItems = async (id) => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${BASE_URL}inspector/cleaning-items?taskId=${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      if (res.data) {
+        setLoading(false);
+        setRequestedSingleItems(res.data.data);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+ 
   //   const getWorkOrderLocationsForCleaner = async () => {
   //     setLoading(true);
   //     try {
@@ -447,7 +484,13 @@ const useInspectorHook = () => {
     activeTask,
     getActiveTask,
     facility,
-    faciltiyLoading,getFacilities
+    faciltiyLoading,
+    getFacilities,
+    requestedItems,
+    getRequestedCleaningItems,
+    getSingleRequestedCleaningItems,
+    requestedSingleItems,
+    
   };
 };
 

@@ -335,7 +335,7 @@ const useCleanerHook = () => {
         console.log(response);
         // send user back to the task home page
         if (response.data) {
-          toast.success('Task Uploaded Successfully', {
+          toast.success('Items Requested Successfully', {
             position: 'top-center',
             autoClose: 5000,
             hideProgressBar: true,
