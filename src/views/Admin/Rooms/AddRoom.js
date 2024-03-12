@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import useLocation from 'Hooks/useLocation';
 import { Box, Button, Container, TextField, Typography, Select, FormControl, InputLabel, MenuItem, Paper, Divider } from '@mui/material';
 import useRoom from 'Hooks/useRoom';
+import NetworkDetector from 'utils/networkDetector';
 
-const AddRoom = () => {
+const AddRoom = (props) => {
   const { addRoom, responseMessage, isLoading } = useRoom();
   const { allLocations, getLocation } = useLocation();
+  const {isDisconnected} = props
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -45,9 +47,23 @@ const AddRoom = () => {
       details: newDetails
     });
   };
+  const saveDataOffline = (data) => {
+    localStorage.setItem('offlineRoomData', JSON.stringify(data));
+  };
+  
+  const loadDataOffline = () => {
+    return JSON.parse(localStorage.getItem('offlineRoomData'));
+  };
+  let savedData 
 
   const handleSubmit = async event => {
     event.preventDefault();
+    if(isDisconnected){
+        saveDataOffline(formData)
+    }else {
+        savedData = loadDataOffline()
+        await addRoom(savedData)
+    }
     await addRoom(formData);
     console.log(formData);
   };
@@ -149,4 +165,4 @@ const AddRoom = () => {
   );
 };
 
-export default AddRoom;
+export default NetworkDetector(AddRoom);

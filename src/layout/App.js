@@ -23,7 +23,7 @@ const App = () => {
   
 
   return (
-    <>
+    <> 
       {
         <NavigationScroll>
           <StyledEngineProvider injectFirst>
