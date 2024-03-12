@@ -6,17 +6,21 @@ import {
   ClockIcon,
   ClockIcon2,
   HomeIcon2,
+  LocationsIcon,
   NotificationIcon,
   ProfileIcon,
+  UsersIcon,
+  WorkOrderIcon,
 } from "../../assets/svg/Index";
 import colors from "../../util/colors";
 import ProfileHome from "../../screens/Profile/ProfileHome";
 import Location from "../../screens/Admin/Location";
 import Users from "../../screens/Admin/Users";
-import WorkOrders from "../../screens/Admin/WorkOrders";
+import WorkOrders from "../../screens/Admin/WorkOrder/WorkOrders";
 import Chat from "../../screens/Chat";
 import { MessageIcon } from "../../assets/svg/Index";
 import { GoogleMapIcon } from "../../assets/svg/Index";
+import WorkOrderStack from './Stack Navigators/WorkOrderStack';
 
 const Tab = createBottomTabNavigator();
 const AdminBottomNav = () => {
@@ -45,8 +49,8 @@ const AdminBottomNav = () => {
 
       <Tab.Screen
         options={{
-          tabBarIcon: (props) => <ClockIcon {...props} />,
-          tabBarLabel: "Users",
+          tabBarIcon: (props) => <UsersIcon {...props} />,
+          tabBarLabel: 'Users',
         }}
         name="Users"
         component={Users}
@@ -63,11 +67,11 @@ const AdminBottomNav = () => {
 
       <Tab.Screen
         options={{
-          tabBarIcon: (props) => <NotificationIcon {...props} />,
-          tabBarLabel: "Work Orders",
+          tabBarIcon: (props) => <WorkOrderIcon {...props} />,
+          tabBarLabel: 'Work Orders',
         }}
-        name="Work Orders"
-        component={WorkOrders}
+        name="WorkOrders"
+        component={WorkOrderStack}
       />
 
       <Tab.Screen

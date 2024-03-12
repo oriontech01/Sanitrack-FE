@@ -22,15 +22,25 @@ import RoomItems from './components/RoomItems';
 import TaskDetails from './components/TaskDetails';
 import useGetCleaningItems from './hooks/useGetCleaningItems';
 import useGetFacilityDetails from './hooks/useGetFacilityDetail';
+import useGetTaskSummary from './hooks/useGetTaskSummary';
 
 export default function Summary({ navigation, route }) {
   const { location, facility, cleanerItems, taskId } = route.params;
-  const { loadingItems, cleaningItems, task, planned_time } =
-    useGetCleaningItems(facility.roomId);
-  const { detailList, loadingDetails } = useGetFacilityDetails(taskId);
+
+  const { summary, loadingSummary } = useGetTaskSummary(taskId);
+  function secondsToHoursMinutes(seconds) {
+    var hours = Math.floor(seconds / 3600);
+    var remainingSeconds = seconds % 3600;
+    var minutes = Math.floor(remainingSeconds / 60);
+    return `${hours}hours: ${minutes} minutes`;
+  }
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.topBar}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.goBack();
+        }}
+        style={styles.topBar}>
         <ArrowLeftIcon />
         <Text style={styles.haeding}>Summary</Text>
       </TouchableOpacity>
@@ -46,7 +56,7 @@ export default function Summary({ navigation, route }) {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        {loadingDetails && (
+        {loadingSummary && (
           <View
             style={{
               height: 300,
@@ -56,7 +66,7 @@ export default function Summary({ navigation, route }) {
             <ActivityIndicator color={colors.blue} />
           </View>
         )}
-        {!loadingDetails && (
+        {!loadingSummary && summary && (
           <>
             <Text
               style={[
@@ -68,7 +78,11 @@ export default function Summary({ navigation, route }) {
 
             <View style={styles.time}>
               <Text style={{ color: colors.blue }}>Clean</Text>
-              <Text style={{ color: colors.blue }}>{planned_time}</Text>
+              <Text style={{ color: colors.blue }}>
+                {secondsToHoursMinutes(
+                  Number(summary.taskDetails.planned_time.clean_time)
+                )}
+              </Text>
             </View>
 
             <Text
@@ -78,9 +92,9 @@ export default function Summary({ navigation, route }) {
               ]}>
               Items To Clean
             </Text>
-            {detailList.length > 0 && (
+            {summary?.taskDetails?.tasks.length > 0 && (
               <>
-                {detailList.map((task, index) => (
+                {summary.taskDetails.tasks.map((task, index) => (
                   <ItemList key={index.toString()} item={task.name} />
                 ))}
               </>
@@ -111,7 +125,7 @@ export default function Summary({ navigation, route }) {
             });
           }}
           style={{ marginTop: 20 }}
-          label="Sart Timer"
+          label="Start Timer"
         />
       </ScrollView>
     </View>
@@ -122,7 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: StatusBar.currentHeight,
+
     padding: 20,
   },
   haeding: {

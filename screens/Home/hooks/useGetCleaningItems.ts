@@ -18,6 +18,7 @@ const useGetCleaningItems = (id) => {
     startLoading();
 
     try {
+      console.log(id);
       const response = await axios.get(
         `${Constants.expoConfig.extra.baseUrl}${api}/cleaning-items?taskId=${id}`,
         {
@@ -28,8 +29,8 @@ const useGetCleaningItems = (id) => {
       );
 
       stopLoading();
-      console.log(response.data);
-      setPlanned_time('50');
+      console.log(response.data.data, 'ooooo');
+      setPlanned_time(response.data.data.planned_time);
       setCleaningItems(response.data.data);
       setTask([]);
     } catch (error) {

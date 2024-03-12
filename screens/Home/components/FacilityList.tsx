@@ -13,7 +13,7 @@ export default function FacilityList({ title = '', detail = '', onPress }) {
       style={styles.container}>
       <View style={{ width: '80%' }}>
         <Text style={{ color: colors.blue, marginBottom: 5 }}>{title}</Text>
-        <Text>{detail}</Text>
+        {detail && <Text>{detail}</Text>}
       </View>
 
       <View style={{ transform: [{ rotate: '180deg' }] }}>
