@@ -60,7 +60,7 @@ const InspectorFacilityCleaningItems = () => {
 
       {rooms?.length > 0 && (
         <Link
-          to={`/dashboard/cleaner/save-cleaning-items/${params.id}`}
+          to={`/dashboard/inspector/inspector-timer`}
           className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:w-1/2 lg:h-[40px] text-base border-t-2 mt-10 "
           // disabled={id && inspector && clean_hours}
         >
