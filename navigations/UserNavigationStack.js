@@ -13,10 +13,10 @@ import CleanerRoom from '../components/cleaner/CleanerRoom';
 import InspectorDashBoard from '../components/inspector/InspectorDashBoard';
 import InspectorTasks from '../components/inspector/InspectorTasks';
 import InspectorRooms from '../components/inspector/InspectorRoom';
-import BottomTabNavigation from '../navigations/BottomTabNavigation';
+import BottomTabNavigation from './BottomTabNavigation';
 import Home from '../screens/Home/Home';
 import { UserContext } from '../context/UserContext';
-import DrawerNav from '../navigations/DrawerNav';
+import DrawerNav from './DrawerNav';
 
 const UserNavigationStack = () => {
   const user = useContext(UserContext);

@@ -8,7 +8,6 @@ import { Alert } from "react-native";
 const useLocation = () => {
   const BASE_URL = Constants.expoConfig.extra.baseUrl;
   const user = useContext(UserContext);
-  // const BASE_URL = Constants.expoConfig.extra.baseUrl;
   const access_token = user.token;
   const [loading, setLoading] = useState(false);
   const [allLocations, setLocation] = useState([]);
@@ -59,6 +58,7 @@ const useLocation = () => {
           Alert.alert('Error adding location');
         }
   };
+
 
   return {
     addLocation,

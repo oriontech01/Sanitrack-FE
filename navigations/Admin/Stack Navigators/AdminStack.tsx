@@ -1,8 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../../screens/Admin/Home';
-import Dashboard from '../../screens/Admin/Dashboard/Dashboard';
-import FacilityOverview from '../../components/Admin/Locations/FacilityOverview';
+import Dashboard from '../../../screens/Admin/Dashboard/Dashboard';
+
 
 const AdminStack = () => {
   const Stack = createNativeStackNavigator();

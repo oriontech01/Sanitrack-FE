@@ -10,13 +10,13 @@ import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../../../util/colors";
 import AddLocation from "./AddLocation";
+import { useNavigation } from "@react-navigation/native";
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 50, // adjust the padding as needed
   },
   item: {
     backgroundColor: colors.lightblue,
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   },
   listHeader: {
     display: "flex",
-    // borderWidth: 2,
     flexDirection: "row",
     alignContent: "center",
     alignItems: "center",
@@ -50,13 +49,13 @@ const styles = StyleSheet.create({
 });
 export default function LocationListView({ locationData }) {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const navigation = useNavigation()
   const renderItem = ({ item }) => {
     return (
       <LocationItem
         state={item.state}
         city={item.city}
-        onPress={() => console.log("Navigate to location details")}
+        onPress={() =>  navigation.navigate("LocationDetails", {locationId: item._id, locationName: `${item.state} - ${item.city} `})}
       />
     );
   };
@@ -64,7 +63,7 @@ export default function LocationListView({ locationData }) {
     return (
       <TouchableOpacity style={styles.item} onPress={onPress}>
         <Text style={styles.title}>{`${state} - ${city}`}</Text>
-        <Ionicons name="chevron-forward-outline" size={24} color="gray" />
+        <Ionicons name="chevron-forward-outline" size={24} color={colors.lightgray} />
       </TouchableOpacity>
     );
   };
