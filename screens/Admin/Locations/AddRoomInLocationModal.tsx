@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from "react";
 import {
-  Modal,
   View,
   Text,
   TextInput,
+  Modal,
   TouchableOpacity,
-  StyleSheet,
+  ScrollView,
+  Alert,
 } from "react-native";
-import { CloseIcon } from "../../../assets/svg/Index";
+import Button from "../../../components/general/Button";
 import colors from "../../../util/colors";
 import Select from "../../../components/general/Select";
 import useLocation from "../../../Hooks/useLocation";
 import useRoom from "../../../Hooks/useRoom";
-
 const AddRoomInLocationModal = ({ visible, onClose }) => {
-  const [itemName, setItemName] = useState("");
-  const [selectedLocationId, setSelectedLocationId] = useState("");
+  const [formData, setFormData] = useState({
+    roomName: "",
+    location_id: "",
+    details: [{ name: "" }],
+  });
   const { getLocation, allLocations } = useLocation();
-  const [details, setDetails] = useState([]);
-
-  useEffect(() => {
-    const fetchLocation = async () => {
-      await getLocation();
-    };
-    fetchLocation();
-  }, []);
-
-  const saveRoom = () => {
-    setItemName(""); // Clear the input field
-    onClose(); // Close modal after saving
-  };
+  const { addRoom } = useRoom();
 
   const options = allLocations.map((location) => {
     return {
@@ -38,144 +29,141 @@ const AddRoomInLocationModal = ({ visible, onClose }) => {
     };
   });
 
+  useEffect(() => {
+    const fetchLocation = async () => {
+      await getLocation();
+    };
+    fetchLocation();
+  }, []);
+
+  const handleInputChange = (index, value) => {
+    const newDetails = [...formData.details];
+    newDetails[index] = { ...newDetails[index], name: value }; // Create a new copy of the object
+    setFormData({
+      ...formData,
+      details: newDetails,
+    });
+  };
+  
+
+  const handleAddDetail = () => {
+    setFormData({
+      ...formData,
+      details: [...formData.details, { name: "" }],
+    });
+  };
+
+  const handleRemoveDetail = (index) => {
+    const newDetails = [...formData.details];
+    newDetails.splice(index, 1);
+    setFormData({
+      ...formData,
+      details: newDetails,
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log(formData);
+    addRoom(formData)
+    Alert.alert("Success", "You have successfully added a room")
+    onClose()
+    // Handle submission
+    //  Example: onClose();
+  };
+
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onClose}
-    >
-      <TouchableOpacity
-        activeOpacity={1}
-        style={styles.centeredView}
-        onPress={() => onClose()}
-      >
-        <TouchableOpacity activeOpacity={1} style={styles.modalView}>
-          <Text style={styles.modalTitle}>Add New Item</Text>
-          <View style={styles.inputContainer}>
-            <Text>Enter Room Name</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={setItemName}
-              value={itemName}
-              placeholder="Enter a room here"
-              autoFocus
-            />
-            <Select
-              options={options}
-              label="Select a location"
-              onSelect={(val) => {
-                console.log(val);
-                setSelectedLocationId(val.value);
+    <Modal visible={visible} animationType="slide">
+      <TouchableOpacity activeOpacity={1} onPress={() => onClose()}>
+        <TouchableOpacity activeOpacity={1}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 20,
               }}
-            />
-          </View>
-          {details.map((detail, index) => (
-            <View key={index} style={styles.detailInputContainer}>
+            >
+              <Text
+                style={{ fontSize: 24, fontWeight: "bold", marginBottom: 10, color: colors.blue }}
+              >
+                Add Room
+              </Text>
               <TextInput
-                style={styles.detailInput}
-                onChangeText={(text) => handleDetailChange(text, index)}
-                value={detail.value}
-                placeholder="Enter detail"
+                placeholder="Room Name"
+                value={formData.roomName}
+                onChangeText={(text) =>
+                  setFormData({ ...formData, roomName: text })
+                }
+                style={{
+                  borderWidth: 1,
+                  borderColor: "gray",
+                  borderRadius: 5,
+                  padding: 10,
+                  marginBottom: 10,
+                  width: "100%",
+                }}
               />
-              {details.length - 1 === index && (
-                <TouchableOpacity
-                  onPress={handleAddDetail}
-                  style={styles.addButton}
+              {/* Location selection */}
+              <Select
+                options={options}
+                label="Select a location"
+                onSelect={(val) => {
+                  console.log(val);
+                  setFormData({
+                    ...formData,
+                    location_id: val.value,
+                  });
+                }}
+              />
+              {/* Details input */}
+              {formData.details.map((detail, index) => (
+                <View
+                  key={index}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
                 >
-                  <Text style={styles.addButtonText}>Add</Text>
-                </TouchableOpacity>
-              )}
-              {details.length !== 1 && (
-                <TouchableOpacity
-                  onPress={() => handleRemoveDetail(index)}
-                  style={styles.removeButton}
-                >
-                  <Text style={styles.removeButtonText}>Remove</Text>
-                </TouchableOpacity>
-              )}
+                  <TextInput
+                    placeholder="Item Name"
+                    value={detail.name}
+                    onChangeText={(text) => handleInputChange(index, text)}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: "gray",
+                      borderRadius: 5,
+                      padding: 10,
+                      flex: 1,
+                      marginRight: 10,
+                      marginTop: 10
+                    }}
+                  />
+                  {index > 0 && (
+                    <TouchableOpacity onPress={() => handleRemoveDetail(index)}>
+                      <Text style={{ color: "red" }}>Remove</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              ))}
+              <Button
+                label="Add Another Item +"
+                onPress={handleAddDetail}
+                style={{ marginBottom: 10 }}
+              />
+              <Button label="Submit" disabled={formData.details.length === 0 || formData.location_id  === '' || formData.roomName === ''} onPress={handleSubmit} />
+              <Button
+                label="Close"
+                style={{ backgroundColor: colors.red, marginTop: 10 }}
+                onPress={onClose}
+              />
             </View>
-          ))}
-          <TouchableOpacity style={styles.saveButton} onPress={saveRoom}>
-            <Text style={styles.saveButtonText}>Save Room</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>
-              <CloseIcon />
-            </Text>
-          </TouchableOpacity>
+          </ScrollView>
         </TouchableOpacity>
       </TouchableOpacity>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Dimmed background
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    width: "80%", // Set modal width
-  },
-  modalTitle: {
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    position: "absolute",
-    top: 5,
-    color: colors.blue,
-  },
-  input: {
-    height: 40,
-    marginVertical: 10,
-    borderWidth: 1,
-    borderColor: colors.black,
-    borderRadius: 10,
-    padding: 10,
-    width: "100%", // Full width of modal
-  },
-  saveButton: {
-    backgroundColor: colors.blue,
-    marginTop: 10,
-    borderRadius: 10,
-    padding: 20,
-    elevation: 2,
-    width: "100%", // Full width of modal
-  },
-  saveButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  closeButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-  },
-  closeButtonText: {
-    color: colors.lightgray,
-    fontSize: 24,
-  },
-  inputContainer: {
-    width: "100%",
-    marginTop: 20,
-  },
-});
 
 export default AddRoomInLocationModal;

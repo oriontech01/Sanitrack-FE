@@ -41,7 +41,7 @@ export default function Login({ navigation }) {
       const res = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}login`,
         {
-          username, // Change from email to username for testing purposes
+          email: username, // Change from email to username for testing purposes
           password,
         }
       );
