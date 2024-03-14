@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 // project import
+
 import Loadable from 'component/Loadable';
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const CreatePermissions = Loadable(lazy(() => import('views/Admin/Permissions/CreatePermissions')));
@@ -38,8 +39,22 @@ const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permi
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
+// Cleaner
+const CleanerLocationDetails = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerLocationDetails')));
+const CleanerFacilityCleaningItems = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerFacilityCleaningItems')));
+const SaveCleaningItems = Loadable(lazy(() => import('../views/Cleaner/Dashboard/SaveCleaningItems')));
+const CleanerSummary = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerSummary')));
+const CleanerTimer = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerTimer')));
+const RequestCleaningItems = Loadable(lazy(() => import('../views/Cleaner/Dashboard/RequestCleaningItems')));
+const Timer = Loadable(lazy(() => import('../views/Cleaner/Timer/CleanerTimer')));
 
-
+// Inspector
+const InspectorLocationDetails = Loadable(lazy(() => import('../views/Inspector/Dashboard/InspectorLocationDetails')));
+const InspectorFacilityCleaningItems = Loadable(lazy(() => import('../views/Inspector/Dashboard/InspectorFacilityCleaningItems')));
+const InspectorTimer = Loadable(lazy(() => import('../views/Inspector/Dashboard/InspectorTimer')));
+const CloseWorkOrder = Loadable(lazy(() => import('../views/Inspector/Dashboard/CloseWorkOrder')));
+const InspectorRequests = Loadable(lazy(() => import('../views/Inspector/Requests/InspectorRequests')));
+const InspectorRequestsDetails = Loadable(lazy(() => import('../views/Inspector/Requests/RequestDetails')));
 // ==============================|| MAIN ROUTES ||============================== //
 const MainRoutes = {
   path: '/',
@@ -93,7 +108,24 @@ const MainRoutes = {
     { path: '/dashboard/roles/assign', element: <AssignRole /> },
     { path: '/dashboard/roles/permissions/:id', element: <ViewRolePermissions /> },
     { path: '/dashboard/roles/staff', element: <StaffRoles /> },
-    { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> }
+    { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> },
+
+    // cleaner
+    { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },
+    { path: '/dashboard/cleaner/cleaner-facility-items-details/:id', element: <CleanerFacilityCleaningItems /> },
+    { path: '/dashboard/cleaner/save-cleaning-items/:id', element: <SaveCleaningItems /> },
+    { path: '/dashboard/cleaner/cleaner-summary', element: <CleanerSummary /> },
+    { path: '/dashboard/cleaner/cleaner-timer/:id', element: <CleanerTimer /> },
+    { path: '/dashboard/cleaner/request-cleaning-items', element: <RequestCleaningItems /> },
+    { path: '/dashboard/timer', element: <Timer /> },
+
+    // inspector
+    { path: '/dashboard/inspector/inspector-location-details/:id', element: <InspectorLocationDetails /> },
+    { path: '/dashboard/inspector/inspector-facility-items-details/:id', element: <InspectorFacilityCleaningItems /> },
+    { path: '/dashboard/inspector/inspector-timer', element: <InspectorTimer /> },
+    { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
+    { path: '/dashboard/requests', element: <InspectorRequests /> },
+    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
   ]
 };
 

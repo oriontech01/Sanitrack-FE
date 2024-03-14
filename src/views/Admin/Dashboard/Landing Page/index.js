@@ -1,7 +1,6 @@
-import CleanerDashboard from './CleanerDashboard';
+import CleanerDashboard from 'views/Cleaner/Dashboard/CleanerDashboard';
 import AdminDashboard from './AdminDashboard';
-import InspectorDashboard from './InspectorDashboard';
-
+import InspectorDashboard from 'views/Inspector/Dashboard/InspectorDashboard';
 
 const SanitrackLandingPage = () => {
   const currentRole = localStorage.getItem('role');

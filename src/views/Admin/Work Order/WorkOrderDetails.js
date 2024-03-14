@@ -26,6 +26,7 @@ const WorkOrderDetails = () => {
     console.log('first', filtered);
   }, []);
   const filtered = allRooms.filter(room => room.location_id === LocationId);
+  const unFiltered = allRooms.filter(room => room.location_id !== LocationId);
   const LocationName = localStorage.getItem('locationName');
 
   return (
