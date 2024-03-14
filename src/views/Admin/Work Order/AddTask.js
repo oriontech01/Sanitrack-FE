@@ -2,15 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import useTask from '../../../Hooks/useTask';
 import { Grid, FormControl, Box, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
-import { log } from 'util';
 import useRoom from 'Hooks/useRoom';
 import useLocation from '../../../Hooks/useLocation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const allLocations = [
-  { _id: 1, name: 'Abuja' },
-  { _id: 2, name: 'Aba' }
-];
+import NetworkDetector from 'utils/networkDetector';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,7 +19,9 @@ const MenuProps = {
   }
 };
 
-const AddTask = () => {
+const AddTask = (props) => {
+  console.log("Dev Team",props)
+  const {isDisconnected} = props
   const {
     getUnAssignedRooms,
     getAllCleaners,
@@ -75,11 +74,6 @@ const AddTask = () => {
   useEffect(() => {
     setItems(filteredCleaning);
   }, [filteredCleaning]);
-  // useEffect(() => {
-  //   getUnAssignedRooms();
-  //   getAllCleaners();
-  //   getAllInspectors();
-  // }, []);
 
   // Custom style for scrollable RadioGroup with enhanced visibility
   const scrollableGroupStyle = {
@@ -100,19 +94,14 @@ const AddTask = () => {
   const handleChange = event => {
     setSelectedItems(event.target.value || []);
   };
-  const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder'
-  ];
-
+  const saveDataOffline = (data) => {
+    localStorage.setItem('offlineWorkOrderData', JSON.stringify(data));
+  };
+  
+  const loadDataOffline = () => {
+    return JSON.parse(localStorage.getItem('offlineWorkOrderData'));
+  };
+  
   const handleSelectCleaners = event => {
     const {
       target: { value }
@@ -199,9 +188,17 @@ const AddTask = () => {
       itemsToClean: filteredItems,
       scheduled_date: selectedDate
     };
+    let savedData
+    if(isDisconnected){
+      saveDataOffline(data)
+    }
+    else{
+      savedData = loadDataOffline()
+      console.log("jhdvbjdb", savedData)
+      addTask(savedData)
+    }
     addTask(data);
   };
-
   useEffect(() => {
     getUnassignedRoomById(storedLocationId);
     getAllInspectors();
@@ -211,7 +208,7 @@ const AddTask = () => {
   }, []);
   console.log('first hjhjh', allRoomsById);
   return (
-    <Grid spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <Grid container spacing={2} sx={{ padding: 2, justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <ToastContainer />
       <Grid item xs={12} md={10} lg={8}>
         <div>
@@ -533,4 +530,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default NetworkDetector(AddTask);
