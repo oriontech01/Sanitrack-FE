@@ -3,7 +3,7 @@ import axios from 'axios';
 import JWT from 'jsonwebtoken';
 import { useAuthRolesState } from 'context/AuthRolesContext';
 import { toast, Flip } from 'react-toastify';
-import { subscribeUser } from 'utils/subscription';
+// import { subscribeUser } from 'utils/subscription';
 
 const useAuth = () => {
   const { setModal, setToken, setId, setRoles } = useAuthRolesState();
@@ -33,7 +33,7 @@ const useAuth = () => {
         }
       );
 
-      subscribeUser(response.data.data.token);
+      // subscribeUser(response.data.data.token);
 
       if (response?.data?.data?.requiredRoleSelection === true) {
         console.log('first one');
@@ -55,18 +55,7 @@ const useAuth = () => {
         setModal(true);
         setToken(response?.data?.data?.token);
         setId(response?.data?.data?.userId);
-      }
-      // console.log('Resty', response?.data);
-      // if (response?.data?.data?.requiredRoleSelection === false) {
-      //   console.log('first hiiii');
-      //   console.log('hety', response?.data?.data?.requiredRoleSelection);
-      // }
-
-      // console.log('Decoded----', decodedResponse);
-      // console.log('User Role', loggedInUserRole);
-      // console.log('Response data', response.data);
-      // console.log('My role buddy', currentRole);
-      else if (response?.data?.data?.requiredRoleSelection === false) {
+      } else if (response?.data?.data?.requiredRoleSelection === false) {
         toast.success('Login Successful !!!', {
           position: 'top-center',
           autoClose: 5000,
@@ -85,7 +74,7 @@ const useAuth = () => {
 
         // setCurrentRole(loggedInUserRole);
         console.log('rl', loggedInUserRole);
-        console.log("HEY HEY", response.data)
+        console.log('HEY HEY', response.data);
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
         localStorage.setItem('auth-token', response?.data?.data?.token);
@@ -95,12 +84,6 @@ const useAuth = () => {
         localStorage.setItem('secret', response?.data?.data?.chat_engine_payload.first_name);
         setIsLoggedIn(true); // Update global state via context
       } // I'll add a check here when a user has multiple roles
-
-      // else {
-      //   console.log('User not logged in');
-      //   navigate('/unauthorized');
-      //   return false;
-      // }
     } catch (error) {
       // alert(error.message);
       toast.error(error?.response?.data?.message, {

@@ -116,7 +116,7 @@ const Login = () => {
           )}
 
           <Box mt={2}>
-            <button className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite" disabled={isSubmitting}   type="submit" >
+            <button className="text-white flex justify-center  gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:h-[40px] text-base border-t-2 border-empWhite" disabled={isSubmitting}   type="submit" title='This button logs a user into Sanitrack Web' >
               Log In
             </button>
           </Box>
