@@ -13,7 +13,7 @@ const TaskDetails = () => {
     getAllCleaners();
     getAllInspectors();
     getTaskById(taskId);
-  }, [getAllCleaners, getAllInspectors, getTaskById, taskId]);
+  }, []);
 
   const handleUpdate = async () => {
     try {

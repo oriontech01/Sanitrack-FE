@@ -81,21 +81,28 @@ const adminSideNavItems = [
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' // Assuming URL should be unique and relevant
+        url: '/dashboard/messages' 
+      },
+      {
+        id: 'learning',
+        title: 'Learning',
+        type: 'item',
+        icon: LibraryAddOutlined, // Changed Icon
+        url: '/dashboard/learning' 
       },
       {
         id: 'evidence',
         title: 'Evidence',
         type: 'item',
         icon: BrowseGallery, // Changed Icon
-        url: '/dashboard/evidence' // Assuming URL should be unique and relevant
+        url: '/dashboard/evidence' 
       },
       {
         id: 'inventory',
         title: 'Inventory',
         type: 'item',
         icon: InventoryRounded, // Changed Icon
-        url: '/dashboard/inventory' // Assuming URL should be unique and relevant
+        url: '/dashboard/inventory' 
       }
     ]
   },
@@ -165,14 +172,14 @@ const cleanerSideNavItems = [
         title: 'Learning',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' // Assuming URL should be unique and relevant
+        url: '/dashboard/learning' 
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' // Assuming URL should be unique and relevant
+        url: '/dashboard/messages' 
       }
     ]
   }
@@ -193,33 +200,26 @@ const inspectorSideNavItems = [
         icon: icons['HomeOutlinedIcon'], // Specific Icon
         url: '/dashboard'
       },
-      // {
-      //   id: 'notifications',
-      //   title: 'Notifications',
-      //   type: 'item',
-      //   icon: NotificationAdd, // Changed Icon
-      //   url: '/dashboard/notifications'
-      // },
       {
         id: 'learning',
         title: 'Learning',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' // Assuming URL should be unique and relevant
+        url: '/dashboard/learning' 
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' // Assuming URL should be unique and relevant
+        url: '/dashboard/messages' 
       },
       {
         id: 'requests',
         title: 'Requests',
         type: 'item',
         icon: FaBagShopping, // Changed Icon
-        url: '/dashboard/requests' // Assuming URL should be unique and relevant
+        url: '/dashboard/requests' 
       }
     ]
   }

@@ -57,10 +57,10 @@ const Login = () => {
                   <Grid container justifyContent="space-between">
                     <Grid item>
                       <Typography color="textPrimary" gutterBottom variant="h2">
-                        Sign ins
+                        Sign in
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        To Sanitrack
+                        To Sanitrack Web
                       </Typography>
                     </Grid>
                     <Grid item>
