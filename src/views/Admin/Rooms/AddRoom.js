@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import useLocation from 'Hooks/useLocation';
 import { Box, Button, Container, TextField, Typography, Select, FormControl, InputLabel, MenuItem, Paper, Divider } from '@mui/material';
 import useRoom from 'Hooks/useRoom';
-import NetworkDetector from 'utils/networkDetector';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const AddRoom = (props) => {
   const { addRoom, responseMessage, isLoading } = useRoom();
@@ -69,6 +72,8 @@ const AddRoom = (props) => {
   };
 
   return (
+    <>
+      <ToastContainer />
     <Box height="100vh" display="flex" flexDirection="column">
       <Container maxWidth="md" component={Paper} elevation={3} sx={{ padding: 4, borderRadius: 4 }}>
         <form onSubmit={handleSubmit} className="add-room-form">
@@ -162,6 +167,7 @@ const AddRoom = (props) => {
         </form>
       </Container>
     </Box>
+    </>
   );
 };
 
