@@ -81,7 +81,7 @@ const useAuth = () => {
         localStorage.setItem('name', response?.data?.data?.username);
         localStorage.setItem('id', response?.data?.data?.userId);
         localStorage.setItem('role', loggedInUserRole);
-        localStorage.setItem('secret', response?.data?.data?.chat_engine_payload.first_name);
+        // localStorage.setItem('secret', response?.data?.data?.chat_engine_payload.first_name); // First name and secret were the same for testing purposes (Chat engine)
         setIsLoggedIn(true); // Update global state via context
       } // I'll add a check here when a user has multiple roles
     } catch (error) {

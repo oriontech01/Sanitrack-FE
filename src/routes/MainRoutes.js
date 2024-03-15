@@ -39,6 +39,8 @@ const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permi
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
+const Learning = Loadable(lazy(() => import('../views/Learning/index')));
+
 // Cleaner
 const CleanerLocationDetails = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerLocationDetails')));
 const CleanerFacilityCleaningItems = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerFacilityCleaningItems')));
@@ -109,6 +111,7 @@ const MainRoutes = {
     { path: '/dashboard/roles/permissions/:id', element: <ViewRolePermissions /> },
     { path: '/dashboard/roles/staff', element: <StaffRoles /> },
     { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> },
+    { path: '/dashboard/learning', element: <Learning /> },
 
     // cleaner
     { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },
@@ -125,7 +128,7 @@ const MainRoutes = {
     { path: '/dashboard/inspector/inspector-timer', element: <InspectorTimer /> },
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
     { path: '/dashboard/requests', element: <InspectorRequests /> },
-    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
+    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> }
   ]
 };
 
