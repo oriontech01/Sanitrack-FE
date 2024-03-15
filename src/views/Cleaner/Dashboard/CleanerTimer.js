@@ -11,10 +11,12 @@ const CleanerTimer = () => {
   const { submitTask, itemsLoading } = useCleanerHook();
   const locationDeets = localStorage.getItem('locationDeets');
   const start = localStorage.getItem('stopwatchStartTime');
+  const elapsed = localStorage.getItem('elapsedTime');
+  const run = localStorage.getItem('running');
   const roomId = localStorage.getItem('roomId');
   const actualTime = localStorage.getItem('actualTimer');
-  const [isRunning, setIsRunning] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0); // Total elapsed time in seconds
+  const [isRunning, setIsRunning] = useState(run ? run : false);
+  const [elapsedTime, setElapsedTime] = useState(elapsed? elapsed :0); // Total elapsed time in seconds
   const [startTime, setStartTime] = useState(start ? start : 0); // Start time in milliseconds
 
   useEffect(() => {
@@ -31,11 +33,14 @@ const CleanerTimer = () => {
     setIsRunning(true);
     // Set start time or adjust for paused time
     setStartTime(startTime === 0 ? Date.now() : Date.now() - elapsedTime * 1000);
+    localStorage.setItem('stopwatchStartTime', Date.now());
   };
 
   const handleStop = () => {
     setIsRunning(false);
     localStorage.removeItem('stopwatchStartTime');
+    localStorage.removeItem('running');
+    localStorage.setItem('elaspedTime', elapsedTime);
   };
 
   const handleReset = () => {
@@ -54,58 +59,30 @@ const CleanerTimer = () => {
 
   // Persist start time in localStorage
   useEffect(() => {
-    const storedStartTime = localStorage.getItem('stopwatchStartTime');
-    if (storedStartTime) {
-      setStartTime(parseInt(storedStartTime, 10));
+    // const storedStartTime = localStorage.getItem('stopwatchStartTime');
+    if (start) {
+      setStartTime(parseInt(start, 10));
       // Calculate elapsed time based on stored start time
       setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
     }
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('stopwatchStartTime', startTime);
-    });
-    window.addEventListener('load', () => {
-      setIsRunning(true);
-      alert('LOADED');
-    });
-  }, [startTime]);
-
-  useEffect(() => {
-    const storedStartTime = localStorage.getItem('stopwatchStartTime');
-    if (storedStartTime) {
-      setStartTime(parseInt(storedStartTime, 10));
-      // Calculate elapsed time based on stored start time
-      setElapsedTime(0);
-    }
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem('stopwatchStartTime', startTime);
-    });
-    // window.addEventListener('load', () => {
+    localStorage.setItem('running', true);
+    // window.addEventListener('beforeunload', () => {
+    //   localStorage.setItem('stopwatchStartTime', startTime);
     //   setIsRunning(true);
-    //   alert('LOADED');
     // });
-  }, []);
-  useEffect(() => {
-    const handleBeforeUnload = event => {
-      event.preventDefault();
-      // Custom logic to handle the refresh
-      // Display a confirmation message or perform necessary actions
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  }, [start]);
+
   console.log('first', elapsedTime);
   const percentage = Math.floor((elapsedTime / actualTime) * 100);
 
   const handleSubmit = () => {
-    const data = { cleanTime: elapsedTime, roomId: roomId};
+    const data = { cleanTime: elapsedTime, roomId: roomId };
     console.log(data);
-    submitTask(data)
+    submitTask(data);
   };
   return (
     <>
-    {/* <ToastContainer/> */}
+      {/* <ToastContainer/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
           <CircularProgressbar
@@ -128,7 +105,7 @@ const CleanerTimer = () => {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `#3366FF`,
+              pathColor: elapsedTime > actualTime ? 'red' : `#3366FF`,
               textColor: 'black',
               trailColor: '#E0E8FF',
               backgroundColor: '#3e98c7'
@@ -174,7 +151,7 @@ const CleanerTimer = () => {
           </button> */}
         </div>
       </div>
-   {isRunning &&   <CleanerItemsUpload />}
+      {isRunning && <CleanerItemsUpload />}
 
       <button
         onClick={handleSubmit}
