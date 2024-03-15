@@ -3,7 +3,7 @@ import TopLevelContext from './context/index';
 import * as Notifications from 'expo-notifications';
 import { NotificationContext } from './context/NotificationContext';
 import { UserContext } from './context/UserContext';
-import RootNavigator from './util/RootNavigator';
+import RootNavigator from './navigations/RootNavigator';
 
 export default function App() {
   const { notifications, setNotifications } = useContext(NotificationContext);

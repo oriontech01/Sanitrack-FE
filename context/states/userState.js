@@ -11,6 +11,7 @@ export default function UserState(props) {
     role_id: '',
     token: '',
     email: '',
+    secret: '',
   };
   const [state, dispatch] = useReducer(UserReducer, initState);
   const setUser = (user) => dispatch({ type: SET_USER, payload: user });
@@ -23,6 +24,7 @@ export default function UserState(props) {
         id: state.id,
         token: state.token,
         email: state.email,
+        secret: state.secret,
         setUser,
       }}>
       {props.children}

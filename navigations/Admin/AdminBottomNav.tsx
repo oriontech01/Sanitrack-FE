@@ -1,23 +1,21 @@
-import { StyleSheet } from 'react-native';
-import AdminStack from './AdminStack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useContext } from 'react';
+import { StyleSheet } from "react-native";
+import AdminStack from "./Stack Navigators/AdminStack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
 import {
-  ClockIcon,
-  ClockIcon2,
   HomeIcon2,
-  LocationsIcon,
-  NotificationIcon,
   ProfileIcon,
   UsersIcon,
   WorkOrderIcon,
-} from '../../assets/svg/Index';
-import colors from '../../util/colors';
-import ProfileHome from '../../screens/Profile/ProfileHome';
-import Location from '../../screens/Admin/Location';
-import Users from '../../screens/Admin/Users';
-import WorkOrders from '../../screens/Admin/WorkOrder/WorkOrders';
-import WorkOrderStack from './Stack Navigators/WorkOrderStack';
+} from "../../assets/svg/Index";
+import colors from "../../util/colors";
+import ProfileHome from "../../screens/Profile/ProfileHome";
+import Users from "../../screens/Admin/Users/Users";
+import Chat from "../../screens/Chat";
+import { MessageIcon } from "../../assets/svg/Index";
+import { GoogleMapIcon } from "../../assets/svg/Index";
+import WorkOrderStack from "./Stack Navigators/WorkOrderStack";
+import LocationStack from "./Stack Navigators/LocationStack";
 
 const Tab = createBottomTabNavigator();
 const AdminBottomNav = () => {
@@ -27,17 +25,18 @@ const AdminBottomNav = () => {
         headerShown: false,
         // @ts-ignore
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         },
 
-        tabBarInactiveTintColor: '#999999',
+        tabBarInactiveTintColor: "#999999",
         tabBarActiveTintColor: colors.blue,
       }}
-      initialRouteName="AdminHome">
+      initialRouteName="AdminHome"
+    >
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <HomeIcon2 {...props} />,
-          tabBarLabel: 'Home',
+          tabBarLabel: "Home",
         }}
         name="Home"
         component={AdminStack}
@@ -46,7 +45,7 @@ const AdminBottomNav = () => {
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <UsersIcon {...props} />,
-          tabBarLabel: 'Users',
+          tabBarLabel: "Users",
         }}
         name="Users"
         component={Users}
@@ -54,26 +53,33 @@ const AdminBottomNav = () => {
 
       <Tab.Screen
         options={{
-          tabBarIcon: (props) => <LocationsIcon {...props} />,
-          tabBarLabel: 'Locations',
+          tabBarIcon: (props) => <GoogleMapIcon {...props} />,
+          tabBarLabel: "Locations",
         }}
         name="Locations"
-        component={Location}
+        component={LocationStack}
       />
 
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <WorkOrderIcon {...props} />,
-          tabBarLabel: 'Work Orders',
+          tabBarLabel: "Work Orders",
         }}
         name="WorkOrders"
         component={WorkOrderStack}
       />
-
+      <Tab.Screen
+        options={{
+          tabBarIcon: (props) => <MessageIcon {...props} />,
+          tabBarLabel: "Messages",
+        }}
+        name="Messages"
+        component={Chat}
+      />
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <ProfileIcon {...props} />,
-          tabBarLabel: 'Profile',
+          tabBarLabel: "Profile",
         }}
         name="Profile"
         component={ProfileHome}

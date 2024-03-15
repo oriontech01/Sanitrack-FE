@@ -1,19 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Constants from 'expo-constants';
+import { UserContext } from "../context/UserContext";
 
 const useRole = () => {
   const BASE_URL = Constants.expoConfig.extra.baseUrl;
-  const navigate = useNavigate();
-
-  const access_token = localStorage.getItem("auth-token");
-
+  const user = useContext(UserContext)
   const [roles, setAllRoles] = useState([]);
   const [staffRoles, setStaffRoles] = useState([]);
   const [roleForStaff, setRoleForStaff] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
-
+  const access_token = user.token
   const getRoles = async () => {
     await axios
       .get(`${BASE_URL}/roles/`, {
@@ -100,17 +97,14 @@ const useRole = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        navigate("/home/role");
       })
       .catch((error) => {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            navigate("/home/role");
             // console.log("An error occured", data.message);
           } else if (status === 403 && data && data.message) {
-            navigate("/");
           } else {
             console.log("Axios error:", error);
           }
@@ -128,7 +122,6 @@ const useRole = () => {
         { headers: { Authorization: `Bearer ${access_token}` } }
       )
       .then((response) => {
-        navigate("/home/role");
       })
       .catch((error) => {
         if (error.response) {
@@ -177,7 +170,6 @@ const useRole = () => {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        navigate("/home/role/staff");
       })
       .catch((error) => {
         if (error.response) {

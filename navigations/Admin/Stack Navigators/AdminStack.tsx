@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../../screens/Admin/Home';
-import Dashboard from '../../screens/Admin/Dashboard/Dashboard';
+import Dashboard from '../../../screens/Admin/Dashboard/Dashboard';
+
 
 const AdminStack = () => {
   const Stack = createNativeStackNavigator();

@@ -34,13 +34,14 @@ export default function Login({ navigation }) {
 
   const handleLogin = async () => {
     setIsLoading(true);
+    console.log(Constants.expoConfig.extra.baseUrl)
 
     try {
       console.log(Constants.expoConfig.extra.baseUrl);
       const res = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}login`,
         {
-          email: username,
+          email: username, // Change from email to username for testing purposes
           password,
         }
       );
@@ -59,7 +60,6 @@ export default function Login({ navigation }) {
           return;
         }
         console.log(res.data.data);
-        // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser({
           name: res.data.data.username,
           role: res.data.data.role_name,
@@ -67,6 +67,7 @@ export default function Login({ navigation }) {
           role_id: res.data.data.role_id,
           token: res.data.data.token,
           email: '',
+          secret: res.data.data.username
         }); // Set user object value to the user data gotten from the Backend API
         setPassword(''); // Clear password field
         setUserName(''); // Clear username field

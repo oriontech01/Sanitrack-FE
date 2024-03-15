@@ -61,6 +61,8 @@ export default {
       cloudinaryUrl: process.env.CLOUDINARY_URI,
       cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
       jwtKey: process.env.JWT_KEY,
+      chatEngineProjectId: process.env.CHAT_ENGINE_PROJECT_ID,
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY
     },
     owner: 'test-kali',
   },

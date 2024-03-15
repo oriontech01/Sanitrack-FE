@@ -1,21 +1,21 @@
 import axios from 'axios';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import Constants from 'expo-constants';
+import { UserContext } from "../context/UserContext";
+import { Alert } from 'react-native';
 const useRoom = () => {
   const BASE_URL = Constants.expoConfig.extra.baseUrl;
-  // const BASE_URL = Constants.expoConfig.extra.baseUrl;
-  const navigate = useNavigate();
+  const user = useContext(UserContext);
   const [responseMessage, setResponseMessage] = useState();
   const [allRooms, setAllRooms] = useState([]);
   const [allRoomsById, setAllRoomsById] = useState([]);
   const [allUnassignedRoomsById, setAllUnaassignedRoomsById] = useState([]);
   const [singleRoomTask,setSinleRoomTask]=useState([])
   const [isLoading, setIsLoading] = useState(false);
-
   const [roomsCount, setRoomCount] = useState();
+  const [singleLocationRooms, setSingleLocationRooms] = useState([])
 
-  const access_token = localStorage.getItem('auth-token');
+  const access_token = user.token
 
   const addRoom = async formData => {
     // console.log("From the useRoom hook", formData)
@@ -28,7 +28,6 @@ const useRoom = () => {
         // console.log(response.data.message)
         setIsLoading(false);
         setResponseMessage(response.data.message);
-        navigate('/dashboard/rooms');
       })
       .catch(error => {
         setIsLoading(false);
@@ -179,7 +178,6 @@ const useRoom = () => {
       .then(response => {
         // console.log(response.data.message)
         setResponseMessage(response.data.message);
-        navigate('/dashboard/rooms');
       })
       .catch(error => {
         if (error.response) {
@@ -207,7 +205,7 @@ const useRoom = () => {
       })
       .then(response => {
         console.log(response);
-        navigate('/dashboard/rooms');
+
       })
       .catch(error => {
         if (error.response) {
@@ -228,6 +226,18 @@ const useRoom = () => {
       });
   };
 
+  const getRoomsByLocationId = async (locationId) => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/room/location?locationId=${locationId}`,
+        {headers: { Authorization: `Bearer ${access_token}` }}
+      );
+      setSingleLocationRooms(res.data.data)
+    } catch (error) {
+      console.error('Error getting single location', error);
+      Alert.alert('Error getting single location');
+    }
+};
   return {
     addRoom,
     responseMessage,
@@ -243,7 +253,8 @@ const useRoom = () => {
     allUnassignedRoomsById,
     getSingleRoomTaskById,
     singleRoomTask,
-    
+    getRoomsByLocationId,
+    singleLocationRooms
   };
 };
 
