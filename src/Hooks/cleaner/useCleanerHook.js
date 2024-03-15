@@ -18,6 +18,7 @@ const useCleanerHook = () => {
   const [activeLoading, setActiveLoading] = useState(false);
   const [facility, setFacilties] = useState('');
   const [faciltiyLoading, setFaciityLoading] = useState(false);
+  const [active, setActive] = useState([]);
   const navigate = useNavigate();
 
   const getActiveTask = async () => {
@@ -100,6 +101,23 @@ const useCleanerHook = () => {
         setLoading(false);
       }
       setCleaningItems(res.data.data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  const getActiveTimer = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${BASE_URL}cleaner-dashboard/active-timer`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      if (res.data) {
+        setLoading(false);
+      }
+      setActive(res.data.data);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -406,7 +424,9 @@ const useCleanerHook = () => {
     getActiveTask,
     facility,
     faciltiyLoading,
-    getFacilities
+    getFacilities,
+    getActiveTimer,
+    active
   };
 };
 

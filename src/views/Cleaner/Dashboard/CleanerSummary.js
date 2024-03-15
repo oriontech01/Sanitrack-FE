@@ -86,7 +86,7 @@ const CleanerSummary = () => {
               Items to Clean
             </summary>
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 mt-5">
-              {summary?.taskDetails?.map(item => (
+              {summary?.taskDetails?.tasks?.map(item => (
                 <div className="pb-2 border-b border-gray-500 w-full" key={item?._id}>
                   <p className="text-blue-500 font-medium text-sm">{item?.name}</p>
                 </div>
@@ -99,7 +99,7 @@ const CleanerSummary = () => {
             <summary className="question  cursor-pointer select-none w-full text-lg font-medium">Cleaning Items</summary>
 
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 mt-5">
-              {summary?.cleaningItems?.cleaning_items?.map(item => (
+              {summary?.cleaningItems?.map(item => (
                 <div className="pb-2 border-b border-gray-500 w-full flex items-center justify-between" key={item?._id}>
                   <p className="text-blue-500 font-medium text-sm">{item?.item_name}</p>
                   <p className="text-black font-medium text-sm">{`${item?.quantity} ${item?.unit}`}</p>
