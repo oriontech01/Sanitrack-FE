@@ -171,4 +171,4 @@ const AddRoom = (props) => {
   );
 };
 
-export default NetworkDetector(AddRoom);
+export default AddRoom;
