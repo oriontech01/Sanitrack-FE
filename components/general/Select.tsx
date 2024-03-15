@@ -22,6 +22,7 @@ import Animated, {
 
 import colors from '../../util/colors';
 import { ArrowUpIcon, IconParck } from '../../assets/svg/Index';
+import { ScrollView } from 'react-native-gesture-handler';
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 interface SelectProps {
   options: { value: string; label: string }[] | [];
@@ -100,7 +101,7 @@ export default function Select({
         </View>
       </AnimatedTouchable>
 
-      <View style={styles.outerLayer}>
+      <ScrollView style={styles.outerLayer}>
         {options.map((option, ind) => (
           <AnimatedTouchable
             key={ind}
@@ -128,7 +129,7 @@ export default function Select({
             </View>
           </AnimatedTouchable>
         ))}
-      </View>
+      </ScrollView>
 
       {error && <Text style={{ color: 'red' }}>{error}</Text>}
     </Animated.View>
@@ -156,11 +157,13 @@ const styles = StyleSheet.create({
   },
   outerLayer: {
     width: '100%',
-    padding: 10,
+    backgroundColor: '#fff',
     borderRadius: 10,
     borderWidth: 2,
     borderColor: colors.darkblue,
     marginTop: 10,
+    maxHeight: 300,
+    overflow: 'hidden',
   },
   decoration: {
     height: 16,

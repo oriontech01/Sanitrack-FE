@@ -2,13 +2,22 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import colors from '../../../util/colors';
 
-export default function ItemList({ addToSelect, item }) {
+export default function ItemList({
+  addToSelect,
+  item,
+  setAll = null,
+  allItems = null,
+}) {
   const [selected, setSelected] = useState(false);
   return (
     <TouchableOpacity
       onPress={() => {
         if (!selected) {
           addToSelect((prev) => [...prev, item]);
+          if (setAll && allItems) {
+            const filtere = allItems.filter((ind) => ind._id !== item._id);
+            setAll(filtere);
+          }
         } else {
           addToSelect((prev) => {
             const filteredData = prev.filter(
