@@ -17,6 +17,8 @@ const CleanerTimer = () => {
   const [elapsedTime, setElapsedTime] = useState(0); // Total elapsed time in seconds
   const [startTime, setStartTime] = useState(start ? start : 0); // Start time in milliseconds
 
+  const actualTimeInSeconds = Number(localStorage.getItem('actualTimer'));
+
   useEffect(() => {
     let intervalId;
     if (isRunning) {
@@ -95,17 +97,60 @@ const CleanerTimer = () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
+
+  // useEffect to handle the timer and reminders
+  // Add this right after your existing useState and useEffect hooks and before the return statement
+
+  // useEffect to handle the timer and reminders
+  useEffect(() => {
+    // Define the function to check the elapsed time and trigger reminders
+    console.log("WOOOOOOOEEEEEEEE")
+    const checkTimeAndSetReminder = () => {
+      const currentElapsedTime = Math.floor((Date.now() - Number(startTime)) / 1000);
+      setElapsedTime(currentElapsedTime);
+
+      // Trigger an alert when the elapsed time is close to the actual time
+      if (currentElapsedTime < actualTimeInSeconds) {
+        const timeLeft = actualTimeInSeconds - currentElapsedTime;
+        if (timeLeft <= 120) {
+          // When 2 minutes or less are left
+          alert(`Reminder: Only ${timeLeft} seconds left until the allotted time is reached.`);
+        }
+      } else {
+        alert("Time's up!");
+        setIsRunning(false);
+        clearInterval(reminderIntervalId);
+      }
+    };
+
+    let reminderIntervalId;
+
+    // Set up the reminder interval if the timer is running and there's time left
+    if (isRunning && elapsedTime < actualTimeInSeconds) {
+      console.log("PLEASE DOING")
+      reminderIntervalId = setInterval(checkTimeAndSetReminder, 120000); // Reminder every 2 minutes
+    }
+
+    // Clear the reminder interval on cleanup
+    return () => clearInterval(reminderIntervalId);
+  }, [isRunning, elapsedTime, actualTimeInSeconds, startTime]);
+
+  // Continue with the rest of your component...
+
+  // Ensure to include actualTimeInSeconds and startTime in the dependency array to get the latest values
+
   console.log('first', elapsedTime);
   const percentage = Math.floor((elapsedTime / actualTime) * 100);
 
   const handleSubmit = () => {
-    const data = { cleanTime: elapsedTime, roomId: roomId};
+    const data = { cleanTime: elapsedTime, roomId: roomId };
     console.log(data);
-    submitTask(data)
+    submitTask(data);
+    localStorage.removeItem('plannedTime');
   };
   return (
     <>
-    {/* <ToastContainer/> */}
+      {/* <ToastContainer/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="w-[300px]">
           <CircularProgressbar
@@ -174,7 +219,7 @@ const CleanerTimer = () => {
           </button> */}
         </div>
       </div>
-   {isRunning &&   <CleanerItemsUpload />}
+      {isRunning && <CleanerItemsUpload />}
 
       <button
         onClick={handleSubmit}
