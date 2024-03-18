@@ -118,15 +118,21 @@ const WorkOrderFacility = () => {
               <div className="flex flex-col gap-y-4 pt-3">
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-blue-500">Clean </p>
-                  <p className="text-lg text-blue-500">{convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.clean_time) ?? '-'}</p>
+                  <p className="text-lg text-blue-500">
+                    {convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.clean_time) ?? '-'}
+                  </p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-blue-500">Preop </p>
-                  <p className="text-lg text-blue-500">{convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.preOp_time) ?? '-'}</p>
+                  <p className="text-lg text-blue-500">
+                    {convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.preOp_time) ?? '-'}
+                  </p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-blue-500">Release </p>
-                  <p className="text-lg text-blue-500">{convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.release_time) ?? '-'}</p>
+                  <p className="text-lg text-blue-500">
+                    {convertSecondsToHMS(singleRoomTask?.taskDetails?.planned_time?.release_time) ?? '-'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -135,61 +141,59 @@ const WorkOrderFacility = () => {
               <div className="flex flex-col gap-y-4 pt-3">
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Clean </p>
-                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.clean_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
+                  <p className="text-lg text-red-500">
+                    {convertMilliSecondsToHMS(
+                      singleRoomTask?.actualTime
+                        ? singleRoomTask?.actualTime?.clean_time.time.reduce((acc, current) => acc + Number(current), 0)
+                        : 0
+                    )}
+                  </p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Preop </p>
-                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.preOp_time.time.reduce((acc, current) => acc + Number(current), 0) : 0)}</p>
+                  <p className="text-lg text-red-500">
+                    {convertMilliSecondsToHMS(
+                      singleRoomTask?.actualTime
+                        ? singleRoomTask?.actualTime?.preOp_time.time.reduce((acc, current) => acc + Number(current), 0)
+                        : 0
+                    )}
+                  </p>
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-lg text-red-500">Release </p>
-                  <p className="text-lg text-red-500">{convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.release_time : 0)}</p>
+                  <p className="text-lg text-red-500">
+                    {convertMilliSecondsToHMS(singleRoomTask?.actualTime ? singleRoomTask?.actualTime?.release_time : 0)}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-          <Paper>
+          <Paper style={{ marginTop: 20 }}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Room name</TableCell>
-                  <TableCell>Assigned Supervisor</TableCell>
-                  <TableCell>Assigned Cleaner</TableCell>
+                  <TableCell>Assigned Inspectors</TableCell>
+                  <TableCell>Assigned Cleaners</TableCell>
                   <TableCell>Stage</TableCell>
-                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
                   <TableCell> {singleRoomTask?.allItemsInRoom?.roomName}</TableCell>
-                  {singleRoomTask?.taskDetails?.assigned_inspector.map(inspector => (
-                    <TableCell key={inspector?._id}>{inspector?.username}</TableCell>
-                  ))}
-                  {singleRoomTask?.taskDetails?.assigned_cleaner.map(cleaner => (
-                    <TableCell className='flex flex-col border-none' key={cleaner?._id}>{cleaner?.username}</TableCell>
-                  ))}
 
-                  <TableCell className='capitalize'>{singleRoomTask?.taskDetails?.task_stage}</TableCell>
-                  <TableCell >
-                    <button className="text-blue-500 flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-gray-200 w-auto lg:h-[40px] text-base border-t-2 " onClick={() => handleTaskEdit(task.taskId)}>
-                      Edit
-                    </button>
-                    <button className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-red-500 w-auto lg:h-[40px] text-base border-t-2 " onClick={() => handleTaskDelete(task._id)}>
-                      Delete
-                    </button>
+                  {/* Consolidated Inspector Names */}
+                  <TableCell>{singleRoomTask?.taskDetails?.assigned_inspector.map(inspector => inspector?.username).join(', ')}</TableCell>
+
+                  {/* Consolidated Cleaner Names */}
+                  <TableCell className="flex flex-col border-none">
+                    {singleRoomTask?.taskDetails?.assigned_cleaner.map(cleaner => cleaner?.username).join(', ')}
                   </TableCell>
+
+                  <TableCell className="capitalize">{singleRoomTask?.taskDetails?.task_stage}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
-            {/* <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={allTasks.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
           </Paper>
         </>
       )}

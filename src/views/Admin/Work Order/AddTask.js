@@ -19,9 +19,9 @@ const MenuProps = {
   }
 };
 
-const AddTask = (props) => {
-  console.log("Dev Team",props)
-  const {isDisconnected} = props
+const AddTask = props => {
+  console.log('Dev Team', props);
+  const { isDisconnected } = props;
   const {
     getUnAssignedRooms,
     getAllCleaners,
@@ -36,9 +36,6 @@ const AddTask = (props) => {
   } = useTask();
   const { getLocation, allLocations, loading } = useLocation();
   const { getRoomById, allRoomsById, getUnassignedRoomById, allUnassignedRoomsById } = useRoom();
-  const [selectedRoom, setSelectedRoom] = useState('');
-  const [selectedCleaner, setSelectedCleaner] = useState('');
-  const [selectedInspector, setSelectedInspector] = useState('');
   const [id, setId] = useState('');
   const [locationSelectId, setLocationSelectId] = useState('');
   const [cleaners, setCleaners] = React.useState([]);
@@ -61,12 +58,10 @@ const AddTask = (props) => {
   const storedRoomId = localStorage.getItem('roomId');
 
   const handleDateChange = event => {
-    console.log("first",event.target.value)
+    console.log('first', event.target.value);
     // setViewDate(event.target.value);
-    setSelectedDate(event.target.value)
+    setSelectedDate(event.target.value);
   };
-
-
 
   useEffect(() => {
     getUnassignedRoomById(storedLocationId ? storedLocationId : locationSelectId);
@@ -94,14 +89,14 @@ const AddTask = (props) => {
   const handleChange = event => {
     setSelectedItems(event.target.value || []);
   };
-  const saveDataOffline = (data) => {
+  const saveDataOffline = data => {
     localStorage.setItem('offlineWorkOrderData', JSON.stringify(data));
   };
-  
+
   const loadDataOffline = () => {
     return JSON.parse(localStorage.getItem('offlineWorkOrderData'));
   };
-  
+
   const handleSelectCleaners = event => {
     const {
       target: { value }
@@ -188,14 +183,17 @@ const AddTask = (props) => {
       itemsToClean: filteredItems,
       scheduled_date: selectedDate
     };
-    let savedData
-    if(isDisconnected){
-      saveDataOffline(data)
-    }
-    else{
-      savedData = loadDataOffline()
-      console.log("jhdvbjdb", savedData)
-      addTask(savedData)
+    let savedData;
+    if (isDisconnected) {
+      saveDataOffline(data);
+    } else {
+      savedData = loadDataOffline();
+      if (data) {
+        null;
+      } else {
+        console.log('jhdvbjdb', savedData);
+        addTask(savedData);
+      }
     }
     addTask(data);
   };
