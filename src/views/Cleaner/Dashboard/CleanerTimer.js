@@ -131,7 +131,6 @@ const CleanerTimer = () => {
 
   const handleSubmit = () => {
     const data = { cleanTime: elapsedTime, roomId: roomId };
-    const data = { cleanTime: elapsedTime, roomId: roomId };
     console.log(data);
     submitTask(data);
     localStorage.removeItem('plannedTime');
