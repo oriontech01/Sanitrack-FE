@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const RequestCleaningItems = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { getInventory, inventoryLoading, allInventory } = useItems();
   const { requestCleaningItems, itemsLoading } = useCleanerHook();
   const [submittingInventory, setSubmittingInventory] = useState([]);
+  const [req, setReq] = useState([]);
   useEffect(() => {
     getInventory();
   }, []);
@@ -25,7 +26,6 @@ const RequestCleaningItems = () => {
       unit: item?.unit
     }));
 
-    console.log('data', newItem);
     setSubmittingInventory(() => newItem);
   }, [allInventory]);
 
@@ -33,20 +33,40 @@ const RequestCleaningItems = () => {
   const handleChange = (event, index) => {
     // const newQuantities = [...newItem];
     if (event.target.name === `quantity-${index}`) {
-      submittingInventory[index].asking_quantity = event.target.value;
-      setSubmittingInventory(submittingInventory);
+      submittingInventory[index].asking_quantity = Number(event.target.value);
+      console.log('req', req);
+      console.log(submittingInventory[index].cleaning_id);
+      setReq((val = req) => {
+
+        if (!val.includes(submittingInventory[index].cleaning_id)) {
+           val.push(submittingInventory[index].cleaning_id);
+           return val;
+        } else {
+          return val;
+        }
+      });
     }
     if (event.target.name === `comment-${index}`) {
       submittingInventory[index].comment = event.target.value;
       setSubmittingInventory(submittingInventory);
+      setReq((val = req) => {
+        if (!val.includes(submittingInventory[index].cleaning_id)) {
+          val.push(submittingInventory[index].cleaning_id);
+          return val;
+        } else {
+          return val;
+        }
+      });
     }
   };
 
   console.log('sec', submittingInventory);
   const handleSubmit = () => {
     // Implement your logic to handle submission, e.g., send data to server
-    const data = { requestedCleaningData: submittingInventory };
-    console.log('Quantities:', submittingInventory);
+
+    const newData = submittingInventory.filter(val => req?.includes(val.cleaning_id));
+    const data = { requestedCleaningData: newData };
+
     requestCleaningItems(data);
   };
   return (

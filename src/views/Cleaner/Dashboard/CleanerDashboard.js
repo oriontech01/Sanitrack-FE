@@ -76,7 +76,6 @@ const CleanerDashboard = () => {
                   </div>
                 </div>
               )}
-             
             </CardContent>
           </Card>
         </Grid>
@@ -107,14 +106,12 @@ const CleanerDashboard = () => {
               !loading &&
               (workOrderLocations.length > 0 ? (
                 workOrderLocations.map((location, index) => (
-                  <Grid item xs={12} sm={6}   key={location.id}>
-                  <Link
-                    className="w-full mt-5"
-                  
-                    to={`/dashboard/cleaner/cleaner-location-details/${location.id}`}
-                    onClick={() => localStorage.setItem('locationDeets', JSON.stringify(location))}
-                  >
-                   
+                  <Grid item xs={12} sm={6} key={location.id}>
+                    <Link
+                      className="w-full mt-5"
+                      to={`/dashboard/cleaner/cleaner-location-details/${location.id}`}
+                      onClick={() => localStorage.setItem('locationDeets', JSON.stringify(location))}
+                    >
                       <ListItem style={{ backgroundColor: '#EBF0FF', borderRadius: 10 }}>
                         <Box sx={{ flexGrow: 1 }}>
                           <ListItemText
@@ -126,8 +123,7 @@ const CleanerDashboard = () => {
                         </Box>
                         <ArrowForwardIos />
                       </ListItem>
-                   
-                  </Link>
+                    </Link>
                   </Grid>
                 ))
               ) : (
@@ -139,8 +135,8 @@ const CleanerDashboard = () => {
           {loading && (
             <div className="flex items-center justify-center pt-5">
               <div className="relative">
-                <div className="h-20 w-20 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-                <div className="absolute top-0 left-0 h-20 w-20 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+                <div className="h-16 w-16 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
               </div>
             </div>
           )}
