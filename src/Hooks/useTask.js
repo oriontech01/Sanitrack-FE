@@ -269,7 +269,7 @@ const useTask = () => {
       )
       .then(response => {
         setResponseMessage(response.data.message);
-        navigate('/dashboard/tasks');
+        navigate('/dashboard/work-schedule');
       })
       .catch(error => {
         if (error.response) {

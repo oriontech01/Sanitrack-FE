@@ -12,7 +12,6 @@ const RevokeRole = Loadable(lazy(() => import('views/Admin/Roles/RevokeRole')));
 const ViewRolePermissions = Loadable(lazy(() => import('views/Admin/Roles/ViewRolePermissions')));
 const Roles = Loadable(lazy(() => import('views/Admin/Roles/Roles')));
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
-const Tasks = Loadable(lazy(() => import('views/Admin/Work Order/Tasks')));
 const AddTask = Loadable(lazy(() => import('views/Admin/Work Order/AddTask')));
 const TaskDetails = Loadable(lazy(() => import('views/Admin/Work Order/TaskDetails')));
 const WorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrder')));
@@ -23,7 +22,7 @@ const Room = Loadable(lazy(() => import('views/Admin/Rooms/Rooms')));
 const AddRoom = Loadable(lazy(() => import('views/Admin/Rooms/AddRoom')));
 const RoomDetails = Loadable(lazy(() => import('views/Admin/Rooms/RoomDetails')));
 const RoomView = Loadable(lazy(() => import('views/Admin/Rooms/RoomView')));
-const Messages = Loadable(lazy(() => import('views/Admin/Messages/Messages')));
+const ChatHome = Loadable(lazy(() => import('views/Admin/Messages/index')));
 const Contact = Loadable(lazy(() => import('views/Admin/Contact/Contact')));
 const Inventory = Loadable(lazy(() => import('views/Admin/Inventory/Inventory')));
 const Locations = Loadable(lazy(() => import('views/Admin/Locations/Locations')));
@@ -35,12 +34,13 @@ const RoomHistory = Loadable(lazy(() => import('views/Admin/Work History/Room Wo
 const Evidence = Loadable(lazy(() => import('views/Admin/Evidence/Evidence')));
 const ViewEvidence = Loadable(lazy(() => import('views/Admin/Evidence/ViewEvidence')));
 const Users = Loadable(lazy(() => import('views/Admin/Users/Users')));
-const AddUser = Loadable(lazy(() => import('views/Admin/Users/AddUser')));
 const DashboardDefault = Loadable(lazy(() => import('../views/Admin/Dashboard')));
 const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permissions')));
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
+const Learning = Loadable(lazy(() => import('../views/Learning/index')));
+
 // Cleaner
 const CleanerLocationDetails = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerLocationDetails')));
 const CleanerFacilityCleaningItems = Loadable(lazy(() => import('../views/Cleaner/Dashboard/CleanerFacilityCleaningItems')));
@@ -81,7 +81,7 @@ const MainRoutes = {
     { path: '/dashboard/add-room', element: <AddRoom /> },
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
     { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
-    { path: '/dashboard/messages', element: <Messages /> },
+    { path: '/dashboard/messages', element: <ChatHome /> },
     { path: '/dashboard/locations', element: <Locations /> },
     { path: '/dashboard/facilities', element: <Facilities /> },
     {
@@ -111,6 +111,7 @@ const MainRoutes = {
     { path: '/dashboard/roles/permissions/:id', element: <ViewRolePermissions /> },
     { path: '/dashboard/roles/staff', element: <StaffRoles /> },
     { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> },
+    { path: '/dashboard/learning', element: <Learning /> },
 
     // cleaner
     { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },
@@ -127,7 +128,7 @@ const MainRoutes = {
     { path: '/dashboard/inspector/inspector-timer', element: <InspectorTimer /> },
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
     { path: '/dashboard/requests', element: <InspectorRequests /> },
-    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
+    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> }
   ]
 };
 

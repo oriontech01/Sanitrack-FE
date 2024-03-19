@@ -132,9 +132,17 @@ export function unregister() {
 
 // src/customSWRegistration.js
 export const registerCustomSW = () => {
+  console.log("=================CUSTOM SERVICE WORKER =================")
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/custom-service-worker.js').then(registration => {
+        if(registration.installing) {
+          console.log('Service worker installing');
+      } else if(registration.waiting) {
+          console.log('Service worker installed');
+      } else if(registration.active) {
+          console.log('Service worker active');
+      }
         console.log('Custom SW registered: ', registration.scope);
       }).catch(registrationError => {
         console.log('Custom SW registration failed: ', registrationError);

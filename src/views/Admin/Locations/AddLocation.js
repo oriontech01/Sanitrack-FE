@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
-import { Container, Typography, TextField, Button, Box, FormControl, InputLabel, Select, MenuItem, useTheme, useMediaQuery } from '@mui/material';
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  useTheme,
+  useMediaQuery
+} from '@mui/material';
 import Slide from '@mui/material/Slide';
 import axios from 'axios';
 import { cityData, countryData } from '../../../constants/locationData';
+import NetworkDetector from 'utils/networkDetector';
 
-const AddLocation = ({ isOpen, onRequestClose }) => {
+const AddLocation = ({ isOpen, onRequestClose, isDisconnected }) => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
@@ -30,8 +43,23 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
     setCity('');
   }, [state]);
 
-  const handleSubmit = async (e) => {
+  const saveDataOffline = data => {
+    localStorage.setItem('offlineLocationData', JSON.stringify(data));
+  };
+
+  const loadDataOffline = () => {
+    return JSON.parse(localStorage.getItem('offlineLocationData'));
+  };
+  let savedData;
+
+  const handleSubmit = async e => {
     e.preventDefault();
+    if (isDisconnected) {
+      saveDataOffline({ country, state, city, postal_code: postalCode });
+    } else {
+      savedData = loadDataOffline();
+      const res = await axios.post(`${BASE_URL}/locations/add`, savedData, { headers: { Authorization: `Bearer ${token}` } });
+    }
     try {
       const res = await axios.post(
         `${BASE_URL}/locations/add`,
@@ -62,12 +90,15 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
       TransitionComponent={Slide}
       TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
     >
-      <Container maxWidth="sm" sx={{
-        p: 4,
-        bgcolor: 'background.paper',
-        borderRadius: 2,
-        ...(fullScreen && { maxHeight: '100vh', overflowY: 'auto' })
-      }}>
+      <Container
+        maxWidth="sm"
+        sx={{
+          p: 4,
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+          ...(fullScreen && { maxHeight: '100vh', overflowY: 'auto' })
+        }}
+      >
         <Typography variant="h5" component="h2" gutterBottom>
           Add a New Facility Location
         </Typography>
@@ -111,7 +142,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
           <Box sx={{ mb: 2 }}>
             <TextField fullWidth label="Postal Code" variant="outlined" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
           </Box>
-          <Button type="submit" variant="contained" style={{backgroundColor: 'blue'}}>
+          <Button type="submit" variant="contained" style={{ backgroundColor: 'blue' }}>
             Add Location
           </Button>
         </form>
@@ -120,4 +151,4 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
   );
 };
 
-export default AddLocation;
+export default NetworkDetector(AddLocation);
