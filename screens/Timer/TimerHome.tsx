@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import colors from '../../util/colors';
 import TimerList from './components/TimerList';
@@ -8,7 +8,8 @@ import useGetLocation from '../Home/hooks/useGetLocation';
 import AppText from '../../components/AppText';
 import { LocationIcon } from '../../assets/svg/Index';
 import { UserContext } from '../../context/UserContext';
-export default function TimerHome() {
+import Button from '../../components/general/Button';
+export default function TimerHome({ navigation }) {
   const [timers, setTimers] = useState([]);
   const [id, setId] = useState('');
   const [doneTask, setDoneTask] = useState([]);
@@ -78,7 +79,18 @@ export default function TimerHome() {
     }, [])
   );
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Button
+        onPress={() => {
+          navigation.navigate('FacilityTimer');
+        }}
+        style={{
+          marginLeft: 'auto',
+          width: '40%',
+          marginRight: 20,
+        }}
+        label="Facility Timers>"
+      />
       {timers.length > 0 && (
         <AppText
           style={{
@@ -131,7 +143,7 @@ export default function TimerHome() {
 
       {/* <TimerList />
       <TimerList /> */}
-    </View>
+    </SafeAreaView>
   );
 }
 

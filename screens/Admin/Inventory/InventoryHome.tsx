@@ -209,7 +209,7 @@ export default function InventoryHome({ navigation }) {
       </View> */}
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.overLay}>
-          <View style={styles.content}>
+          <ScrollView style={styles.content}>
             <View
               style={{
                 flexDirection: 'row',
@@ -277,7 +277,7 @@ export default function InventoryHome({ navigation }) {
               label="Unit of Measurement"
             />
             <Select
-              label="Unit"
+              label="Item Type"
               options={[
                 { value: 'consumable', label: 'Consumable' },
                 { label: 'Tool', value: 'tool' },
@@ -316,7 +316,7 @@ export default function InventoryHome({ navigation }) {
             )}
             <Button
               isLoading={adding}
-              style={{ marginTop: 20 }}
+              style={{ marginTop: 20, marginBottom: 20 }}
               onPress={async () => {
                 const formData = new FormData();
                 console.log({
@@ -351,7 +351,7 @@ export default function InventoryHome({ navigation }) {
               }}
               label="Save Item"
             />
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     </View>
