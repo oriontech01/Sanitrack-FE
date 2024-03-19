@@ -80,7 +80,7 @@ export default function Summary({ navigation, route }) {
               <Text style={{ color: colors.blue }}>Clean</Text>
               <Text style={{ color: colors.blue }}>
                 {secondsToHoursMinutes(
-                  Number(summary.taskDetails.planned_time.clean_time)
+                  Number(summary?.taskDetails?.planned_time?.clean_time)
                 )}
               </Text>
             </View>
@@ -92,7 +92,7 @@ export default function Summary({ navigation, route }) {
               ]}>
               Items To Clean
             </Text>
-            {summary?.taskDetails?.tasks.length > 0 && (
+            {summary?.taskDetails?.tasks?.length > 0 && (
               <>
                 {summary.taskDetails.tasks.map((task, index) => (
                   <ItemList key={index.toString()} item={task.name} />

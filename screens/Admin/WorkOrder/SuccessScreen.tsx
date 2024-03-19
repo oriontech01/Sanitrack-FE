@@ -10,19 +10,19 @@ import Button from '../../../components/general/Button';
 import colors from '../../../util/colors';
 
 export default function SuccessScree({ navigation }) {
-  //   useFocusEffect(() => {
-  //     const onBackPress = () => {
-  //       return true;
-  //     };
+  useFocusEffect(() => {
+    const onBackPress = () => {
+      return true;
+    };
 
-  //     // Add event listener for hardware back button
-  //     BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    // Add event listener for hardware back button
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-  //     // Clean up function to remove the event listener when the component unmounts
-  //     return () => {
-  //       BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  //     };
-  //   });
+    // Clean up function to remove the event listener when the component unmounts
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  });
 
   return (
     <View style={styles.container}>

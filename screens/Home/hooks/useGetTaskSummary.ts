@@ -16,16 +16,18 @@ const useGetTaskSummary = (id) => {
     startLoading();
 
     try {
-      console.log('start');
+      console.log(
+        `${Constants.expoConfig.extra.baseUrl}${api}/summary?taskId=${id}`
+      );
       const response = await axios.get(
-        `${Constants.expoConfig.extra.baseUrl}cleaner-dashboard/summary?taskId=${id}`,
+        `${Constants.expoConfig.extra.baseUrl}${api}/summary?taskId=${id}`,
         {
           headers: {
             Authorization: token,
           },
         }
       );
-      console.log(response.data.data);
+      console.log('-------------', response.data.data, 'tasks--------------');
       stopLoading();
 
       setSummary(response.data.data);
