@@ -17,10 +17,6 @@ const UserList = ({ userData }) => {
     userData[0]?.role_name === "Cleaner" ? "Cleaners" : "Inspectors";
   const renderUser = ({ item }) => (
     <TouchableOpacity style={styles.userContainer}>
-      <Image
-        source={{ uri: "https://picsum.photos/id/237/200/300e" }}
-        style={styles.profileImage}
-      />
       <View style={styles.userInfo}>
         <Text style={styles.userName}>{item.username}</Text>
         <Text style={styles.userEmail}>{item.email}</Text>
@@ -78,12 +74,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 16,
-  },
+  // profileImage: {
+  //   width: 50,
+  //   height: 50,
+  //   borderRadius: 25,
+  //   marginRight: 16,
+  // },
   userInfo: {
     flex: 1,
   },

@@ -125,6 +125,7 @@ export default function InventoryHome({ navigation }) {
           <Text>Go to page</Text>
         </View>
       </View>
+      
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.overLay}>
           <View style={styles.content}>
