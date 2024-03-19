@@ -16,6 +16,7 @@ import CloseWorkOrder from '../screens/Home/Inspector/CloseWorkOrder';
 import InspectorSummary from '../screens/Home/Inspector/InspectorSummary';
 import RequestCleaningItems from '../screens/Home/RequestCleaningItems';
 import RequestSummary from '../screens/Home/RequestSummary';
+import FacilityTimerStack from './FacilityTimerStack';
 
 const HomeStack = () => {
   const Stack = createNativeStackNavigator();
@@ -39,6 +40,7 @@ const HomeStack = () => {
       <Stack.Screen component={InspectorSummary} name="InspectorSummary" />
       <Stack.Screen component={RequestCleaningItems} name="RequestItems" />
       <Stack.Screen component={RequestSummary} name="RequestSummary" />
+      <Stack.Screen component={FacilityTimerStack} name="FacilityTimer" />
     </Stack.Navigator>
   );
 };

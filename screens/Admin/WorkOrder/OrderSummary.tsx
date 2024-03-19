@@ -10,28 +10,22 @@ import {
   View,
 } from 'react-native';
 import React, { useContext } from 'react';
-import { UserContext } from '../../../context/UserContext';
-import AppText from '../../../components/AppText';
-import colors from '../../../util/colors';
-import Select from '../../../components/general/Select';
-import Button from '../../../components/general/Button';
-import {
-  ArrowLeftIcon,
-  EyeScan,
-  Location,
-  QrCode,
-} from '../../../assets/svg/Index';
-import FacilityList from '../components/FacilityList';
-import ItemList from '../components/ItemList';
-import useGetFacilityDetails from '../hooks/useGetFacilityDetail';
-import useGetTaskSummary from '../hooks/useGetTaskSummary';
-import CleaningItemList from '../components/CleaningItemList';
-import moment from 'moment';
 
-export default function InspectorItemsToClean({ navigation, route }) {
-  const { params } = route.params;
-  const parsedParams = JSON.parse(params);
-  const { location, facility, id, taskId, cleaner_time } = parsedParams;
+import colors from '../../../util/colors';
+
+import Button from '../../../components/general/Button';
+import { ArrowLeftIcon } from '../../../assets/svg/Index';
+
+import moment from 'moment';
+import useGetTaskSummary from '../../Home/hooks/useGetTaskSummary';
+import useGetFacilityDetails from '../../Home/hooks/useGetFacilityDetail';
+import ItemList from '../../Home/components/ItemList';
+import CleaningItemList from '../../Home/components/CleaningItemList';
+
+export default function OrderSummary({ navigation, route }) {
+  const { id, taskId } = route.params;
+
+  // const { location, facility, id, taskId, cleaner_time } = parsedParams;
   const { summary, loadingSummary } = useGetTaskSummary(taskId);
   const { loadingDetails, task } = useGetFacilityDetails(id);
   function secondsToHoursMinutes(seconds) {
@@ -48,7 +42,7 @@ export default function InspectorItemsToClean({ navigation, route }) {
         }}
         style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Task Summary</Text>
+        <Text style={styles.haeding}>Order Details</Text>
       </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false}>
         {(loadingDetails || loadingSummary) && (
@@ -125,8 +119,8 @@ export default function InspectorItemsToClean({ navigation, route }) {
             </Text>
             <Text style={{ color: colors.blue }}>
               {/* {secondsToHoursMinutes(
-                (Date.now() - new Date(cleaner_time).getMilliseconds()) / 1000
-              )} */}
+                  (Date.now() - new Date(cleaner_time).getMilliseconds()) / 1000
+                )} */}
               {secondsToHoursMinutes(
                 Number(summary?.taskDetails?.planned_time?.clean_time)
               )}
@@ -153,19 +147,13 @@ export default function InspectorItemsToClean({ navigation, route }) {
 
         <Button
           onPress={() => {
-            navigation.navigate('InspectorTimer', {
-              location,
-              facility,
-              taskId,
-              id: facility.roomId,
-              roomName: facility.roomName,
-            });
+            navigation.goBack();
           }}
           style={{
             marginTop: 20,
             marginBottom: 30,
           }}
-          label="Next"
+          label="Back"
         />
       </ScrollView>
     </View>

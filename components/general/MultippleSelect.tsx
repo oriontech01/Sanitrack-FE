@@ -173,10 +173,13 @@ export default function MultipleSelect({
                   (v) => v.value !== option.value
                 );
                 setSelectedValues(filtered);
+                onSelect({ values: filtered });
               } else {
-                setSelectedValues((prev) => [...prev, option]);
+                setSelectedValues((prev) => {
+                  onSelect({ values: [...prev, option] });
+                  return [...prev, option];
+                });
               }
-              onSelect(selectedValues);
             }}
             style={[styles.selectButton, { marginTop: 5 }]}>
             <View

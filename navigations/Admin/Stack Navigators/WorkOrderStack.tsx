@@ -7,6 +7,7 @@ import SelectDuration from '../../../screens/Admin/WorkOrder/SelectDuration';
 import CleaningItems from '../../../screens/Admin/WorkOrder/CleaningItems';
 import Personell from '../../../screens/Admin/WorkOrder/Personell';
 import SuccessScree from '../../../screens/Admin/WorkOrder/SuccessScreen';
+import OrderSummary from '../../../screens/Admin/WorkOrder/OrderSummary';
 
 const WorkOrderStack = () => {
   const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ const WorkOrderStack = () => {
       <Stack.Screen component={CleaningItems} name="AdminCleaningItems" />
       <Stack.Screen component={Personell} name="SelectPersonel" />
       <Stack.Screen component={SuccessScree} name="OrderSuccess" />
+      <Stack.Screen component={OrderSummary} name="OrderSummary" />
     </Stack.Navigator>
   );
 };

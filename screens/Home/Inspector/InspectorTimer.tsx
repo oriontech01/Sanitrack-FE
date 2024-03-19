@@ -128,6 +128,7 @@ export default function InspectorTimer({ navigation, route }) {
     };
   }, []);
 
+  const noEvidence = task.filter((t) => t.image_url !== 'empty');
   //   ENF OF TIMER LOGIC----------------------------------------------------------------
 
   const formatTime = (time) => {
@@ -137,6 +138,10 @@ export default function InspectorTimer({ navigation, route }) {
   };
 
   const handleStart = async () => {
+    if (noEvidence.length == 0) {
+      alert('All task are not submited');
+      return;
+    }
     if (startedTime == 0) {
       await saveStartTimer(id, taskId);
       startTimer();

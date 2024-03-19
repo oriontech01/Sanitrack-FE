@@ -50,7 +50,7 @@ export default function Dashboard({ navigation }) {
         }}>
         <TouchableOpacity
           onPress={() => {
-            console.log(pendingTasks.length, completedTasks.length);
+            navigation.openDrawer();
           }}>
           <HamburgerMenu />
         </TouchableOpacity>

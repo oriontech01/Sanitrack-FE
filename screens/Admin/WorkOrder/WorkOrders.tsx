@@ -1,27 +1,123 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import FacilityList from '../../Home/components/FacilityList';
+import useLocation from '../hooks/useLocations';
+import colors from '../../../util/colors';
+import useTask from '../hooks/useTask';
+import Select from '../../../components/general/Select';
+import Button from '../../../components/general/Button';
 
 export default function WorkOrders({ navigation }) {
+  const { getLocation, loading: loadingLocation, allLocations } = useLocation();
+  const { getTask, loading, allTask } = useTask();
+  const [modalVisible2, setModalVisible2] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    getLocation();
+    getTask();
+  }, []);
+
+  useEffect(() => {
+    if (allLocations.length > 0) {
+      const mapedLocations = allLocations.map((loc) => {
+        return {
+          value: loc._id,
+          label: `${loc.country}| ${loc.state} ${loc.city}`,
+        };
+      });
+
+      setOptions(mapedLocations);
+    }
+  }, [allLocations]);
+
   return (
-    <View style={styles.container}>
-      <Header
-        label="Work Orders"
-        withAdd
-        withBack={false}
-        onAdd={() => {}}
-        navigation={navigation}
-      />
-      <FacilityList
-        title="Discovery Mall"
-        onPress={() => {
-          navigation.navigate('AdminWorkorderDetail');
-        }}
-      />
-      <FacilityList title="Discovery Mall" onPress={() => {}} />
-      <FacilityList title="Discovery Mall" onPress={() => {}} />
-    </View>
+    <SafeAreaView style={{ flex: 1, backfaceVisibility: '#fff' }}>
+      <View style={styles.container}>
+        <Header
+          label="Work Order Locations"
+          withAdd={true}
+          withBack={false}
+          onAdd={() => {
+            setModalVisible2(true);
+          }}
+          navigation={navigation}
+        />
+        {loading && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 200,
+            }}>
+            <ActivityIndicator color={colors.blue} />
+          </View>
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {!loading && (
+            <>
+              {allTask.map((oreder, ind) => (
+                <FacilityList
+                  key={ind.toString()}
+                  title={oreder.roomName?.roomName}
+                  detail={`${oreder.stage}`}
+                  onPress={() => {
+                    navigation.navigate('OrderSummary', {
+                      id: oreder.roomName.location_id,
+                      taskId: oreder.taskId,
+                    });
+                  }}
+                />
+              ))}
+            </>
+          )}
+        </ScrollView>
+      </View>
+
+      <Modal animationType="slide" transparent={true} visible={modalVisible2}>
+        <View style={styles.overLay}>
+          <View style={styles.content}>
+            <Text style={{ color: colors.blue, fontWeight: 'bold' }}>
+              Select Location
+            </Text>
+
+            <Select
+              style={{ marginVertical: 20 }}
+              label="Select Location"
+              onSelect={(val) => {
+                setSelected(val);
+              }}
+              options={options}
+            />
+            <Button
+              // style={{ marginTop: 'auto' }}
+              onPress={() => {
+                if (selected) {
+                  navigation.navigate('AdminWorkorderDetail', {
+                    id: selected.value,
+                    name: selected.label,
+                  });
+                  setModalVisible2(false);
+                }
+              }}
+              label="Next"
+            />
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 }
 
@@ -30,5 +126,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
+  },
+  overLay: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  content: {
+    width: '100%',
+    maxHeight: Dimensions.get('window').height / 1.4,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 100,
   },
 });
