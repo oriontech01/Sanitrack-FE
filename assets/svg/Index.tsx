@@ -1772,11 +1772,11 @@ export const PenIcon2 = () => {
   );
 };
 
-export const UploadIcon = () => {
+export const UploadIcon = (color) => {
   return (
-    <Svg width={16} height={19} fill="none">
+    <Svg width={25} height={25} fill={color}>
       <Path
-        stroke="#fff"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2.5}

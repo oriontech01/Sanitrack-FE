@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
@@ -14,6 +13,8 @@ import { Picker } from "@react-native-picker/picker";
 import { cityData, countryData } from "../../../constants/locationData";
 import colors from "../../../util/colors";
 import useLocation from "../../../Hooks/useLocation";
+import Button from "../../../components/general/Button";
+import useLoading from "../../general_hooks/useLoading";
 
 const { width, height } = Dimensions.get("window");
 
@@ -61,6 +62,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const { addLocation } = useLocation();
+  const { startLoading, stopLoading, loading } = useLoading();
 
   // Update states when country changes
   useEffect(() => {
@@ -76,12 +78,14 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
 
   const handleSubmit = () => {
     // Handle submission logic here
+    startLoading();
     addLocation(country, state, city, postalCode);
-    setCity('')
-    setCountry('')
-    setPostalCode('')
-    setState('')
-    console.log({country, state, city, postalCode})
+    setCity("");
+    setCountry("");
+    setPostalCode("");
+    setState("");
+    console.log({ country, state, city, postalCode });
+    stopLoading();
     onRequestClose();
   };
 
@@ -138,10 +142,15 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
               value={postalCode}
               onChangeText={(value) => setPostalCode(value)}
             />
-            <Button
+            {/* <Button
               title="Add Location"
               onPress={handleSubmit}
               disabled={!country || !state || !city || !postalCode}
+            /> */}
+            <Button
+              label="Add Location"
+              onPress={handleSubmit}
+              isLoading={loading}
             />
           </View>
         </TouchableOpacity>

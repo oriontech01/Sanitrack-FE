@@ -60,7 +60,6 @@ export default function Login({ navigation }) {
           return;
         }
         console.log(res.data.data);
-        // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         setUser({
           name: res.data.data.username,
           role: res.data.data.role_name,

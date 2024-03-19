@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, useWindowDimensions } from "react-native";
-import useLocation from "../../Hooks/useLocation";
-import useLoading from "../general_hooks/useLoading";
+import useLocation from "../../../Hooks/useLocation";
+import useLoading from "../../general_hooks/useLoading";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import colors from "../../util/colors";
-import LocationListView from "../../components/Admin/Locations/LocationListView";
-import LocationMapView from "../../components/Admin/Locations/LocationMapView";
+import colors from "../../../util/colors";
+import LocationListView from "./LocationListView";
+import LocationMapView from "./LocationMapView";
 
 const renderTabBar = (props) => (
   <TabBar

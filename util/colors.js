@@ -12,5 +12,7 @@ export default colors = {
   darkblue: '#0d47a1',
   red: '#b80000',
   blue: '#3366FF',
-  lightblue: '#EBF0FF'
+  lightblue: '#EBF0FF',
+  themeOrange: '#FFF7F0',
+  themeDarkOrange: '#AF6D31'
 };

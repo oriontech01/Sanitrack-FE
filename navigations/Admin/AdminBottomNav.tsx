@@ -1,26 +1,20 @@
-import { StyleSheet } from "react-native";
-import AdminStack from "./AdminStack";
+import AdminStack from "./Stack Navigators/AdminStack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { useContext } from "react";
+import React from "react";
 import {
-  ClockIcon,
-  ClockIcon2,
   HomeIcon2,
-  LocationsIcon,
-  NotificationIcon,
   ProfileIcon,
   UsersIcon,
   WorkOrderIcon,
 } from "../../assets/svg/Index";
 import colors from "../../util/colors";
 import ProfileHome from "../../screens/Profile/ProfileHome";
-import Location from "../../screens/Admin/Location";
-import Users from "../../screens/Admin/Users";
-import WorkOrders from "../../screens/Admin/WorkOrder/WorkOrders";
 import Chat from "../../screens/Chat";
 import { MessageIcon } from "../../assets/svg/Index";
 import { GoogleMapIcon } from "../../assets/svg/Index";
-import WorkOrderStack from './Stack Navigators/WorkOrderStack';
+import WorkOrderStack from "./Stack Navigators/WorkOrderStack";
+import LocationStack from "./Stack Navigators/LocationStack";
+import UsersStack from "./Stack Navigators/UsersStack";
 
 const Tab = createBottomTabNavigator();
 const AdminBottomNav = () => {
@@ -32,7 +26,6 @@ const AdminBottomNav = () => {
         tabBarStyle: {
           backgroundColor: "#fff",
         },
-
         tabBarInactiveTintColor: "#999999",
         tabBarActiveTintColor: colors.blue,
       }}
@@ -50,30 +43,37 @@ const AdminBottomNav = () => {
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <UsersIcon {...props} />,
-          tabBarLabel: 'Users',
+          tabBarLabel: "Users",
         }}
         name="Users"
-        component={Users}
+        component={UsersStack}
       />
 
       <Tab.Screen
         options={{
-          tabBarIcon: (props) => <GoogleMapIcon {...props}  />,
-          tabBarLabel: "Locations",
+          tabBarIcon: (props) => <GoogleMapIcon {...props} />,
+          tabBarLabel: "Facilities",
         }}
-        name="Locations"
-        component={Location}
+        name="Facilities"
+        component={LocationStack}
       />
 
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <WorkOrderIcon {...props} />,
-          tabBarLabel: 'Work Orders',
+          tabBarLabel: "Work Orders",
         }}
         name="WorkOrders"
         component={WorkOrderStack}
       />
-
+      {/* <Tab.Screen
+        options={{
+          tabBarIcon: (props) => <MessageIcon {...props} />,
+          tabBarLabel: "Messages",
+        }}
+        name="Messages"
+        component={Chat}
+      /> */}
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <ProfileIcon {...props} />,
@@ -82,19 +82,8 @@ const AdminBottomNav = () => {
         name="Profile"
         component={ProfileHome}
       />
-
-      <Tab.Screen
-        options={{
-          tabBarIcon: (props) => <MessageIcon {...props} />,
-          tabBarLabel: "Messages",
-        }}
-        name="Messages"
-        component={Chat}
-      />
     </Tab.Navigator>
   );
 };
 
 export default AdminBottomNav;
-
-const styles = StyleSheet.create({});

@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
-import AdminNavigationStack from './AdminNavigationStack';
+import AdminNavigationStack from './Admin/AdminNavigationStack';
 import UserNavigationStack from './UserNavigationStack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserContext';
 import AuthStack from './AuthStack';
-import AdminDrawerNav from '../navigations/Admin/Drawer/AdminDrawerNav';
+import AdminDrawerNav from './Admin/Drawer/AdminDrawerNav';
 
 const RootStack = createNativeStackNavigator();
 
