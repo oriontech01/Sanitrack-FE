@@ -134,7 +134,7 @@ const SingleLocationOverview = ({ route, navigation }) => {
           </View>
 
           <Text style={styles.subHeader}>
-            Number Of Facilities: {singleLocationRooms.length}
+            Number Of Rooms: {singleLocationRooms.length}
           </Text>
           <FlatList
             data={singleLocationRooms}

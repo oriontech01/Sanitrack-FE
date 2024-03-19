@@ -33,8 +33,6 @@ export default function LocationMapView({locationData}) {
       const results = await Promise.all(promises);
       const validResults = results.filter(result => result !== null);
       setMarkers(validResults)
-      // Now you have an array of locations with lat, lng, title, and description
-      // Update your state or context with these locations to render them as markers
     };
   
     fetchLatLngs();

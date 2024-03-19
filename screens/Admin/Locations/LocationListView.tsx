@@ -79,7 +79,7 @@ export default function LocationListView({ locationData }) {
         keyExtractor={(item) => item._id}
         ListHeaderComponent={
           <View style={styles.listHeader}>
-            <Text style={styles.header}>Locations</Text>
+            <Text style={styles.header}>Facilities</Text>
             <View style={{ display: "flex", flexDirection: "row" }}>
               {/* <Ionicons name="globe" size={30} color={colors.lightgray} /> */}
               <TouchableOpacity onPress={() => {

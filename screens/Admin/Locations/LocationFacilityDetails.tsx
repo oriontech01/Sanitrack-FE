@@ -122,7 +122,7 @@ const LocationFacilityDetails = ({ route, navigation }) => {
       </View>
 
       <Text style={styles.subHeader}>
-        Number Of Items In Facility: {facilityDetails.detail.length}
+        Number Of Items In {roomName}: {facilityDetails.detail.length}
       </Text>
       {isUploaded ? (
         <View style={styles.documentContainer}>

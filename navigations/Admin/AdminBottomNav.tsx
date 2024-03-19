@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import AdminStack from "./Stack Navigators/AdminStack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
@@ -10,12 +9,12 @@ import {
 } from "../../assets/svg/Index";
 import colors from "../../util/colors";
 import ProfileHome from "../../screens/Profile/ProfileHome";
-import Users from "../../screens/Admin/Users/Users";
 import Chat from "../../screens/Chat";
 import { MessageIcon } from "../../assets/svg/Index";
 import { GoogleMapIcon } from "../../assets/svg/Index";
 import WorkOrderStack from "./Stack Navigators/WorkOrderStack";
 import LocationStack from "./Stack Navigators/LocationStack";
+import UsersStack from "./Stack Navigators/UsersStack";
 
 const Tab = createBottomTabNavigator();
 const AdminBottomNav = () => {
@@ -27,7 +26,6 @@ const AdminBottomNav = () => {
         tabBarStyle: {
           backgroundColor: "#fff",
         },
-
         tabBarInactiveTintColor: "#999999",
         tabBarActiveTintColor: colors.blue,
       }}
@@ -48,15 +46,15 @@ const AdminBottomNav = () => {
           tabBarLabel: "Users",
         }}
         name="Users"
-        component={Users}
+        component={UsersStack}
       />
 
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <GoogleMapIcon {...props} />,
-          tabBarLabel: "Locations",
+          tabBarLabel: "Facilities",
         }}
-        name="Locations"
+        name="Facilities"
         component={LocationStack}
       />
 
@@ -68,14 +66,14 @@ const AdminBottomNav = () => {
         name="WorkOrders"
         component={WorkOrderStack}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           tabBarIcon: (props) => <MessageIcon {...props} />,
           tabBarLabel: "Messages",
         }}
         name="Messages"
         component={Chat}
-      />
+      /> */}
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <ProfileIcon {...props} />,
@@ -89,5 +87,3 @@ const AdminBottomNav = () => {
 };
 
 export default AdminBottomNav;
-
-const styles = StyleSheet.create({});

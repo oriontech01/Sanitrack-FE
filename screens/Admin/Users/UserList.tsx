@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,11 +8,11 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AddUserModal from "./AddUserModal";
 import colors from "../../../util/colors";
+import { useNavigation } from "@react-navigation/native";
 
 const UserList = ({ userData }) => {
-  const [visible, setVisible] = useState(false);
+  const navigation = useNavigation()
   const headerText =
     userData[0]?.role_name === "Cleaner" ? "Cleaners" : "Inspectors";
   const renderUser = ({ item }) => (
@@ -35,10 +35,9 @@ const UserList = ({ userData }) => {
 
   return (
     <View style={styles.container}>
-      <AddUserModal visible={visible} onClose={() => setVisible(false)} />
       <View style={styles.headerContainer}>
         <Text style={styles.header}>{headerText}</Text>
-        <TouchableOpacity onPress={() => setVisible(true)}>
+        <TouchableOpacity onPress={() => navigation.navigate("AddUsers") }>
           <Ionicons name="add" size={30} color={colors.lightgray} />
         </TouchableOpacity>
       </View>
