@@ -5,7 +5,7 @@ import { UserContext } from '../../../context/UserContext';
 import Constants from 'expo-constants';
 const useTask = () => {
   const BASE_URL = Constants.expoConfig.extra.baseUrl;
-  const [mssData, setMssData] = useState()
+  const [mssData, setMssData] = useState([])
   const { token: access_token } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [allTask, setTask] = useState([]);
@@ -50,7 +50,7 @@ const useTask = () => {
         }
       })
       setMssData(res.data.data)
-      console.log("NOT FRIENDLY",res.data.data[0].tasks)
+      console.log("NOT FRIENDLY",res.data.data[1].assigned_room)
     } catch (error) {
       console.log("FRIENDLY",error);
     }
