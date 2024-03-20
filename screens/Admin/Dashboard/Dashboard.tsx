@@ -21,7 +21,7 @@ import AppText from '../../../components/AppText';
 import { UserContext } from '../../../context/UserContext';
 import useWorkHistory from '../hooks/useWorkHistory';
 import useTaskDetails from '../hooks/useTaskDetails';
-
+import MssTabularOverview from '../components/MssTabularOverview';
 export default function Dashboard({ navigation }) {
   const axesSvg = { fontSize: 14, fill: 'grey', textAlign: 'center' };
   const verticalContentInset = { top: 10, bottom: 10 };
@@ -60,7 +60,6 @@ export default function Dashboard({ navigation }) {
       <View
         style={{
           flexDirection: 'row',
-
           alignItems: 'center',
           padding: 20,
         }}>
@@ -70,7 +69,7 @@ export default function Dashboard({ navigation }) {
           }}>
           <HamburgerMenu />
         </TouchableOpacity>
-        <AppText style={styles.haeding}>Welcome {user.name}</AppText>
+        <AppText style={styles.heading}>Welcome {user.name}</AppText>
       </View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
@@ -99,7 +98,7 @@ export default function Dashboard({ navigation }) {
           value={allTasks.length}
         />
       </ScrollView>
-      <AppText style={styles.haeding}>Total Rooms Cleaned Per Cleaner</AppText>
+      <AppText style={styles.heading}>Total Rooms Cleaned Per Cleaner</AppText>
       {!isLoading && (
         <View
           style={{
@@ -160,6 +159,7 @@ export default function Dashboard({ navigation }) {
           ))}
         </View>
       )}
+      <MssTabularOverview />
     </View>
   );
 }
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  haeding: {
+  heading: {
     color: colors.blue,
     fontSize: 18,
     fontWeight: 'bold',

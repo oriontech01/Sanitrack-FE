@@ -11,11 +11,6 @@ const LocationStack = () => {
       <Stack.Screen component={Location} name="LocationHome" />
       <Stack.Screen component={SingleLocationOverview} name="LocationDetails" />
       <Stack.Screen component={LocationFacilityDetails} name="LocationFacilityDetails" />
-      {/* 
-     
-      <Stack.Screen component={} name="" />
-      <Stack.Screen component={} name="" />
-      <Stack.Screen component={} name="" /> */}
     </Stack.Navigator>
   );
 };
