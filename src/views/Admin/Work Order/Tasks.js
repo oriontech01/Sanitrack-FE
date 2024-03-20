@@ -5,13 +5,11 @@ import {
   Grid,
   Card,
   CardContent,
-  Typography,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Button,
   Paper,
   TablePagination,
   useMediaQuery
@@ -35,10 +33,6 @@ const Tasks = () => {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleTaskEdit = taskId => {
-    navigate(`/dashboard/edit-task/${taskId}`);
   };
 
   useEffect(() => {
