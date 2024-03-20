@@ -20,7 +20,7 @@ const Locations = () => {
       <Grid container justifyContent="space-between" alignItems="center" sx={{ marginBottom: 2 }}>
         <Box display={'flex'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
           <Grid item xs={12} sm={6}>
-            <Typography variant={isMobile ? 'h4' : 'h2'}>Locations</Typography>
+            <Typography variant={isMobile ? 'h4' : 'h2'}>Facilties</Typography>
           </Grid>
           <Button
             style={{
@@ -32,7 +32,7 @@ const Locations = () => {
             onClick={() => setIsModalOpen(true)}
             variant={isMobile ? 'text' : 'contained'}
           >
-            Add Location
+            Add Facilties
           </Button>
         </Box>
       </Grid>
