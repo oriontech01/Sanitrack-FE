@@ -27,7 +27,7 @@ const CleanerDashboard = () => {
   return (
     <Box sx={{ p: 3 }}>
       <h2 className="capitalize text-3xl font-bold text-blue-500">Welcome {localStorage.getItem('name')}!</h2>
-      <p className="text-lg pb-5">Below are the locations for the tasks of the day.</p>
+      <p className="text-lg pb-5">Below are the facilities for the tasks of the day.</p>
 
       {/* Cards for summary */}
       <Grid container spacing={3}>
@@ -99,7 +99,7 @@ const CleanerDashboard = () => {
       {/* Locations List */}
 
       <Box sx={{ width: '100%' }}>
-        <h2 className="capitalize text-3xl font-bold text-blue-500 pt-3"> Locations</h2>
+        <h2 className="capitalize text-3xl font-bold text-blue-500 pt-3"> Facilities</h2>
         <div className="">
           <Grid container spacing={2}>
             {workOrderLocations &&

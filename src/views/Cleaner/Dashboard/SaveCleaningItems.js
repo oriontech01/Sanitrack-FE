@@ -98,7 +98,7 @@ const SaveCleaningItems = () => {
           {itemsLoading ? 'Loading...' : 'Save'}
         </button>
       )}
-      {cleaningItems && cleaningItems.length === 0 && (
+      {(!loading && cleaningItems.length == 0) && (
         <Link
           to="/dashboard/cleaner/request-cleaning-items"
           className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:w-1/2 lg:h-[40px] text-base border-t-2 mt-10 "
