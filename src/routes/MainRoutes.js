@@ -82,8 +82,8 @@ const MainRoutes = {
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
     { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
     { path: '/dashboard/messages', element: <ChatHome /> },
-    { path: '/dashboard/locations', element: <Locations /> },
-    { path: '/dashboard/facilities', element: <Facilities /> },
+    { path: '/dashboard/facilties', element: <Locations /> },
+    // { path: '/dashboard/facilities', element: <Facilities /> },
     {
       path: '/dashboard/work-history',
       element: <WorkHistory />,
