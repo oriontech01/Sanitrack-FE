@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 // project import
 
 import Loadable from 'component/Loadable';
+import AddCourse from 'views/Learning/AddCourse';
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const CreatePermissions = Loadable(lazy(() => import('views/Admin/Permissions/CreatePermissions')));
 const CreateRole = Loadable(lazy(() => import('views/Admin/Roles/CreateRole')));
@@ -81,8 +82,7 @@ const MainRoutes = {
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
     { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
     { path: '/dashboard/messages', element: <ChatHome /> },
-    { path: '/dashboard/facilities', element: <Locations /> },
-    // { path: '/dashboard/facilities', element: <Facilities /> },
+    { path: '/dashboard/facilties', element: <Locations /> },
     {
       path: '/dashboard/work-history',
       element: <WorkHistory />,
@@ -111,6 +111,7 @@ const MainRoutes = {
     { path: '/dashboard/roles/staff', element: <StaffRoles /> },
     { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> },
     { path: '/dashboard/learning', element: <Learning /> },
+    { path: '/dashboard/add-course', element: <AddCourse /> },
 
     // cleaner
     { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },

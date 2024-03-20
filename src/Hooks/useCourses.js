@@ -27,9 +27,9 @@ const useCourses = () => {
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             // setResponseMessage(data.message);
-            console.log('An error occured', data.message);
+            console.log('An error occurred', data.message);
           } else if (status === 403 && data && data.message) {
-            console.log('An error with status 403 occured', data.message);
+            console.log('An error with status 403 occurred', data.message);
             // setResponseMessage(data.message);
           } else {
             console.log('Axios error:', error);

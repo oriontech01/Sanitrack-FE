@@ -43,7 +43,7 @@ const adminSideNavItems = [
       },
       {
         id: 'facilities',
-        title: 'Facilities',
+        title: 'Facilties',
         type: 'item',
         icon: LocationCity, // Changed Icon
         url: '/dashboard/facilities'

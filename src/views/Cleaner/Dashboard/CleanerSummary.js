@@ -18,7 +18,7 @@ const CleanerSummary = () => {
   useEffect(() => {
     getSummary();
   }, []);
-  console.log('sum', summary);
+
   const timers = summary?.taskDetails?.planned_time;
   const convertSecondsToHMS = totalSeconds => {
     const hours = Math.floor(totalSeconds / 3600);

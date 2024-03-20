@@ -3,35 +3,10 @@ import { Box, Card, CardContent, CardMedia, Typography, Grid, Button, Divider, C
 import { FaUsers } from 'react-icons/fa6';
 import { HiChartBar } from 'react-icons/hi';
 import useCourses from 'Hooks/useCourses';
-
-const dummyData = [
-  {
-    title: 'Investing In Stocks The Complete Course',
-    students: '265.7K',
-    level: 'Beginner',
-    role: 'CLEANER'
-  },
-  {
-    title: 'Investing In Stocks The Complete Course',
-    students: '265.7K',
-    level: 'Intermediate',
-    role: 'CLEANER'
-  },
-  {
-    title: 'Investing In Stocks The Complete Course',
-    students: '265.7K',
-    level: 'Beginner',
-    role: 'INSPECTOR'
-  },
-  {
-    title: 'Investing In Stocks The Complete Course',
-    students: '265.7K',
-    level: 'Advanced',
-    role: 'INSPECTOR'
-  }
-];
+import { Link } from 'react-router-dom/dist';
 
 const LearningOverview = () => {
+  const currentRole = localStorage.getItem('role');
   const { getPublishedCourses, allPublishedCourses, loading } = useCourses();
 
   useEffect(() => {
@@ -42,7 +17,9 @@ const LearningOverview = () => {
   }, []);
 
   return loading ? (
-    <CircularProgress />
+    <div className=" flex items-center justify-center h-screen">
+      <CircularProgress />
+    </div>
   ) : (
     <Box sx={{ flexGrow: 1, m: 2 }}>
       <Grid container spacing={2}>
@@ -58,90 +35,85 @@ const LearningOverview = () => {
             <Typography variant="h2" color={'blue'} gutterBottom>
               Learning
             </Typography>
-            <Button variant="contained" style={{ backgroundColor: 'blue' }} title="Add a new course">
-              Add New +
-            </Button>
+            {currentRole === 'Admin' && (
+              // <Link to={'/dashboard/add-course'}>
+              <Button variant="contained" style={{ backgroundColor: 'blue' }} title="Add a new course">
+                Add New +
+              </Button>
+              // </Link>
+            )}
           </Box>
 
-          <Grid container spacing={3}>
-            <Grid item>
-              <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    NUMBER OF COURSES CREATED
-                  </Typography>
-                  <Typography variant="h1">5</Typography>
-                </CardContent>
-              </Card>
+          {currentRole === 'Admin' && (
+            <Grid container spacing={3}>
+              <Grid item>
+                <Card sx={{ minWidth: 200 }}>
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      NUMBER OF COURSES CREATED
+                    </Typography>
+                    <Typography variant="h1">5</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item>
+                <Card sx={{ minWidth: 200 }}>
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      TOTAL CLEANERS ENROLLED
+                    </Typography>
+                    <Typography variant="h1">5</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item>
+                <Card sx={{ minWidth: 200 }}>
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      TOTAL INSPECTORS ENROLLED
+                    </Typography>
+                    <Typography variant="h1">5</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    TOTAL CLEANERS ENROLLED
-                  </Typography>
-                  <Typography variant="h1">5</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item>
-              <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    TOTAL INSPECTORS ENROLLED
-                  </Typography>
-                  <Typography variant="h1">5</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+          )}
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom color={'blue'}>
-            Created Courses
+            {currentRole === 'Admin' ? 'Created Courses' : 'Listed Courses'}
           </Typography>
           <Grid container spacing={2}>
             {allPublishedCourses.map((course, index) => (
               <Grid item xs={6} key={index}>
-                {' '}
-                {/* Set to 6 for half width */}
-                <Card style={{ display: 'flex' }}>
-                  {' '}
-                  <CardMedia
-                    component="img"
-                    image={course.thumbnailUrl}
-                    alt={course.title}
-                    style={{ height: '180px', width: 'auto', flexGrow: 0 }}
-                  />
-                  <CardContent style={{ flexGrow: 1 }}>
-                    <Typography
-                      gutterBottom
-                      variant="body2"
-                      component="div"
-                      backgroundColor={'lime'}
-                      width={'40%'}
-                      textAlign={'center'}
-                      borderRadius={10}
-                    >
-                      {course.level}
-                    </Typography>
-                    <Typography variant="body2" color="blue" fontWeight={'bold'}>
-                      {course.title}
-                    </Typography>
-                    <Typography variant="body2" >
-                       Author: {course.authorName}
-                    </Typography>
-                    <Divider style={{ padding: 5 }} />
-                    <Box display={'flex'} justifyContent={'space-between'}>
-                      {/* <Typography marginTop={2} variant="body2" display={'flex'} gap={1} alignItems={'center'}>
-                        <FaUsers /> {course.students} students
-                      </Typography> */}
-                      <Typography marginTop={2} variant="body2" display={'flex'} gap={1} alignItems={'center'}>
-                        <HiChartBar fill="orange" /> {course.group}
+                <a href="https://www.youtube.com/watch?v=84cMDuR-VuY" target="_blank" rel="noopener noreferrer">
+                  <Card style={{ display: 'flex', height: '150px' }}>
+                    <CardMedia
+                      component="img"
+                      image={course.thumbnailUrl}
+                      alt={course.title}
+                      style={{ height: '100%px', width: '50%', flexGrow: 0, objectFit: 'cover' }}
+                    />
+                    <CardContent style={{}}>
+                      <Typography backgroundColor={'lime'} width={'40%'} textAlign={'center'} borderRadius={10}>
+                        {course.level}
                       </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
+                      <Typography color="blue" width={'200%'} fontWeight={'bold'}>
+                        {course.title}
+                      </Typography>
+                      <Typography>Author: {course.authorName}</Typography>
+                      <Divider style={{ margin: '10px 0' }} />
+                      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} gap={'5px'}>
+                        <Typography display={'flex'} gap={1} alignItems={'center'}>
+                          <FaUsers /> {course.students} students
+                        </Typography>
+                        <Typography display={'flex'} gap={1} alignItems={'center'} justifyContent={'center'}>
+                          <HiChartBar fill="orange" /> {course.group}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </a>
               </Grid>
             ))}
           </Grid>
