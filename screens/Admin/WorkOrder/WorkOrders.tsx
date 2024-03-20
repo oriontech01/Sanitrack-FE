@@ -46,7 +46,7 @@ export default function WorkOrders({ navigation }) {
     <SafeAreaView style={{ flex: 1, backfaceVisibility: '#fff' }}>
       <View style={styles.container}>
         <Header
-          label="Work Order Locations"
+          label="Work Order Facilities"
           withAdd={true}
           withBack={false}
           onAdd={() => {
@@ -90,12 +90,12 @@ export default function WorkOrders({ navigation }) {
         <View style={styles.overLay}>
           <View style={styles.content}>
             <Text style={{ color: colors.blue, fontWeight: 'bold' }}>
-              Select Location
+              Select Facility
             </Text>
 
             <Select
               style={{ marginVertical: 20 }}
-              label="Select Location"
+              label="Select Facility"
               onSelect={(val) => {
                 setSelected(val);
               }}

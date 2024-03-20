@@ -45,7 +45,7 @@ export default function FacilityTimerHome({ navigation }) {
           {locations.map((location, index) => (
             <FacilityList
               onPress={() =>
-                navigation.navigate('Facilities', {
+                navigation.navigate('FacilityMainTimer', {
                   location: location,
                 })
               }

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import colors from '../../../util/colors';
 import HomeCard from '../../Home/components/HomeCard';
@@ -21,6 +21,7 @@ import AppText from '../../../components/AppText';
 import { UserContext } from '../../../context/UserContext';
 import useWorkHistory from '../hooks/useWorkHistory';
 import useTaskDetails from '../hooks/useTaskDetails';
+
 export default function Dashboard({ navigation }) {
   const axesSvg = { fontSize: 14, fill: 'grey', textAlign: 'center' };
   const verticalContentInset = { top: 10, bottom: 10 };
@@ -34,6 +35,21 @@ export default function Dashboard({ navigation }) {
   const { getCleanerSummary, cleanerSummary, isLoading } = useWorkHistory();
   const { getAllTasks, pendingTasks, completedTasks, allTasks, loading } =
     useTaskDetails();
+  const randomColor = useMemo(() => {
+    return () =>
+      ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(
+        0,
+        7
+      );
+  }, []);
+  const pieData = cleanerSummary.map((value, index) => ({
+    value: value.totalRoomsCleaned,
+    svg: {
+      fill: randomColor(),
+      onPress: () => console.log('press', index),
+    },
+    key: `pie-${index}`,
+  }));
   useEffect(() => {
     getCleanerSummary();
     getAllTasks();
@@ -130,9 +146,13 @@ export default function Dashboard({ navigation }) {
           }}>
           {cleanerSummary.map((data) => (
             <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
               style={{
-                fontSize: 12,
+                fontSize: 10,
                 textTransform: 'capitalize',
+                fontWeight: 'bold',
+                width: 40,
               }}
               key={data._id}>
               {data.cleanerUsername}

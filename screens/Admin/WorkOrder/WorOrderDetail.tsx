@@ -38,7 +38,7 @@ export default function WorOrderDetail({ navigation, route }) {
           navigation={navigation}
         />
         <Text style={{ color: '#999999', marginVertical: 10, fontSize: 12 }}>
-          Facilities {`(${facilities.length})`}
+          Rooms {`(${facilities.length})`}
         </Text>
 
         {loadingFacilities && (

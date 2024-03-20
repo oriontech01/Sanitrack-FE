@@ -13,7 +13,7 @@ export default function TimerHome({ navigation }) {
   const [timers, setTimers] = useState([]);
   const [id, setId] = useState('');
   const [doneTask, setDoneTask] = useState([]);
-  const { id: staffId } = useContext(UserContext);
+  const { id: staffId, role } = useContext(UserContext);
 
   const fetchData = async () => {
     try {
@@ -80,17 +80,19 @@ export default function TimerHome({ navigation }) {
   );
   return (
     <SafeAreaView style={styles.container}>
-      <Button
-        onPress={() => {
-          navigation.navigate('FacilityTimer');
-        }}
-        style={{
-          marginLeft: 'auto',
-          width: '40%',
-          marginRight: 20,
-        }}
-        label="Facility Timers>"
-      />
+      {role == 'Inspector' && (
+        <Button
+          onPress={() => {
+            navigation.navigate('FacilityTimer');
+          }}
+          style={{
+            marginLeft: 'auto',
+            width: '40%',
+            marginRight: 20,
+          }}
+          label="Facility Timers>"
+        />
+      )}
       {timers.length > 0 && (
         <AppText
           style={{
