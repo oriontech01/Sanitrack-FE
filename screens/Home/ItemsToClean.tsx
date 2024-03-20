@@ -39,7 +39,7 @@ export default function ItemsToClean({ navigation, route }) {
         }}
         style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Facility Details</Text>
+        <Text style={styles.haeding}>Room Items</Text>
       </TouchableOpacity>
 
       {loadingDetails && (
@@ -56,7 +56,7 @@ export default function ItemsToClean({ navigation, route }) {
       {!loadingDetails && detailList.length > 0 && (
         <>
           <Text style={{ color: '#999999', marginVertical: 10, fontSize: 12 }}>
-            Facilities to clean {`(${detailList.length})`}
+            Room Items to clean {`(${detailList.length})`}
           </Text>
           {detailList.map((detail, index) => (
             <ItemList key={index.toString()} item={detail.name} />

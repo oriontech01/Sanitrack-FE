@@ -22,6 +22,7 @@ import { UserContext } from "../../../context/UserContext";
 import useWorkHistory from "../hooks/useWorkHistory";
 import useTaskDetails from "../hooks/useTaskDetails";
 import MssTabularOverview from "../components/MssTabularOverview";
+
 export default function Dashboard({ navigation }) {
   const axesSvg = { fontSize: 14, fill: "grey", textAlign: "center" };
   const verticalContentInset = { top: 10, bottom: 10 };
@@ -36,6 +37,21 @@ export default function Dashboard({ navigation }) {
   const { getAllTasks, pendingTasks, completedTasks, allTasks, loading } =
     useTaskDetails();
 
+  const randomColor = useMemo(() => {
+    return () =>
+      ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(
+        0,
+        7
+      );
+  }, []);
+  const pieData = cleanerSummary.map((value, index) => ({
+    value: value.totalRoomsCleaned,
+    svg: {
+      fill: randomColor(),
+      onPress: () => console.log('press', index),
+    },
+    key: `pie-${index}`,
+  }));
   useEffect(() => {
     getCleanerSummary();
     getAllTasks();
@@ -140,9 +156,13 @@ export default function Dashboard({ navigation }) {
         >
           {cleanerSummary.map((data, index) => (
             <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
               style={{
-                fontSize: 12,
-                textTransform: "capitalize",
+                fontSize: 10,
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                width: 40,
               }}
               key={index}
             >

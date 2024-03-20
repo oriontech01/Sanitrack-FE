@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import {
   ScrollView,
@@ -107,11 +108,13 @@ const styles = StyleSheet.create({
   },
   headerText: {
     width: 150,
-    textAlign: "center",
+    textAlign: 'center',
     marginRight: 20,
   },
   tableRow: {
     flexDirection: "row",
+    textAlign: "center",
+    marginRight: 20,
     borderBottomWidth: 1,
     borderBottomColor: colors.lightgray,
     paddingVertical: 10,

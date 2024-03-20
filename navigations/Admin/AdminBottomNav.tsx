@@ -16,6 +16,7 @@ import WorkOrderStack from "./Stack Navigators/WorkOrderStack";
 import LocationStack from "./Stack Navigators/LocationStack";
 import UsersStack from "./Stack Navigators/UsersStack";
 
+
 const Tab = createBottomTabNavigator();
 const AdminBottomNav = () => {
   return (
@@ -24,17 +25,16 @@ const AdminBottomNav = () => {
         headerShown: false,
         // @ts-ignore
         tabBarStyle: {
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         },
-        tabBarInactiveTintColor: "#999999",
+        tabBarInactiveTintColor: '#999999',
         tabBarActiveTintColor: colors.blue,
       }}
-      initialRouteName="AdminHome"
-    >
+      initialRouteName="AdminHome">
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <HomeIcon2 {...props} />,
-          tabBarLabel: "Home",
+          tabBarLabel: 'Home',
         }}
         name="Home"
         component={AdminStack}
@@ -43,7 +43,7 @@ const AdminBottomNav = () => {
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <UsersIcon {...props} />,
-          tabBarLabel: "Users",
+          tabBarLabel: 'Users',
         }}
         name="Users"
         component={UsersStack}
@@ -61,7 +61,7 @@ const AdminBottomNav = () => {
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <WorkOrderIcon {...props} />,
-          tabBarLabel: "Work Orders",
+          tabBarLabel: 'Work Orders',
         }}
         name="WorkOrders"
         component={WorkOrderStack}
@@ -77,7 +77,7 @@ const AdminBottomNav = () => {
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <ProfileIcon {...props} />,
-          tabBarLabel: "Profile",
+          tabBarLabel: 'Profile',
         }}
         name="Profile"
         component={ProfileHome}
