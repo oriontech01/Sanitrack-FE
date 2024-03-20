@@ -1,21 +1,21 @@
-import AdminStack from './Stack Navigators/AdminStack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import AdminStack from "./Stack Navigators/AdminStack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
 import {
   HomeIcon2,
   ProfileIcon,
   UsersIcon,
   WorkOrderIcon,
-} from '../../assets/svg/Index';
-import colors from '../../util/colors';
-import ProfileHome from '../../screens/Profile/ProfileHome';
-import Chat from '../../screens/Chat';
-import { MessageIcon } from '../../assets/svg/Index';
-import { GoogleMapIcon } from '../../assets/svg/Index';
-import WorkOrderStack from './Stack Navigators/WorkOrderStack';
-import LocationStack from './Stack Navigators/LocationStack';
-import UsersStack from './Stack Navigators/UserStack';
-// import UsersStack from "./Stack Navigators/UsersStack";
+} from "../../assets/svg/Index";
+import colors from "../../util/colors";
+import ProfileHome from "../../screens/Profile/ProfileHome";
+import Chat from "../../screens/Chat";
+import { MessageIcon } from "../../assets/svg/Index";
+import { GoogleMapIcon } from "../../assets/svg/Index";
+import WorkOrderStack from "./Stack Navigators/WorkOrderStack";
+import LocationStack from "./Stack Navigators/LocationStack";
+import UsersStack from "./Stack Navigators/UsersStack";
+
 
 const Tab = createBottomTabNavigator();
 const AdminBottomNav = () => {
@@ -52,7 +52,7 @@ const AdminBottomNav = () => {
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <GoogleMapIcon {...props} />,
-          tabBarLabel: 'Facilities',
+          tabBarLabel: "Facilities",
         }}
         name="Facilities"
         component={LocationStack}
