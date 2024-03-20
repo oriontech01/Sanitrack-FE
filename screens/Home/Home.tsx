@@ -206,7 +206,7 @@ export default function Home({ navigation }) {
               fontWeight: 'bold',
               marginTop: 20,
             }}>
-            Below Are The Locations For Today's Task
+            Below Are The Facilities For Today's Task
           </AppText>
           {loadingLocation && (
             <View

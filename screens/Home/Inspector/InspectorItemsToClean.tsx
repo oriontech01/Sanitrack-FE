@@ -72,7 +72,7 @@ export default function InspectorItemsToClean({ navigation, route }) {
                 fontSize: 18,
                 fontWeight: 'bold',
               }}>
-              Facilities to clean {`(${task.length})`}
+              Room items to clean {`(${task.length})`}
             </Text>
             {task.map((detail, index) => (
               <ItemList key={index.toString()} item={detail.name} />

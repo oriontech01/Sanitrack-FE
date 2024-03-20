@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import colors from '../../../util/colors';
 import HomeCard from '../../Home/components/HomeCard';
@@ -37,6 +37,21 @@ export default function Dashboard({ navigation }) {
   const { getAllTasks, pendingTasks, completedTasks, allTasks, loading } =
     useTaskDetails();
 
+  const randomColor = useMemo(() => {
+    return () =>
+      ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(
+        0,
+        7
+      );
+  }, []);
+  const pieData = cleanerSummary.map((value, index) => ({
+    value: value.totalRoomsCleaned,
+    svg: {
+      fill: randomColor(),
+      onPress: () => console.log('press', index),
+    },
+    key: `pie-${index}`,
+  }));
   useEffect(() => {
     getCleanerSummary();
     getAllTasks();
@@ -134,9 +149,13 @@ export default function Dashboard({ navigation }) {
           }}>
           {cleanerSummary.map((data, index) => (
             <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
               style={{
-                fontSize: 12,
+                fontSize: 10,
                 textTransform: 'capitalize',
+                fontWeight: 'bold',
+                width: 40,
               }}
               key={index}>
               {data.cleanerUsername}
@@ -149,7 +168,16 @@ export default function Dashboard({ navigation }) {
           onPress={() => navigation.navigate('MasterSchedule')}
           style={styles.menuItem}>
           <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-            Master Sanitation
+            Master Sanitation Schedule
+          </Text>
+          <ArrowRightIcon />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AdminTimer')}
+          style={styles.menuItem}>
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+            Facility Cleaner
           </Text>
           <ArrowRightIcon />
         </TouchableOpacity>
@@ -190,9 +218,10 @@ const styles = StyleSheet.create({
     height: 70,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.blue,
+    backgroundColor: 'rgba(17, 28, 178, 0.7)',
     borderRadius: 10,
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    marginTop: 10,
   },
 });

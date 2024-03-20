@@ -28,7 +28,7 @@ export default function Facilities({ navigation, route }) {
         onPress={() => navigation.goBack()}
         style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Facilities</Text>
+        <Text style={styles.haeding}>Rooms</Text>
       </TouchableOpacity>
       <View style={styles.locationDetails}>
         <View style={styles.location}>
@@ -55,7 +55,7 @@ export default function Facilities({ navigation, route }) {
       {!loadingFacilities && facilityList.length > 0 && (
         <>
           <Text style={[styles.haeding, { marginLeft: 0, marginTop: 20 }]}>
-            Facility List
+            Rooms List
           </Text>
 
           {facilityList.map((facility, index) => (

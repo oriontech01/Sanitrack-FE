@@ -1,24 +1,29 @@
 import {
   ActivityIndicator,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
-import FacilityList from '../Home/components/FacilityList';
-import { HamburgerMenu, LocationIcon } from '../../assets/svg/Index';
-import useGetAllFacility from '../Home/hooks/useGetAllFacility';
-import useGetLocation from '../Home/hooks/useGetLocation';
-import colors from '../../util/colors';
-import AppText from '../../components/AppText';
+import React, { useEffect } from 'react';
+import FacilityList from '../../Home/components/FacilityList';
+import { HamburgerMenu, LocationIcon } from '../../../assets/svg/Index';
+
+// import useGetLocation from '../../Home/hooks/useGetLocation';
+import colors from '../../../util/colors';
+import AppText from '../../../components/AppText';
+import useLocation from '../../../Hooks/useLocation';
 
 export default function FacilityTimerHome({ navigation }) {
   // const [activeData, setActiveData] = useState(null);
-  const { locations, loadingLocation } = useGetLocation();
-
+  const { allLocations, getLocation, loading } = useLocation();
+  // const { allLocations, loadingLocation } = useGetLocation();
+  useEffect(() => {
+    getLocation();
+  }, []);
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View
         style={{
           flexDirection: 'row',
@@ -30,7 +35,7 @@ export default function FacilityTimerHome({ navigation }) {
         </TouchableOpacity>
         <AppText style={styles.haeding}>Facilities</AppText>
       </View>
-      {loadingLocation && (
+      {loading && (
         <View
           style={{
             flex: 1,
@@ -40,12 +45,12 @@ export default function FacilityTimerHome({ navigation }) {
           <ActivityIndicator color={colors.blue} />
         </View>
       )}
-      {!loadingLocation && locations.length > 0 && (
+      {!loading && allLocations.length > 0 && (
         <>
-          {locations.map((location, index) => (
+          {allLocations.map((location, index) => (
             <FacilityList
               onPress={() =>
-                navigation.navigate('FacilityMainTimer', {
+                navigation.navigate('AdminMainTimer', {
                   location: location,
                 })
               }
@@ -57,7 +62,7 @@ export default function FacilityTimerHome({ navigation }) {
         </>
       )}
 
-      {!loadingLocation && locations.length == 0 && (
+      {!loading && allLocations.length == 0 && (
         <View
           style={{
             flex: 1,
@@ -72,7 +77,7 @@ export default function FacilityTimerHome({ navigation }) {
           </Text>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
