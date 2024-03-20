@@ -5,7 +5,7 @@ import { toast, Flip } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const CleanerItemsUpload = () => {
-  const { rooms, getRoomsToClean ,uploadCleaningItemsUrl,itemsLoading} = useCleanerHook();
+  const { rooms, getRoomsToClean ,uploadCleaningItemsUrl,itemsLoading,loading} = useCleanerHook();
   useEffect(() => {
     getRoomsToClean();
   }, []);
@@ -109,7 +109,7 @@ const CleanerItemsUpload = () => {
     <ToastContainer/>
       <div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 mt-10">
-          {rooms.map((room, index) => (
+          {(rooms && !loading) && rooms.map((room, index) => (
             <div className="p-3 bg-yellow-100 flex justify-between items-center" key={room?._id}>
               <span className="flex items-center gap-x-2">
                 <p className="text-blue-500 font-bold">{room?.name}</p>
@@ -149,6 +149,14 @@ const CleanerItemsUpload = () => {
               </div>
             </div>
           ))}
+          {loading && (
+            <div className="flex items-center justify-center pt-5">
+              <div className="relative">
+                <div className="h-16 w-16 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex justify-center items-center w-full">
