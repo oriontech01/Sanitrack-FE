@@ -42,19 +42,19 @@ const adminSideNavItems = [
         url: '/dashboard'
       },
       {
-        id: 'locations',
-        title: 'Locations',
-        type: 'item',
-        icon: LocationCity, // Changed Icon
-        url: '/dashboard/locations'
-      },
-      {
         id: 'facilities',
         title: 'Facilities',
         type: 'item',
-        icon: FaBuilding, // Main Icon for Facilities
-        url: '/dashboard/facilities' // Base URL for Facilities
+        icon: LocationCity, // Changed Icon
+        url: '/dashboard/facilities'
       },
+      // {
+      //   id: 'facilities',
+      //   title: 'Facilities',
+      //   type: 'item',
+      //   icon: FaBuilding, // Main Icon for Facilities
+      //   url: '/dashboard/facilities' // Base URL for Facilities
+      // },
       {
         id: 'rooms',
         title: 'Rooms',

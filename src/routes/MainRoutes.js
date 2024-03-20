@@ -26,7 +26,6 @@ const ChatHome = Loadable(lazy(() => import('views/Admin/Messages/index')));
 const Contact = Loadable(lazy(() => import('views/Admin/Contact/Contact')));
 const Inventory = Loadable(lazy(() => import('views/Admin/Inventory/Inventory')));
 const Locations = Loadable(lazy(() => import('views/Admin/Locations/Locations')));
-const Facilities = Loadable(lazy(() => import('views/Admin/Facilities/Facilities')));
 const WorkHistory = Loadable(lazy(() => import('views/Admin/Work History/WorkHistory')));
 const CleanerHistory = Loadable(lazy(() => import('views/Admin/Work History/Cleaner Work History/CleanerHistory')));
 const InspectorHistory = Loadable(lazy(() => import('views/Admin/Work History/Inspector Work History/InspectorHistory')));
@@ -82,8 +81,8 @@ const MainRoutes = {
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
     { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
     { path: '/dashboard/messages', element: <ChatHome /> },
-    { path: '/dashboard/locations', element: <Locations /> },
-    { path: '/dashboard/facilities', element: <Facilities /> },
+    { path: '/dashboard/facilities', element: <Locations /> },
+    // { path: '/dashboard/facilities', element: <Facilities /> },
     {
       path: '/dashboard/work-history',
       element: <WorkHistory />,
