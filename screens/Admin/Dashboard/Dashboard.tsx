@@ -39,6 +39,8 @@ export default function Dashboard({ navigation }) {
     getCleanerSummary();
     getAllTasks();
   }, []);
+
+  console.log(cleanerSummary)
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
@@ -91,8 +93,8 @@ export default function Dashboard({ navigation }) {
             justifyContent: 'space-around',
             transform: [{ translateY: 20 }],
           }}>
-          {cleanerSummary.map((data) => (
-            <Text style={{ fontWeight: 'bold' }} key={data._id}>
+          {cleanerSummary.map((data, index) => (
+            <Text style={{ fontWeight: 'bold' }} key={index}>
               {data.totalRoomsCleaned}
             </Text>
           ))}
@@ -128,13 +130,13 @@ export default function Dashboard({ navigation }) {
             justifyContent: 'space-around',
             alignItems: 'center',
           }}>
-          {cleanerSummary.map((data) => (
+          {cleanerSummary.map((data, index) => (
             <Text
               style={{
                 fontSize: 12,
                 textTransform: 'capitalize',
               }}
-              key={data._id}>
+              key={index}>
               {data.cleanerUsername}
             </Text>
           ))}
