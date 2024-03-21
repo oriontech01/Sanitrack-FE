@@ -68,7 +68,6 @@ export default function LocationListView({ locationData }) {
     );
   };
 
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
@@ -81,7 +80,6 @@ export default function LocationListView({ locationData }) {
           <View style={styles.listHeader}>
             <Text style={styles.header}>Facilities</Text>
             <View style={{ display: "flex", flexDirection: "row" }}>
-              {/* <Ionicons name="globe" size={30} color={colors.lightgray} /> */}
               <TouchableOpacity onPress={() => {
                   setModalVisible(true)
                   console.log("MODAL STATE", modalVisible)

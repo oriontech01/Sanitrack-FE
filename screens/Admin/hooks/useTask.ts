@@ -9,6 +9,7 @@ const useTask = () => {
   const { token: access_token } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [allTask, setTask] = useState([]);
+  const [monthlyMissed, setMonthlyMissed] = useState([])
   // const [responseMessage, setResponseMessage] = useState();
 
   const getTask = async () => {
@@ -55,13 +56,39 @@ const useTask = () => {
       console.log("FRIENDLY",error);
     }
 }
+const getMonthlyMissed = async () => {
+  await axios
+    .get(`${BASE_URL}task/missed-cleaning`, {
+      headers: { Authorization: `Bearer ${access_token}` }
+    })
+    .then(response => {
+      setMonthlyMissed(response.data.data);
+      // console.log("Monthly Missed",response.data.data)
+    })
+    .catch(error => {
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 400 && data && data.message) {
+          console.log('An error occured', data.message);
+        } else if (status === 403 && data && data.message) {
+          console.log('An error with status 403 occured', data.message);
+        } else {
+          console.log('Axios error:', error);
+        }
+      } else {
+        console.log('Network error:', error.message);
+      }
+    });
+};
 
   return {
     getTask,
     allTask,
     loading,
     getMSSTableData,
-    mssData
+    mssData,
+    getMonthlyMissed,
+    monthlyMissed
   };
 };
 export default useTask;

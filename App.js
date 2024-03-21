@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
-import TopLevelContext from './context/index';
-import * as Notifications from 'expo-notifications';
-import { NotificationContext } from './context/NotificationContext';
-import { UserContext } from './context/UserContext';
-import RootNavigator from './navigations/RootNavigator';
+import React, { useContext, useEffect } from "react";
+import TopLevelContext from "./context/index";
+import * as Notifications from "expo-notifications";
+import { NotificationContext } from "./context/NotificationContext";
+import { UserContext } from "./context/UserContext";
+import RootNavigator from "./navigations/RootNavigator";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const { notifications, setNotifications } = useContext(NotificationContext);
@@ -44,12 +45,12 @@ export default function App() {
 
   // Effect to log notifications state updates
   useEffect(() => {
-    console.log('Updated notifications', notifications);
+    console.log("Updated notifications", notifications);
   }, [notifications]);
 
   return (
-    <TopLevelContext>
-      <RootNavigator />
-    </TopLevelContext>
+      <TopLevelContext>
+        <RootNavigator />
+      </TopLevelContext>
   );
 }

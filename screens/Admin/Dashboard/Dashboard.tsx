@@ -22,7 +22,7 @@ import AppText from '../../../components/AppText';
 import { UserContext } from '../../../context/UserContext';
 import useWorkHistory from '../hooks/useWorkHistory';
 import useTaskDetails from '../hooks/useTaskDetails';
-import MssTabularOverview from '../components/MssTabularOverview';
+import MssTabularOverview from '../MasterSchedule/MssTabularOverview';
 export default function Dashboard({ navigation }) {
   const axesSvg = { fontSize: 14, fill: 'grey', textAlign: 'center' };
   const verticalContentInset = { top: 10, bottom: 10 };

@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import MssTabularOverview from '../components/MssTabularOverview';
+import MssTabularOverview from './MssTabularOverview';
 import { HamburgerMenu } from '../../../assets/svg/Index';
 import AppText from '../../../components/AppText';
 import colors from '../../../util/colors';
@@ -27,7 +27,7 @@ export default function MasterScheduleHome({ navigation }) {
           }}>
           <HamburgerMenu />
         </TouchableOpacity>
-        <AppText style={styles.heading}>Master Schedule</AppText>
+        <AppText style={styles.heading}>Master Sanitation Schedule</AppText>
       </View>
       <MssTabularOverview />
     </View>

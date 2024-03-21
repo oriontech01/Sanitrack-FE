@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  ScrollView
 } from "react-native";
 import colors from "../../../util/colors";
 import useRole from "../../../Hooks/useRole";
@@ -14,6 +14,7 @@ import useStaff from "../../../Hooks/useStaff";
 import Select from "../../../components/general/Select";
 import Button from "../../../components/general/Button";
 import { Ionicons } from "@expo/vector-icons";
+import Input from "../../../components/general/Input";
 
 const AddUserScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -91,7 +92,7 @@ const AddUserScreen = ({ navigation }) => {
     };
   });
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TouchableOpacity activeOpacity={1} style={styles.centeredView}>
         {loading ? (
           <ActivityIndicator size={"small"} color={colors.blue} />
@@ -104,7 +105,6 @@ const AddUserScreen = ({ navigation }) => {
                 justifyContent: "space-between",
                 alignContent: "center",
                 width: "100%",
-                marginBottom: 20,
               }}
             >
               <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -114,21 +114,13 @@ const AddUserScreen = ({ navigation }) => {
                   color={colors.blue}
                 />
               </TouchableOpacity>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
                 <Text style={styles.modalTitle}>Add New User</Text>
-              </View>
             </View>
             {/* User Name Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={setUsername}
+                onChange={setUsername}
                 value={username}
                 placeholder="Enter user name"
               />
@@ -136,42 +128,42 @@ const AddUserScreen = ({ navigation }) => {
 
             {/* Password Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={setPassword}
+                onChange={setPassword}
                 value={password}
                 placeholder="Enter password"
-                secureTextEntry // hides the password input
+                secureEntry={true}
               />
             </View>
 
             {/* Email Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={setEmail}
+                onChange={setEmail}
                 value={email}
                 placeholder="Enter email"
-                keyboardType="email-address" // sets the appropriate keyboard for emails
+                type="email-address" // sets the appropriate keyboard for emails
               />
             </View>
 
             {/* Phone Number Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={setPhoneNumber}
+                onChange={setPhoneNumber}
                 value={phoneNumber}
                 placeholder="Enter phone number"
-                keyboardType="phone-pad" // sets the appropriate keyboard for phone input
+                type="phone-pad" // sets the appropriate keyboard for phone input
               />
             </View>
 
             {/* Country Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={(text) =>
+                onChange={(text) =>
                   setAddress({ ...address, country: text })
                 }
                 value={address.country}
@@ -181,9 +173,9 @@ const AddUserScreen = ({ navigation }) => {
 
             {/* State Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={(text) => setAddress({ ...address, state: text })}
+                onChange={(text) => setAddress({ ...address, state: text })}
                 value={address.state}
                 placeholder="Enter state"
               />
@@ -191,9 +183,9 @@ const AddUserScreen = ({ navigation }) => {
 
             {/* City Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={(text) => setAddress({ ...address, city: text })}
+                onChange={(text) => setAddress({ ...address, city: text })}
                 value={address.city}
                 placeholder="Enter city"
               />
@@ -201,9 +193,9 @@ const AddUserScreen = ({ navigation }) => {
 
             {/* Home Address Input */}
             <View style={styles.inputContainer}>
-              <TextInput
+              <Input
                 style={styles.input}
-                onChangeText={(text) =>
+                onChange={(text) =>
                   setAddress({ ...address, home_address: text })
                 }
                 value={address.home_address}
@@ -230,14 +222,13 @@ const AddUserScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 0,
     height: "100%",
   },
   centeredView: {
@@ -248,7 +239,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     borderRadius: 20,
-    padding: 35,
+    padding: 25,
     alignItems: "center",
     width: "100%",
   },
@@ -257,6 +248,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
     color: colors.blue,
+    paddingRight: 100
   },
   inputContainer: {
     width: "100%",
@@ -264,11 +256,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 60,
-    borderWidth: 1,
     borderColor: colors.black,
     borderRadius: 10,
     padding: 10,
     width: "100%",
+    marginBottom: 10
   },
   saveButton: {
     backgroundColor: colors.blue,

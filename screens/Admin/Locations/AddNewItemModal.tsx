@@ -3,12 +3,13 @@ import {
   Modal,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import { CloseIcon } from "../../../assets/svg/Index";
 import colors from "../../../util/colors";
+import Input from "../../../components/general/Input";
+import Button from "../../../components/general/Button";
 const AddNewItemModal = ({ visible, onClose }) => {
   const [itemName, setItemName] = useState("");
 
@@ -33,18 +34,13 @@ const AddNewItemModal = ({ visible, onClose }) => {
           <Text style={styles.modalTitle}>Add New Item</Text>
           <View style={styles.inputContainer}>
             <Text>Enter Item Name</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={setItemName}
+            <Input
+              onChange={setItemName}
               value={itemName}
               placeholder="Enter here"
-              autoFocus
             />
           </View>
-
-          <TouchableOpacity style={styles.saveButton} onPress={saveItem}>
-            <Text style={styles.saveButtonText}>Save Item</Text>
-          </TouchableOpacity>
+          <Button label="Save Item" onPress={saveItem} style={{marginTop: 20}}/>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>
               <CloseIcon />
@@ -84,24 +80,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     position: "absolute",
-    top: 5,
+    top: 10,
     color: colors.blue
-  },
-  input: {
-    height: 40,
-    marginVertical: 10,
-    borderWidth: 1,
-    borderColor: colors.black,
-    borderRadius: 10,
-    padding: 10,
-    width: "100%", // Full width of modal
-  },
-  saveButton: {
-    backgroundColor: colors.blue,
-    borderRadius: 10,
-    padding: 20,
-    elevation: 2,
-    width: "100%", // Full width of modal
   },
   saveButtonText: {
     color: "white",

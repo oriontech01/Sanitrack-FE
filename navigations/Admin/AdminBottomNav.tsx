@@ -14,7 +14,7 @@ import { MessageIcon } from "../../assets/svg/Index";
 import { GoogleMapIcon } from "../../assets/svg/Index";
 import WorkOrderStack from "./Stack Navigators/WorkOrderStack";
 import LocationStack from "./Stack Navigators/LocationStack";
-import UsersStack from "./Stack Navigators/UsersStack";
+
 
 
 const Tab = createBottomTabNavigator();
@@ -39,16 +39,6 @@ const AdminBottomNav = () => {
         name="Home"
         component={AdminStack}
       />
-
-      <Tab.Screen
-        options={{
-          tabBarIcon: (props) => <UsersIcon {...props} />,
-          tabBarLabel: 'Users',
-        }}
-        name="Users"
-        component={UsersStack}
-      />
-
       <Tab.Screen
         options={{
           tabBarIcon: (props) => <GoogleMapIcon {...props} />,

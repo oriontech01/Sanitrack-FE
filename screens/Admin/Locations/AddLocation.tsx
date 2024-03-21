@@ -3,29 +3,31 @@ import {
   Modal,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Alert,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { cityData, countryData } from "../../../constants/locationData";
 import colors from "../../../util/colors";
 import useLocation from "../../../Hooks/useLocation";
 import Button from "../../../components/general/Button";
 import useLoading from "../../general_hooks/useLoading";
+import Select from "../../../components/general/Select";
+import { ScrollView } from "react-native-gesture-handler";
+import Input from "../../../components/general/Input";
 
 const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   addLocationModal: {
     backgroundColor: colors.white,
+    padding: 40,
   },
   modalHeader: {
     fontSize: 20,
     fontWeight: "bold",
     color: colors.blue,
+    paddingBottom: 10
   },
   modalOverlay: {
     flex: 1,
@@ -35,25 +37,16 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: width * 0.8, // 80% of screen width
-    height: height * 0.5, // 50% of screen height
+    height: height * 0.6, // 50% of screen height
     backgroundColor: colors.white,
-    borderRadius: 20, // Optional: for rounded corners
-    padding: 20, // Optional: for internal padding
+    borderRadius: 20,
+    padding: 20,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     alignContent: "center",
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
+  }
 });
-
 const AddLocation = ({ isOpen, onRequestClose }) => {
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
@@ -64,27 +57,41 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
   const { addLocation } = useLocation();
   const { startLoading, stopLoading, loading } = useLoading();
 
-  // Update states when country changes
+  // Convert countryData and cityData to the expected format for the Select component
+  const countryOptions = Object.keys(countryData).map((key) => ({
+    label: key,
+    value: key,
+  }));
+  const stateOptions = states.map((state) => ({ label: state, value: state }));
+  const cityOptions = cities.map((city) => ({ label: city, value: city }));
+
   useEffect(() => {
-    setStates(countryData[country] || []);
+    const updatedStates = countryData[country] || [];
+    setStates(updatedStates);
     setState("");
   }, [country]);
 
-  // Update cities when state changes
   useEffect(() => {
-    setCities(cityData[state] || []);
+    const updatedCities = cityData[state] || [];
+    setCities(updatedCities);
     setCity("");
   }, [state]);
 
+  const handleSelectCountry = (option) => {
+    setCountry(option.value);
+  };
+
+  const handleSelectState = (option) => {
+    setState(option.value);
+  };
+
+  const handleSelectCity = (option) => {
+    setCity(option.value);
+  };
+
   const handleSubmit = () => {
-    // Handle submission logic here
     startLoading();
     addLocation(country, state, city, postalCode);
-    setCity("");
-    setCountry("");
-    setPostalCode("");
-    setState("");
-    console.log({ country, state, city, postalCode });
     stopLoading();
     onRequestClose();
   };
@@ -99,60 +106,45 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
       <TouchableOpacity
         style={styles.modalOverlay}
         activeOpacity={1}
-        onPress={() => onRequestClose()}
+        onPress={onRequestClose}
       >
         <TouchableOpacity activeOpacity={1} style={styles.modalContent}>
-          <Text style={styles.modalHeader}>Add a New Facility Location</Text>
-          <View style={{ marginBottom: 30, height: "90%" }}>
-            <Picker
-              style={styles.input}
-              selectedValue={country}
-              onValueChange={(value) => setCountry(value)}
-            >
-              <Picker.Item label="Select Country" value="" />
-              {Object.keys(countryData).map((country) => (
-                <Picker.Item key={country} label={country} value={country} />
-              ))}
-            </Picker>
-            <Picker
-              style={styles.input}
-              selectedValue={state}
-              onValueChange={(value) => setState(value)}
-              enabled={!!country}
-            >
-              <Picker.Item label="Select State/Province" value="" />
-              {states.map((state) => (
-                <Picker.Item key={state} label={state} value={state} />
-              ))}
-            </Picker>
-            <Picker
-              style={styles.input}
-              selectedValue={city}
-              onValueChange={(value) => setCity(value)}
-              enabled={!!state}
-            >
-              <Picker.Item label="Select City" value="" />
-              {cities.map((city) => (
-                <Picker.Item key={city} label={city} value={city} />
-              ))}
-            </Picker>
-            <TextInput
-              style={styles.input}
-              placeholder="Postal Code"
-              value={postalCode}
-              onChangeText={(value) => setPostalCode(value)}
-            />
-            {/* <Button
-              title="Add Location"
-              onPress={handleSubmit}
-              disabled={!country || !state || !city || !postalCode}
-            /> */}
-            <Button
-              label="Add Location"
-              onPress={handleSubmit}
-              isLoading={loading}
-            />
-          </View>
+          <ScrollView>
+            <Text style={styles.modalHeader}>Add a New Facility Location</Text>
+            <View style={{ marginBottom: 30, height: "90%" }}>
+              <Select
+                options={countryOptions}
+                onSelect={handleSelectCountry}
+                placeHolder="Select Country"
+                label="Country"
+              />
+              <Select
+                options={stateOptions}
+                onSelect={handleSelectState}
+                placeHolder="Select State/Province"
+                label="State/Province"
+                style={{ marginTop: 20 }}
+              />
+              <Select
+                options={cityOptions}
+                onSelect={handleSelectCity}
+                placeHolder="Select City"
+                label="City"
+                style={{ marginTop: 20 }}
+              />
+              <Input
+                placeholder="Postal Code"
+                value={postalCode}
+                onChange={setPostalCode}
+              />
+              <Button
+                label="Add Location"
+                style={{marginTop: 20}}
+                onPress={handleSubmit}
+                isLoading={loading}
+              />
+            </View>
+          </ScrollView>
         </TouchableOpacity>
       </TouchableOpacity>
     </Modal>

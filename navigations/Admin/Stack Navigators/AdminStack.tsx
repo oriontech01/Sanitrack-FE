@@ -4,6 +4,7 @@ import Dashboard from '../../../screens/Admin/Dashboard/Dashboard';
 import MasterScheduleHome from '../../../screens/Admin/MasterSchedule/MasterScheduleHome';
 import FacilityTimer from '../../../screens/Admin/FacilityTimers/FacilityTimer';
 import FacilityTimerHome from '../../../screens/Admin/FacilityTimers/FacilityTimerHome';
+import RoomOverview from '../../../screens/Admin/MasterSchedule/RoomOverview';
 
 const AdminStack = () => {
   const Stack = createNativeStackNavigator();
@@ -13,6 +14,7 @@ const AdminStack = () => {
       <Stack.Screen component={MasterScheduleHome} name="MasterSchedule" />
       <Stack.Screen component={FacilityTimerHome} name="AdminTimer" />
       <Stack.Screen component={FacilityTimer} name="AdminMainTimer" />
+      <Stack.Screen component={RoomOverview} name="RoomOverview" /> 
     </Stack.Navigator>
   );
 };

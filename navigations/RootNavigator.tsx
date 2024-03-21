@@ -1,5 +1,4 @@
 import { NavigationContainer } from '@react-navigation/native';
-import AdminNavigationStack from './Admin/AdminNavigationStack';
 import UserNavigationStack from './UserNavigationStack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext, useEffect } from 'react';

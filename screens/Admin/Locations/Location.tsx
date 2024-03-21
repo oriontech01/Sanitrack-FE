@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   SafeAreaView,
   useWindowDimensions,
-} from 'react-native';
-import useLocation from '../../../Hooks/useLocation';
-import useLoading from '../../general_hooks/useLoading';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import colors from '../../../util/colors';
-import LocationListView from './LocationListView';
-import LocationMapView from './LocationMapView';
+} from "react-native";
+import useLocation from "../../../Hooks/useLocation";
+import useLoading from "../../general_hooks/useLoading";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import colors from "../../../util/colors";
+import LocationListView from "./LocationListView";
+import LocationMapView from "./LocationMapView";
 
 const renderTabBar = (props) => (
   <TabBar
     {...props}
-    indicatorStyle={{ backgroundColor: 'white' }}
+    indicatorStyle={{ backgroundColor: "white" }}
     style={{ backgroundColor: colors.blue }}
-    labelStyle={{ color: 'white' }}
+    labelStyle={{ color: "white" }}
   />
 );
 
@@ -25,8 +25,8 @@ const Location = () => {
   const { loading, startLoading, stopLoading } = useLoading();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'map', title: 'Map View' },
-    { key: 'list', title: 'List View' },
+    { key: "map", title: "Map View" },
+    { key: "list", title: "List View" },
   ]);
 
   useEffect(() => {
@@ -52,17 +52,24 @@ const Location = () => {
   const layout = useWindowDimensions();
 
   return loading ? (
-    <ActivityIndicator size={'large'} color={colors.blue} />
+    <ActivityIndicator size={"large"} color={colors.blue} />
   ) : (
-    <SafeAreaView>
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      />
-    </SafeAreaView>
+    // <SafeAreaView>
+    //   <TabView
+    //     navigationState={{ index, routes }}
+    //     renderScene={renderScene}
+    //     renderTabBar={renderTabBar}
+    //     onIndexChange={setIndex}
+    //     initialLayout={{ width: layout.width }}
+    //   />
+    // </SafeAreaView>
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      renderTabBar={renderTabBar}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+    />
   );
 };
 

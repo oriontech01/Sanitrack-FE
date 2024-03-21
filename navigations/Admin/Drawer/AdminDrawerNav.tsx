@@ -1,6 +1,7 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import AdminBottomNav from '../AdminBottomNav';
-import InventoryStack from '../Stack Navigators/InventoryStack';
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import AdminBottomNav from "../AdminBottomNav";
+import InventoryStack from "../Stack Navigators/InventoryStack";
+import UsersStack from "../Stack Navigators/UserStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -9,10 +10,11 @@ function AdminDrawerNav() {
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       <Drawer.Screen
         options={{
-          drawerLabel: 'AdminDashboard',
+          drawerLabel: "AdminDashboard",
         }}
         name="AdminMainDashboard"
         component={AdminBottomNav}
@@ -20,10 +22,18 @@ function AdminDrawerNav() {
 
       <Drawer.Screen
         options={{
-          drawerLabel: 'Inventory',
+          drawerLabel: "Inventory",
         }}
         name="Inventory"
         component={InventoryStack}
+      />
+
+      <Drawer.Screen
+        options={{
+          drawerLabel: "Users",
+        }}
+        name="Users"
+        component={UsersStack}
       />
     </Drawer.Navigator>
   );
