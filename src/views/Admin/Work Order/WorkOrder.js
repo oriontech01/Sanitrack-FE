@@ -29,7 +29,13 @@ const WorkOrder = () => {
       </header>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={selectedTab} onChange={handleTabChange} aria-label="Work order and tasks tabs" variant="scrollable" scrollButtons="auto">
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="Work order and tasks tabs"
+          variant="scrollable"
+          scrollButtons="auto"
+        >
           <Tab label="Work Orders" />
           <Tab label="Tasks List" />
         </Tabs>
@@ -37,30 +43,45 @@ const WorkOrder = () => {
 
       <main>
         <TabPanel value={selectedTab} index={0}>
-          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', marginTop: 5, gap: 2 }}>
-              {!loading &&
-                allLocations.map(location => (
-                  <Link
-                    onClick={() => {
-                      localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
-                      localStorage.setItem('locationId', `${location?._id}`);
-                    }}
-                    to={`/dashboard/work-order/${location?._id}`}
-                    key={location?._id}
-                    className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center ${matches ? 'w-full' : 'w-1/2'} text-[#3366FF] font-bold shadow-sm`}
-                  >
-                    <span>{`${location?.city}- ${location?.country}`}</span>
-                    <span><ArrowForward/></span>
-                  </Link>
-                ))}
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              flexWrap: 'wrap',
+              marginTop: 5,
+              gap: 2
+            }}
+          >
+            {!loading &&
+              allLocations.map(location => (
+                <Link
+                  onClick={() => {
+                    localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
+                    localStorage.setItem('locationId', `${location?._id}`);
+                  }}
+                  to={`/dashboard/work-order/${location?._id}`}
+                  key={location?._id}
+                  className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center ${matches ? 'w-full' : 'w-1/2'} text-[#3366FF] font-bold shadow-sm`}
+                >
+                  <span>{`${location?.city}- ${location?.country}`}</span>
+                  <span>
+                    <ArrowForward />
+                  </span>
+                </Link>
+              ))}
           </Box>
         </TabPanel>
         <TabPanel value={selectedTab} index={1}>
           <Tasks />
         </TabPanel>
         {loading && (
-          <div className="loader">
-            {/* Loader content */}
+          <div className="flex items-center justify-center pt-5">
+            <div className="relative">
+              <div className="h-16 w-16 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+              <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+            </div>
           </div>
         )}
       </main>
