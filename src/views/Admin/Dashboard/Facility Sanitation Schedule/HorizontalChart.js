@@ -76,7 +76,7 @@ const HorizonChart = ({ missed }) => {
   // };
   // Chart data
   const data = {
-    labels: missed.map(item => item.itemNames),
+    labels: missed?.map(item => item?.itemNames),
 
     datasets: [
       {
@@ -87,7 +87,7 @@ const HorizonChart = ({ missed }) => {
         borderRadius: 30,
         hoverBackgroundColor: '#3366ff',
         hoverBorderColor: '#3366ff',
-        data: missed.map(item => item.count)
+        data: missed.map(item => item?.count)
       }
     ]
   };
