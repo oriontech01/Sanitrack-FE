@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { BarChart, Grid, XAxis, YAxis } from "react-native-svg-charts";
 import colors from "../../../util/colors";
 import HomeCard from "../../Home/components/HomeCard";
