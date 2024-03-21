@@ -6,31 +6,31 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import React, { useContext, useEffect, useMemo } from "react";
-import { BarChart, Grid, XAxis, YAxis } from "react-native-svg-charts";
-import colors from "../../../util/colors";
-import HomeCard from "../../Home/components/HomeCard";
+} from 'react-native';
+import React, { useContext, useEffect, useMemo } from 'react';
+import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
+import colors from '../../../util/colors';
+import HomeCard from '../../Home/components/HomeCard';
 import {
   ActiveIcon,
+  ArrowRightIcon,
   FacilitiesIcon,
   HamburgerMenu,
   PerformanceIcon,
-} from "../../../assets/svg/Index";
-import AppText from "../../../components/AppText";
-import { UserContext } from "../../../context/UserContext";
-import useWorkHistory from "../hooks/useWorkHistory";
-import useTaskDetails from "../hooks/useTaskDetails";
-import MssTabularOverview from "../components/MssTabularOverview";
-
+} from '../../../assets/svg/Index';
+import AppText from '../../../components/AppText';
+import { UserContext } from '../../../context/UserContext';
+import useWorkHistory from '../hooks/useWorkHistory';
+import useTaskDetails from '../hooks/useTaskDetails';
+import MssTabularOverview from '../components/MssTabularOverview';
 export default function Dashboard({ navigation }) {
-  const axesSvg = { fontSize: 14, fill: "grey", textAlign: "center" };
+  const axesSvg = { fontSize: 14, fill: 'grey', textAlign: 'center' };
   const verticalContentInset = { top: 10, bottom: 10 };
   const xAxisHeight = 50;
   const data1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const data2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const data = [50, 30];
-  const fill = "rgba(17, 28, 178, 0.7)";
+  const fill = 'rgba(17, 28, 178, 0.7)';
   const contentInset = { top: 20, bottom: 20 };
   const user = useContext(UserContext);
   const { getCleanerSummary, cleanerSummary, isLoading } = useWorkHistory();
@@ -63,16 +63,14 @@ export default function Dashboard({ navigation }) {
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           padding: 20,
-        }}
-      >
+        }}>
         <TouchableOpacity
           onPress={() => {
             navigation.openDrawer();
-          }}
-        >
+          }}>
           <HamburgerMenu />
         </TouchableOpacity>
         <AppText style={styles.heading}>Welcome {user.name}</AppText>
@@ -81,8 +79,7 @@ export default function Dashboard({ navigation }) {
         showsHorizontalScrollIndicator={false}
         scrollEnabled
         horizontal
-        style={styles.cardsSlider}
-      >
+        style={styles.cardsSlider}>
         <HomeCard
           Icon={() => <ActiveIcon />}
           label="NUMBER OF ACTIVE TASK"
@@ -109,13 +106,12 @@ export default function Dashboard({ navigation }) {
       {!isLoading && (
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
+            flexDirection: 'row',
+            justifyContent: 'space-around',
             transform: [{ translateY: 20 }],
-          }}
-        >
+          }}>
           {cleanerSummary.map((data, index) => (
-            <Text style={{ fontWeight: "bold" }} key={index}>
+            <Text style={{ fontWeight: 'bold' }} key={index}>
               {data.totalRoomsCleaned}
             </Text>
           ))}
@@ -127,11 +123,10 @@ export default function Dashboard({ navigation }) {
           <View
             style={{
               flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               height: 200,
-            }}
-          >
+            }}>
             <ActivityIndicator color={colors.blue} />
           </View>
         )}
@@ -140,8 +135,7 @@ export default function Dashboard({ navigation }) {
             style={{ flex: 1 }}
             data={cleanerSummary.map((data) => data.totalRoomsCleaned)}
             svg={{ fill }}
-            contentInset={{ top: 30, bottom: 30 }}
-          >
+            contentInset={{ top: 30, bottom: 30 }}>
             <Grid />
           </BarChart>
         )}
@@ -149,11 +143,10 @@ export default function Dashboard({ navigation }) {
       {!isLoading && (
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}>
           {cleanerSummary.map((data, index) => (
             <Text
               numberOfLines={1}
@@ -164,14 +157,31 @@ export default function Dashboard({ navigation }) {
                 fontWeight: 'bold',
                 width: 40,
               }}
-              key={index}
-            >
+              key={index}>
               {data.cleanerUsername}
             </Text>
           ))}
         </View>
       )}
-      <MssTabularOverview />
+      <View style={{ padding: 20 }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('MasterSchedule')}
+          style={styles.menuItem}>
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+            Master Sanitation Schedule
+          </Text>
+          <ArrowRightIcon />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AdminTimer')}
+          style={styles.menuItem}>
+          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+            Facility Cleaner
+          </Text>
+          <ArrowRightIcon />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -179,28 +189,39 @@ export default function Dashboard({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
   cardsSlider: {
     maxHeight: 170,
-    width: "100%",
+    width: '100%',
     marginVertical: 20,
     minHeight: 170,
     paddingVertical: 10,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: '#f9f9f9',
     paddingHorizontal: 10,
   },
   chartContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   heading: {
     color: colors.blue,
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
 
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
     marginLeft: 20,
+  },
+  menuItem: {
+    width: '100%',
+    height: 70,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(17, 28, 178, 0.7)',
+    borderRadius: 10,
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
 });
