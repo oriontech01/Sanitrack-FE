@@ -186,7 +186,7 @@ const SanitationSchedule = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={taskTable.length}
+            count={taskTable?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
