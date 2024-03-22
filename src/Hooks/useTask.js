@@ -82,15 +82,21 @@ const useTask = () => {
       });
   };
   const getTaskTable = async () => {
+    setTaskLoading(true)
     await axios
       .get(`${BASE_URL}task/mss`, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-        setTaskTable(response.data.data);
+        if(response.data){
+          setTaskLoading(false) 
+          setTaskTable(response.data.data);
+        }
+    
       })
       .catch(error => {
         if (error.response) {
+          setTaskLoading(false) 
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);

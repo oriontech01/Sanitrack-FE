@@ -40,7 +40,7 @@ const LocationListView = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
+            {/* <TableCell>ID</TableCell> */}
             <TableCell>Facility Name</TableCell>
             {!isMobile && <TableCell align="right">Country</TableCell>}
             <TableCell align="right">State</TableCell>
@@ -51,10 +51,10 @@ const LocationListView = () => {
         <TableBody>
           {allLocations.map(row => (
             <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row" align="left">
+              {/* <TableCell component="th" scope="row" align="left">
                 {row?._id}
-              </TableCell>
-              <TableCell align="right">{row?.facility_name ?? '-'}</TableCell>
+              </TableCell> */}
+              <TableCell component="th" scope="row" align="left">{row?.facility_name ?? '-'}</TableCell>
               {!isMobile && <TableCell align="right">{row?.country}</TableCell>}
               <TableCell align="right">{row?.state}</TableCell>
               {!isMobile && <TableCell align="right">{row?.city}</TableCell>}
