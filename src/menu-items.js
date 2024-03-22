@@ -99,7 +99,7 @@ const adminSideNavItems = [
       },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
         url: '/dashboard/learning' 
@@ -183,7 +183,7 @@ const cleanerSideNavItems = [
       // },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
         url: '/dashboard/learning' 
@@ -217,7 +217,7 @@ const inspectorSideNavItems = [
       },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
         url: '/dashboard/learning' 

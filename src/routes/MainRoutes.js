@@ -43,6 +43,7 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Admin/Dashboard'))
 const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permissions')));
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
+const SanitationDetails = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/SanitationDetails')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
 const Learning = Loadable(lazy(() => import('../views/Learning/index')));
 
@@ -78,9 +79,11 @@ const MainRoutes = {
       children: [
         { path: '', index: true, element: <DashboardDefault /> },
         { path: 'sanitation-schedule', element: <SanitationSchedule /> },
+     
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
     },
+    { path: '/dashboard/sanitation-schedule/:id', element: <SanitationDetails /> },
     { path: '/dashboard/facility-timer', element: <FacilityTimer /> },
     { path: '/dashboard/facility-timer/:id', element: <FacilityTimerDetails /> },
     { path: '/dashboard/coming-soon', element: <ComingSoon /> },
