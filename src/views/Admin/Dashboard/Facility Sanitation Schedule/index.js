@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 import MonthlyMissedCleaningsChart from './BarChart';
 import {
   Table,
@@ -10,11 +9,11 @@ import {
   Button,
   Paper,
   TablePagination,
-  Checkbox,
   TableSortLabel,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
+  CircularProgress
 } from '@mui/material';
 import { useState } from 'react';
 import PieChart3D from './PieChart';
@@ -55,10 +54,19 @@ console.log(rooms);
 
 const SanitationSchedule = () => {
   const { monthlyMissed, getMonthlyMissed, getMissed, missed, getTaskTable, taskTable } = useTask();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    getMonthlyMissed();
-    getMissed();
-    getTaskTable();
+    const fetchMssData = async () => {
+      setLoading(true);
+      try {
+       await getMonthlyMissed();
+       await getMissed();
+       await getTaskTable();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMssData()
   }, []);
   console.log('first', taskTable);
 
@@ -128,7 +136,6 @@ const SanitationSchedule = () => {
           <PieChart3D />
           <HorizonChart missed={missed} />
         </div>
-
         <Paper sx={{ width: '100%', overflowX: 'auto' }}>
           <Table>
             <TableHead>
@@ -143,45 +150,47 @@ const SanitationSchedule = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {currentItems.map(room => (
-                <TableRow key={room?._id}>
-                  <TableCell>{room?.assigned_room?.roomName}</TableCell>
-                  <TableCell>
-                    <Accordion>
-                      <AccordionSummary expandIcon={<GridExpandMoreIcon />}>View Items</AccordionSummary>
-                      <AccordionDetails>
-                        <span className="flex flex-col gap-y-2 justify-center items-center text-center">
-                          {room?.tasks?.map(item => (
-                            <p key={item.name}>{item.name}</p>
-                          ))}
-                        </span>
-                      </AccordionDetails>
-                    </Accordion>
-                  </TableCell>
-                  <TableCell>{room?.times_approved}</TableCell>
-                  <TableCell>{room?.tasks[-1]?.last_cleaned ? formatDate(room?.tasks[-1]?.last_cleaned) : '-'}</TableCell>
-                  <TableCell>{room?.scheduled_date ? formatDate(room?.scheduled_date) : '-'}</TableCell>
-                  <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>{room.isSubmitted ? 'No' : 'Yes'}</TableCell>
-                  <TableCell>Sanitation</TableCell>
-                  <TableCell className="capitalize">{room?.task_stage}</TableCell>
-                  <TableCell>{room?._id}</TableCell>
-                  <TableCell>
-                    {' '}
-                    <Accordion>
-                      <AccordionSummary expandIcon={<GridExpandMoreIcon />}>View Links</AccordionSummary>
-                      <AccordionDetails>
-                        <span className="flex flex-col gap-y-2 justify-center items-center text-center">
-                          {room?.tasks?.map(item => (
-                            <a href={item.image} key={item.name}>
-                              {item.image}
-                            </a>
-                          ))}
-                        </span>
-                      </AccordionDetails>
-                    </Accordion>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {loading ? (
+                <CircularProgress />
+              ) : (
+                currentItems.map(room =>
+                  room.tasks.map(task => {
+                    return (
+                      <TableRow key={room?._id}>
+                        <TableCell>{room?.assigned_room?.roomName}</TableCell>
+                        <TableCell>
+                          <span className="flex flex-col gap-y-2 justify-center items-center text-center">
+                            <p>{task.name}</p>
+                          </span>
+                        </TableCell>
+                        <TableCell>{room?.times_approved}</TableCell>
+                        <TableCell>{room?.tasks[-1]?.last_cleaned ? formatDate(room?.tasks[-1]?.last_cleaned) : '-'}</TableCell>
+                        <TableCell>{room?.scheduled_date ? formatDate(room?.scheduled_date) : '-'}</TableCell>
+                        <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>{room.isSubmitted ? 'No' : 'Yes'}</TableCell>
+                        <TableCell>Sanitation</TableCell>
+                        <TableCell className="capitalize">{room?.task_stage}</TableCell>
+                        <TableCell>{room?._id}</TableCell>
+                        <TableCell style={{ display: 'flex', flexDirection: 'row' }}>
+                          {' '}
+                          <Accordion>
+                            <AccordionSummary expandIcon={<GridExpandMoreIcon />}>View Links</AccordionSummary>
+                            <AccordionDetails>
+                              <span className="flex flex-col gap-y-2 justify-center items-center text-center">
+                                {room?.tasks?.map(item => (
+                                  <a href={item.image} key={item.name}>
+                                    {item.image}
+                                  </a>
+                                ))}
+                              </span>
+                            </AccordionDetails>
+                          </Accordion>
+                          <Button>View Details</Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )
+              )}
             </TableBody>
           </Table>
           <TablePagination
