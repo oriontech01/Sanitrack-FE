@@ -8,7 +8,7 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { LibraryAddOutlined, LocationCity, NotificationAdd, TaskSharp } from '@mui/icons-material';
+import { LibraryAddOutlined, LocationCity, NewReleasesRounded, NotificationAdd, TaskSharp, TimelapseOutlined, TimelapseRounded, TimelapseSharp, Timeline, Timer10TwoTone } from '@mui/icons-material';
 import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
 import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
@@ -46,7 +46,21 @@ const adminSideNavItems = [
         title: 'Facilties',
         type: 'item',
         icon: LocationCity, // Changed Icon
-        url: '/dashboard/facilities'
+        url: '/dashboard/locations'
+      },
+      {
+        id: 'facility-timer',
+        title: 'Facility Timer',
+        type: 'item',
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/facility-timer'
+      },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/facility-release'
       },
       // {
       //   id: 'facilities',
@@ -180,7 +194,8 @@ const cleanerSideNavItems = [
         type: 'item',
         icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' 
-      }
+      },
+      
     ]
   }
 ];
@@ -220,7 +235,21 @@ const inspectorSideNavItems = [
         type: 'item',
         icon: FaBagShopping, // Changed Icon
         url: '/dashboard/requests' 
-      }
+      },
+      {
+        id: 'facility-timer',
+        title: 'Facility Timer',
+        type: 'item',
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/inspector/facility-timer'
+      },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/inspector/facility-release'
+      },
     ]
   }
 ];

@@ -10,7 +10,8 @@ const useRoom = () => {
   const [allRooms, setAllRooms] = useState([]);
   const [allRoomsById, setAllRoomsById] = useState([]);
   const [allUnassignedRoomsById, setAllUnaassignedRoomsById] = useState([]);
-  const [singleRoomTask,setSinleRoomTask]=useState([])
+  const [roomByLocation, setRoomByLocation] = useState([]);
+  const [singleRoomTask, setSinleRoomTask] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [roomsCount, setRoomCount] = useState();
@@ -26,8 +27,8 @@ const useRoom = () => {
       })
       .then(response => {
         // console.log(response.data.message)
-       
-        if(response){
+
+        if (response) {
           setIsLoading(false);
           setResponseMessage(response.data.message);
           toast.success('Room Added Successfully', {
@@ -41,13 +42,11 @@ const useRoom = () => {
             theme: 'colored',
             transition: Flip
           });
-       
+
           setTimeout(() => {
             navigate('/dashboard/rooms');
           }, 1500);
-        
         }
-
       })
       .catch(error => {
         setIsLoading(false);
@@ -143,7 +142,7 @@ const useRoom = () => {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-        console.log("firstone",response)
+        console.log('firstone', response);
         setAllUnaassignedRoomsById(response.data.data);
         console.log('omah', response.data.data);
         if (response.data.data) {
@@ -153,7 +152,40 @@ const useRoom = () => {
       .catch(error => {
         if (error.response) {
           setIsLoading(false);
-        
+
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
+  const getRoomByLocation = async id => {
+    setIsLoading(true);
+    await axios
+      .get(`${BASE_URL}/room/location?locationId=${id}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        console.log('firstone', response);
+        setRoomByLocation(response.data.data);
+        console.log('omah', response.data.data);
+        if (response.data.data) {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          setIsLoading(false);
+
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
@@ -196,7 +228,7 @@ const useRoom = () => {
             console.log('Axios error:', error);
           }
         } else {
-          setIsLoading(false)
+          setIsLoading(false);
           console.log('Network error:', error.message);
         }
       });
@@ -273,7 +305,9 @@ const useRoom = () => {
     allUnassignedRoomsById,
     getSingleRoomTaskById,
     singleRoomTask,
-    
+    roomByLocation,
+    setRoomByLocation,
+    getRoomByLocation
   };
 };
 

@@ -61,22 +61,6 @@ const SanitationSchedule = () => {
     getTaskTable();
   }, []);
   console.log('first', taskTable);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const indexOfLastItem = (page === 0 ? 1 : page) * rowsPerPage;
-  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  const currentItems = taskTable?.slice(indexOfFirstItem, indexOfLastItem);
-  console.log('cuindexOfFirstItemrrent', indexOfFirstItem);
-  console.log('indexOfLastItem', indexOfLastItem);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-    console.log('page', newPage);
-  };
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   const [orderBy, setOrderBy] = useState(null);
   const [order, setOrder] = useState('asc');
@@ -100,13 +84,30 @@ const SanitationSchedule = () => {
     setOrder(isAsc ? 'desc' : 'asc');
   };
 
-  const sortedData = currentItems.sort((a, b) => {
+  const sortedData = taskTable.sort((a, b) => {
     if (order === 'asc') {
       return a[orderBy] > b[orderBy] ? 1 : -1;
     } else {
       return b[orderBy] > a[orderBy] ? 1 : -1;
     }
   });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const indexOfLastItem = (page === 0 ? 1 : page) * rowsPerPage;
+  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+  const currentItems = sortedData?.slice(indexOfFirstItem, indexOfLastItem);
+  console.log('cuindexOfFirstItemrrent', indexOfFirstItem);
+  console.log('indexOfLastItem', indexOfLastItem);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    console.log('page', newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   const formatDate = dateString => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -134,9 +135,9 @@ const SanitationSchedule = () => {
               <TableRow>
                 {columns.map(column => (
                   <TableCell key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                    <TableRow active direction={orderBy === column.id ? order : 'asc'} onClick={() => handleSort(column.id)}>
-                      {column.label}
-                    </TableRow>
+                    <TableSortLabel active direction={orderBy === column.id ? order : 'asc'} onClick={() => handleSort(column.id)}>
+                      <TableRow>{column.label}</TableRow>
+                    </TableSortLabel>
                   </TableCell>
                 ))}
               </TableRow>
@@ -186,7 +187,7 @@ const SanitationSchedule = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={taskTable.length}
+            count={taskTable?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
