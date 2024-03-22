@@ -65,6 +65,7 @@ const SanitationSchedule = () => {
       } catch (error) {
         console.log(error);
       }
+      setLoading(false)
     };
     fetchMssData()
   }, []);
