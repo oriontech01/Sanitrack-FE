@@ -10,12 +10,13 @@ const useRoom = () => {
   const [allRooms, setAllRooms] = useState([]);
   const [allRoomsById, setAllRoomsById] = useState([]);
   const [allUnassignedRoomsById, setAllUnaassignedRoomsById] = useState([]);
+  const [allAssignedRoomsById, setAllAassignedRoomsById] = useState([]);
   const [roomByLocation, setRoomByLocation] = useState([]);
   const [singleRoomTask, setSinleRoomTask] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [roomsCount, setRoomCount] = useState();
-
+  const locationId =localStorage.getItem("locationId")
   const access_token = localStorage.getItem('auth-token');
 
   const addRoom = async formData => {
@@ -144,6 +145,39 @@ const useRoom = () => {
       .then(response => {
         console.log('firstone', response);
         setAllUnaassignedRoomsById(response.data.data);
+        console.log('omah', response.data.data);
+        if (response.data.data) {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          setIsLoading(false);
+
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
+  const getAssignedRoomById = async () => {
+    setIsLoading(true);
+    await axios
+      .get(`${BASE_URL}/room/location?locationId=${locationId}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        console.log('firstone', response);
+        setAllAassignedRoomsById(response.data.data);
         console.log('omah', response.data.data);
         if (response.data.data) {
           setIsLoading(false);
@@ -307,7 +341,10 @@ const useRoom = () => {
     singleRoomTask,
     roomByLocation,
     setRoomByLocation,
-    getRoomByLocation
+    getRoomByLocation,
+    getAssignedRoomById,
+    allAssignedRoomsById,
+    setAllAassignedRoomsById
   };
 };
 
