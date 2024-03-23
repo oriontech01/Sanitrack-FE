@@ -144,7 +144,7 @@ export default function MssTabularOverview() {
                     </Text>
                     <Text style={styles.rowText}>{data._id}</Text>
                     <Text
-                      onPress={() => Linking.openURL("https://google.com")}
+                      onPress={() => Linking.openURL(task.image)}
                       style={[
                         styles.rowText,
                         {
@@ -153,7 +153,7 @@ export default function MssTabularOverview() {
                         },
                       ]}
                     >
-                      Evidence Link
+                      {task.image}
                     </Text>
                     <TouchableOpacity
                       onPress={() => {

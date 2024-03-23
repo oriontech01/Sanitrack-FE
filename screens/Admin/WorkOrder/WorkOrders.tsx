@@ -46,7 +46,7 @@ export default function WorkOrders({ navigation }) {
     <SafeAreaView style={{ flex: 1, backfaceVisibility: '#fff' }}>
       <View style={styles.container}>
         <Header
-          label="Work Order Facilities"
+          label="Work Order Rooms"
           withAdd={true}
           withBack={false}
           onAdd={() => {

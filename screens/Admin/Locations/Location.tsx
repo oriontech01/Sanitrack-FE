@@ -38,7 +38,11 @@ const Location = () => {
     fetchLocations();
   }, []);
   const RenderLocationMapView = () => {
-    return <LocationMapView locationData={allLocations} />;
+    return (
+      <SafeAreaView>
+        <LocationMapView locationData={allLocations} />
+      </SafeAreaView>
+    );
   };
   const RenderLocationListView = () => {
     return <LocationListView locationData={allLocations} />;

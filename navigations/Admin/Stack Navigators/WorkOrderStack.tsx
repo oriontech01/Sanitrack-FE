@@ -1,19 +1,21 @@
 import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import WorkOrders from '../../../screens/Admin/WorkOrder/WorkOrders';
+// import WorkOrders from '../../../screens/Admin/WorkOrder/WorkOrders';
 import WorOrderDetail from '../../../screens/Admin/WorkOrder/WorOrderDetail';
 import SelectDuration from '../../../screens/Admin/WorkOrder/SelectDuration';
 import CleaningItems from '../../../screens/Admin/WorkOrder/CleaningItems';
 import Personell from '../../../screens/Admin/WorkOrder/Personell';
 import SuccessScree from '../../../screens/Admin/WorkOrder/SuccessScreen';
 import OrderSummary from '../../../screens/Admin/WorkOrder/OrderSummary';
+import WorkOrderIndexPage from '../../../screens/Admin/WorkOrder';
+import SelectInspectorsWorkOrder from '../../../screens/Admin/WorkOrder/Facility Work Order/SelectInspectors';
 
 const WorkOrderStack = () => {
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen component={WorkOrders} name="AdminWorkorderHome" />
+      <Stack.Screen component={WorkOrderIndexPage} name="AdminWorkorderHome" />
+      <Stack.Screen component={SelectInspectorsWorkOrder} name="SelectInspectors" />
       <Stack.Screen component={WorOrderDetail} name="AdminWorkorderDetail" />
       <Stack.Screen component={SelectDuration} name="SelectDuration" />
       <Stack.Screen component={CleaningItems} name="AdminCleaningItems" />
