@@ -46,7 +46,7 @@ const InspectorDashboard = () => {
         Welcome {localStorage.getItem('name')}!
       </Typography>
       <Typography variant="h4" mt={2}>
-        Below are the locations for the tasks of the day.
+        Below are the facilities for the tasks of the day.
       </Typography>
 
       <Grid container spacing={3}>

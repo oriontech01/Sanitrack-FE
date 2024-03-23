@@ -304,6 +304,9 @@ const useCleanerHook = () => {
             transition: Flip
           });
           setItemsLoading(false);
+          localStorage.removeItem('stopwatchStartTime');
+    localStorage.removeItem('running');
+    localStorage.setItem('elaspedTime', elapsedTime);
           setTimeout(() => {
             navigate(`/dashboard`);
           }, 1500);

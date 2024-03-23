@@ -17,12 +17,17 @@ import Slide from '@mui/material/Slide';
 import axios from 'axios';
 import { cityData, countryData } from '../../../constants/locationData';
 import NetworkDetector from 'utils/networkDetector';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, Flip } from 'react-toastify';
 
 const AddLocation = ({ isOpen, onRequestClose, isDisconnected }) => {
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
+  const [loading, setLoading] = useState(false);
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
+  const [facilityName, setFacilityName] = useState('');
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const token = localStorage.getItem('auth-token');
@@ -54,100 +59,164 @@ const AddLocation = ({ isOpen, onRequestClose, isDisconnected }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (isDisconnected) {
-      saveDataOffline({ country, state, city, postal_code: postalCode });
-    } else {
-      savedData = loadDataOffline();
-      const res = await axios.post(`${BASE_URL}/locations/add`, savedData, { headers: { Authorization: `Bearer ${token}` } });
-    }
+    setLoading(true);
+    // if (isDisconnected) {
+    //   saveDataOffline({ country, state, city, facility_name: facilityName });
+    // } else {
+    //   savedData = loadDataOffline();
+    //   const res = await axios.post(`${BASE_URL}/locations/add`, savedData, { headers: { Authorization: `Bearer ${token}` } });
+    // }
     try {
       const res = await axios.post(
         `${BASE_URL}/locations/add`,
-        { country, state, city, postal_code: postalCode },
+        {  country, state, city, facility_name: facilityName  },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       console.log(res.data);
-      alert(res.data.message);
-      onRequestClose();
+      // alert(res.data.message);
+      if (res.data) {
+        setLoading(false);
+        toast.success('Room Added Successfully', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+          transition: Flip
+        });
+
+        setTimeout(() => {
+          onRequestClose();
+        }, 1500);
+      }
     } catch (error) {
-      console.error('Error adding location', error);
-      alert('Error adding location');
+      if (error.response) {
+        setLoading(false);
+        const { status, data } = error.response;
+        if (status === 400 && data && data.message) {
+          setResponseMessage(data?.message);
+          toast.error(data?.message, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+          console.log('An error occured', data?.message);
+        } else if (status === 403 && data && data?.message) {
+          console.log('An error with status 403 occured', data?.message);
+          setResponseMessage(data?.message);
+        } else {
+          toast.error(error?.message, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+          console.log('Axios error:', error);
+        }
+      } else {
+        console.log('Network error:', error?.message);
+      }
+      // alert('Error adding location');
     }
   };
 
   return (
-    <Modal
-      open={isOpen}
-      onClose={onRequestClose}
-      aria-labelledby="add-location-modal"
-      aria-describedby="add-location-form"
-      closeAfterTransition
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-      TransitionComponent={Slide}
-      TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
-    >
-      <Container
-        maxWidth="sm"
+    <>
+      <ToastContainer />
+      <Modal
+        open={isOpen}
+        onClose={onRequestClose}
+        aria-labelledby="add-location-modal"
+        aria-describedby="add-location-form"
+        closeAfterTransition
         sx={{
-          p: 4,
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          ...(fullScreen && { maxHeight: '100vh', overflowY: 'auto' })
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
+        TransitionComponent={Slide}
+        TransitionProps={{ direction: 'down', timeout: { enter: 500 } }}
       >
-        <Typography variant="h5" component="h2" gutterBottom>
-          Add a New Facility Location
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ mb: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Country</InputLabel>
-              <Select value={country} label="Country" onChange={e => setCountry(e.target.value)}>
-                {Object.keys(countryData).map(country => (
-                  <MenuItem key={country} value={country}>
-                    {country}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <FormControl fullWidth disabled={!states.length}>
-              <InputLabel>State/Province</InputLabel>
-              <Select value={state} label="State/Province" onChange={e => setState(e.target.value)}>
-                {states.map(state => (
-                  <MenuItem key={state} value={state}>
-                    {state}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <FormControl fullWidth disabled={!cities.length}>
-              <InputLabel>City</InputLabel>
-              <Select value={city} label="City" onChange={e => setCity(e.target.value)}>
-                {cities.map(city => (
-                  <MenuItem key={city} value={city}>
-                    {city}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <TextField fullWidth label="Postal Code" variant="outlined" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
-          </Box>
-          <Button type="submit" variant="contained" style={{ backgroundColor: 'blue' }}>
-            Add Location
-          </Button>
-        </form>
-      </Container>
-    </Modal>
+        <Container
+          maxWidth="sm"
+          sx={{
+            p: 4,
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            ...(fullScreen && { maxHeight: '100vh', overflowY: 'auto' })
+          }}
+        >
+          <Typography variant="h5" component="h2" gutterBottom>
+            Add a New Facility Location
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <Box sx={{ mb: 2 }}>
+              <TextField
+                fullWidth
+                label="Facility Name"
+                variant="outlined"
+                value={facilityName}
+                onChange={e => setFacilityName(e.target.value)}
+              />
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Country</InputLabel>
+                <Select value={country} label="Country" onChange={e => setCountry(e.target.value)}>
+                  {Object.keys(countryData).map(country => (
+                    <MenuItem key={country} value={country}>
+                      {country}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <FormControl fullWidth disabled={!states.length}>
+                <InputLabel>State/Province</InputLabel>
+                <Select value={state} label="State/Province" onChange={e => setState(e.target.value)}>
+                  {states.map(state => (
+                    <MenuItem key={state} value={state}>
+                      {state}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box sx={{ mb: 2 }}>
+              <FormControl fullWidth disabled={!cities.length}>
+                <InputLabel>City</InputLabel>
+                <Select value={city} label="City" onChange={e => setCity(e.target.value)}>
+                  {cities.map(city => (
+                    <MenuItem key={city} value={city}>
+                      {city}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
+            <Button type="submit" variant="contained" disabled={loading} style={{ backgroundColor: 'blue' }}>
+              {loading ? 'Processing...' : 'Add Facilties'}
+            </Button>
+          </form>
+        </Container>
+      </Modal>
+    </>
   );
 };
 

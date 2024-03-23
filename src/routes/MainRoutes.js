@@ -6,6 +6,11 @@ import Loadable from 'component/Loadable';
 import AddCourse from 'views/Learning/AddCourse';
 import Lessons from 'views/Learning/Lessons';
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
+const FacilityTimer = Loadable(lazy(() => import('views/Admin/FacilityTimer/FacilityTimer')));
+const ComingSoon = Loadable(lazy(() => import('views/Admin/FacilityRelease/ComingSoon')));
+const FacilityRelease = Loadable(lazy(() => import('views/Admin/FacilityRelease/FacilityRelease')));
+const FacilityTimerDetails = Loadable(lazy(() => import('views/Admin/FacilityTimer/FacilityTimerDetails')));
+const FacilityReleaseDetails = Loadable(lazy(() => import('views/Admin/FacilityRelease/FacilityReleaseDetails')));
 const CreatePermissions = Loadable(lazy(() => import('views/Admin/Permissions/CreatePermissions')));
 const CreateRole = Loadable(lazy(() => import('views/Admin/Roles/CreateRole')));
 const AssignRole = Loadable(lazy(() => import('views/Admin/Roles/AssignRole')));
@@ -28,7 +33,6 @@ const ChatHome = Loadable(lazy(() => import('views/Admin/Messages/index')));
 const Contact = Loadable(lazy(() => import('views/Admin/Contact/Contact')));
 const Inventory = Loadable(lazy(() => import('views/Admin/Inventory/Inventory')));
 const Locations = Loadable(lazy(() => import('views/Admin/Locations/Locations')));
-const Facilities = Loadable(lazy(() => import('views/Admin/Facilities/Facilities')));
 const WorkHistory = Loadable(lazy(() => import('views/Admin/Work History/WorkHistory')));
 const CleanerHistory = Loadable(lazy(() => import('views/Admin/Work History/Cleaner Work History/CleanerHistory')));
 const InspectorHistory = Loadable(lazy(() => import('views/Admin/Work History/Inspector Work History/InspectorHistory')));
@@ -40,6 +44,7 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Admin/Dashboard'))
 const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permissions')));
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
+const SanitationDetails = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/SanitationDetails')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
 const Learning = Loadable(lazy(() => import('../views/Learning/index')));
 
@@ -59,6 +64,11 @@ const InspectorTimer = Loadable(lazy(() => import('../views/Inspector/Dashboard/
 const CloseWorkOrder = Loadable(lazy(() => import('../views/Inspector/Dashboard/CloseWorkOrder')));
 const InspectorRequests = Loadable(lazy(() => import('../views/Inspector/Requests/InspectorRequests')));
 const InspectorRequestsDetails = Loadable(lazy(() => import('../views/Inspector/Requests/RequestDetails')));
+const InspectorFacilityTimer = Loadable(lazy(() => import('views/Inspector/FacilityTimer/FacilityTimer')));
+const InspectorComingSoon = Loadable(lazy(() => import('views/Inspector/FacilityRelease/ComingSoon')));
+const InspectorFacilityRelease = Loadable(lazy(() => import('views/Inspector/FacilityRelease/FacilityRelease')));
+const InspectorFacilityTimerDetails = Loadable(lazy(() => import('views/Inspector/FacilityTimer/FacilityTimerDetails')));
+const InspectorFacilityReleaseDetails = Loadable(lazy(() => import('views/Inspector/FacilityRelease/FacilityReleaseDetails')));
 // ==============================|| MAIN ROUTES ||============================== //
 const MainRoutes = {
   path: '/',
@@ -70,9 +80,16 @@ const MainRoutes = {
       children: [
         { path: '', index: true, element: <DashboardDefault /> },
         { path: 'sanitation-schedule', element: <SanitationSchedule /> },
+     
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
     },
+    { path: '/dashboard/sanitation-schedule/:id', element: <SanitationDetails /> },
+    { path: '/dashboard/facility-timer', element: <FacilityTimer /> },
+    { path: '/dashboard/facility-timer/:id', element: <FacilityTimerDetails /> },
+    { path: '/dashboard/coming-soon', element: <ComingSoon /> },
+    { path: '/dashboard/facility-release', element: <FacilityRelease /> },
+    { path: '/dashboard/facility-release/:id', element: <FacilityReleaseDetails /> },
     { path: '/dashboard/work-schedule', element: <WorkOrder /> },
     { path: '/dashboard/create-work-order', element: <CreateWorkOrder /> },
     { path: '/dashboard/work-order/:locationId', element: <WorkOrderDetails /> },
@@ -84,8 +101,11 @@ const MainRoutes = {
     { path: '/dashboard/view-details/:roomId', element: <RoomDetails /> },
     { path: '/dashboard/view-room/:roomId', element: <RoomView /> },
     { path: '/dashboard/messages', element: <ChatHome /> },
+
     { path: '/dashboard/locations', element: <Locations /> },
-    { path: '/dashboard/facilities', element: <Facilities /> },
+
+    // { path: '/dashboard/facilities', element: <Facilities /> },
+
     {
       path: '/dashboard/work-history',
       element: <WorkHistory />,
@@ -132,7 +152,12 @@ const MainRoutes = {
     { path: '/dashboard/inspector/inspector-timer', element: <InspectorTimer /> },
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
     { path: '/dashboard/requests', element: <InspectorRequests /> },
-    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> }
+    { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
+    { path: '/dashboard/inspector/facility-timer', element: <InspectorFacilityTimer /> },
+    { path: '/dashboard/inspector/facility-timer/:id', element: <InspectorFacilityTimerDetails /> },
+    { path: '/dashboard/inspector/coming-soon', element: <InspectorComingSoon /> },
+    { path: '/dashboard/inspector/facility-release', element: <InspectorFacilityRelease /> },
+    { path: '/dashboard/inspector/facility-release/:id', element: <InspectorFacilityReleaseDetails /> },
   ]
 };
 

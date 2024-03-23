@@ -8,7 +8,18 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { LibraryAddOutlined, LocationCity, NotificationAdd, TaskSharp } from '@mui/icons-material';
+import {
+  LibraryAddOutlined,
+  LocationCity,
+  NewReleasesRounded,
+  NotificationAdd,
+  TaskSharp,
+  TimelapseOutlined,
+  TimelapseRounded,
+  TimelapseSharp,
+  Timeline,
+  Timer10TwoTone
+} from '@mui/icons-material';
 import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
 import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
@@ -42,19 +53,33 @@ const adminSideNavItems = [
         url: '/dashboard'
       },
       {
-        id: 'locations',
-        title: 'Locations',
+        id: 'facilities',
+        title: 'Facilties',
         type: 'item',
         icon: LocationCity, // Changed Icon
         url: '/dashboard/locations'
       },
       {
-        id: 'facilities',
-        title: 'Facilities',
+        id: 'facility-timer',
+        title: 'Facility Timer',
         type: 'item',
-        icon: FaBuilding, // Main Icon for Facilities
-        url: '/dashboard/facilities' // Base URL for Facilities
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/facility-timer'
       },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/facility-release'
+      },
+      // {
+      //   id: 'facilities',
+      //   title: 'Facilities',
+      //   type: 'item',
+      //   icon: FaBuilding, // Main Icon for Facilities
+      //   url: '/dashboard/facilities' // Base URL for Facilities
+      // },
       {
         id: 'rooms',
         title: 'Rooms',
@@ -220,6 +245,20 @@ const inspectorSideNavItems = [
         type: 'item',
         icon: FaBagShopping, // Changed Icon
         url: '/dashboard/requests'
+      },
+      {
+        id: 'facility-timer',
+        title: 'Facility Timer',
+        type: 'item',
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/inspector/facility-timer'
+      },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/inspector/facility-release'
       }
     ]
   }

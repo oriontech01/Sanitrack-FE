@@ -2,16 +2,24 @@ import useCleanerHook from 'Hooks/cleaner/useCleanerHook';
 import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useStopwatch, useTimer } from 'react-timer-hook';
-import { useNavigate } from 'react-router';
+
+import { useNavigate, useParams } from 'react-router';
 import { toast, Flip } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import InspectorItemsUpload from './InspectorTimerUpload';
+
 import useInspectorHook from 'Hooks/inspector/useInspectorHook';
 import axios from 'axios';
+import useRoom from 'Hooks/useRoom';
+import TimerRooms from './TimerRooms';
+const FacilityTimerDetails = () => {
+  const params = useParams();
 
-const CleanerTimer = () => {
+  const { roomByLocation, getRoomByLocation, isLoading } = useRoom();
+  useEffect(() => {
+    getRoomByLocation(params.id);
+  }, []);
+  console.log('first', roomByLocation);
   const { inspectorSummary, getSummaryInspector, rooms, getRoomsToClean, loading } = useInspectorHook();
   //   const { submitTask, itemsLoading } = useCleanerHook();
   const navigate = useNavigate();
@@ -25,10 +33,10 @@ const CleanerTimer = () => {
   const run = localStorage.getItem('running');
   const roomId = localStorage.getItem('roomId');
   const actualTime = localStorage.getItem('actualTimer');
-  
+
   const [disableStart, setDisabletart] = useState(false);
   const [isRunning, setIsRunning] = useState(run ? run : false);
-  const [elapsedTime, setElapsedTime] = useState(elapsed? elapsed :0); // Total elapsed time in seconds
+  const [elapsedTime, setElapsedTime] = useState(elapsed ? elapsed : 0); // Total elapsed time in seconds
   const [startTime, setStartTime] = useState(start ? start : 0); // Start time in milliseconds
   const [selectedTasks, setSelectedTasks] = useState([]);
   useEffect(() => {
@@ -90,81 +98,98 @@ const CleanerTimer = () => {
     //   setIsRunning(true);
     // });
   }, [start]);
-  console.log('first', elapsedTime);
+  useEffect(() => {
+    // const storedStartTime = localStorage.getItem('stopwatchStartTime');
+setStartTime(0)
+setElapsedTime(0)
+localStorage.removeItem('stopwatchStartTime');
+localStorage.removeItem('running');
+localStorage.setItem('elaspedTime', elapsedTime);
+    // window.addEventListener('beforeunload', () => {
+    //   localStorage.setItem('stopwatchStartTime', startTime);
+    //   setIsRunning(true);
+    // });
+  }, []);
+
   const percentage = Math.floor((elapsedTime / actualTime) * 100);
 
-  const approveTask = async data => {
-    setItemsLoading(true);
-    await axios
-      .put(
-        `${BASE_URL}inspector/approve-task?taskId=${taskId}`,
+  // const approveTask = async data => {
+  //   setItemsLoading(true);
+  //   await axios
+  //     .put(
+  //       `${BASE_URL}inspector/approve-task?taskId=${taskId}`,
 
-        data,
-        { headers: { Authorization: `Bearer ${access_token}` } }
-      )
-      .then(response => {
-        console.log(response);
-        // send user back to the task home page
-        if (response.data) {
-            setItemsLoading(false);
-          toast.success('Task Approved Successfully', {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-            transition: Flip
-          });
-          localStorage.removeItem('stopwatchStartTime');
-          localStorage.removeItem('running');
-          localStorage.setItem('elaspedTime', elapsedTime);
-          setTimeout(() => {
-            if (selectedTasks.length === rooms.length) {
-              navigate(`/dashboard/inspector/close-work-order`);
-            } else navigate(`/dashboard`);
-          }, 2000);
-        }
+  //       data,
+  //       { headers: { Authorization: `Bearer ${access_token}` } }
+  //     )
+  //     .then(response => {
+  //       console.log(response);
+  //       // send user back to the task home page
+  //       if (response.data) {
+  //           setItemsLoading(false);
+  //         toast.success('Task Approved Successfully', {
+  //           position: 'top-center',
+  //           autoClose: 5000,
+  //           hideProgressBar: true,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: 'colored',
+  //           transition: Flip
+  //         });
+  //         localStorage.removeItem('stopwatchStartTime');
+  //         localStorage.removeItem('running');
+  //         localStorage.setItem('elaspedTime', elapsedTime);
+  //         setTimeout(() => {
+  //           if (selectedTasks.length === rooms.length) {
+  //             navigate(`/dashboard/inspector/close-work-order`);
+  //           } else navigate(`/dashboard`);
+  //         }, 2000);
+  //       }
 
-        // console.log(response.json())
-      })
-      .catch(error => {
-        if (error.response) {
-          setItemsLoading(false);
-          const { status, data } = error.response;
-          toast.error(data.message, {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-            transition: Flip
-          });
-          if (status === 400 && data && data.message) {
-            setResponseMessage(data.message);
-            console.log('An error occured', data.message);
-          } else if (status === 403 && data && data.message) {
-            // navigate('/')
-          } else {
-            console.log('Axios error:', error);
-          }
-        } else {
-          setItemsLoading(false);
-          console.log('Network error:', error.message);
-        }
-      });
-  };
+  //       // console.log(response.json())
+  //     })
+  //     .catch(error => {
+  //       if (error.response) {
+  //         setItemsLoading(false);
+  //         const { status, data } = error.response;
+  //         toast.error(data.message, {
+  //           position: 'top-center',
+  //           autoClose: 5000,
+  //           hideProgressBar: true,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: 'colored',
+  //           transition: Flip
+  //         });
+  //         if (status === 400 && data && data.message) {
+  //           setResponseMessage(data.message);
+  //           console.log('An error occured', data.message);
+  //         } else if (status === 403 && data && data.message) {
+  //           // navigate('/')
+  //         } else {
+  //           console.log('Axios error:', error);
+  //         }
+  //       } else {
+  //         setItemsLoading(false);
+  //         console.log('Network error:', error.message);
+  //       }
+  //     });
+  // };
+ 
   const handleSubmit = () => {
     // const data = { cleanTime: elapsedTime, roomId: roomId };
     // console.log(data);
     const newData = { timer: elapsedTime, passedTasks: selectedTasks };
+    localStorage.removeItem('stopwatchStartTime');
+    localStorage.removeItem('running');
+    localStorage.setItem('elaspedTime', elapsedTime);
     console.log('submoitted', newData);
-    approveTask(newData);
+    navigate("/dashboard/coming-soon")
+    //   approveTask(newData);
   };
 
   return (
@@ -238,10 +263,10 @@ const CleanerTimer = () => {
           </button> */}
         </div>
       </div>
-      {isRunning && (
+      {/* {isRunning && (
         <InspectorItemsUpload selectedTasks={selectedTasks} setSelectedTasks={setSelectedTasks} rooms={rooms} loading={loading} />
-      )}
-
+      )} */}
+      <TimerRooms data={roomByLocation} loading={isLoading} />
       <button
         onClick={handleSubmit}
         className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-full lg:w-1/2 lg:h-[40px] text-base border-t-2 mt-10 "
@@ -253,4 +278,4 @@ const CleanerTimer = () => {
   );
 };
 
-export default CleanerTimer;
+export default FacilityTimerDetails;

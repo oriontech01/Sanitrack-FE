@@ -2,10 +2,13 @@
 import useCleanerHook from 'Hooks/cleaner/useCleanerHook';
 import useInspectorHook from 'Hooks/inspector/useInspectorHook';
 import axios from 'axios';
+import ModalComponent from 'component/Modals/Modal';
 import React, { useEffect, useState } from 'react';
 import { toast, Flip } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ViewImage from './ViewImage';
+import { useItemState } from 'context/ItemContext';
 const InspectorItemsUpload = ({ selectedTasks, setSelectedTasks, rooms, loading }) => {
   console.log('rooms', rooms);
   const [base64String, setBase64String] = useState('');
@@ -36,7 +39,15 @@ const InspectorItemsUpload = ({ selectedTasks, setSelectedTasks, rooms, loading 
       setSelectedTasks([...selectedTasks, { taskId }]);
     }
   };
- 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = (e) => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const { setInventory } = useItemState();
   return (
     <>
       <ToastContainer />
@@ -70,7 +81,10 @@ const InspectorItemsUpload = ({ selectedTasks, setSelectedTasks, rooms, loading 
                 </div>
                 <div className="pt-2 w-full">
                   <button
-                    //   onClick={handleSubmit}
+                    onClick={e => {
+                      openModal(e);
+                      setInventory(room);
+                    }}
                     className="text-blue-500 flex justify-center   gap-x-2 items-center px-4 py-2 bg-blue-200 w-auto lg:h-[40px] text-base border border-blue-500 rounded-lg "
                     // disabled={}
                   >
@@ -89,7 +103,13 @@ const InspectorItemsUpload = ({ selectedTasks, setSelectedTasks, rooms, loading 
           </div>
         )}
       </div>
-      
+      <ModalComponent
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        setIsModalOpen={setIsModalOpen}
+      >
+        <ViewImage  closeModal={closeModal}/>
+      </ModalComponent>
     </>
   );
 };
