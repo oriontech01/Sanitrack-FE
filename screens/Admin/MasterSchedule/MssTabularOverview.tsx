@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -14,24 +14,51 @@ import useLoading from "../../general_hooks/useLoading";
 import { ArrowRightIcon } from "../../../assets/svg/Index";
 import MonthlyMissedCleaningsChart from "./MSSMissedMonthlyCleaningChart";
 import { useNavigation } from "@react-navigation/native";
+import { TableIcon } from "../../../assets/svg/Index";
+import useMss from "../hooks/useMss";
 
 export default function MssTabularOverview() {
-  const { mssData, getMSSTableData, getMonthlyMissed, monthlyMissed } =
+  const { getMonthlyMissed, monthlyMissed } =
     useTask();
   const { startLoading, stopLoading, loading } = useLoading();
   const navigation = useNavigation();
+  const [activeHeader, setActiveHeader] = useState(null);
+  const [boxPosition, setBoxPosition] = useState({ x: 0, y: 0 });
+  const headerRefs = useRef([]);
+  const  { mssData, getMSSTableData, currentPage, setCurrentPage, totalPages } = useMss()
+  const sortingOptions = ["Ascending", "Descending"]; // Example sorting criteria
 
   useEffect(() => {
     const fetchMssTableData = async () => {
       startLoading();
-      await getMSSTableData();
       await getMonthlyMissed();
       stopLoading();
     };
     fetchMssTableData();
   }, []); // Ensured stopLoading is called within the async function
-
+  
   console.log("HLEP", mssData[0]);
+  const tableHeaders = [
+    "Room",
+    "Item",
+    "Frequency (days)",
+    "Last Cleaned Date",
+    "Next due date",
+    "Task Stage",
+    "Assigned to",
+    "Item Status",
+    "Work order ID",
+    "Evidence Link",
+  ];
+  const onIconPress = (index) => {
+    setActiveHeader(index === activeHeader ? null : index); // Toggle visibility
+    if (headerRefs.current[index]) {
+      headerRefs.current[index].measure((fx, fy, width, height, px, py) => {
+        setBoxPosition({ x: px, y: py + height }); // Position below the header
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -49,24 +76,48 @@ export default function MssTabularOverview() {
       >
         Tabular Overview
       </Text>
+      <Text>This is an overview of rooms and their respective assets.</Text>
       {loading ? (
         <ActivityIndicator size="small" color={colors.blue} />
       ) : (
         <ScrollView horizontal style={styles.tableContainer}>
           <View>
             <View style={styles.tableHead}>
-              <Text style={styles.headerText}>Room</Text>
-              <Text style={styles.headerText}>Item</Text>
-              <Text style={styles.headerText}>Frequency (days)</Text>
-              <Text style={styles.headerText}>Last Cleaned Date</Text>
-              <Text style={styles.headerText}>Next due date</Text>
-              <Text style={styles.headerText}>Task Stage</Text>
-              <Text style={styles.headerText}>Assigned to</Text>
-              <Text style={styles.headerText}>Item Status</Text>
-              <Text style={styles.headerText}>Work order ID</Text>
-              <Text style={styles.headerText}>Evidence Link</Text>
-              <Text style={styles.headerText}></Text>
+              {tableHeaders.map((header, index) => (
+                <View
+                  key={index}
+                  ref={(el) => (headerRefs.current[index] = el)}
+                >
+                  <Text style={styles.headerText}>
+                    {header}
+                    <TouchableOpacity onPress={() => onIconPress(index)}>
+                      <TableIcon />
+                    </TouchableOpacity>
+                  </Text>
+                </View>
+              ))}
             </View>
+            {/* {activeHeader !== null && (
+              <View
+                style={[
+                  styles.sortingOptionsBox,
+                  { top: boxPosition.y, left: boxPosition.x },
+                ]}
+              >
+                {sortingOptions.map((option, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() =>
+                      console.log(
+                        `Sort ${tableHeaders[activeHeader]} by ${option}`
+                      )
+                    }
+                  >
+                    <Text style={styles.optionText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )} */}
             <ScrollView>
               {mssData.map((data, index) =>
                 data.tasks.map((task, taskIndex) => (
@@ -132,6 +183,23 @@ export default function MssTabularOverview() {
           </View>
         </ScrollView>
       )}
+      <View style={styles.paginationControls}>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <Text style={styles.paginationText}>Previous</Text>
+        </TouchableOpacity>
+        <Text style={styles.paginationText}>
+          Page {currentPage} of {totalPages}
+        </Text>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          <Text style={styles.paginationText}>Next</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -161,6 +229,9 @@ const styles = StyleSheet.create({
     width: 150,
     textAlign: "center",
     marginRight: 20,
+    display: "flex",
+    alignContent: "center",
+    alignItems: "center",
   },
   tableRow: {
     flexDirection: "row",
@@ -175,4 +246,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginRight: 20,
   },
+  sortingOptionsBox: {
+    position: "absolute",
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "grey",
+    padding: 10,
+    zIndex: 1000, // Make sure this is above other content
+  },
+  optionText: {
+    paddingVertical: 5,
+  },
+  paginationControls: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
+    paddingBottom: 10
+  },
+  paginationText: {
+    color: colors.blue
+  }
 });

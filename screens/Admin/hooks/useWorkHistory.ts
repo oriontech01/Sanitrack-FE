@@ -78,7 +78,7 @@ const useWorkHistory = () => {
           },
         }
       );
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setCleanerSummary(res.data.data);
     } catch (error) {
       console.error(error);

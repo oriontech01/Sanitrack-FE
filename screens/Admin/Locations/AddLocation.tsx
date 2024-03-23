@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: colors.blue,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   modalOverlay: {
     flex: 1,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     alignContent: "center",
-  }
+  },
 });
 const AddLocation = ({ isOpen, onRequestClose }) => {
   const [country, setCountry] = useState("");
@@ -139,7 +139,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
               />
               <Button
                 label="Add Location"
-                style={{marginTop: 20}}
+                style={{ marginTop: 20 }}
                 onPress={handleSubmit}
                 isLoading={loading}
               />

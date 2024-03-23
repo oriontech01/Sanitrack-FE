@@ -2,7 +2,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import AdminBottomNav from "../AdminBottomNav";
 import InventoryStack from "../Stack Navigators/InventoryStack";
 import UsersStack from "../Stack Navigators/UserStack";
-
+import LearningDashboard from "../../../screens/Learning";
 const Drawer = createDrawerNavigator();
 
 function AdminDrawerNav() {
@@ -34,6 +34,14 @@ function AdminDrawerNav() {
         }}
         name="Users"
         component={UsersStack}
+      />
+
+      <Drawer.Screen
+        options={{
+          drawerLabel: "Training",
+        }}
+        name="Training"
+        component={LearningDashboard}
       />
     </Drawer.Navigator>
   );
