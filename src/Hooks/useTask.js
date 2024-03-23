@@ -82,21 +82,20 @@ const useTask = () => {
       });
   };
   const getTaskTable = async () => {
-    setTaskLoading(true)
+    setTaskLoading(true);
     await axios
       .get(`${BASE_URL}task/mss`, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-        if(response.data){
-          setTaskLoading(false) 
+        if (response.data) {
+          setTaskLoading(false);
           setTaskTable(response.data.data);
         }
-    
       })
       .catch(error => {
         if (error.response) {
-          setTaskLoading(false) 
+          setTaskLoading(false);
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
@@ -289,7 +288,67 @@ const useTask = () => {
         }
       });
   };
+  const assignInspectorsForFacility = async data => {
+    setTaskLoading(true);
+    await axios
+      .post(
+        `${BASE_URL}work-facility/add`,
 
+        data,
+        { headers: { Authorization: `Bearer ${access_token}` } }
+      )
+      .then(response => {
+        console.log(response);
+        // send user back to the task home page
+        if (response.data) {
+          toast.success('Inspector Added Successfully', {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+          setTaskLoading(false);
+        }
+        setTimeout(() => {
+          navigate(`/dashboard/work-order/facility-work-order/${response?.data?.data?._id}`);
+        }, 3000);
+
+        // console.log(response.json())
+      })
+      .catch(error => {
+        if (error.response) {
+          setTaskLoading(false);
+          const { status, data } = error.response;
+          toast.error(data.message, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            // navigate('/')
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          setTaskLoading(false);
+          console.log('Network error:', error.message);
+        }
+      });
+  };
   const getAllTasks = async () => {
     try {
       const response = await axios.get(`${BASE_URL}task/get`, {
@@ -428,7 +487,8 @@ const useTask = () => {
     getMissed,
     missed,
     getTaskTable,
-    taskTable
+    taskTable,
+    assignInspectorsForFacility
   };
 };
 export default useTask;
