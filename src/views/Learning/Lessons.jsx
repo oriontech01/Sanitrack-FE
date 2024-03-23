@@ -35,7 +35,12 @@ const Lessons = () => {
         {selectedVideo && (
           <>
             <div className="">
-              <video controls className="w-full h-auto max-h-[480px] shadow-lg" src={selectedVideo.resourceUrl} title="video player">
+              <video
+                controls
+                className="w-full h-auto max-h-[480px] bg-slate-400 shadow-lg"
+                src={selectedVideo.resourceUrl}
+                title="video player"
+              >
                 <track kind="captions" />
               </video>
             </div>
@@ -63,7 +68,7 @@ const Lessons = () => {
           </>
         )}
       </article>
-      <div className="w-[20%] flex flex-col gap-4">
+      <div className="w-[20%] flex flex-col gap-2">
         {allPublishedLessons.map((lessons, i) => {
           const { courseTitle, name, resourceUrl, thumbnailUrl } = lessons;
           return (

@@ -33,17 +33,13 @@ const useLessons = () => {
       const { status, data } = error.response;
       if (status === 400 && data && data.message) {
         console.log('An error occurred', data.message);
-        // handle specific error case
       } else if (status === 403 && data && data.message) {
         console.log('An error with status 403 occurred', data.message);
-        // handle specific error case
       } else {
         console.log('Axios error:', error);
-        // handle other error cases
       }
     } else {
       console.log('Network error:', error.message);
-      // handle network errors
     }
   };
 
