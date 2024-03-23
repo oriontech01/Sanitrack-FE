@@ -81,28 +81,28 @@ const adminSideNavItems = [
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' 
+        url: '/dashboard/messages'
       },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' 
+        url: '/dashboard/training'
       },
       {
         id: 'evidence',
         title: 'Evidence',
         type: 'item',
         icon: BrowseGallery, // Changed Icon
-        url: '/dashboard/evidence' 
+        url: '/dashboard/evidence'
       },
       {
         id: 'inventory',
         title: 'Inventory',
         type: 'item',
         icon: InventoryRounded, // Changed Icon
-        url: '/dashboard/inventory' 
+        url: '/dashboard/inventory'
       }
     ]
   },
@@ -169,17 +169,17 @@ const cleanerSideNavItems = [
       // },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' 
+        url: '/dashboard/training'
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' 
+        url: '/dashboard/messages'
       }
     ]
   }
@@ -202,24 +202,24 @@ const inspectorSideNavItems = [
       },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' 
+        url: '/dashboard/training'
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' 
+        url: '/dashboard/messages'
       },
       {
         id: 'requests',
         title: 'Requests',
         type: 'item',
         icon: FaBagShopping, // Changed Icon
-        url: '/dashboard/requests' 
+        url: '/dashboard/requests'
       }
     ]
   }
