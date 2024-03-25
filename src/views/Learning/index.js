@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Grid, Button, Divider, CircularProgress } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Grid, Button, Divider, CircularProgress, Tabs, Tab } from '@mui/material';
 import { FaUsers } from 'react-icons/fa6';
 import { HiChartBar } from 'react-icons/hi';
 import useCourses from 'Hooks/useCourses';
@@ -33,7 +33,7 @@ const LearningOverview = () => {
             marginBottom={5}
           >
             <Typography variant="h2" color={'blue'} gutterBottom>
-              Learning
+              Training
             </Typography>
             {currentRole === 'Admin' && (
               // <Link to={'/dashboard/add-course'}>
@@ -79,6 +79,7 @@ const LearningOverview = () => {
             </Grid>
           )}
         </Grid>
+
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom color={'blue'}>
             {currentRole === 'Admin' ? 'Created Courses' : 'Listed Courses'}
@@ -86,7 +87,7 @@ const LearningOverview = () => {
           <Grid container spacing={2}>
             {allPublishedCourses.map((course, index) => (
               <Grid item xs={6} key={index}>
-                <a href="https://www.youtube.com/watch?v=84cMDuR-VuY" target="_blank" rel="noopener noreferrer">
+                <Link to={`/dashboard/training/${course._id}`}>
                   <Card style={{ display: 'flex', height: '150px' }}>
                     <CardMedia
                       component="img"
@@ -94,7 +95,7 @@ const LearningOverview = () => {
                       alt={course.title}
                       style={{ height: '100%px', width: '50%', flexGrow: 0, objectFit: 'cover' }}
                     />
-                    <CardContent style={{}}>
+                    <CardContent>
                       <Typography backgroundColor={'lime'} width={'40%'} textAlign={'center'} borderRadius={10}>
                         {course.level}
                       </Typography>
@@ -113,7 +114,7 @@ const LearningOverview = () => {
                       </Box>
                     </CardContent>
                   </Card>
-                </a>
+                </Link>
               </Grid>
             ))}
           </Grid>
