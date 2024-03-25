@@ -6,6 +6,7 @@ const useTask = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [responseMessage, setResponseMessage] = useState();
+  const [responseMessageBool, setResponseMessageBool] = useState(true);
   const [unAssignedRooms, setUnAssignedRooms] = useState([]);
   const [allCleaners, setAllCleaners] = useState([]);
   const [allInspectors, setAllInspectors] = useState([]);
@@ -301,6 +302,7 @@ const useTask = () => {
         console.log(response);
         // send user back to the task home page
         if (response.data) {
+        
           toast.success('Inspector Added Successfully', {
             position: 'top-center',
             autoClose: 5000,
@@ -313,10 +315,12 @@ const useTask = () => {
             transition: Flip
           });
           setTaskLoading(false);
+          setResponseMessageBool(false)
+          localStorage.setItem("workIdx",response?.data?.data?._id);
         }
-        setTimeout(() => {
-          navigate(`/dashboard/work-order/facility-work-order/${response?.data?.data?._id}`);
-        }, 3000);
+      
+         
+       
 
         // console.log(response.json())
       })
@@ -488,7 +492,7 @@ const useTask = () => {
     missed,
     getTaskTable,
     taskTable,
-    assignInspectorsForFacility
+    assignInspectorsForFacility,responseMessageBool
   };
 };
 export default useTask;
