@@ -58,7 +58,7 @@ const SelectInspector = () => {
   const [release_hours, setRelease_Hours] = useState('');
   const [release_minutes, setRelease_Mins] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [repeat,setRepeat]= useState('');
+  const [repeat, setRepeat] = useState('');
 
   const handleDateChange = event => {
     console.log('first', event.target.value);
@@ -79,7 +79,8 @@ const SelectInspector = () => {
     e.preventDefault();
     const data = {
       facility_id: params.id,
-      assigned_inspector: inspector,
+      assigned_supervisors: inspector,
+      repeat: repeat,
       scheduled_date: selectedDate,
       stages: [
         { name: 'clean', stage_hour: clean_hours, stage_minute: clean_minutes },
@@ -93,8 +94,8 @@ const SelectInspector = () => {
     assignInspectorsForFacility(data);
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = (e) => {
-    e.preventDefault()
+  const openModal = e => {
+    e.preventDefault();
     setIsModalOpen(true);
   };
 
@@ -159,7 +160,6 @@ const SelectInspector = () => {
           </FormControl>
         </div>
         <div className="my-3 flex lg:flex-row flex-col justify-between gap-6 w-full items-start">
-       
           <div className=" w-full">
             <label htmlFor="date" className=" text-blue-500  font-bold pb-2">
               Scheduled Date
@@ -172,7 +172,7 @@ const SelectInspector = () => {
               min={new Date().toISOString().slice(0, 10)} // Set minimum date to today
             />
           </div>
-             <div className='w-full' >
+          <div className="w-full">
             <h1 className="text-sm text-blue-500 font-bold mb-2">Repeat</h1>
             <FormControl className="w-full ">
               <InputLabel id="repeat">Repeat </InputLabel>
@@ -187,14 +187,15 @@ const SelectInspector = () => {
                 // renderValue={(selected) => selected.join(', ')}
                 MenuProps={MenuProps}
               >
-                <MenuItem  value="daily" className="capitalize">
-                    Daily
-                  </MenuItem>
-                   <MenuItem  value="weekly" className="capitalize">
-                    Weekly
-                  </MenuItem> <MenuItem  value="monthly" className="capitalize">
-                    Monthly
-                  </MenuItem>
+                <MenuItem value="daily" className="capitalize">
+                  Daily
+                </MenuItem>
+                <MenuItem value="weekly" className="capitalize">
+                  Weekly
+                </MenuItem>{' '}
+                <MenuItem value="monthly" className="capitalize">
+                  Monthly
+                </MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -415,28 +416,24 @@ const SelectInspector = () => {
         <div className="flex justify-between gap-5">
           <button
             className="bg-white border-r-4 border-b-4 border-r-blue-500 border-b-blue-500 flex rounded-lg justify-center  mb-4 gap-x-2 items-center px-4 py-2 text-blue-700 w-1/2 lg:h-[40px] text-base border-t-2 "
-              disabled={taskLoading}
+            disabled={taskLoading}
             onClick={handleSubmit}
             // onClick={openModal}
           >
-               {taskLoading ? 'Loading...' : 'Save Facility Timing '}
+            {taskLoading ? 'Loading...' : 'Save Facility Timing '}
           </button>
           <button
             className="text-white flex disabled:bg-red-300 rounded-lg justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-1/2 lg:h-[40px] text-base border-t-2 "
             // disabled={id && inspector && clean_hours}
-         disabled={responseMessageBool}
-         onClick={openModal}
+            disabled={responseMessageBool}
+            onClick={openModal}
           >
-           Next
+            Next
           </button>
         </div>
       </form>
-      <ModalComponent
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        setIsModalOpen={setIsModalOpen}
-      >
-        <ConfirmOrder  closeModal={closeModal}/>
+      <ModalComponent isOpen={isModalOpen} onClose={closeModal} setIsModalOpen={setIsModalOpen}>
+        <ConfirmOrder closeModal={closeModal} />
       </ModalComponent>
     </div>
   );
