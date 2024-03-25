@@ -13,6 +13,7 @@ const useTask = () => {
   const [mssData, setMssData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [workOrderFacilityId, setWorkOrderFacilityId] = useState("");
   // const [responseMessage, setResponseMessage] = useState();
 
   const getTask = async () => {
@@ -99,22 +100,20 @@ const useTask = () => {
 
   const assignInspectorsForFacility = async (data) => {
     await axios
-      .post(
-        `${BASE_URL}work-facility/add`,
-        data,
-        { headers: { Authorization: `Bearer ${access_token}` } }
-      )
+      .post(`${BASE_URL}work-facility/add`, data, {
+        headers: { Authorization: `Bearer ${access_token}` },
+      })
       .then((response) => {
         if (response.data) {
-            Alert.alert("Success", "Added inspector successfully")
-            return response.data.data._id
+          Alert.alert("Success", "Added inspector successfully");
+          console.log("Work order facility ID", response.data.data._id);
+          setWorkOrderFacilityId(response.data.data._id);
         }
       })
       .catch((error) => {
         console.log("Network error:", error.message);
       });
   };
-
 
   return {
     getTask,
@@ -127,7 +126,8 @@ const useTask = () => {
     currentPage,
     setCurrentPage,
     totalPages,
-    assignInspectorsForFacility
+    assignInspectorsForFacility,
+    workOrderFacilityId,
   };
 };
 export default useTask;
