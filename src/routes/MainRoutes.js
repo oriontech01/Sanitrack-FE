@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Loadable from 'component/Loadable';
 import AddCourse from 'views/Learning/AddCourse';
+import Lessons from 'views/Learning/Lessons';
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const FacilityTimer = Loadable(lazy(() => import('views/Admin/FacilityTimer/FacilityTimer')));
 const ComingSoon = Loadable(lazy(() => import('views/Admin/FacilityRelease/ComingSoon')));
@@ -136,8 +137,9 @@ const MainRoutes = {
     { path: '/dashboard/roles/permissions/:id', element: <ViewRolePermissions /> },
     { path: '/dashboard/roles/staff', element: <StaffRoles /> },
     { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> },
-    { path: '/dashboard/learning', element: <Learning /> },
+    { path: '/dashboard/training', element: <Learning /> },
     { path: '/dashboard/add-course', element: <AddCourse /> },
+    { path: '/dashboard/training/:id', element: <Lessons /> },
 
     // cleaner
     { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },
