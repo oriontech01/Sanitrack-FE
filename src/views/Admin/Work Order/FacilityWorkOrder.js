@@ -217,6 +217,7 @@ const FacilityWorkOrder = () => {
             setCleaners([])
             setItemsToClean([])
             setItems([])
+            setAllInspectors([])
           toast.success('Task Created Successfully', {
             position: 'top-center',
             autoClose: 5000,
