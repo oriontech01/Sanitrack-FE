@@ -161,7 +161,10 @@ export default function MultipleSelect({
         contentContainerStyle={{
           paddingVertical: 10,
         }}
-        style={styles.outerLayer}>
+        style={styles.outerLayer}
+        onStartShouldSetResponder={() => false}
+        onStartShouldSetResponderCapture={() => false}
+        >
         {options.map((option, ind) => (
           <AnimatedTouchable
             key={ind}

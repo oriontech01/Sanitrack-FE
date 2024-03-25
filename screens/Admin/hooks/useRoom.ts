@@ -4,7 +4,6 @@ import { UserContext } from '../../../context/UserContext';
 import Constants from 'expo-constants';
 const useRoom = () => {
   const BASE_URL = Constants.expoConfig.extra.baseUrl;
-
   const [responseMessage, setResponseMessage] = useState();
   const [allRooms, setAllRooms] = useState([]);
   const [allRoomsById, setAllRoomsById] = useState([]);
@@ -112,7 +111,7 @@ const useRoom = () => {
       })
       .then((response) => {
         setAllUnaassignedRoomsById(response.data.data);
-        console.log('omah', response.data.data[0].detail.detail);
+        console.log("Unn", response.data.data)
         if (response.data.data) {
           setIsLoading(false);
         }

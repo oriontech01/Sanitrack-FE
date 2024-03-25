@@ -7,14 +7,13 @@ const styles = StyleSheet.create({
   checkBox: {
     height: 30,
     width: 30,
-    backgroundColor: colors.lightgray,
-    borderRadius: 5,
+    backgroundColor: 'green',
+    borderRadius: 20,
   },
 });
 
 const CheckBox = ({ handleSelection }) => {
   const [isSelected, setSelection] = useState(false);
-
   return (
     <TouchableOpacity onPress={() => {
       setSelection(!isSelected);

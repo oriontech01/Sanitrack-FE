@@ -118,7 +118,7 @@ const useTaskDetails = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log('dang', response);
+        // console.log('dang', response.data.data);
         setActiveCleaningItems(response.data.data.allItems.length);
         console.log('aaa====================================');
         console.log(response);
