@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
@@ -55,6 +56,7 @@ const FacilityWorkOrder = () => {
   useEffect(() => {
     getAllCleaners();
     getCleaningItems()
+    getAllInspectors()
   }, []);
   const { getLocation, allLocations, loading } = useLocation();
 
@@ -276,7 +278,7 @@ const FacilityWorkOrder = () => {
     const data = {
       facilityWorkOrderId: params.id,
       roomId: id,
-      inspectors: savedInspectors,
+      inspectors: inspector,
       cleaners: cleaners,
       locationId: locationId,
       cleaningData: modifiedItem,
@@ -344,6 +346,41 @@ const FacilityWorkOrder = () => {
             <ToastContainer />
 
             <div className="flex flex-col gap-y-3">
+            <div className="form-group">
+          <label className=" text-blue-500 font-bold">Select Inspectors</label>
+          <FormControl className="w-full mt-2">
+            <InputLabel id="inspectors">Inspectors</InputLabel>
+            <Select
+              labelId="inspectors"
+              id="inspectors"
+              multiple
+              sx={{
+                '& .MuiSelect-select': { // Target the select element
+                  backgroundColor: '#F0F2F8 ',
+              
+                  borderColor: '#E1E9FC',
+                },
+                '& .MuiSelect-outlined': { // Target the outlined variant styles
+                  borderColor: '#fff',
+                },
+                '& .MuiSelect-menu': { // Target the menu list
+                  maxHeight: 200,
+                },
+              }}
+              value={inspector}
+              onChange={handleSelectInspectors}
+              // input={<OutlinedInput label="Cleaner"  />}
+              // renderValue={(selected) => selected.join(', ')}
+              MenuProps={MenuProps}
+            >
+              {allInspectors.map(inspector => (
+                <MenuItem key={inspector?._id} value={inspector?._id} className="capitalize">
+                  {allInspectors.length === 0 ? 'No inspector available' : `${inspector?.username}-(${inspector?.role_name})`}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
               <div>
                 <FormControl className="w-full">
                   <InputLabel id="cleaners">Cleaners</InputLabel>
@@ -458,7 +495,8 @@ const FacilityWorkOrder = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end mt-5">
+      <div className="flex justify-between mt-5 ">
+     
           <button
             className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-1/2 lg:h-[40px] text-base border-t-2 "
             // disabled={id && inspector && clean_hours}

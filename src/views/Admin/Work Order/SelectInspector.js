@@ -3,10 +3,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import useTask from 'Hooks/useTask';
+import ModalComponent from 'component/Modals/Modal';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ConfirmOrder from './ConfirmOrder';
 
 const SelectInspector = () => {
   const ITEM_HEIGHT = 48;
@@ -17,14 +19,34 @@ const SelectInspector = () => {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
         width: 250
       }
+    },
+    input: {
+      borderRadius: 4,
+      position: 'relative',
+      backgroundColor: '#f0f0f0', // Change background color here
+      border: '1px solid #ced4da', // Change border color here
+      fontSize: 16,
+      // padding: '10px 26px 10px 12px',
+      // transition: theme.transitions.create(['border-color', 'box-shadow']),
+      // Use the following if you want to change the color when focused
+      '&:focus': {
+        borderColor: '#80bdff',
+        boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+      }
     }
   };
+
   const params = useParams();
 
-  const { getAllInspectors, assignInspectorsForFacility, taskLoading, allInspectors } = useTask();
+  const { getAllInspectors, assignInspectorsForFacility, taskLoading, allInspectors, responseMessageBool, allCleaners, getAllCleaners } =
+    useTask();
   useEffect(() => {
+    getAllCleaners();
     getAllInspectors();
   }, []);
+
+  const mergedArray = allInspectors.concat(allCleaners);
+  console.log('merge', mergedArray);
   const navigate = useNavigate();
   const [inspector, setAllInspectors] = useState([]);
   const [clean_hours, setClean_hours] = useState('');
@@ -36,6 +58,7 @@ const SelectInspector = () => {
   const [release_hours, setRelease_Hours] = useState('');
   const [release_minutes, setRelease_Mins] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [repeat,setRepeat]= useState('');
 
   const handleDateChange = event => {
     console.log('first', event.target.value);
@@ -65,9 +88,18 @@ const SelectInspector = () => {
         { name: 'inspect', stage_hour: inspect_hours, stage_minute: inspect_minutes }
       ]
     };
-    localStorage.setItem("inspectors",JSON.stringify(inspector))
+    // localStorage.setItem('inspectors', JSON.stringify(inspector));
     console.log(data);
     assignInspectorsForFacility(data);
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = (e) => {
+    e.preventDefault()
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
   return (
     <div className="w-full">
@@ -84,44 +116,90 @@ const SelectInspector = () => {
             />
           </svg>
 
-          <h1 className="text-2xl font-bold text-[#3366FF]">Select Inspectors</h1>
+          <h1 className="text-2xl font-bold text-[#3366FF]">Set Facility Timing</h1>
         </span>
       </header>
       <form>
         <div className="form-group">
-          <label className=" text-blue-500 font-bold">Select Inspectors</label>
+          <label className=" text-blue-500 font-bold">Select Supervisors (Inspector or Cleaner)</label>
           <FormControl className="w-full mt-2">
-            <InputLabel id="inspectors">Inspectors</InputLabel>
+            <InputLabel id="inspectors">Select</InputLabel>
             <Select
               labelId="inspectors"
               id="inspectors"
               multiple
+              sx={{
+                '& .MuiSelect-select': {
+                  // Target the select element
+                  backgroundColor: '#F0F2F8 ',
+
+                  borderColor: '#E1E9FC'
+                },
+                '& .MuiSelect-outlined': {
+                  // Target the outlined variant styles
+                  borderColor: '#fff'
+                },
+                '& .MuiSelect-menu': {
+                  // Target the menu list
+                  maxHeight: 200
+                }
+              }}
               value={inspector}
               onChange={handleSelectInspectors}
-              input={<OutlinedInput label="Cleaner" />}
+              // input={<OutlinedInput label="Cleaner"  />}
               // renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
             >
-              {allInspectors.map(inspector => (
+              {mergedArray.map(inspector => (
                 <MenuItem key={inspector?._id} value={inspector?._id} className="capitalize">
-                  {allInspectors.length === 0 ? 'No inspector available' : `${inspector?.username}-(${inspector?.role_name})`}
+                  {mergedArray.length === 0 ? 'No inspector available' : `${inspector?.username}-(${inspector?.role_name})`}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
         </div>
-        <div className="relative my-3">
-          <label htmlFor="date" className=" text-blue-500 font-bold">
-            Scheduled Date
-          </label>
-          <input
-            type="date"
-            className="w-full px-3 py-2 rounded-lg h-12  bg-transparent shadow-sm border border-gray-400"
-            value={selectedDate}
-            onChange={handleDateChange}
-            min={new Date().toISOString().slice(0, 10)} // Set minimum date to today
-          />
+        <div className="my-3 flex lg:flex-row flex-col justify-between gap-6 w-full items-start">
+       
+          <div className=" w-full">
+            <label htmlFor="date" className=" text-blue-500  font-bold pb-2">
+              Scheduled Date
+            </label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 mt-2 rounded-lg h-[50px]  bg-transparent shadow-sm border border-gray-400"
+              value={selectedDate}
+              onChange={handleDateChange}
+              min={new Date().toISOString().slice(0, 10)} // Set minimum date to today
+            />
+          </div>
+             <div className='w-full' >
+            <h1 className="text-sm text-blue-500 font-bold mb-2">Repeat</h1>
+            <FormControl className="w-full ">
+              <InputLabel id="repeat">Repeat </InputLabel>
+              <Select
+                labelId="cleaners"
+                id="cleaners"
+                value={repeat}
+                onChange={e => {
+                  setRepeat(e.target.value);
+                }}
+                input={<OutlinedInput label="Cleaner" />}
+                // renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
+              >
+                <MenuItem  value="daily" className="capitalize">
+                    Daily
+                  </MenuItem>
+                   <MenuItem  value="weekly" className="capitalize">
+                    Weekly
+                  </MenuItem> <MenuItem  value="monthly" className="capitalize">
+                    Monthly
+                  </MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </div>
+
         <Box className="my-3">
           <h1 className="text-sm text-blue-500 font-bold pb-2">Enter Clean Time</h1>
           <Grid container spacing={4}>
@@ -334,17 +412,32 @@ const SelectInspector = () => {
             </Grid>
           </Grid>
         </Box>
-        <div className="flex justify-end">
+        <div className="flex justify-between gap-5">
           <button
-            className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-1/2 lg:h-[40px] text-base border-t-2 "
-            // disabled={id && inspector && clean_hours}
-            disabled={taskLoading}
+            className="bg-white border-r-4 border-b-4 border-r-blue-500 border-b-blue-500 flex rounded-lg justify-center  mb-4 gap-x-2 items-center px-4 py-2 text-blue-700 w-1/2 lg:h-[40px] text-base border-t-2 "
+              disabled={taskLoading}
             onClick={handleSubmit}
+            // onClick={openModal}
           >
-            {taskLoading ? 'Loading...' : 'Next'}
+               {taskLoading ? 'Loading...' : 'Save Facility Timing '}
+          </button>
+          <button
+            className="text-white flex disabled:bg-red-300 rounded-lg justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-1/2 lg:h-[40px] text-base border-t-2 "
+            // disabled={id && inspector && clean_hours}
+         disabled={responseMessageBool}
+         onClick={openModal}
+          >
+           Next
           </button>
         </div>
       </form>
+      <ModalComponent
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        setIsModalOpen={setIsModalOpen}
+      >
+        <ConfirmOrder  closeModal={closeModal}/>
+      </ModalComponent>
     </div>
   );
 };
