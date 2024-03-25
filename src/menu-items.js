@@ -48,20 +48,7 @@ const adminSideNavItems = [
         icon: LocationCity, // Changed Icon
         url: '/dashboard/locations'
       },
-      {
-        id: 'facility-timer',
-        title: 'Facility Timer',
-        type: 'item',
-        icon: TimelapseOutlined, // Changed Icon
-        url: '/dashboard/facility-timer'
-      },
-      {
-        id: 'facility-release',
-        title: 'Facility Release',
-        type: 'item',
-        icon: NewReleasesRounded, // Changed Icon
-        url: '/dashboard/facility-release'
-      },
+     
       // {
       //   id: 'facilities',
       //   title: 'Facilities',
@@ -195,7 +182,20 @@ const cleanerSideNavItems = [
         icon: MessageOutlined, // Changed Icon
         url: '/dashboard/messages' 
       },
-      
+      {
+        id: 'facility-timer',
+        title: 'Facility Timer',
+        type: 'item',
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/facility-timer'
+      },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/facility-release'
+      },
     ]
   }
 ];
