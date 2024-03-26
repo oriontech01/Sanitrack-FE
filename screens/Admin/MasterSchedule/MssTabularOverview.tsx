@@ -18,26 +18,46 @@ import { TableIcon } from "../../../assets/svg/Index";
 import useMss from "../hooks/useMss";
 
 export default function MssTabularOverview() {
-  const { getMonthlyMissed, monthlyMissed } =
-    useTask();
+  const { getMonthlyMissed, monthlyMissed } = useTask();
   const { startLoading, stopLoading, loading } = useLoading();
   const navigation = useNavigation();
   const [activeHeader, setActiveHeader] = useState(null);
   const [boxPosition, setBoxPosition] = useState({ x: 0, y: 0 });
   const headerRefs = useRef([]);
-  const  { mssData, getMSSTableData, currentPage, setCurrentPage, totalPages } = useMss()
+  const { mssData, getMSSTableData } = useMss();
   const sortingOptions = ["Ascending", "Descending"]; // Example sorting criteria
 
   useEffect(() => {
     const fetchMssTableData = async () => {
       startLoading();
       await getMonthlyMissed();
+      await getMSSTableData();
       stopLoading();
     };
     fetchMssTableData();
-  }, []); // Ensured stopLoading is called within the async function
-  
-  console.log("HLEP", mssData[0]);
+  }, []);
+
+  const PAGE_SIZE = 10; // Adjust based on your preference
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginatedData, setPaginatedData] = useState([]);
+  const totalPages = Math.ceil(mssData.length / PAGE_SIZE);
+
+  useEffect(() => {
+    // Update paginated data based on the current page
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    setPaginatedData(mssData.slice(startIndex, endIndex));
+  }, [currentPage, mssData]);
+
+  const handlePreviousClick = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextClick = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  console.log("HLEP", mssData);
   const tableHeaders = [
     "Room",
     "Item",
@@ -90,9 +110,9 @@ export default function MssTabularOverview() {
                 >
                   <Text style={styles.headerText}>
                     {header}
-                    <TouchableOpacity onPress={() => onIconPress(index)}>
+                    {/* <TouchableOpacity onPress={() => onIconPress(index)}>
                       <TableIcon />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </Text>
                 </View>
               ))}
@@ -185,7 +205,7 @@ export default function MssTabularOverview() {
       )}
       <View style={styles.paginationControls}>
         <TouchableOpacity
-          onPress={() => setCurrentPage(currentPage - 1)}
+          onPress={handlePreviousClick}
           disabled={currentPage === 1}
         >
           <Text style={styles.paginationText}>Previous</Text>
@@ -194,7 +214,7 @@ export default function MssTabularOverview() {
           Page {currentPage} of {totalPages}
         </Text>
         <TouchableOpacity
-          onPress={() => setCurrentPage(currentPage + 1)}
+          onPress={handleNextClick}
           disabled={currentPage === totalPages}
         >
           <Text style={styles.paginationText}>Next</Text>
@@ -262,9 +282,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 20,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   paginationText: {
-    color: colors.blue
-  }
+    color: colors.blue,
+  },
 });
