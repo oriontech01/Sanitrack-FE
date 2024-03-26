@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useContext, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import useLocation from '../../../Hooks/useLocation';
@@ -6,6 +8,8 @@ import { Tabs, Tab, Box, useMediaQuery, useTheme } from '@mui/material';
 import TabPanel from 'component/Tab Panel/TabPanel';
 import Tasks from './Tasks';
 import ArrowForward from '@mui/icons-material/ArrowForward';
+import ModalComponent from 'component/Modals/Modal';
+import SelectWorkOrderType from './SelectWorkOrderType';
 
 const WorkOrder = () => {
   const { getLocation, allLocations, loading } = useLocation();
@@ -21,6 +25,14 @@ const WorkOrder = () => {
     getLocation();
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = e => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <header className={`flex ${matches ? 'flex-col' : 'lg:flex-row'} justify-between items-center mb-4`}>
@@ -29,7 +41,13 @@ const WorkOrder = () => {
       </header>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={selectedTab} onChange={handleTabChange} aria-label="Work order and tasks tabs" variant="scrollable" scrollButtons="auto">
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="Work order and tasks tabs"
+          variant="scrollable"
+          scrollButtons="auto"
+        >
           <Tab label="Work Orders" />
           <Tab label="Tasks List" />
         </Tabs>
@@ -37,33 +55,44 @@ const WorkOrder = () => {
 
       <main>
         <TabPanel value={selectedTab} index={0}>
-          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', marginTop: 5, gap: 2 }}>
-              {!loading &&
-                allLocations.map(location => (
-                  <Link
-                    onClick={() => {
-                      localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
-                      localStorage.setItem('locationId', `${location?._id}`);
-                    }}
-                    to={`/dashboard/work-order/${location?._id}`}
-                    key={location?._id}
-                    className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center ${matches ? 'w-full' : 'w-1/2'} text-[#3366FF] font-bold shadow-sm`}
-                  >
-                    <span>{`${location?.city}- ${location?.country}`}</span>
-                    <span><ArrowForward/></span>
-                  </Link>
-                ))}
-          </Box>
+          <div className='grid grid-cols-1 gap-5 lg:grid-cols-2'
+          >
+            {!loading &&
+              allLocations.map(location => (
+                <span
+                  onClick={() => {
+                    localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
+                    localStorage.setItem('locationId', `${location?._id}`);
+                    openModal();
+                  }}
+
+                  // to={`/dashboard/work-order/${location?._id}`}
+                  key={location?._id}
+                  className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center w-full text-[#3366FF] font-bold shadow-sm cursor-pointer`}
+                >
+                  <span>{`${location?.city}- ${location?.country}`}</span>
+                  <span>
+                    <ArrowForward />
+                  </span>
+                </span>
+              ))}
+          </div>
         </TabPanel>
         <TabPanel value={selectedTab} index={1}>
           <Tasks />
         </TabPanel>
         {loading && (
-          <div className="loader">
-            {/* Loader content */}
+          <div className="flex items-center justify-center pt-5">
+            <div className="relative">
+              <div className="h-16 w-16 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+              <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+            </div>
           </div>
         )}
       </main>
+      <ModalComponent isOpen={isModalOpen} onClose={closeModal} setIsModalOpen={setIsModalOpen}>
+        <SelectWorkOrderType closeModal={closeModal} />
+      </ModalComponent>
     </>
   );
 };

@@ -6,6 +6,7 @@ const useTask = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [responseMessage, setResponseMessage] = useState();
+  const [responseMessageBool, setResponseMessageBool] = useState(true);
   const [unAssignedRooms, setUnAssignedRooms] = useState([]);
   const [allCleaners, setAllCleaners] = useState([]);
   const [allInspectors, setAllInspectors] = useState([]);
@@ -15,6 +16,9 @@ const useTask = () => {
   const [allTasks, setAllTasks] = useState([]);
   const [pendingTasks, setPendingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [monthlyMissed, setMonthlyMissed] = useState([]);
+  const [missed, setMissed] = useState([]);
+  const [taskTable, setTaskTable] = useState([]);
   // eslint-disable-next-line no-unused-vars
 
   const [activeCleaners, setActiveCleaners] = useState();
@@ -52,7 +56,89 @@ const useTask = () => {
         }
       });
   };
-
+  const getMonthlyMissed = async () => {
+    await axios
+      .get(`${BASE_URL}task/missed-cleaning`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        setMonthlyMissed(response.data.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+            // navigate('/')
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
+  const getTaskTable = async () => {
+    setTaskLoading(true);
+    await axios
+      .get(`${BASE_URL}task/mss`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        if (response.data) {
+          setTaskLoading(false);
+          setTaskTable(response.data.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          setTaskLoading(false);
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+            // navigate('/')
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
+  const getMissed = async () => {
+    await axios
+      .get(`${BASE_URL}task/missed-items`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        setMissed(response.data.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+            // navigate('/')
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network error:', error.message);
+        }
+      });
+  };
   const getAllCleaners = async () => {
     await axios
       .get(`${BASE_URL}get-all-cleaner`, {
@@ -203,7 +289,70 @@ const useTask = () => {
         }
       });
   };
+  const assignInspectorsForFacility = async data => {
+    setTaskLoading(true);
+    await axios
+      .post(
+        `${BASE_URL}work-facility/add`,
 
+        data,
+        { headers: { Authorization: `Bearer ${access_token}` } }
+      )
+      .then(response => {
+        console.log(response);
+        // send user back to the task home page
+        if (response.data) {
+        
+          toast.success('Inspector Added Successfully', {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+          setTaskLoading(false);
+          setResponseMessageBool(false)
+          localStorage.setItem("workIdx",response?.data?.data?._id);
+        }
+      
+         
+       
+
+        // console.log(response.json())
+      })
+      .catch(error => {
+        if (error.response) {
+          setTaskLoading(false);
+          const { status, data } = error.response;
+          toast.error(data.message, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            // navigate('/')
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          setTaskLoading(false);
+          console.log('Network error:', error.message);
+        }
+      });
+  };
   const getAllTasks = async () => {
     try {
       const response = await axios.get(`${BASE_URL}task/get`, {
@@ -212,8 +361,8 @@ const useTask = () => {
       console.log('Task retrieved', response.data.data);
       setEveryTask(response.data.data.allTasks.length);
       setAllTasks(response.data.data.allTasks);
-      setPendingTasks(response.data.data.allTasks.filter((task) => task.isSubmitted === false ))
-      setCompletedTasks(response.data.data.allTasks.filter((task) => task.isSubmitted === true ))
+      setPendingTasks(response.data.data.allTasks.filter(task => task.isSubmitted === false));
+      setCompletedTasks(response.data.data.allTasks.filter(task => task.isSubmitted === true));
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
@@ -269,7 +418,7 @@ const useTask = () => {
       )
       .then(response => {
         setResponseMessage(response.data.message);
-        navigate('/dashboard/tasks');
+        navigate('/dashboard/work-schedule');
       })
       .catch(error => {
         if (error.response) {
@@ -336,7 +485,14 @@ const useTask = () => {
     activeCleaningItems,
     taskLoading,
     pendingTasks,
-    completedTasks
+    completedTasks,
+    getMonthlyMissed,
+    monthlyMissed,
+    getMissed,
+    missed,
+    getTaskTable,
+    taskTable,
+    assignInspectorsForFacility,responseMessageBool
   };
 };
 export default useTask;

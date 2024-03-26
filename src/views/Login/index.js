@@ -10,7 +10,7 @@ import AuthLogin from './Login';
 
 // assets
 import Logo from 'assets/images/msslogo.png';
-import LoginBg from 'assets/images/login-bg.png';
+import LoginBg from 'assets/images/login-bg-main.png';
 import RoleModal from './RoleModal';
 import ModalComponent from 'component/Modals/Modal';
 import { useAuthRolesState } from 'context/AuthRolesContext';
@@ -38,6 +38,7 @@ const Login = () => {
       <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh' }}>
         <Grid item xs={11} sm={7} md={6} lg={4}>
           <Card
+          className='shadow-2xl'
             sx={{
               overflow: 'visible',
               display: 'flex',
@@ -48,7 +49,8 @@ const Login = () => {
                 width: '50%'
               },
               maxWidth: '475px',
-              margin: '24px auto'
+              margin: '24px auto',
+           
             }}
           >
             <CardContent sx={{ p: theme.spacing(5, 4, 3, 4) }}>
@@ -57,10 +59,10 @@ const Login = () => {
                   <Grid container justifyContent="space-between">
                     <Grid item>
                       <Typography color="textPrimary" gutterBottom variant="h2">
-                        Sign ins
+                        Sign in
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        To Sanitrack
+                        To Sanitrack Web
                       </Typography>
                     </Grid>
                     <Grid item>

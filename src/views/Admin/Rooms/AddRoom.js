@@ -3,9 +3,14 @@ import useLocation from 'Hooks/useLocation';
 import { Box, Button, Container, TextField, Typography, Select, FormControl, InputLabel, MenuItem, Paper, Divider } from '@mui/material';
 import useRoom from 'Hooks/useRoom';
 
-const AddRoom = () => {
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+const AddRoom = (props) => {
   const { addRoom, responseMessage, isLoading } = useRoom();
   const { allLocations, getLocation } = useLocation();
+  const {isDisconnected} = props
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -45,14 +50,30 @@ const AddRoom = () => {
       details: newDetails
     });
   };
+  const saveDataOffline = (data) => {
+    localStorage.setItem('offlineRoomData', JSON.stringify(data));
+  };
+  
+  const loadDataOffline = () => {
+    return JSON.parse(localStorage.getItem('offlineRoomData'));
+  };
+  let savedData 
 
   const handleSubmit = async event => {
     event.preventDefault();
+    if(isDisconnected){
+        saveDataOffline(formData)
+    }else {
+        savedData = loadDataOffline()
+        await addRoom(savedData)
+    }
     await addRoom(formData);
     console.log(formData);
   };
 
   return (
+    <>
+      <ToastContainer />
     <Box height="100vh" display="flex" flexDirection="column">
       <Container maxWidth="md" component={Paper} elevation={3} sx={{ padding: 4, borderRadius: 4 }}>
         <form onSubmit={handleSubmit} className="add-room-form">
@@ -133,19 +154,15 @@ const AddRoom = () => {
               + Add Another Item
             </Button>
           </div>
-          {formData.details.some(item => item.name === '') ||
-          formData.location_id === '' ||
-          formData.roomName === '' ||
-          formData.roomName.length < 3 ? (
-            <></>
-          ) : (
+        
             <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 ">
               {isLoading ? 'Loading...' : "Submit"}
             </button>
-          )}
+        
         </form>
       </Container>
     </Box>
+    </>
   );
 };
 

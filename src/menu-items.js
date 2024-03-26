@@ -8,11 +8,22 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { LibraryAddOutlined, LocationCity, NotificationAdd, TaskSharp } from '@mui/icons-material';
+import {
+  LibraryAddOutlined,
+  LocationCity,
+  NewReleasesRounded,
+  NotificationAdd,
+  TaskSharp,
+  TimelapseOutlined,
+  TimelapseRounded,
+  TimelapseSharp,
+  Timeline,
+  Timer10TwoTone
+} from '@mui/icons-material';
 import { InventoryRounded } from '@mui/icons-material';
 import { BrowseGallery } from '@mui/icons-material';
 import { MessageOutlined, PunchClockRounded } from '@mui/icons-material';
-import { FaBuilding } from 'react-icons/fa6';
+import { FaBagShopping, FaBuilding } from 'react-icons/fa6';
 
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
@@ -42,19 +53,20 @@ const adminSideNavItems = [
         url: '/dashboard'
       },
       {
-        id: 'locations',
-        title: 'Locations',
+        id: 'facilities',
+        title: 'Facilties',
         type: 'item',
         icon: LocationCity, // Changed Icon
         url: '/dashboard/locations'
       },
-      {
-        id: 'facilities',
-        title: 'Facilities',
-        type: 'item',
-        icon: FaBuilding, // Main Icon for Facilities
-        url: '/dashboard/facilities' // Base URL for Facilities
-      },
+     
+      // {
+      //   id: 'facilities',
+      //   title: 'Facilities',
+      //   type: 'item',
+      //   icon: FaBuilding, // Main Icon for Facilities
+      //   url: '/dashboard/facilities' // Base URL for Facilities
+      // },
       {
         id: 'rooms',
         title: 'Rooms',
@@ -81,21 +93,28 @@ const adminSideNavItems = [
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' // Assuming URL should be unique and relevant
+        url: '/dashboard/messages'
+      },
+      {
+        id: 'learning',
+        title: 'Training',
+        type: 'item',
+        icon: LibraryAddOutlined, // Changed Icon
+        url: '/dashboard/training'
       },
       {
         id: 'evidence',
         title: 'Evidence',
         type: 'item',
         icon: BrowseGallery, // Changed Icon
-        url: '/dashboard/evidence' // Assuming URL should be unique and relevant
+        url: '/dashboard/evidence'
       },
       {
         id: 'inventory',
         title: 'Inventory',
         type: 'item',
         icon: InventoryRounded, // Changed Icon
-        url: '/dashboard/inventory' // Assuming URL should be unique and relevant
+        url: '/dashboard/inventory'
       }
     ]
   },
@@ -153,27 +172,43 @@ const cleanerSideNavItems = [
         icon: PunchClockRounded, // Changed Icon
         url: '/dashboard/timer'
       },
-      {
-        id: 'notifications',
-        title: 'Notifications',
-        type: 'item',
-        icon: NotificationAdd, // Changed Icon
-        url: '/dashboard/notifications'
-      },
+      // {
+      //   id: 'notifications',
+      //   title: 'Notifications',
+      //   type: 'item',
+      //   icon: NotificationAdd, // Changed Icon
+      //   url: '/dashboard/notifications'
+      // },
       {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' // Assuming URL should be unique and relevant
+        url: '/dashboard/training'
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' // Assuming URL should be unique and relevant
-      }
+
+        url: '/dashboard/messages' 
+      },
+      {
+        id: 'facility-timer',
+        title: 'Facility Timer',
+        type: 'item',
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/facility-timer'
+      },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/facility-release'
+      },
+
     ]
   }
 ];
@@ -194,25 +229,39 @@ const inspectorSideNavItems = [
         url: '/dashboard'
       },
       {
-        id: 'notifications',
-        title: 'Notifications',
-        type: 'item',
-        icon: NotificationAdd, // Changed Icon
-        url: '/dashboard/notifications'
-      },
-      {
         id: 'learning',
-        title: 'Learning',
+        title: 'Training',
         type: 'item',
         icon: LibraryAddOutlined, // Changed Icon
-        url: '/dashboard/learning' // Assuming URL should be unique and relevant
+        url: '/dashboard/training'
       },
       {
         id: 'messages',
         title: 'Messages',
         type: 'item',
         icon: MessageOutlined, // Changed Icon
-        url: '/dashboard/messages' // Assuming URL should be unique and relevant
+        url: '/dashboard/messages'
+      },
+      {
+        id: 'requests',
+        title: 'Requests',
+        type: 'item',
+        icon: FaBagShopping, // Changed Icon
+        url: '/dashboard/requests'
+      },
+      {
+        id: 'facility-timer',
+        title: 'Facility Timer',
+        type: 'item',
+        icon: TimelapseOutlined, // Changed Icon
+        url: '/dashboard/inspector/facility-timer'
+      },
+      {
+        id: 'facility-release',
+        title: 'Facility Release',
+        type: 'item',
+        icon: NewReleasesRounded, // Changed Icon
+        url: '/dashboard/inspector/facility-release'
       }
     ]
   }

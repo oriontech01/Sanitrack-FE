@@ -5,13 +5,11 @@ import {
   Grid,
   Card,
   CardContent,
-  Typography,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Button,
   Paper,
   TablePagination,
   useMediaQuery
@@ -37,14 +35,6 @@ const Tasks = () => {
     setPage(0);
   };
 
-  const handleTaskDelete = async taskId => {
-    await deleteTask(taskId);
-  };
-
-  const handleTaskEdit = taskId => {
-    navigate(`/dashboard/edit-task/${taskId}`);
-  };
-
   useEffect(() => {
     const fetchTasks = async () => {
       setIsLoading(true); // Start loading
@@ -68,7 +58,7 @@ const Tasks = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Paper style={{overflowX: 'auto'}}>
+            <Paper style={{ overflowX: 'auto' }}>
               <Table size={isSmallScreen ? 'small' : 'medium'}>
                 <TableHead>
                   <TableRow>
@@ -76,7 +66,6 @@ const Tasks = () => {
                     {isSmallScreen ? null : <TableCell>Assigned Supervisor</TableCell>}
                     <TableCell>Assigned Cleaner</TableCell>
                     <TableCell>Status</TableCell>
-                    <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -94,23 +83,18 @@ const Tasks = () => {
                       <TableCell className={`status ${task.isSubmitted ? 'done' : ''}`}>
                         {task.isSubmitted ? 'Completed' : 'Pending'}
                       </TableCell>
-                      <TableCell>
-                        <Button color="primary" onClick={() => handleTaskEdit(task.taskId)}>
-                          Edit
-                        </Button>
-                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 count={allTasks.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[5, 10, 25]}
               />
             </Paper>
           </CardContent>

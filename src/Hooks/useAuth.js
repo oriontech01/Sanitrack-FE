@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import JWT from 'jsonwebtoken';
-import { useNavigate } from 'react-router';
-import { useCurrentRole } from 'context/UserRoleContext';
 import { useAuthRolesState } from 'context/AuthRolesContext';
 import { toast, Flip } from 'react-toastify';
-import urlBase64ToUint8Array from 'utils/urlBase64ToUintArray';
+// import { subscribeUser } from 'utils/subscription';
 
 const useAuth = () => {
   const { setModal, setToken, setId, setRoles } = useAuthRolesState();
@@ -16,7 +14,7 @@ const useAuth = () => {
   // const { currentRole, setCurrentRole } = useCurrentRole();
   // No longer manage loginState here; it will be managed by AuthProvider via context
 
-  const login = async (username, password, setIsLoggedIn) => {
+  const login = async (email, password, setIsLoggedIn) => {
     console.log('first');
     // Add setIsLoggedIn as parameter
     setIsLoading(true);
@@ -24,7 +22,7 @@ const useAuth = () => {
       const response = await axios.post(
         `${BASE_URL}login`,
         {
-          username,
+          email,
           password
         },
         {
@@ -35,35 +33,7 @@ const useAuth = () => {
         }
       );
 
-      // In a useEffect or a function after ensuring the user is authenticated
-      // navigator.serviceWorker.ready.then(function (registration) {
-      //   const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY);
-
-      //   console.log('VAPID', convertedVapidKey);
-
-      //   registration.pushManager
-      //     .subscribe({
-      //       userVisibleOnly: true,
-      //       applicationServerKey: convertedVapidKey
-      //     })
-      //     .then(function (subscription) {
-      //       // Send subscription to your server
-      //       console.log('Make it HAPPEN', JSON.stringify(subscription));
-      //       const subscribed = axios.post(`${BASE_URL}notification/subscribe-to-push-notifications`, subscription, {
-      //         headers: {
-      //           'Content-Type': 'application/json',
-      //           Authorization: `Bearer ${response.data.data.token}`
-      //         }
-      //       });
-      //       console.log('HEY I HAVE SUBBED', subscribed);
-      //     })
-      //     .catch(function (err) {
-      //       console.log('Failed to subscribe the user: ', err);
-      //     });
-      //   registration.pushManager.getSubscription().then(function (subscription) {
-      //     console.log('Current subscription:', subscription);
-      //   });
-      // });
+      // subscribeUser(response.data.data.token);
 
       if (response?.data?.data?.requiredRoleSelection === true) {
         console.log('first one');
@@ -85,18 +55,7 @@ const useAuth = () => {
         setModal(true);
         setToken(response?.data?.data?.token);
         setId(response?.data?.data?.userId);
-      }
-      // console.log('Resty', response?.data);
-      // if (response?.data?.data?.requiredRoleSelection === false) {
-      //   console.log('first hiiii');
-      //   console.log('hety', response?.data?.data?.requiredRoleSelection);
-      // }
-
-      // console.log('Decoded----', decodedResponse);
-      // console.log('User Role', loggedInUserRole);
-      // console.log('Response data', response.data);
-      // console.log('My role buddy', currentRole);
-      else if (response?.data?.data?.requiredRoleSelection === false) {
+      } else if (response?.data?.data?.requiredRoleSelection === false) {
         toast.success('Login Successful !!!', {
           position: 'top-center',
           autoClose: 5000,
@@ -115,20 +74,16 @@ const useAuth = () => {
 
         // setCurrentRole(loggedInUserRole);
         console.log('rl', loggedInUserRole);
+        console.log('HEY HEY', response.data);
         // Set auth details in localStorage
         localStorage.setItem('isLoggedIn', 'true'); // Use to maintain session state
         localStorage.setItem('auth-token', response?.data?.data?.token);
         localStorage.setItem('name', response?.data?.data?.username);
         localStorage.setItem('id', response?.data?.data?.userId);
         localStorage.setItem('role', loggedInUserRole);
+        // localStorage.setItem('secret', response?.data?.data?.chat_engine_payload.first_name); // First name and secret were the same for testing purposes (Chat engine)
         setIsLoggedIn(true); // Update global state via context
       } // I'll add a check here when a user has multiple roles
-
-      // else {
-      //   console.log('User not logged in');
-      //   navigate('/unauthorized');
-      //   return false;
-      // }
     } catch (error) {
       // alert(error.message);
       toast.error(error?.response?.data?.message, {
