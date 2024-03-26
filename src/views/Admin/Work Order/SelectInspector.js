@@ -244,8 +244,8 @@ const SelectInspector = () => {
                     MenuProps={MenuProps}
                   >
                     {Array.from({ length: 60 }, (_, i) => (
-                      <MenuItem key={i} value={i} className="capitalize">
-                        {i}
+                      <MenuItem key={i} value={i < 10 ? `0${i}` : i} className="capitalize">
+                        {i < 10 ? `0${i}` : i}
                       </MenuItem>
                     ))}
                   </Select>
@@ -297,8 +297,8 @@ const SelectInspector = () => {
                     MenuProps={MenuProps}
                   >
                     {Array.from({ length: 60 }, (_, i) => (
-                      <MenuItem key={i} value={i} className="capitalize">
-                        {i}
+                      <MenuItem key={i} value={i < 10 ? `0${i}` : i} className="capitalize">
+                        {i < 10 ? `0${i}` : i}
                       </MenuItem>
                     ))}
                   </Select>
@@ -350,8 +350,8 @@ const SelectInspector = () => {
                     MenuProps={MenuProps}
                   >
                     {Array.from({ length: 60 }, (_, i) => (
-                      <MenuItem key={i} value={i} className="capitalize">
-                        {i}
+                      <MenuItem key={i} value={i < 10 ? `0${i}` : i} className="capitalize">
+                        {i < 10 ? `0${i}` : i}
                       </MenuItem>
                     ))}
                   </Select>
@@ -403,8 +403,8 @@ const SelectInspector = () => {
                     MenuProps={MenuProps}
                   >
                     {Array.from({ length: 60 }, (_, i) => (
-                      <MenuItem key={i} value={i} className="capitalize">
-                        {i}
+                      <MenuItem key={i} value={i < 10 ? `0${i}` : i} className="capitalize">
+                        {i < 10 ? `0${i}` : i}
                       </MenuItem>
                     ))}
                   </Select>
