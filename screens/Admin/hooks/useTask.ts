@@ -14,6 +14,8 @@ const useTask = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [workOrderFacilityId, setWorkOrderFacilityId] = useState("");
+  const [assignedFacilities, setAssignedFacilities] = useState([]);
+  const [preSavedWO, setPreSavedWO] = useState([]);
   // const [responseMessage, setResponseMessage] = useState();
 
   const getTask = async () => {
@@ -105,7 +107,7 @@ const useTask = () => {
       })
       .then((response) => {
         if (response.data) {
-          Alert.alert("Success", "Added inspector successfully");
+          Alert.alert("Success", "Assigned Supervisor successfully");
           console.log("Work order facility ID", response.data.data._id);
           setWorkOrderFacilityId(response.data.data._id);
         }
@@ -115,6 +117,44 @@ const useTask = () => {
       });
   };
 
+  const getWorkOrderFacilities = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}work-facility/`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      setAssignedFacilities(res.data.data.allFacilityTiming);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPreSavedWorkOrders = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}work-facility/all-pre-saved`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      setPreSavedWO(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const saveWorkOrder = async (workorder) => {
+    try {
+      const res = await axios.post(`${BASE_URL}work-facility/save`, workorder, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      console.log(res.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     getTask,
     allTask,
@@ -128,6 +168,11 @@ const useTask = () => {
     totalPages,
     assignInspectorsForFacility,
     workOrderFacilityId,
+    getWorkOrderFacilities,
+    assignedFacilities,
+    getPreSavedWorkOrders,
+    preSavedWO,
+    saveWorkOrder
   };
 };
 export default useTask;

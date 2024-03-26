@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   useWindowDimensions,
+  Text
 } from "react-native";
 import useLocation from "../../../Hooks/useLocation";
 import useLoading from "../../general_hooks/useLoading";
@@ -39,9 +40,10 @@ const Location = () => {
   }, []);
   const RenderLocationMapView = () => {
     return (
-      <SafeAreaView>
-        <LocationMapView locationData={allLocations} />
-      </SafeAreaView>
+      // <SafeAreaView>
+      //   <LocationMapView locationData={allLocations} />
+      // </SafeAreaView>
+      <Text>Maps</Text>
     );
   };
   const RenderLocationListView = () => {

@@ -21,7 +21,7 @@ const useLocation = () => {
       .then((response) => {
         setLocation(response.data.data.allLocations);
         if (response.data) {
-          console.log("Location Data Dawg",response.data.data.allLocations);
+          // console.log("Location Data Dawg",response.data.data.allLocations);
           setLoading(false);
         }
       })
