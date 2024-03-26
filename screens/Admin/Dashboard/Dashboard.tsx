@@ -104,7 +104,7 @@ export default function Dashboard({ navigation }) {
           value={allTasks.length}
         />
       </ScrollView>
-      <AppText style={styles.heading}>Total Rooms Cleaned Per Cleaner</AppText>
+      {/* <AppText style={styles.heading}>Total Rooms Cleaned Per Cleaner</AppText>
       {!isLoading && (
         <View
           style={{
@@ -169,7 +169,7 @@ export default function Dashboard({ navigation }) {
             </Text>
           ))}
         </View>
-      )}
+      )} */}
       <View style={{ padding: 20 }}>
         <TouchableOpacity
           onPress={() => navigation.navigate("MasterSchedule")}

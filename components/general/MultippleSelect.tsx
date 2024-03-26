@@ -158,12 +158,7 @@ export default function MultipleSelect({
       </AnimatedTouchable>
 
       <ScrollView
-        contentContainerStyle={{
-          paddingVertical: 10,
-        }}
         style={styles.outerLayer}
-        onStartShouldSetResponder={() => false}
-        onStartShouldSetResponderCapture={() => false}
         >
         {options.map((option, ind) => (
           <AnimatedTouchable

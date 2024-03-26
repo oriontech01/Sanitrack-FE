@@ -59,7 +59,10 @@ export default function Users() {
   return (
     <>
       {loading ? (
-        <ActivityIndicator size={"large"} color={colors.blue} />
+        <ActivityIndicator
+          color={colors.blue}
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        />
       ) : (
         <TabView
           navigationState={{ index, routes }}
