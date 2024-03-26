@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, CircularProgress } from '@mui/material';
-import useLessons from 'Hooks/useLessons';
+import { useParams } from 'react-router';
+import useFetch from 'Hooks/useFetch';
 
 const Lessons = () => {
-  const { allPublishedLessons, loading } = useLessons();
+  const { id } = useParams();
+  const { isLoading, data } = useFetch(`course-lesson/${id}/all-lessons`, 'get');
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
-    if (allPublishedLessons.length > 0 && !selectedVideo) {
-      setSelectedVideo(allPublishedLessons[0]);
+    if (data.length > 0 && !selectedVideo) {
+      setSelectedVideo(data[0]);
     }
-  }, [allPublishedLessons, selectedVideo]);
+  }, [data, selectedVideo]);
 
   const handleVideoSelect = video => {
     setSelectedVideo(video);
   };
 
-  return loading ? (
+  return isLoading ? (
     <section className="flex items-center justify-center h-screen">
       <CircularProgress />
     </section>
@@ -58,10 +60,7 @@ const Lessons = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-gray-700">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus laborum delectus unde quaerat dolore culpa sit
-                    aliquam at.
-                  </p>
+                  <p className="text-gray-700">Ensure to complete this lesson before moving to the next.</p>
                 </div>
               </div>
             </div>
@@ -69,7 +68,7 @@ const Lessons = () => {
         )}
       </article>
       <div className="w-[20%] flex flex-col gap-2">
-        {allPublishedLessons.map((lessons, i) => {
+        {data.map((lessons, i) => {
           const { courseTitle, name, resourceUrl, thumbnailUrl } = lessons;
           return (
             <button
