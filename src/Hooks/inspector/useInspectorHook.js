@@ -11,6 +11,7 @@ const useInspectorHook = () => {
   const [facilities, setFacilities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [workOrderLocations, setWorkOrderLocations] = useState([]);
+  const [assignedFacilities, setAssignedFacilities] = useState([]);
   const [cleaningItems, setCleaningItems] = useState([]);
   const [roomDetails, setRoomDetails] = useState([]);
   const [itemsLoading, setItemsLoading] = useState(false);
@@ -38,6 +39,24 @@ const useInspectorHook = () => {
       }
     } catch (error) {
       setFaciltiesLoading(false);
+      console.log(error);
+    }
+  };
+  const getAssignedFcilities = async () => {
+    setFaciityLoading(true);
+    try {
+      const res = await axios.get(`${BASE_URL}inspector/assigned-facilties`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+      console.log('res', res);
+      if (res.data) {
+        setFaciityLoading(false);
+        setAssignedFacilities(res?.data?.data);
+      }
+    } catch (error) {
+      setFaciityLoading(false);
       console.log(error);
     }
   };
@@ -226,7 +245,7 @@ const useInspectorHook = () => {
       console.log(error);
     }
   };
-  const getSingleRequestedCleaningItems = async (id) => {
+  const getSingleRequestedCleaningItems = async id => {
     setLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}inspector/cleaning-items?taskId=${id}`, {
@@ -243,7 +262,7 @@ const useInspectorHook = () => {
       console.log(error);
     }
   };
- 
+
   //   const getWorkOrderLocationsForCleaner = async () => {
   //     setLoading(true);
   //     try {
@@ -490,7 +509,8 @@ const useInspectorHook = () => {
     getRequestedCleaningItems,
     getSingleRequestedCleaningItems,
     requestedSingleItems,
-    
+    getAssignedFcilities,
+    assignedFacilities
   };
 };
 
