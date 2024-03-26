@@ -8,7 +8,7 @@ import useFetch from 'Hooks/useFetch';
 const LearningOverview = () => {
   const currentRole = localStorage.getItem('role');
   const { isLoading, data } = useFetch('course/published-courses', 'get');
-  const Data = [
+  const localData = [
     {
       id: '65f04832dbb7f1e6459b5067',
       thumbnailUrl: 'https://orionbucketlms.s3.amazonaws.com/thumbnails/osha+dpt+of+labour.png',
@@ -132,7 +132,7 @@ const LearningOverview = () => {
                 </Link>
               </Grid>
             ))}
-            {Data.map((course, index) => (
+            {localData.map((course, index) => (
               <Grid item xs={6} key={index}>
                 <Link to={`/dashboard/training-files/${course.id}`}>
                   <Card style={{ display: 'flex', height: '150px' }}>
