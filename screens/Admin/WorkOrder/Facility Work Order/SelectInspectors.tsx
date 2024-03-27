@@ -6,6 +6,7 @@ import {
   Platform,
   View,
   Text,
+  Dimensions,
 } from "react-native";
 import DurationInput from "../../components/DurationInput";
 import Button from "../../../../components/general/Button";
@@ -20,6 +21,7 @@ import useTask from "../../hooks/useTask";
 import useCleaner from "../../hooks/useCleaner";
 import Select from "../../../../components/general/Select";
 
+const { width, height } = Dimensions.get("window");
 function formatDateTime(isoString) {
   const date = new Date(isoString);
   const hours = date.getUTCHours(); // Gets the hours in UTC
@@ -52,11 +54,12 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
   if (presavedData) {
     console.log("Template", presavedData);
   }
-  console.log("New ID GEYAS", id);
+  // console.log("New ID GEYAS", id);
   const { getInspectors, allInspectors } = useInspector();
   const { getCleaners, allCleaner } = useCleaner();
   const { startLoading, stopLoading, loading } = useLoading();
   const [selectedSupervisor, setSelectedSupervisor] = useState([]);
+  const [inspectorLoading, setInspectorLoading] = useState(false);
   const defaultStageTime = (stageName) => {
     const foundStage = presavedData?.stages?.find(
       (stage) => stage.name === stageName
@@ -145,7 +148,7 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
   const handleNextPress = async () => {
     const data = {
       facility_id: id,
-      assigned_inspector: selectedSupervisor,
+      assigned_supervisors: selectedSupervisor,
       scheduled_date: date,
       repeat: frequency,
       stages: [
@@ -172,11 +175,11 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
       ],
     };
     console.log("Go to the next step", data);
-    startLoading();
+    setInspectorLoading(true);
     try {
       assignInspectorsForFacility(data);
       saveWorkOrder(data);
-      stopLoading();
+      setInspectorLoading(false);
       // navigation.navigate("SelectUnassignedRooms", {
       //   facilityData: data,
       //   id,
@@ -267,7 +270,7 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
       <Button
         style={{ marginBottom: 25, marginTop: 10 }}
         label="Submit"
-        isLoading={loading}
+        isLoading={inspectorLoading}
         onPress={handleNextPress}
       />
     </ScrollView>
@@ -276,28 +279,15 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    padding: width * 0.04, // 4% of screen width
     height: "100%",
     backgroundColor: colors.white,
   },
   input: {
-    paddingBottom: 20,
-  },
-  select: {},
-  stageContainer: {
-    padding: 20,
-    backgroundColor: "#fff",
-    flex: 1,
-  },
-  detailContainer: {
-    marginBottom: 20,
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
+    paddingBottom: height * 0.02, // 2% of screen height
   },
   title: {
-    fontSize: 20,
+    fontSize: width < 360 ? 16 : 20, // Smaller font for smaller screens
     fontWeight: "bold",
     marginBottom: 5,
     marginTop: 20,
@@ -305,9 +295,15 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   content: {
-    fontSize: 16,
+    fontSize: width < 360 ? 14 : 16,
     paddingLeft: 10,
     marginBottom: 3,
+  },
+  select: {},
+  detailContainer: {
+    marginBottom: 20,
+    justifyContent: "center",
+    alignContent: "center",
   },
 });
 

@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
     color: colors.blue,
   },
   header: {
-    fontSize: 32,
+    fontSize: 25,
     fontWeight: "bold",
     padding: 20,
+    color: colors.blue
   },
   listHeader: {
     display: "flex",
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
 });
+
 export default function LocationListView({ locationData }) {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation()

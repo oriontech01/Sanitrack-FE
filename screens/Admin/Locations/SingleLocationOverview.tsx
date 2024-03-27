@@ -109,7 +109,7 @@ const SingleLocationOverview = ({ route, navigation }) => {
   return (
     <>
       {loading ? (
-        <ActivityIndicator color={colors.blue} size={"large"} />
+        <ActivityIndicator color={colors.blue} size={"small"} style={{flex: 1}} />
       ) : (
         <View style={styles.container}>
           <AddRoomInLocationModal

@@ -2,7 +2,6 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem,
 } from "@react-navigation/drawer";
 import AdminBottomNav from "../AdminBottomNav";
 import InventoryStack from "../Stack Navigators/InventoryStack";
@@ -28,12 +27,11 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 550
+    paddingTop: 500,
   },
   logo: {
     height: 100, // Set the dimensions as per your requirement
     width: 100, // Set the dimensions as per your requirement
-    // additional styling if needed
   },
 });
 function CustomDrawerContent(props) {

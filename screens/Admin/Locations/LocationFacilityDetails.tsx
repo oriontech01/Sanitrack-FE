@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   header: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
     padding: 16,
     color: colors.blue,
   },
   subHeader: {
-    fontSize: 20,
+    fontSize: 15,
     color: colors.lightgray,
     paddingLeft: 16,
     paddingBottom: 16,

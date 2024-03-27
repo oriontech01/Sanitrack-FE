@@ -159,6 +159,7 @@ export default function MultipleSelect({
 
       <ScrollView
         style={styles.outerLayer}
+        nestedScrollEnabled={true}
         >
         {options.map((option, ind) => (
           <AnimatedTouchable

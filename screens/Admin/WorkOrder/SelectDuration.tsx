@@ -4,31 +4,35 @@ import {
   StyleSheet,
   Text,
   View,
-} from 'react-native';
-import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import Select from '../../../components/general/Select';
-import MultipleSelect from '../../../components/general/MultippleSelect';
-import { useSharedValue, withTiming } from 'react-native-reanimated';
-import Input from '../../../components/general/Input';
-import colors from '../../../util/colors';
-import Button from '../../../components/general/Button';
-import useRoom from '../hooks/useRoom';
+  Platform,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import Header from "../components/Header";
+import Select from "../../../components/general/Select";
+import MultipleSelect from "../../../components/general/MultippleSelect";
+import { useSharedValue, withTiming } from "react-native-reanimated";
+import Input from "../../../components/general/Input";
+import colors from "../../../util/colors";
+import Button from "../../../components/general/Button";
+import useRoom from "../hooks/useRoom";
+import DateInput from "../components/DateInput";
 
 export default function SelectDuration({ navigation, route }) {
   const { facility } = route.params;
   const [itemsToClean, setItemsToClean] = useState([]);
+  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date());
   const [clean, setClean] = useState({
-    hours: '',
-    minutes: '',
+    hours: "",
+    minutes: "",
   });
   const [preop, setPreop] = useState({
-    hours: '',
-    minutes: '',
+    hours: "",
+    minutes: "",
   });
   const [release, setRelease] = useState({
-    hours: '',
-    minutes: '',
+    hours: "",
+    minutes: "",
   });
   const { getUnassignedRoomById, allUnassignedRoomsById, isLoading } =
     useRoom();
@@ -40,6 +44,13 @@ export default function SelectDuration({ navigation, route }) {
   const onClose = () => {
     borderWidthValue.value = withTiming(0);
   };
+
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios"); // Keep the picker open on iOS after selection
+    setDate(currentDate);
+  };
+
   useEffect(() => {
     getUnassignedRoomById(facility.location_id);
   }, []);
@@ -67,18 +78,27 @@ export default function SelectDuration({ navigation, route }) {
         <Text style={{ marginVertical: 10, opacity: 0.4 }}>Facility Name</Text>
         <View
           style={{
-            width: '100%',
+            width: "100%",
             height: 40,
-            backgroundColor: '#F5F5F5',
+            backgroundColor: "#F5F5F5",
             borderRadius: 10,
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
             paddingHorizontal: 20,
             opacity: 0.4,
             marginBottom: 20,
-          }}>
+          }}
+        >
           <Text>{facility.facility_name}</Text>
         </View>
+        <DateInput
+          label="Schedule Date"
+          style={{marginBottom: 10}}
+          onChange={onDateChange}
+          setShowDate={setShow}
+          date={date}
+          showDate={show}
+        />
         {isLoading && <ActivityIndicator color={colors.blue} />}
         {!isLoading && (
           <Select
@@ -100,8 +120,8 @@ export default function SelectDuration({ navigation, route }) {
             }}
             label={
               allUnassignedRoomsById.length > 0
-                ? 'Please select room'
-                : 'No unassigned rooms!'
+                ? "Please select room"
+                : "No unassigned rooms!"
             }
             placeHolder="Select items"
           />
@@ -224,11 +244,11 @@ export default function SelectDuration({ navigation, route }) {
       <Button
         onPress={() => {
           if (selected == undefined) {
-            alert('Please select a items');
+            alert("Please select a items");
             return;
           }
 
-          navigation.navigate('AdminCleaningItems', {
+          navigation.navigate("AdminCleaningItems", {
             data: JSON.stringify({
               preop,
               clean,
@@ -236,7 +256,7 @@ export default function SelectDuration({ navigation, route }) {
               facility,
               selected,
               itemsToClean,
-              
+              schedule_date: date
             }),
           });
         }}
@@ -250,15 +270,15 @@ export default function SelectDuration({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 20,
   },
   timing: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   timingInput: {
-    width: '45%',
+    width: "45%",
   },
 });

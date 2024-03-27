@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Dimensions,
-  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -22,12 +21,9 @@ export default function FacilityCleaningWorkOrder({ navigation }) {
   useEffect(() => {
     getLocation();
     getWorkOrderFacilities();
-    //   getTask();
   }, []);
 
-
-
-  console.log(assignedFacilities);
+  console.log("vjhdbhvj", assignedFacilities[0]);
   return (
     <SafeAreaView style={{ flex: 1, backfaceVisibility: "#fff" }}>
       <View style={styles.container}>
@@ -59,12 +55,20 @@ export default function FacilityCleaningWorkOrder({ navigation }) {
               {assignedFacilities.map((facility, ind) => (
                 <FacilityList
                   key={ind.toString()}
-                  title={facility.facility_id ? facility.facility_id.facility_name : `MSS Facility ${ind + 1}`}
-                  detail={facility.facility_id !== null ? `${facility.facility_id.state} - ${facility.facility_id.country}` : 'No Facility ID available'}
+                  title={
+                    facility.facility_id
+                      ? facility.facility_id.facility_name
+                      : `MSS Facility ${ind + 1}`
+                  }
+                  detail={
+                    facility.facility_id !== null
+                      ? `${facility.facility_id.state} - ${facility.facility_id.country}`
+                      : "No Facility ID available"
+                  }
                   onPress={() => {
-                     navigation.navigate("FacilityTimerDetails", {
-                       facilityTimerData: facility
-                     })
+                    navigation.navigate("FacilityTimerDetails", {
+                      facilityTimerData: facility,
+                    });
                   }}
                 />
               ))}
@@ -72,13 +76,6 @@ export default function FacilityCleaningWorkOrder({ navigation }) {
           )}
         </ScrollView>
       </View>
-
-      {/* <Modal animationType="slide" transparent={true} visible={modalVisible2}>
-          <View style={styles.overLay}>
-            <View style={styles.content}>
-             
-          </View>
-        </Modal> */}
     </SafeAreaView>
   );
 }

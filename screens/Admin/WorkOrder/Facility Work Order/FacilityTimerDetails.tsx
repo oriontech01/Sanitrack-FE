@@ -2,24 +2,22 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Header from "../../components/Header";
 import colors from "../../../../util/colors";
-import moment from "moment"; // You might need to install moment if not already
+import moment from "moment"; // Ensure moment is installed
 
 const FacilityTimerDetails = ({ route, navigation }) => {
   const { facilityTimerData } = route.params;
 
-  // Assuming that the facilityTimerData is correctly passed to this component
-  // Format the dates with moment.js or any other library/method you prefer
+  console.log("DCBJZBVJDBDK" ,facilityTimerData)
+
   const formatDate = (date) => moment(date).format("DD - MM - YYYY");
   const formatTime = (date) => moment(date).format("h:mm a");
 
-  // Transforming stages into an object with keys for planned stages
   const plannedStagesAndTime = facilityTimerData.stages.reduce((acc, stage) => {
     acc[stage.name] = formatTime(stage.start_time);
     return acc;
   }, {});
 
-  // Dummy data for actual stages and time, replace with real data when available
-  const actualStagesAndTime = { ...plannedStagesAndTime }; // This should be actual times
+  const actualStagesAndTime = { ...plannedStagesAndTime };
 
   return (
     <ScrollView style={styles.container}>
@@ -27,15 +25,15 @@ const FacilityTimerDetails = ({ route, navigation }) => {
         withAdd={false}
         withBack={true}
         navigation={navigation}
-        label={facilityTimerData.facility_id.facility_name ? facilityTimerData.facility_id.facility_name: 'N/A'}
+        label={facilityTimerData.facility_id?.facility_name || 'N/A'}
       />
       <Detail
         title="Facility Name"
-        content={facilityTimerData.facility_id.facility_name ? facilityTimerData.facility_id.facility_name: 'N/A'}
+        content={facilityTimerData.facility_id?.facility_name || 'N/A'}
       />
       <Detail
         title="Location"
-        content={ facilityTimerData.facility_id ?`${facilityTimerData.facility_id.city}, ${facilityTimerData.facility_id.state}, ${facilityTimerData.facility_id.country}`: 'N/A'}
+        content={facilityTimerData.facility_id ? `${facilityTimerData.facility_id.city}, ${facilityTimerData.facility_id.state}, ${facilityTimerData.facility_id.country}` : 'N/A'}
       />
       <Detail
         title="Scheduled Date"
@@ -45,11 +43,10 @@ const FacilityTimerDetails = ({ route, navigation }) => {
         title="Status of Timing"
         content={facilityTimerData.completed ? "Completed" : "Pending"}
       />
-      {/* The currentCleaningStage is not provided in the facilityTimerData, assuming the last stage as current */}
       <Detail
         title="Current Cleaning Stage"
         content={
-          facilityTimerData.stages[facilityTimerData.stages.length - 1].name
+          facilityTimerData.stages[facilityTimerData.stages.length - 1]?.name || 'N/A'
         }
       />
 
@@ -58,16 +55,13 @@ const FacilityTimerDetails = ({ route, navigation }) => {
         stages={plannedStagesAndTime}
       />
       <StageDetails
-        title="Actual Stages And Time" // Replace with actual data when available
+        title="Actual Stages And Time"
         stages={actualStagesAndTime}
       />
 
-      {/* Assuming that assigned_supervisors[0] contains the ID of the supervisor */}
       <Detail
         title="Assigned Supervisor"
-        content={facilityTimerData.assigned_supervisors.map((name) => {
-           return name
-        })} // Replace with name when available
+        content={facilityTimerData.assigned_supervisors.map((supervisor) => supervisor.username).join(", ") || 'N/A'}
       />
     </ScrollView>
   );

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
@@ -34,7 +35,7 @@ export default function WorkOrders({ navigation }) {
       const mapedLocations = allLocations.map((loc) => {
         return {
           value: loc._id,
-          label: `${loc.country}| ${loc.state} ${loc.city}`,
+          label: `${loc.country} - ${loc.state} - ${loc.city}`,
         };
       });
 
@@ -86,9 +87,9 @@ export default function WorkOrders({ navigation }) {
         </ScrollView>
       </View>
 
-      <Modal animationType="slide" transparent={true} visible={modalVisible2}>
-        <View style={styles.overLay}>
-          <View style={styles.content}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible2} onRequestClose={() => setModalVisible2(false)}>
+        <TouchableOpacity activeOpacity={1} onPress={() => setModalVisible2(false)} style={styles.overLay}>
+          <TouchableOpacity activeOpacity={1} style={styles.content}>
             <Text style={{ color: colors.blue, fontWeight: 'bold' }}>
               Select Facility
             </Text>
@@ -114,8 +115,8 @@ export default function WorkOrders({ navigation }) {
               }}
               label="Next"
             />
-          </View>
-        </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </Modal>
     </SafeAreaView>
   );

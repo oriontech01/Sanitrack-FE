@@ -3,7 +3,8 @@ import {
   ActivityIndicator,
   SafeAreaView,
   useWindowDimensions,
-  Text
+  Text,
+  View,
 } from "react-native";
 import useLocation from "../../../Hooks/useLocation";
 import useLoading from "../../general_hooks/useLoading";
@@ -26,8 +27,8 @@ const Location = () => {
   const { loading, startLoading, stopLoading } = useLoading();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: "map", title: "Map View" },
     { key: "list", title: "List View" },
+    { key: "map", title: "Map View" },
   ]);
 
   useEffect(() => {
@@ -43,7 +44,11 @@ const Location = () => {
       // <SafeAreaView>
       //   <LocationMapView locationData={allLocations} />
       // </SafeAreaView>
-      <Text>Maps</Text>
+      <View
+        style={{ flex: 1, justifyContent: "center", alignContent: "center" }}
+      >
+        <Text style={{paddingLeft: 35, fontSize: 20}}>Could not connect to google maps, please try again later</Text>
+      </View>
     );
   };
   const RenderLocationListView = () => {
@@ -51,14 +56,14 @@ const Location = () => {
   };
 
   const renderScene = SceneMap({
-    map: RenderLocationMapView,
     list: RenderLocationListView,
+    map: RenderLocationMapView,
   });
 
   const layout = useWindowDimensions();
 
   return loading ? (
-    <ActivityIndicator size={"large"} color={colors.blue} />
+    <ActivityIndicator size={"small"} color={colors.blue} style={{flex: 1}}/>
   ) : (
     // <SafeAreaView>
     //   <TabView

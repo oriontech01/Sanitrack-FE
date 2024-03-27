@@ -1,9 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, Dimensions, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import Header from "../../components/Header";
 import FacilityList from "../../../Home/components/FacilityList";
 import useLoading from "../../../general_hooks/useLoading";
 import useTask from "../../hooks/useTask";
+
+// Get the screen's width and height
+const { width, height } = Dimensions.get("window");
 
 export default function SelectNewWorkOrder({ navigation }) {
   const { startLoading, stopLoading, loading } = useLoading();
@@ -20,7 +23,7 @@ export default function SelectNewWorkOrder({ navigation }) {
 
   console.log("Presaved", preSavedWO);
   return (
-    <View style={{ padding: 20 }}>
+    <View style={styles.container}>
       <Header
         label="Assign Facility Timer"
         withAdd={true}
@@ -30,10 +33,8 @@ export default function SelectNewWorkOrder({ navigation }) {
         }}
         navigation={navigation}
       />
-      <Text style={{ paddingLeft: 10, paddingTop: 10 }}>
-        Select from existing timers.
-      </Text>
-      <View style={{ flex: 1 }}>
+      <Text style={styles.selectText}>Select from existing timers.</Text>
+      <View style={styles.listContainer}>
         {preSavedWO.map((template) => {
           const facilityName =
             template.facility_id?.facility_name || "MSS Facility";
@@ -59,3 +60,19 @@ export default function SelectNewWorkOrder({ navigation }) {
     </View>
   );
 }
+
+// Stylesheet adjusted for responsiveness
+const styles = StyleSheet.create({
+  container: {
+    padding: width * 0.05, // Dynamic padding based on screen width
+    height: "100%",
+  },
+  selectText: {
+    paddingLeft: 10,
+    paddingTop: height * 0.01, // Dynamic padding top based on screen height
+    fontSize: width < 360 ? 14 : 16, // Adjust font size based on screen width
+  },
+  listContainer: {
+    flex: 1,
+  },
+});
