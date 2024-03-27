@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -280,5 +281,8 @@ const styles = StyleSheet.create({
   },
   timingInput: {
     width: "45%",
+  },
+  input: {
+    paddingBottom: 20,
   },
 });

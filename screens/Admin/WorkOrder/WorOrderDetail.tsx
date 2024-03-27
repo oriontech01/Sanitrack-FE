@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React, { useState } from 'react';
@@ -38,7 +39,7 @@ export default function WorOrderDetail({ navigation, route }) {
           navigation={navigation}
         />
         <Text style={{ color: '#999999', marginVertical: 10, fontSize: 12 }}>
-          Rooms {`(${facilities.length})`}
+          Facilities {`(${facilities.length})`}
         </Text>
 
         {loadingFacilities && (
@@ -73,9 +74,29 @@ export default function WorOrderDetail({ navigation, route }) {
         <Modal animationType="slide" transparent={true} visible={modalVisible2}>
           <View style={styles.overLay}>
             <View style={styles.content}>
-              <Text style={{ color: colors.blue, fontWeight: 'bold' }}>
-                Add New Facility
-              </Text>
+              <View style={{ flexDirection: 'row', width: '100%' }}>
+                <Text
+                  style={{
+                    color: colors.blue,
+                    fontWeight: 'bold',
+                    marginLeft: 'auto',
+                  }}>
+                  Add New Facility
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setModalVisible2(false)}
+                  style={{
+                    width: 30,
+                    height: 30,
+                    backgroundColor: '#000',
+                    borderRadius: 10,
+                    marginLeft: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={{ color: '#fff' }}>X</Text>
+                </TouchableOpacity>
+              </View>
               <Input
                 value={name}
                 onChange={(e) => setName(e)}

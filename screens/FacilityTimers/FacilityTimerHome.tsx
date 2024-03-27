@@ -12,10 +12,12 @@ import useGetAllFacility from '../Home/hooks/useGetAllFacility';
 import useGetLocation from '../Home/hooks/useGetLocation';
 import colors from '../../util/colors';
 import AppText from '../../components/AppText';
+import useGetFacilities from './hooks/useGetFacilities';
 
 export default function FacilityTimerHome({ navigation }) {
   // const [activeData, setActiveData] = useState(null);
-  const { locations, loadingLocation } = useGetLocation();
+
+  const { facilities, loadingFacilities } = useGetFacilities();
 
   return (
     <View style={styles.container}>
@@ -30,7 +32,7 @@ export default function FacilityTimerHome({ navigation }) {
         </TouchableOpacity>
         <AppText style={styles.haeding}>Facilities</AppText>
       </View>
-      {loadingLocation && (
+      {loadingFacilities && (
         <View
           style={{
             flex: 1,
@@ -40,24 +42,25 @@ export default function FacilityTimerHome({ navigation }) {
           <ActivityIndicator color={colors.blue} />
         </View>
       )}
-      {!loadingLocation && locations.length > 0 && (
+      {!loadingFacilities && facilities.length > 0 && (
         <>
-          {locations.map((location, index) => (
+          {facilities.map((facility, index) => (
             <FacilityList
               onPress={() =>
                 navigation.navigate('FacilityMainTimer', {
-                  location: location,
+                  facility: JSON.stringify(facility),
+                  id: facility._id,
                 })
               }
-              title={location.city}
-              detail={location.state}
+              title={facility.facility_id.facility_name}
+              detail={facility.facility_id.city}
               key={index.toString()}
             />
           ))}
         </>
       )}
 
-      {!loadingLocation && locations.length == 0 && (
+      {!loadingFacilities && facilities.length == 0 && (
         <View
           style={{
             flex: 1,

@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   TouchableOpacity
 } from 'react-native';
@@ -87,12 +88,32 @@ export default function WorkOrders({ navigation }) {
         </ScrollView>
       </View>
 
-      <Modal animationType="slide" transparent={true} visible={modalVisible2} onRequestClose={() => setModalVisible2(false)}>
-        <TouchableOpacity activeOpacity={1} onPress={() => setModalVisible2(false)} style={styles.overLay}>
-          <TouchableOpacity activeOpacity={1} style={styles.content}>
-            <Text style={{ color: colors.blue, fontWeight: 'bold' }}>
-              Select Facility
-            </Text>
+      <Modal animationType="slide" transparent={true} visible={modalVisible2}>
+        <View style={styles.overLay}>
+          <View style={styles.content}>
+            <View style={{ flexDirection: 'row', width: '100%' }}>
+              <Text
+                style={{
+                  color: colors.blue,
+                  fontWeight: 'bold',
+                  marginLeft: 'auto',
+                }}>
+                Select Facility
+              </Text>
+              <TouchableOpacity
+                onPress={() => setModalVisible2(false)}
+                style={{
+                  width: 30,
+                  height: 30,
+                  backgroundColor: '#000',
+                  borderRadius: 10,
+                  marginLeft: 'auto',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{ color: '#fff' }}>X</Text>
+              </TouchableOpacity>
+            </View>
 
             <Select
               style={{ marginVertical: 20 }}

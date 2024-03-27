@@ -31,6 +31,7 @@ interface SelectProps {
   error?: string;
   style?: ViewStyle;
   label?: string;
+  initialValue: { value: string; label: string };
 }
 export default function Select({
   options,
@@ -39,8 +40,11 @@ export default function Select({
   error,
   style,
   label,
+  initialValue,
 }: SelectProps) {
-  const [selectedValue, setSelectedValue] = useState(undefined);
+  const [selectedValue, setSelectedValue] = useState(
+    initialValue ? initialValue : undefined
+  );
   const borderWidthValue = useSharedValue(0);
   const { height: WindowHeigth } = Dimensions.get("window");
   const reanimtedBorderStyle = useAnimatedStyle(() => {
