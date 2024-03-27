@@ -39,7 +39,7 @@ const SpeedometerValue = ({ cleanTime }) => {
        ringWidth={47}
        needleTransitionDuration={3333}
        needleTransition="easeElastic"
-       needleColor={'#90f2ff'}
+       needleColor={'#144FFF'}
        textColor={'#d8dee9'}
         // width={300}
         // needleHeightRatio={0.7}

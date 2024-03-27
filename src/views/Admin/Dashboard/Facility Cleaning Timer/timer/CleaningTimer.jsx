@@ -178,34 +178,34 @@ const CleaningTimer = () => {
                             }
                           />
 
-                          <div className="div-48 capitalize text-xl">
+                          <div className=" capitalize text-blue-500 font-bold pb-4 text-xl">
                             {item?.resultItem?.facility_id?.facility_name ? item?.resultItem?.facility_id?.facility_name : 'N/A'}
                           </div>
                           <div className="w-full px-4">
-                            <h1 className="text-LG text-blue-500 font-bold ">Planned Time</h1>
+                            <h1 className="text-base text-black font-medium ">Planned Time</h1>
                             {latest?.map(stage => (
-                              <span key={stage?.name} className="flex justify-between items-center ">
-                                <p className="text-gray-400 text-sm capitalize">{`${stage?.name} `}</p>
-                                <p>{stage?.start_time ? convertDateFormat(stage?.start_time) : 'N/A'}</p>
+                              <span key={stage?.name} className="flex justify-between items-center space-y-2 pt-2">
+                                <p className="text-blue-500 text-sm capitalize">{`${stage?.name} `}</p>
+                                <p className="text-blue-500 text-sm capitalize">{stage?.start_time ? convertDateFormat(stage?.start_time) : 'N/A'}</p>
                               </span>
                             ))}
                           </div>
                           <div className="w-full px-4 mt-3">
-                            <h1 className="text-LG text-blue-500 font-bold ">Actual Time</h1>
+                            <h1 className="text-base text-black font-medium ">Actual Time</h1>
                             {actual?.stages?.map(stage => (
-                              <span key={stage?.name} className="flex justify-between items-center ">
-                                <p className="text-gray-400 text-sm capitalize">{`${stage?.name} `}</p>
-                                <p>
+                              <span key={stage?.name} className="flex justify-between items-center space-y-2 pt-2">
+                                <p  className="text-blue-500 text-sm capitalize">{`${stage?.name} `}</p>
+                                <p  className="text-blue-500 text-sm capitalize">
                                   {stage?.actual_stage_start_time ? convertToHoursMinutesSeconds(stage?.actual_stage_start_time) : 'N/A'}
                                 </p>
                               </span>
                             ))}
                           </div>
                           <div className="flex  flex-col gap-y-2 px-4 w-full mt-3">
-                            <h1 className="text-lg font-bold text-blue-500 ">Supervisors</h1>
+                            {/* <h1 className="text-base text-black font-bold ">Supervisors</h1> */}
                             {newItem?.assigned_supervisors?.map(stage => (
                               <span key={stage?.name} className="border border-dotted border-gray-200 p-2">
-                                <p className="text-blue-500  font-bold text-base capitalize">{`${stage?.username} `}</p>
+                                <p className="text-blue-500  font-bold text-sm capitalize">{`${stage?.username} `}</p>
                                 <p className="text-gray-300  font-thin text-sm capitalize">{`${stage?.address_id} `}</p>
                                 <div className="flex justify-between pt-2">
                                   <a href={`mailto:${stage?.email}`}>
