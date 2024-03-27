@@ -52,8 +52,8 @@ export default {
     ],
     extra: {
       eas: {
-        projectId: 'b3cb1efd-5bca-4061-b626-050774444c01',
-        name: 'test-kali',
+        projectId: '64587dbc-ef7e-4189-96d9-7b23d99821f7',
+        name: 'native-boy',
         baseUrl: process.env.SANITRACK_API_URI,
       },
       cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
@@ -64,6 +64,6 @@ export default {
       chatEngineProjectId: process.env.CHAT_ENGINE_PROJECT_ID,
       googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY
     },
-    owner: 'test-kali',
+    owner: 'native-boy',
   },
 };
