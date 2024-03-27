@@ -101,7 +101,7 @@ const LearningOverview = () => {
           </Typography>
           <Grid container spacing={2}>
             {data.map((course, index) => (
-              <Grid item xs={6} key={index}>
+              <Grid item key={index}>
                 <Link to={`/dashboard/training/${course._id}`}>
                   <Card style={{ display: 'flex', height: '150px' }}>
                     <CardMedia
@@ -133,7 +133,7 @@ const LearningOverview = () => {
               </Grid>
             ))}
             {localData.map((course, index) => (
-              <Grid item xs={6} key={index}>
+              <Grid item key={index}>
                 <Link to={`/dashboard/training-files/${course.id}`}>
                   <Card style={{ display: 'flex', height: '150px' }}>
                     <CardMedia

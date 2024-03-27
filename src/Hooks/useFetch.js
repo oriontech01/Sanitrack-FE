@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const access_token = localStorage.getItem('auth-token');
 
 const useFetch = (urlParams, method = 'get') => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
+  const access_token = localStorage.getItem('auth-token');
   const fetchMovies = async (url, method) => {
     setIsLoading(true);
     try {
