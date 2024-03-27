@@ -144,6 +144,13 @@ const adminSideNavItems = [
         type: 'item',
         icon: icons['BlockOutlinedIcon'], // Assuming it relates to access control
         url: '/dashboard/roles'
+      },
+      {
+        id: 'user roles',
+        title: 'User Roles',
+        type: 'item',
+        icon: icons['BlockOutlinedIcon'], // Assuming it relates to access control
+        url: '/dashboard/roles'
       }
     ]
   }
@@ -199,7 +206,7 @@ const cleanerSideNavItems = [
         title: 'Facility Timer',
         type: 'item',
         icon: TimelapseOutlined, // Changed Icon
-        url: '/dashboard/facility-timer'
+        url: '/dashboard/facility-timers'
       },
       {
         id: 'facility-release',
@@ -254,14 +261,14 @@ const inspectorSideNavItems = [
         title: 'Facility Timer',
         type: 'item',
         icon: TimelapseOutlined, // Changed Icon
-        url: '/dashboard/inspector/facility-timer'
+        url: '/dashboard/facility-timers'
       },
       {
         id: 'facility-release',
         title: 'Facility Release',
         type: 'item',
         icon: NewReleasesRounded, // Changed Icon
-        url: '/dashboard/inspector/facility-release'
+        url: '/dashboard/facility-release'
       }
     ]
   }

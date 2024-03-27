@@ -159,11 +159,13 @@ const MainRoutes = {
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
     { path: '/dashboard/requests', element: <InspectorRequests /> },
     { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
-    { path: '/dashboard/inspector/facility-timer', element: <InspectorFacilityTimer /> },
-    { path: '/dashboard/inspector/facility-timer/:id', element: <InspectorFacilityTimerDetails /> },
-    { path: '/dashboard/inspector/coming-soon', element: <InspectorComingSoon /> },
-    { path: '/dashboard/inspector/facility-release', element: <InspectorFacilityRelease /> },
-    { path: '/dashboard/inspector/facility-release/:id', element: <InspectorFacilityReleaseDetails /> }
+
+    { path: '/dashboard/facility-timers', element: <InspectorFacilityTimer /> },
+    { path: '/dashboard/facility-timers/:id', element: <InspectorFacilityTimerDetails /> },
+    { path: '/dashboard/coming-soon', element: <InspectorComingSoon /> },
+    { path: '/dashboard/facility-release', element: <InspectorFacilityRelease /> },
+    { path: '/dashboard/facility-release/:id', element: <InspectorFacilityReleaseDetails /> },
+
   ]
 };
 

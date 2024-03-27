@@ -113,7 +113,7 @@ const AddRoom = (props) => {
                   const address = `${location.city}, ${location.state}, ${location.country}`;
                   return (
                     <MenuItem key={location._id} value={location._id}>
-                      {location._id} {address}
+                       {address}
                     </MenuItem>
                   );
                 })}

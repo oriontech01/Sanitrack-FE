@@ -1,14 +1,15 @@
-import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import pdf from '../../assets/intent.pdf';
 import food from '../../assets/food.pdf';
 import osha from '../../assets/osha.pdf';
 import { useParams } from 'react-router';
 import useFetch from 'Hooks/useFetch';
 
 // Set up pdfjs worker source
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.js', import.meta.url).toString();
 
 const LessonFile = () => {
   const { id } = useParams();
@@ -18,17 +19,32 @@ const LessonFile = () => {
   console.log(data);
 
   const Data = [
-    { title: 'CDPH Food Safety Program', resourceUrl: `${food}`, id: '65fb07cf11c0dc2d3d569e83' },
-    { title: 'Osha Training Guidelines', resourceUrl: `${osha}`, id: '65fb064e11c0dc2d3d569e7c' }
+    { title: 'CDPH Food Safety Program', resourceUrl: `${food}`, id: '65f04832dbb7f1e6459b5067' },
+    { title: 'Osha Training Guidelines', resourceUrl: `${osha}`, id: '65f048ef0818c753684eca60' }
   ];
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
 
   function onDocumentError(error) {
     console.error('Error loading PDF:', error);
   }
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  function changePage(offset) {
+    setPageNumber(prevPageNumber => prevPageNumber + offset);
+  }
+
+  function previousPage() {
+    changePage(-1);
+  }
+
+  function nextPage() {
+    changePage(1);
+  }
+
+  const filteredData = Data.filter(item => item.id === id);
 
   return isLoading ? (
     <div className=" flex items-center justify-center h-screen">
@@ -36,7 +52,7 @@ const LessonFile = () => {
     </div>
   ) : (
     <Box sx={{ flexGrow: 1, m: 2 }}>
-      {Data.map((item, i) => {
+      {filteredData.map((item, i) => {
         const { title, resourceUrl } = item;
         return (
           <Grid container spacing={2} key={i}>
@@ -54,15 +70,22 @@ const LessonFile = () => {
                 </Typography>
               </Box>
             </Grid>
-            <Box width={'100%'}>
+            <Box width={'80%'} maxHeight={'500px'}>
               <Document file={resourceUrl} onLoadSuccess={onDocumentLoadSuccess} onError={onDocumentError}>
-                {Array.from(new Array(numPages), (el, index) => (
-                  <Page pageNumber={index + 1} key={`page_${index + 1}`} onRenderFailure={onDocumentError} style={{ width: '100%' }} />
-                ))}
+                <Page pageNumber={pageNumber} />
               </Document>
-              <p>
-                Page {pageNumber} of {numPages}
-              </p>
+              <div className="items-center flex justify-center gap-3 py-4">
+                <Button variant="contained" style={{ backgroundColor: 'blue' }} onClick={previousPage} disabled={pageNumber <= 1}>
+                  Prev
+                </Button>
+                <p>
+                  Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+                </p>
+
+                <Button variant="contained" style={{ backgroundColor: 'blue' }} onClick={nextPage} disabled={pageNumber >= numPages}>
+                  Next
+                </Button>
+              </div>
             </Box>
           </Grid>
         );

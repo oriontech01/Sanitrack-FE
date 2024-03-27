@@ -1,13 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { toast, Flip } from 'react-toastify';
 const useRole = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const navigate = useNavigate();
 
   const access_token = localStorage.getItem("auth-token");
-
+const [roleLoader,setRoleLoader]=useState(false)
   const [roles, setAllRoles] = useState([]);
   const [staffRoles, setStaffRoles] = useState([]);
   const [roleForStaff, setRoleForStaff] = useState([]);
@@ -94,22 +94,54 @@ const useRole = () => {
   };
 
   const assignUserRole = async (roleData) => {
+    setRoleLoader(true)
     await axios
       .post(`${BASE_URL}roles/assign`, roleData, {
         headers: { Authorization: `Bearer ${access_token}` },
       })
       .then((response) => {
-        navigate("/home/role");
+        setTimeout(() => {
+          navigate("/dashboard/roles");
+        }, 1000);
+       
+        if(response){
+          setRoleLoader(false)
+          toast.success('Added Successfully', {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
+        }
+        console.log(response)
       })
       .catch((error) => {
+        console.log(error)
         if (error.response) {
+          setRoleLoader(false)
           const { status, data } = error.response;
+          toast.error(data.message, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+            transition: Flip
+          });
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
-            navigate("/home/role");
+            // navigate("/home/role");
             // console.log("An error occured", data.message);
           } else if (status === 403 && data && data.message) {
-            navigate("/");
+            // navigate("/");
           } else {
             console.log("Axios error:", error);
           }
@@ -205,7 +237,7 @@ const useRole = () => {
     deleteRole,
     getRoleForStaff,
     roleForStaff,
-    revokeUserRole
+    revokeUserRole,roleLoader
   };
 };
 export default useRole;

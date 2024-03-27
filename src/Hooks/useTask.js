@@ -19,17 +19,53 @@ const useTask = () => {
   const [monthlyMissed, setMonthlyMissed] = useState([]);
   const [missed, setMissed] = useState([]);
   const [taskTable, setTaskTable] = useState([]);
+  const [facilityStages, setFacilityStages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line no-unused-vars
 
   const [activeCleaners, setActiveCleaners] = useState();
   const [activeInspectors, setActiveInspectors] = useState();
   const [activeCleaningItems, setActiveCleaningItems] = useState();
   const [everyTask, setEveryTask] = useState();
+  const [singleFacilityOrder, setSingleFacilityOrder] = useState([]);
 
   const navigate = useNavigate();
 
   const access_token = localStorage.getItem('auth-token');
   const storedId = localStorage.getItem('roomId');
+
+  const getFacilityOrderById = async id => {
+    setIsLoading(true);
+    await axios
+      .get(`${BASE_URL}/work-facility/details?work_order_id=${id}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        setSingleFacilityOrder(response.data.data);
+        console.log('omah', response);
+        if (response.data.data) {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          setIsLoading(false);
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          setIsLoading(false);
+          console.log('Network error:', error.message);
+        }
+      });
+  };
   const getUnAssignedRooms = async () => {
     await axios
       .get(`${BASE_URL}room/unassigned-rooms`, {
@@ -228,6 +264,35 @@ const useTask = () => {
         }
       });
   };
+  const getFacilityStages = async id => {
+    await axios
+      .get(`${BASE_URL}inspector/facility-stages?work_order_id=${id}`, {
+        headers: { Authorization: `Bearer ${access_token}` }
+      })
+      .then(response => {
+        console.log('dang', response);
+
+        setFacilityStages(response.data.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400 && data && data.message) {
+            setResponseMessage(data.message);
+            console.log('An error occured', data.message);
+          } else if (status === 403 && data && data.message) {
+            console.log('An error with status 403 occured', data.message);
+            setResponseMessage(data.message);
+            // navigate('/')
+            // send user back to the login page!
+          } else {
+            console.log('Axios error:', error);
+          }
+        } else {
+          console.log('Network errorasy:', error.message);
+        }
+      });
+  };
   const addTask = async data => {
     setTaskLoading(true);
     await axios
@@ -302,7 +367,6 @@ const useTask = () => {
         console.log(response);
         // send user back to the task home page
         if (response.data) {
-        
           toast.success('Inspector Added Successfully', {
             position: 'top-center',
             autoClose: 5000,
@@ -315,12 +379,9 @@ const useTask = () => {
             transition: Flip
           });
           setTaskLoading(false);
-          setResponseMessageBool(false)
-          localStorage.setItem("workIdx",response?.data?.data?._id);
+          setResponseMessageBool(false);
+          localStorage.setItem('workIdx', response?.data?.data?._id);
         }
-      
-         
-       
 
         // console.log(response.json())
       })
@@ -492,7 +553,12 @@ const useTask = () => {
     missed,
     getTaskTable,
     taskTable,
-    assignInspectorsForFacility,responseMessageBool
+    assignInspectorsForFacility,
+    responseMessageBool,
+    getFacilityStages,
+    facilityStages,
+    getFacilityOrderById,
+    singleFacilityOrder,isLoading
   };
 };
 export default useTask;
