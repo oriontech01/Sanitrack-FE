@@ -13,7 +13,7 @@ const useReleaseFacility = () => {
   };
   const { token, role } = useContext(UserContext);
   const releaseFacility = async (id) => {
-    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
+    const api = role == 'Inspector' ? 'inspector' : 'inspector';
     startLoading();
     console.log(
       `${Constants.expoConfig.extra.baseUrl}${api}/facility-release?work_order_id=${id}`

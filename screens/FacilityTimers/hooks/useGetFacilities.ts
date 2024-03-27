@@ -13,7 +13,7 @@ const useGetFacilities = () => {
   };
   const { token, role } = useContext(UserContext);
   const getAllFacilities = async () => {
-    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
+    const api = role == 'Inspector' ? 'inspector' : 'inspector';
     startLoading();
 
     try {
@@ -29,6 +29,7 @@ const useGetFacilities = () => {
       console.log(response.data.data, 'asss');
       stopLoading();
     } catch (error) {
+      console.log(error);
       stopLoading();
     }
   };

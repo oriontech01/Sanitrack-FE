@@ -8,7 +8,7 @@ const useStopTime = () => {
 
   const { token, role } = useContext(UserContext);
   const stopTime = async (name, id, startId) => {
-    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
+    const api = role == 'Inspector' ? 'inspector' : 'inspector';
     startLoading();
 
     try {

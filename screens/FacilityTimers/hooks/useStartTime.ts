@@ -8,7 +8,7 @@ const useStartTime = () => {
 
   const { token, role } = useContext(UserContext);
   const saveStartTimer = async (name, id) => {
-    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
+    const api = role == 'Inspector' ? 'inspector' : 'inspector';
     startLoading();
 
     try {

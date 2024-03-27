@@ -13,7 +13,7 @@ const useGetDetails = (id) => {
   };
   const { token, role } = useContext(UserContext);
   const getAllFacilities = async () => {
-    const api = role == 'Inspector' ? 'inspector' : 'cleaner-dashboard';
+    const api = role == 'Inspector' ? 'inspector' : 'inspector';
     startLoading();
 
     try {
