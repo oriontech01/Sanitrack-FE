@@ -8,7 +8,7 @@ import { List, Typography } from '@mui/material';
 // project import
 import NavItem from '../NavItem';
 import NavCollapse from '../NavCollapse';
-
+import Bottom from 'assets/images/img/bottom-logo.png';
 // ==============================|| NAVGROUP ||============================== //
 
 const NavGroup = ({ item }) => {
@@ -29,6 +29,7 @@ const NavGroup = ({ item }) => {
   });
 
   return (
+    
     <List
       subheader={
         <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
