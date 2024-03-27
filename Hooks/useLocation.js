@@ -44,11 +44,11 @@ const useLocation = () => {
         }
       });
   };
-  const addLocation = async (country, state, city, postalCode) => {
+  const addLocation = async (country, state, city, facilityName) => {
         try {
           const res = await axios.post(
             `${BASE_URL}/locations/add`,
-            { country, state, city, postal_code: postalCode },
+            { country, state, city, facility_name: facilityName },
             { headers: { Authorization: `Bearer ${access_token}` } }
           );
           console.log(res.data);

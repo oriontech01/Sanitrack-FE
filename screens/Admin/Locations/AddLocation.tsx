@@ -51,7 +51,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
+  const [facilityName, setfacilityName] = useState("");
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const { addLocation } = useLocation();
@@ -91,7 +91,7 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
 
   const handleSubmit = () => {
     startLoading();
-    addLocation(country, state, city, postalCode);
+    addLocation(country, state, city, facilityName);
     stopLoading();
     onRequestClose();
   };
@@ -134,8 +134,8 @@ const AddLocation = ({ isOpen, onRequestClose }) => {
               />
               <Input
                 placeholder="Postal Code"
-                value={postalCode}
-                onChange={setPostalCode}
+                value={facilityName}
+                onChange={setfacilityName}
               />
               <Button
                 label="Add Location"

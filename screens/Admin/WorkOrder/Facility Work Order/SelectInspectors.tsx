@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   Platform,
   View,
-  Text
+  Text,
 } from "react-native";
 import DurationInput from "../../components/DurationInput";
 import Button from "../../../../components/general/Button";
@@ -20,29 +20,32 @@ import useTask from "../../hooks/useTask";
 import useCleaner from "../../hooks/useCleaner";
 import Select from "../../../../components/general/Select";
 
-
 function formatDateTime(isoString) {
   const date = new Date(isoString);
   const hours = date.getUTCHours(); // Gets the hours in UTC
   const minutes = date.getUTCMinutes(); // Gets the minutes in UTC
 
   // Construct the string with "hr" and "mins"
-  const formattedString = `${hours}hr ${minutes < 10 ? '0' + minutes : minutes} mins`;
+  const formattedString = `${hours}hr ${
+    minutes < 10 ? "0" + minutes : minutes
+  } mins`;
 
   return formattedString;
 }
-const StageDetails = ({ title, stages }) => (
+const StageDetails = ({ stages }) => (
   <View style={styles.detailContainer}>
-    <Text style={styles.title}>{title}</Text>
     {stages.map((stage, index) => (
-      <Text key={index} style={styles.content}>
-       {`${stage.name.charAt(0).toUpperCase() + stage.name.slice(1)} - ${formatDateTime(stage.start_time)}`}
-      </Text>
+      <>
+        <Text style={styles.title}>
+          {stage.name.charAt(0).toUpperCase() + stage.name.slice(1)}
+        </Text>
+        <Text key={index} style={styles.content}>
+          {`Planned time: ${formatDateTime(stage.start_time)}`}
+        </Text>
+      </>
     ))}
   </View>
 );
-
-const workStages = ["clean", "preop", "release", "inspect"];
 
 const SelectInspectorsWorkOrder = ({ navigation, route }) => {
   const { id, presavedData } = route.params;
@@ -119,7 +122,6 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
     { value: "Monthly", label: "Monthly" },
     { value: "Yearly", label: "Yearly" },
   ];
-
 
   const handleSelectInspector = (selected) => {
     console.log("Selected inspector:", selected);
@@ -228,9 +230,7 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
         showDate={show}
       />
       {presavedData ? (
-        workStages.map((stageName) => (
-          <StageDetails title={stageName} stages={presavedData.stages} />
-        ))
+        <StageDetails stages={presavedData.stages} />
       ) : (
         <>
           <DurationInput
@@ -265,7 +265,7 @@ const SelectInspectorsWorkOrder = ({ navigation, route }) => {
       )}
 
       <Button
-        style={{ marginBottom: 25 }}
+        style={{ marginBottom: 25, marginTop: 10 }}
         label="Submit"
         isLoading={loading}
         onPress={handleNextPress}
@@ -297,15 +297,15 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 5,
     marginTop: 20,
     color: colors.blue,
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   content: {
-    fontSize: 14,
+    fontSize: 16,
     paddingLeft: 10,
     marginBottom: 3,
   },

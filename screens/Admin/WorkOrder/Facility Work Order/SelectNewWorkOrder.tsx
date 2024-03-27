@@ -5,7 +5,6 @@ import FacilityList from "../../../Home/components/FacilityList";
 import useLoading from "../../../general_hooks/useLoading";
 import useTask from "../../hooks/useTask";
 
-
 export default function SelectNewWorkOrder({ navigation }) {
   const { startLoading, stopLoading, loading } = useLoading();
   const { getPreSavedWorkOrders, preSavedWO } = useTask();
@@ -19,7 +18,7 @@ export default function SelectNewWorkOrder({ navigation }) {
     fetchData();
   }, []);
 
-  console.log('Presaved', preSavedWO)
+  console.log("Presaved", preSavedWO);
   return (
     <View style={{ padding: 20 }}>
       <Header
@@ -27,23 +26,31 @@ export default function SelectNewWorkOrder({ navigation }) {
         withAdd={true}
         withBack={true}
         onAdd={() => {
-          navigation.navigate("AllFacilities")
+          navigation.navigate("AllFacilities");
         }}
         navigation={navigation}
       />
-      <Text style={{paddingLeft:10, paddingTop: 10}}>Select from existing timers.</Text>
-      <View style={{flex: 1}}>
+      <Text style={{ paddingLeft: 10, paddingTop: 10 }}>
+        Select from existing timers.
+      </Text>
+      <View style={{ flex: 1 }}>
         {preSavedWO.map((template) => {
+          const facilityName =
+            template.facility_id?.facility_name || "MSS Facility";
+          const facilityDetail = template.facility_id
+            ? `${template.facility_id.country} - ${template.facility_id.state} - ${template.facility_id.city}`
+            : "MSS Facility timer";
+
           return (
             <FacilityList
               key={template._id}
-              title={`${template.facility_id.facility_name}`}
-              detail={`${template.facility_id.country} - ${template.facility_id.state} -  ${template.facility_id.city}`}
+              title={facilityName}
+              detail={facilityDetail}
               onPress={() => {
                 navigation.navigate("SelectInspectors", {
-                    id: template._id,
-                    presavedData: template
-                })
+                  id: template._id,
+                  presavedData: template,
+                });
               }}
             />
           );
