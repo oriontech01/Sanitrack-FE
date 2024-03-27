@@ -10,16 +10,17 @@ import { Link } from 'react-router-dom';
 const WorkOrderDetails = () => {
   const params = useParams();
   const [filteredAssignedRoomsbyId, setFilteredAssignedRoomsById] = useState([]);
-  const { getUnassignedRoomById, allUnassignedRoomsById, isLoading, getRoom, allRooms, responseMessage } = useRoom();
+  const { getUnassignedRoomById, allUnassignedRoomsById, isLoading, getRoom, allRooms, responseMessage ,getAssRoomById,allAssRoomsById} = useRoom();
   const navigate = useNavigate();
   const LocationId = localStorage.getItem('locationId');
   useEffect(() => {
     getUnassignedRoomById(params.locationId);
+    getAssRoomById(params.locationId)
   }, []);
   useEffect(() => {
     getRoom();
   }, []);
-  console.log('first', allRooms);
+  console.log('first', allAssRoomsById);
   useEffect(() => {
     const filtered = allRooms.filter(room => room.location_id === LocationId);
     setFilteredAssignedRoomsById(filtered);
@@ -131,14 +132,14 @@ const WorkOrderDetails = () => {
       </>
 
       <>
-        {filtered.length > 0 && (
+        {allAssRoomsById.length > 0 && (
           <div className="mt-10">
             <h1 className="text-xl font-bold text-[#3366FF]">Assigned Rooms</h1>
           </div>
         )}
         <main className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-6 lg:mt-10 mt-5">
           {!isLoading &&
-            filtered.map(room => (
+            allAssRoomsById.map(room => (
               <Link
                 onClick={() => {
                   localStorage.setItem('roomId', `${room?._id}`);
