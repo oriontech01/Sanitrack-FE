@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Loadable from 'component/Loadable';
 import AddCourse from 'views/Learning/AddCourse';
 import Lessons from 'views/Learning/Lessons';
+import LessonFile from 'views/Learning/LessonFile';
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const FacilityTimer = Loadable(lazy(() => import('views/Admin/FacilityTimer/FacilityTimer')));
 const ComingSoon = Loadable(lazy(() => import('views/Admin/FacilityRelease/ComingSoon')));
@@ -82,7 +83,7 @@ const MainRoutes = {
       children: [
         { path: '', index: true, element: <DashboardDefault /> },
         { path: 'sanitation-schedule', element: <SanitationSchedule /> },
-     
+
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
     },
@@ -140,6 +141,7 @@ const MainRoutes = {
     { path: '/dashboard/training', element: <Learning /> },
     { path: '/dashboard/add-course', element: <AddCourse /> },
     { path: '/dashboard/training/:id', element: <Lessons /> },
+    { path: '/dashboard/training-files/:id', element: <LessonFile /> },
 
     // cleaner
     { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },
@@ -157,11 +159,13 @@ const MainRoutes = {
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
     { path: '/dashboard/requests', element: <InspectorRequests /> },
     { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
+
     { path: '/dashboard/facility-timers', element: <InspectorFacilityTimer /> },
     { path: '/dashboard/facility-timers/:id', element: <InspectorFacilityTimerDetails /> },
     { path: '/dashboard/coming-soon', element: <InspectorComingSoon /> },
     { path: '/dashboard/facility-release', element: <InspectorFacilityRelease /> },
     { path: '/dashboard/facility-release/:id', element: <InspectorFacilityReleaseDetails /> },
+
   ]
 };
 
