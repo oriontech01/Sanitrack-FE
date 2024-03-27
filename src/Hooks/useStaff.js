@@ -3,13 +3,15 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, Flip } from 'react-toastify';
+import { TRUE } from 'sass';
 const useStaff = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const BASE_URL = process.env.REACT_APP_BASE_URL;
   const navigate = useNavigate();
   const [responseMessage, setResponseMessage] = useState();
   const [allStaffs, setAllStaffs] = useState([]);
-  const [staffByName, setStaffByName] = useState([]);
+  const [staffByName, setStaffByName] = useState({});
+  const [isSucc,setIsSucc]=useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,15 +103,24 @@ const useStaff = () => {
   };
 
   const getStaffByUserName = async name => {
+    setIsLoading(true)
+    setIsSucc(false)
     await axios
       .get(`${BASE_URL}staff/?userName=${name}`, {
         headers: { Authorization: `Bearer ${access_token}` }
       })
       .then(response => {
-        setStaffByName(response.data.data);
+        if(response.data){
+          setIsSucc(true)
+          console.log("REST",response)
+          setStaffByName(response.data.data);
+          setIsLoading(false)
+        }
+       
       })
       .catch(error => {
         if (error.response) {
+          setIsLoading(false)
           const { status, data } = error.response;
           if (status === 400 && data && data.message) {
             setResponseMessage(data.message);
@@ -250,7 +261,8 @@ const useStaff = () => {
     getAllInspectors,
     allCleaners,
     allInspectors,
-    isLoadings
+    isLoadings,
+    isSucc
   };
 };
 

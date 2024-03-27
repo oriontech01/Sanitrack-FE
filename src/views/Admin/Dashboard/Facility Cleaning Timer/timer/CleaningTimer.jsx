@@ -36,7 +36,7 @@ const CleaningTimer = () => {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(allCleanerTimer.length / itemsPerPage)) {
+    if (currentPage !== Math.ceil(allCleanerTimer?.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -50,12 +50,12 @@ const CleaningTimer = () => {
   const getCleanerTimer = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}room-timer/planned`, {
+      const response = await axios.get(`${BASE_URL}work-facility/facility-cleaning-dashboard`, {
         headers: { Authorization: `Bearer ${access_token}` }
       });
-      console.log('Task retrieved', response.data);
+      console.log('Task retrieved', response.data.data);
       if (response.data) {
-        setAllCleanerTimer(response.data.data.result);
+        setAllCleanerTimer(response.data?.data);
         setLoading(false);
       }
     } catch (error) {
@@ -98,6 +98,39 @@ const CleaningTimer = () => {
 
     return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
   };
+  const getTimeValue = name => {
+    switch (name) {
+      case 'clean':
+        return 200;
+      case 'preop':
+        return 450;
+      case 'release':
+        return 700;
+      case 'inspect':
+        return 1000;
+      default:
+        return 0; // Or whatever default value you prefer
+    }
+  };
+  function convertToHoursMinutesSeconds(dateString) {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  }
+  function convertDateFormat(dateString) {
+    try {
+      const dateObj = new Date(dateString);
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+      const year = dateObj.getFullYear();
+      return `${day} - ${month} - ${year}`;
+    } catch (error) {
+      console.error('Invalid date format:', error);
+      return 'Invalid Date';
+    }
+  }
   return (
     <>
       {loading && (
@@ -118,28 +151,84 @@ const CleaningTimer = () => {
           <div className="">
             <div className="grid lg:grid-cols-3 gap-6 mt-4 grid-cols-1">
               {console.log(currentItems)}
-              {allCleanerTimer.length > 0 &&
+              {allCleanerTimer?.length > 0 &&
                 currentItems?.map((item, i) => {
-                  const newItem = item?.allTask[0];
+                  const newItem = item?.resultItem;
+                  const latest = item?.resultItem?.stages;
+                  const actual = item?.actualTime;
                   console.log('secf', item);
+                  latest.map(speed => {
+                    console.log('wey', actual?.stages[actual?.stages.length - 1]?.name);
+                  });
                   return (
                     <div className="shadow-lg" key={i}>
-                      <Link style={{ textDecoration: 'none' }} to={`/dashboard/work-order-facility/${newItem?.assigned_room?._id}`}>
+                      <Link style={{ textDecoration: 'none' }} to={`/dashboard/work-order-facility/${newItem?._id}`}>
                         <div className="div-47">
                           <SpeedometerValue
                             cleanTime={
-                              newItem?.task_stage.toLowerCase() === 'clean'
-                                ? 25
-                                : newItem?.task_stage.toLowerCase() === 'preop'
-                                  ? 60
-                                  : newItem?.task_stage.toLowerCase() === 'release'
-                                    ? 90
-                                    : 0
+                              getTimeValue(actual?.stages[actual?.stages.length - 1]?.name)
+                              //   newItem?.task_stage.toLowerCase() === 'clean'
+                              //     ? 25
+                              //     : newItem?.task_stage.toLowerCase() === 'preop'
+                              //       ? 60
+                              //       : newItem?.task_stage.toLowerCase() === 'release'
+                              //         ? 90
+                              //         : 0
+                              // }
                             }
                           />
 
-                          <div className="div-48 capitalize">{newItem?.assigned_room?.roomName}</div>
-                          <div className="div-49">
+                          <div className="div-48 capitalize text-xl">
+                            {item?.resultItem?.facility_id?.facility_name ? item?.resultItem?.facility_id?.facility_name : 'N/A'}
+                          </div>
+                          <div className="w-full px-4">
+                            <h1 className="text-LG text-blue-500 font-bold ">Planned Time</h1>
+                            {latest?.map(stage => (
+                              <span key={stage?.name} className="flex justify-between items-center ">
+                                <p className="text-gray-400 text-sm capitalize">{`${stage?.name} `}</p>
+                                <p>{stage?.start_time ? convertDateFormat(stage?.start_time) : 'N/A'}</p>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="w-full px-4 mt-3">
+                            <h1 className="text-LG text-blue-500 font-bold ">Actual Time</h1>
+                            {actual?.stages?.map(stage => (
+                              <span key={stage?.name} className="flex justify-between items-center ">
+                                <p className="text-gray-400 text-sm capitalize">{`${stage?.name} `}</p>
+                                <p>
+                                  {stage?.actual_stage_start_time ? convertToHoursMinutesSeconds(stage?.actual_stage_start_time) : 'N/A'}
+                                </p>
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex  flex-col gap-y-2 px-4 w-full mt-3">
+                            <h1 className="text-lg font-bold text-blue-500 ">Supervisors</h1>
+                            {newItem?.assigned_supervisors?.map(stage => (
+                              <span key={stage?.name} className="border border-dotted border-gray-200 p-2">
+                                <p className="text-blue-500  font-bold text-base capitalize">{`${stage?.username} `}</p>
+                                <p className="text-gray-300  font-thin text-sm capitalize">{`${stage?.address_id} `}</p>
+                                <div className="flex justify-between pt-2">
+                                  <a href={`mailto:${stage?.email}`}>
+                                    {' '}
+                                    <img
+                                      alt=""
+                                      loading="lazy"
+                                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/fe3d622b5bd936f2a023fbc2a223e744c330598e2acd6499c9c3913b5ca0a49d?"
+                                      className="img-17"
+                                    />
+                                  </a>
+
+                                  <img
+                                    alt=""
+                                    loading="lazy"
+                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/f1b34ffbd3c5f828d8a17a1e4660414999adbb811d9353f62e479d5a2c254c33?"
+                                    className="img-18"
+                                  />
+                                </div>
+                              </span>
+                            ))}
+                          </div>
+                          {/* <div className="div-49">
                             <div className="div-50">
                               <div className="div-51">
                                 <div className="div-52" />
@@ -190,10 +279,10 @@ const CleaningTimer = () => {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
 
-                        <div className="column-6">
+                        {/* <div className="column-6">
                           {newItem?.assigned_inspector.map(inspector => (
                             <div className="div-139" key={inspector?._id}>
                               <div className="div-140">{inspector?.username}</div>
@@ -237,16 +326,16 @@ const CleaningTimer = () => {
                               </div>
                             ))}
                           </div>
-                        </div>
+                        </div> */}
                       </Link>
                     </div>
                   );
                 })}
 
-              {allCleanerTimer.length === 0 && <Typography variant="h2">No tasks available</Typography>}
+              {allCleanerTimer?.length === 0 && <Typography variant="h2">No tasks available</Typography>}
             </div>
           </div>
-          {allCleanerTimer.length > 0 && (
+          {allCleanerTimer?.length > 0 && (
             <FreePagination
               itemsPerPage={itemsPerPage}
               totalItems={allCleanerTimer?.length}

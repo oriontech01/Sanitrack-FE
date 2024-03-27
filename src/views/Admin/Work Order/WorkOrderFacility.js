@@ -19,15 +19,18 @@ import {
   Paper,
   TablePagination
 } from '@mui/material';
+import useTask from 'Hooks/useTask';
 const WorkOrderFacility = () => {
-  const { singleRoomTask, getSingleRoomTaskById, responseMessage, isLoading } = useRoom();
+  const { singleRoomTask, getSingleRoomTaskById, responseMessage } = useRoom();
+
+  const { getFacilityOrderById, singleFacilityOrder, isLoading } = useTask();
   const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
-    getSingleRoomTaskById(params.workId);
+    getFacilityOrderById(params.workId);
   }, []);
-  console.log('second', singleRoomTask);
+  console.log('second', singleFacilityOrder);
   const LocationName = localStorage.getItem('locationName');
   const convertSecondsToHMS = totalSeconds => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -37,15 +40,30 @@ const WorkOrderFacility = () => {
 
     return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
   };
-  const convertMilliSecondsToHMS = milli => {
-    const totalSeconds = Math.floor(milli / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const remainingSecondsAfterHours = totalSeconds % 3600;
-    const minutes = Math.floor(remainingSecondsAfterHours / 60);
-    const remainingSeconds = remainingSecondsAfterHours % 60;
+  function convertToHoursMinutesSeconds(dateString) {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  }
+  function convertDateFormat(dateString) {
+    try {
+      const dateObj = new Date(dateString);
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+      const year = dateObj.getFullYear();
+      return `${day} - ${month} - ${year}`;
+    } catch (error) {
+      console.error('Invalid date format:', error);
+      return 'Invalid Date';
+    }
+  }
 
-    return <p>{`${hours}: hrs ${minutes}: mins ${remainingSeconds}: s`}</p>;
-  };
+  const facil = singleFacilityOrder?.facilityTiming?.facility_id;
+  const single = singleFacilityOrder?.facilityTiming?.stages[singleFacilityOrder?.facilityTiming?.stages.length - 1];
+  const stages = singleFacilityOrder?.FacilityStages;
+  console.log(stages);
   return (
     <>
       <header className="flex  lg:flex-row flex-col justify-between items-center mb-10">
@@ -60,20 +78,71 @@ const WorkOrderFacility = () => {
             />
           </svg>
 
-          <h1 className="text-3xl font-bold text-[#3366FF]">Facility Details</h1>
+          <h1 className="text-3xl font-bold text-[#3366FF]">Facility Timer Details</h1>
         </span>
       </header>
-      {responseMessage && !isLoading && (
+      {/* {responseMessage && !isLoading && (
         <div className="flex justify-center items-center h-screen">
           <p className="text-lg text-red-500 font-bold">{responseMessage}</p>
         </div>
-      )}
+      )} */}
       {isLoading && (
-        <div className="loader">
-          <div className="justify-content-center jimu-primary-loading"></div>
+        <div className="flex items-center justify-center pt-5">
+          <div className="relative">
+            <div className="h-16 w-16 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+            <div className="absolute top-0 left-0 h-16 w-16 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+          </div>
         </div>
       )}
-      {!isLoading && singleRoomTask && (
+      {!isLoading && (
+        <div className="flex flex-col space-y-5 ">
+          <span className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Facility Name</h1>
+            <p className="text-gray-400 text-lg">{facil?.facility_name ? facil?.facility_name : 'N/A'}</p>
+          </span>
+          <span className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Location</h1>
+            <p className="text-gray-400 text-lg">{facil ?`${facil?.city}-${facil?.country}`:"N/A"}</p>
+          </span>
+          <span className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Status of Timing</h1>
+            <p className="text-gray-400 text-lg">{singleFacilityOrder?.facilityTiming?.complete ? 'Completed' : 'Pending'}</p>
+          </span>
+          <span className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Current Cleaning Stage</h1>
+            <p className="text-gray-400 text-lg">{single?.name}</p>
+          </span>
+          <div className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Planned Stages and Time</h1>
+            {stages?.map(stage => (
+              <span key={stage?.name}>
+                <p className="text-gray-400 text-lg capitalize">{`${stage?.name} - ${stage?.actual_stage_start ?convertToHoursMinutesSeconds(stage?.actual_stage_start):"N/A"}`}</p>
+              </span>
+            ))}
+          </div>
+          <div className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Actual Stages and Time</h1>
+            { singleFacilityOrder?.facilityTiming?.stages?.map(stage => (
+              <span key={stage?.name}>
+                <p className="text-gray-400 text-lg capitalize">{`${stage?.name} - ${stage?.start_time ?convertToHoursMinutesSeconds(stage?.start_time):"N/A"}`}</p>
+              </span>
+            ))}
+          </div>
+          <span className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Scheduled Date</h1>
+            <p className="text-gray-400 text-lg">{singleFacilityOrder?.facilityTiming?.scheduled_date ? convertDateFormat(singleFacilityOrder?.facilityTiming?.scheduled_date):"N/A"}</p>
+          </span>
+          <div className="flex  border-b border-black flex-col gap-y-2 pb-3">
+            <h1 className="text-xl text-blue-500 ">Supervisors</h1>
+            { singleFacilityOrder?.facilityTiming?.assigned_supervisors?.map(stage => (
+              <span key={stage?.name}>
+                <p className="text-gray-400 text-lg capitalize">{`${stage?.username} `}</p>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      {/* {!isLoading && singleRoomTask && (
         <>
           <div className="flex  lg:flex-row flex-col justify-between items-start gap-y-2">
             <div className="flex flex-col gap-y-4">
@@ -182,10 +251,10 @@ const WorkOrderFacility = () => {
                 <TableRow>
                   <TableCell> {singleRoomTask?.allItemsInRoom?.roomName}</TableCell>
 
-                  {/* Consolidated Inspector Names */}
+               
                   <TableCell>{singleRoomTask?.taskDetails?.assigned_inspector.map(inspector => inspector?.username).join(', ')}</TableCell>
 
-                  {/* Consolidated Cleaner Names */}
+                
                   <TableCell className="flex flex-col border-none">
                     {singleRoomTask?.taskDetails?.assigned_cleaner.map(cleaner => cleaner?.username).join(', ')}
                   </TableCell>
@@ -196,7 +265,7 @@ const WorkOrderFacility = () => {
             </Table>
           </Paper>
         </>
-      )}
+      )} */}
     </>
   );
 };

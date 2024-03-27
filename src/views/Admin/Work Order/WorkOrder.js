@@ -10,6 +10,7 @@ import Tasks from './Tasks';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import ModalComponent from 'component/Modals/Modal';
 import SelectWorkOrderType from './SelectWorkOrderType';
+import AssignedFacilities from './AssignedFacilities';
 
 const WorkOrder = () => {
   const { getLocation, allLocations, loading } = useLocation();
@@ -50,6 +51,7 @@ const WorkOrder = () => {
         >
           <Tab label="Work Orders" />
           <Tab label="Tasks List" />
+          <Tab label="Assigned Facility Timers" />
         </Tabs>
       </Box>
 
@@ -61,7 +63,7 @@ const WorkOrder = () => {
               allLocations.map(location => (
                 <span
                   onClick={() => {
-                    localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
+                    localStorage.setItem('locationName', `${location?.city}- ${location?.facility_name} `);
                     localStorage.setItem('locationId', `${location?._id}`);
                     openModal();
                   }}
@@ -70,7 +72,11 @@ const WorkOrder = () => {
                   key={location?._id}
                   className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center w-full text-[#3366FF] font-bold shadow-sm cursor-pointer`}
                 >
+                  <div className='flex flex-col gap-y-2'>
                   <span>{`${location?.city}- ${location?.country}`}</span>
+                  <span className='font-normal'>{location?.facility_name}</span>
+                  </div>
+                
                   <span>
                     <ArrowForward />
                   </span>
@@ -80,6 +86,9 @@ const WorkOrder = () => {
         </TabPanel>
         <TabPanel value={selectedTab} index={1}>
           <Tasks />
+        </TabPanel>
+        <TabPanel value={selectedTab} index={2}>
+          <AssignedFacilities />
         </TabPanel>
         {loading && (
           <div className="flex items-center justify-center pt-5">

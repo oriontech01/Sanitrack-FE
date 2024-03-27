@@ -2,20 +2,23 @@ import { useEffect, useState } from 'react';
 import useRole from 'Hooks/useRole';
 import useStaff from 'Hooks/useStaff';
 import { TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, Typography } from '@mui/material';
-
+import { toast, Flip, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const AssignRole = () => {
-  const { getRoles, roles, staffRoles, getStaffRoles, assignUserRole } = useRole();
-  const { getStaffByUserName, staffByName } = useStaff();
+  const { getRoles, roles, staffRoles, getStaffRoles, assignUserRole,roleLoader } = useRole();
+  const { getStaffByUserName, staffByName, isLoading, isSucc } = useStaff();
 
   const [staffName, setStaffName] = useState('');
   const [selectedRoles, setSelectedRoles] = useState([]);
 
-  const handleSearch = async e => {
+  console.log('staffhehe', isSucc);
+  const handleSearch = e => {
     e.preventDefault();
-    await getStaffByUserName(staffName);
+    console.log('first');
+    getStaffByUserName(staffName);
   };
 
-  const assignRole = async e => {
+  const assignRole = e => {
     e.preventDefault();
     const assignedRolesData = selectedRoles.map(roleId => ({
       user_id: staffByName._id,
@@ -24,18 +27,22 @@ const AssignRole = () => {
       role_name: roles.find(role => role._id == roleId)?.role_name
     }));
 
-    await assignUserRole(assignedRolesData);
+    assignUserRole(assignedRolesData);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getRoles();
-      await getStaffRoles(staffByName._id);
-    };
-    if (staffByName?._id?.length > 0) {
-      fetchData();
-    }
-  }, []);
+  
+     
+       getStaffRoles(staffByName._id);
+    
+  }, [staffByName._id]);
+  useEffect(() => {
+  
+    getRoles();
+   
+ 
+}, []);
+
 
   useEffect(() => {
     if (staffRoles && staffRoles.length > 0) {
@@ -46,6 +53,7 @@ const AssignRole = () => {
 
   return (
     <>
+    <ToastContainer/>
       <div className="add-user-container">
         <div className="add-user-header">
           <Typography variant="h2">Assign Role</Typography>
@@ -60,7 +68,17 @@ const AssignRole = () => {
             placeholder="Search for staff by username"
             onChange={e => setStaffName(e.target.value)}
           />
-          <Button
+          <button
+            className="text-white flex justify-center  mt-2 gap-x-2 items-center px-4 py-2 bg-yellow-700 w-auto lg:h-[40px] text-base border-t-2 "
+            // disabled={id && inspector && clean_hours}
+            disabled={isLoading}
+            onClick={e => {
+              handleSearch(e);
+            }}
+          >
+            {isLoading ? 'Loading...' : 'Search'}
+          </button>
+          {/* <Button
             variant="contained"
             style={{ marginTop: 20 }}
             onClick={e => {
@@ -68,7 +86,7 @@ const AssignRole = () => {
             }}
           >
             Search
-          </Button>
+          </Button> */}
           <TableContainer>
             <Table>
               <TableHead>
@@ -77,8 +95,8 @@ const AssignRole = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {staffByName ? (
-                  roles.map(item => (
+                {isSucc &&
+                  roles?.map(item => (
                     <TableRow key={item._id}>
                       <TableCell>
                         <Checkbox
@@ -98,16 +116,21 @@ const AssignRole = () => {
                         {item.role_name}
                       </TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell>No roles available</TableCell>
-                  </TableRow>
-                )}
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <Button
+          <button
+            className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
+            // disabled={id && inspector && clean_hours}
+            disabled={roleLoader}
+            onClick={e => {
+              assignRole(e);
+            }}
+          >
+            {roleLoader ? 'Loading...' : 'Assign'}
+          </button>
+          {/* <Button
             variant="contained"
             style={{marginTop: 20}}
             onClick={e => {
@@ -115,7 +138,7 @@ const AssignRole = () => {
             }}
           >
             Assign
-          </Button>
+          </Button> */}
         </form>
       </div>
     </>
