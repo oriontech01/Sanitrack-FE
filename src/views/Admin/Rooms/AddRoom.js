@@ -113,7 +113,7 @@ const AddRoom = (props) => {
                   const address = `${location.city}, ${location.state}, ${location.country}`;
                   return (
                     <MenuItem key={location._id} value={location._id}>
-                      {location._id} {address}
+                       {address}
                     </MenuItem>
                   );
                 })}
@@ -154,16 +154,11 @@ const AddRoom = (props) => {
               + Add Another Item
             </Button>
           </div>
-          {formData.details.some(item => item.name === '') ||
-          formData.location_id === '' ||
-          formData.roomName === '' ||
-          formData.roomName.length < 3 ? (
-            <></>
-          ) : (
+        
             <button disabled={isLoading} className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 ">
               {isLoading ? 'Loading...' : "Submit"}
             </button>
-          )}
+        
         </form>
       </Container>
     </Box>

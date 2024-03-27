@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import Loadable from 'component/Loadable';
 import AddCourse from 'views/Learning/AddCourse';
+import Lessons from 'views/Learning/Lessons';
+import LessonFile from 'views/Learning/LessonFile';
 const AssignPermission = Loadable(lazy(() => import('views/Admin/Permissions/AssignPermissions')));
 const FacilityTimer = Loadable(lazy(() => import('views/Admin/FacilityTimer/FacilityTimer')));
 const ComingSoon = Loadable(lazy(() => import('views/Admin/FacilityRelease/ComingSoon')));
@@ -22,6 +24,8 @@ const AddTask = Loadable(lazy(() => import('views/Admin/Work Order/AddTask')));
 const TaskDetails = Loadable(lazy(() => import('views/Admin/Work Order/TaskDetails')));
 const WorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrder')));
 const WorkOrderDetails = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrderDetails')));
+const SelectInspector = Loadable(lazy(() => import('views/Admin/Work Order/SelectInspector')));
+const FacilityWorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/FacilityWorkOrder')));
 const WorkOrderFacility = Loadable(lazy(() => import('views/Admin/Work Order/WorkOrderFacility')));
 const CreateWorkOrder = Loadable(lazy(() => import('views/Admin/Work Order/CreateWorkOrder')));
 const Room = Loadable(lazy(() => import('views/Admin/Rooms/Rooms')));
@@ -43,6 +47,7 @@ const DashboardDefault = Loadable(lazy(() => import('../views/Admin/Dashboard'))
 const Permissions = Loadable(lazy(() => import('../views/Admin/Permissions/Permissions')));
 const LandingPage = Loadable(lazy(() => import('../views/Admin/Dashboard/Landing Page/index')));
 const SanitationSchedule = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/index')));
+const SanitationDetails = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Sanitation Schedule/SanitationDetails')));
 const CleaningTimer = Loadable(lazy(() => import('../views/Admin/Dashboard/Facility Cleaning Timer/timer/CleaningTimer')));
 const Learning = Loadable(lazy(() => import('../views/Learning/index')));
 
@@ -78,9 +83,11 @@ const MainRoutes = {
       children: [
         { path: '', index: true, element: <DashboardDefault /> },
         { path: 'sanitation-schedule', element: <SanitationSchedule /> },
+
         { path: 'cleaning-timer', element: <CleaningTimer /> }
       ]
     },
+    { path: '/dashboard/sanitation-schedule/:id', element: <SanitationDetails /> },
     { path: '/dashboard/facility-timer', element: <FacilityTimer /> },
     { path: '/dashboard/facility-timer/:id', element: <FacilityTimerDetails /> },
     { path: '/dashboard/coming-soon', element: <ComingSoon /> },
@@ -89,6 +96,8 @@ const MainRoutes = {
     { path: '/dashboard/work-schedule', element: <WorkOrder /> },
     { path: '/dashboard/create-work-order', element: <CreateWorkOrder /> },
     { path: '/dashboard/work-order/:locationId', element: <WorkOrderDetails /> },
+    { path: '/dashboard/work-order/select-inspector/:id', element: <SelectInspector /> },
+    { path: '/dashboard/work-order/facility-work-order/:id', element: <FacilityWorkOrder /> },
     { path: '/dashboard/work-order-facility/:workId', element: <WorkOrderFacility /> },
     { path: '/dashboard/add-task', element: <AddTask /> },
     { path: '/dashboard/edit-task/:taskId', element: <TaskDetails /> },
@@ -129,8 +138,10 @@ const MainRoutes = {
     { path: '/dashboard/roles/permissions/:id', element: <ViewRolePermissions /> },
     { path: '/dashboard/roles/staff', element: <StaffRoles /> },
     { path: '/dashboard/roles/staff/revoke/:staffId', element: <RevokeRole /> },
-    { path: '/dashboard/learning', element: <Learning /> },
+    { path: '/dashboard/training', element: <Learning /> },
     { path: '/dashboard/add-course', element: <AddCourse /> },
+    { path: '/dashboard/training/:id', element: <Lessons /> },
+    { path: '/dashboard/training-files/:id', element: <LessonFile /> },
 
     // cleaner
     { path: '/dashboard/cleaner/cleaner-location-details/:id', element: <CleanerLocationDetails /> },
@@ -148,11 +159,13 @@ const MainRoutes = {
     { path: '/dashboard/inspector/close-work-order', element: <CloseWorkOrder /> },
     { path: '/dashboard/requests', element: <InspectorRequests /> },
     { path: '/dashboard/requests/:id', element: <InspectorRequestsDetails /> },
-    { path: '/dashboard/inspector/facility-timer', element: <InspectorFacilityTimer /> },
-    { path: '/dashboard/inspector/facility-timer/:id', element: <InspectorFacilityTimerDetails /> },
-    { path: '/dashboard/inspector/coming-soon', element: <InspectorComingSoon /> },
-    { path: '/dashboard/inspector/facility-release', element: <InspectorFacilityRelease /> },
-    { path: '/dashboard/inspector/facility-release/:id', element: <InspectorFacilityReleaseDetails /> },
+
+    { path: '/dashboard/facility-timers', element: <InspectorFacilityTimer /> },
+    { path: '/dashboard/facility-timers/:id', element: <InspectorFacilityTimerDetails /> },
+    { path: '/dashboard/coming-soon', element: <InspectorComingSoon /> },
+    { path: '/dashboard/facility-release', element: <InspectorFacilityRelease /> },
+    { path: '/dashboard/facility-release/:id', element: <InspectorFacilityReleaseDetails /> },
+
   ]
 };
 

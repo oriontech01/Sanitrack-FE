@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 import MonthlyMissedCleaningsChart from './BarChart';
 import {
   Table,
@@ -10,17 +9,18 @@ import {
   Button,
   Paper,
   TablePagination,
-  Checkbox,
   TableSortLabel,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
+  CircularProgress
 } from '@mui/material';
 import { useState } from 'react';
 import PieChart3D from './PieChart';
 import HorizonChart from './HorizontalChart';
 import useTask from 'Hooks/useTask';
 import { GridExpandMoreIcon } from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
 const rooms = [
   {
     room: 'Living Room',
@@ -54,7 +54,8 @@ const rooms = [
 console.log(rooms);
 
 const SanitationSchedule = () => {
-  const { monthlyMissed, getMonthlyMissed, getMissed, missed, getTaskTable, taskTable } = useTask();
+  const { monthlyMissed, getMonthlyMissed, getMissed, missed, getTaskTable, taskTable, taskLoading } = useTask();
+
   useEffect(() => {
     getMonthlyMissed();
     getMissed();
@@ -128,7 +129,6 @@ const SanitationSchedule = () => {
           <PieChart3D />
           <HorizonChart missed={missed} />
         </div>
-
         <Paper sx={{ width: '100%', overflowX: 'auto' }}>
           <Table>
             <TableHead>
@@ -143,45 +143,64 @@ const SanitationSchedule = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {currentItems.map(room => (
-                <TableRow key={room?._id}>
-                  <TableCell>{room?.assigned_room?.roomName}</TableCell>
-                  <TableCell>
-                    <Accordion>
-                      <AccordionSummary expandIcon={<GridExpandMoreIcon />}>View Items</AccordionSummary>
-                      <AccordionDetails>
-                        <span className="flex flex-col gap-y-2 justify-center items-center text-center">
-                          {room?.tasks?.map(item => (
-                            <p key={item.name}>{item.name}</p>
-                          ))}
-                        </span>
-                      </AccordionDetails>
-                    </Accordion>
-                  </TableCell>
-                  <TableCell>{room?.times_approved}</TableCell>
-                  <TableCell>{room?.tasks[-1]?.last_cleaned ? formatDate(room?.tasks[-1]?.last_cleaned) : '-'}</TableCell>
-                  <TableCell>{room?.scheduled_date ? formatDate(room?.scheduled_date) : '-'}</TableCell>
-                  <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>{room.isSubmitted ? 'No' : 'Yes'}</TableCell>
-                  <TableCell>Sanitation</TableCell>
-                  <TableCell className="capitalize">{room?.task_stage}</TableCell>
-                  <TableCell>{room?._id}</TableCell>
-                  <TableCell>
-                    {' '}
-                    <Accordion>
-                      <AccordionSummary expandIcon={<GridExpandMoreIcon />}>View Links</AccordionSummary>
-                      <AccordionDetails>
-                        <span className="flex flex-col gap-y-2 justify-center items-center text-center">
-                          {room?.tasks?.map(item => (
-                            <a href={item.image} key={item.name}>
-                              {item.image}
-                            </a>
-                          ))}
-                        </span>
-                      </AccordionDetails>
-                    </Accordion>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {taskTable &&
+                !taskLoading &&
+                currentItems.map(room =>
+                  room.tasks.map(task => {
+                    console.log('task', task);
+                    console.log('room', room);
+                    return (
+                      <Link
+                        key={room?._id}
+                        to={`/dashboard/sanitation-schedule/${room?._id}`}
+                        onClick={() => {
+                          localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                          localStorage.setItem('taskDeets', JSON.stringify(room));
+                        }}
+                      >
+                        <TableRow>
+                          <TableCell>{room?.assigned_room?.roomName}</TableCell>
+                          <TableCell>
+                            <span className="flex flex-col gap-y-2 justify-center items-center text-center">
+                              <p>{task.name}</p>
+                            </span>
+                          </TableCell>
+                          <TableCell>{room?.times_approved}</TableCell>
+                          <TableCell>{room?.tasks[-1]?.last_cleaned ? formatDate(room?.tasks[-1]?.last_cleaned) : '-'}</TableCell>
+                          <TableCell>{room?.scheduled_date ? formatDate(room?.scheduled_date) : '-'}</TableCell>
+                          <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>{room.isSubmitted ? 'No' : 'Yes'}</TableCell>
+                          <TableCell>Sanitation</TableCell>
+                          <TableCell className="capitalize">{room?.task_stage}</TableCell>
+                          <TableCell>{room?._id}</TableCell>
+                          <TableCell style={{ display: 'flex', flexDirection: 'row' }}>
+                            {' '}
+                            <Accordion>
+                              <AccordionSummary expandIcon={<GridExpandMoreIcon />}>View Links</AccordionSummary>
+                              <AccordionDetails>
+                                <span className="flex flex-col gap-y-2 justify-center items-center text-center">
+                                  {room?.tasks?.map(item => (
+                                    <a href={item.image} key={item.name}>
+                                      {item.image}
+                                    </a>
+                                  ))}
+                                </span>
+                              </AccordionDetails>
+                            </Accordion>
+                            <Button>View Details</Button>
+                          </TableCell>
+                        </TableRow>
+                      </Link>
+                    );
+                  })
+                )}
+              {taskLoading && (
+                <div className="flex items-center justify-center pt-5">
+                  <div className="relative">
+                    <div className="h-10 w-10 rounded-full border-t-8 border-b-8 border-gray-200"></div>
+                    <div className="absolute top-0 left-0 h-10 w-10 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+                  </div>
+                </div>
+              )}
             </TableBody>
           </Table>
           <TablePagination

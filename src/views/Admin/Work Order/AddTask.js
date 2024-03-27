@@ -183,6 +183,8 @@ const AddTask = props => {
       itemsToClean: filteredItems,
       scheduled_date: selectedDate
     };
+
+    console.log("first,data",data)
     let savedData;
     if (isDisconnected) {
       saveDataOffline(data);

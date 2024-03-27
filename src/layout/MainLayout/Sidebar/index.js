@@ -14,7 +14,7 @@ import { drawerWidth } from 'config.js';
 
 // assets
 import logo from 'assets/images/logo.svg';
-
+import Bottom from 'assets/images/img/bottom-logo.png';
 // custom style
 const Nav = styled((props) => <nav {...props} />)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -53,7 +53,12 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
       <Divider />
       <PerfectScrollbar style={{ height: 'calc(100vh - 65px)', padding: '10px' }}>
         <MenuList />
+        <div className="relative">
+          
+            <div className="object-cover w-40 h-auto  absolute -bottom-40">    <img src={Bottom} alt="Logo" /></div>
+          </div>
       </PerfectScrollbar>
+    
     </>
   );
 
@@ -79,6 +84,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
       >
         {drawer}
       </Drawer>
+      
     </Nav>
   );
 };

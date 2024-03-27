@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useContext, useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import useLocation from '../../../Hooks/useLocation';
@@ -6,6 +8,9 @@ import { Tabs, Tab, Box, useMediaQuery, useTheme } from '@mui/material';
 import TabPanel from 'component/Tab Panel/TabPanel';
 import Tasks from './Tasks';
 import ArrowForward from '@mui/icons-material/ArrowForward';
+import ModalComponent from 'component/Modals/Modal';
+import SelectWorkOrderType from './SelectWorkOrderType';
+import AssignedFacilities from './AssignedFacilities';
 
 const WorkOrder = () => {
   const { getLocation, allLocations, loading } = useLocation();
@@ -21,6 +26,14 @@ const WorkOrder = () => {
     getLocation();
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = e => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <header className={`flex ${matches ? 'flex-col' : 'lg:flex-row'} justify-between items-center mb-4`}>
@@ -38,43 +51,44 @@ const WorkOrder = () => {
         >
           <Tab label="Work Orders" />
           <Tab label="Tasks List" />
+          <Tab label="Assigned Facility Timers" />
         </Tabs>
       </Box>
 
       <main>
         <TabPanel value={selectedTab} index={0}>
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              flexWrap: 'wrap',
-              marginTop: 5,
-              gap: 2
-            }}
+          <div className='grid grid-cols-1 gap-5 lg:grid-cols-2'
           >
             {!loading &&
               allLocations.map(location => (
-                <Link
+                <span
                   onClick={() => {
-                    localStorage.setItem('locationName', `${location?.city}- ${location?.country}`);
+                    localStorage.setItem('locationName', `${location?.city}- ${location?.facility_name} `);
                     localStorage.setItem('locationId', `${location?._id}`);
+                    openModal();
                   }}
-                  to={`/dashboard/work-order/${location?._id}`}
+
+                  // to={`/dashboard/work-order/${location?._id}`}
                   key={location?._id}
-                  className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center ${matches ? 'w-full' : 'w-1/2'} text-[#3366FF] font-bold shadow-sm`}
+                  className={`bg-[#EBF0FF] px-3 py-3 flex justify-between items-center w-full text-[#3366FF] font-bold shadow-sm cursor-pointer`}
                 >
+                  <div className='flex flex-col gap-y-2'>
                   <span>{`${location?.city}- ${location?.country}`}</span>
+                  <span className='font-normal'>{location?.facility_name}</span>
+                  </div>
+                
                   <span>
                     <ArrowForward />
                   </span>
-                </Link>
+                </span>
               ))}
-          </Box>
+          </div>
         </TabPanel>
         <TabPanel value={selectedTab} index={1}>
           <Tasks />
+        </TabPanel>
+        <TabPanel value={selectedTab} index={2}>
+          <AssignedFacilities />
         </TabPanel>
         {loading && (
           <div className="flex items-center justify-center pt-5">
@@ -85,6 +99,9 @@ const WorkOrder = () => {
           </div>
         )}
       </main>
+      <ModalComponent isOpen={isModalOpen} onClose={closeModal} setIsModalOpen={setIsModalOpen}>
+        <SelectWorkOrderType closeModal={closeModal} />
+      </ModalComponent>
     </>
   );
 };
