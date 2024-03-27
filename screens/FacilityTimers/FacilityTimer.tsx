@@ -9,7 +9,7 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import AppText from '../../components/AppText';
 import colors from '../../util/colors';
@@ -21,15 +21,33 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Camera, CameraType } from 'expo-camera';
+import FacilityList from '../Home/components/FacilityList';
+import useGetDetails from './hooks/useGetDetails';
+import Timer from './components/Timer';
+import useGetStages from './hooks/useGetStages';
+import moment from 'moment';
+import useReleaseFacility from './hooks/useReleaseFacility';
 
 export default function FacilityTimer({ navigation, route }) {
+  const { facility, id } = route.params;
+  const { id: staffId } = useContext(UserContext);
+  const parsedFacility = JSON.parse(facility);
+  const { facilities } = useGetDetails(id);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [cameraPermission, setCameraPermission] = useState(null);
   const [doneTask, setDoneTask] = useState(undefined);
-  const [startedTime, setStartedTime] = useState(0);
-
+  const [startedTime, setStartedTime] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(
+    parsedFacility.stages[0].name
+  );
+  const { releaseFacility, releasing } = useReleaseFacility();
+  const [selectedValue, setSelectedValue] = useState({
+    value: parsedFacility.stages[0]._id,
+    label: parsedFacility.stages[0].name,
+  });
   const [fileInputs, setFileInputs] = useState([]);
+  const { stages, loadingStages, refetch } = useGetStages(id);
   //   const { cleaningItems,task } = useGetCleaningItems(id);
 
   //   TIMER LOGIC----------------------------------------------------------------
@@ -38,17 +56,19 @@ export default function FacilityTimer({ navigation, route }) {
   const startTimer = async () => {
     const startTime = Date.now();
     const timerId = startTime.toString();
-    //   await AsyncStorage.setItem(
-    //     `timerStartTime_${timerId}`,
-    //     JSON.stringify({
-    //       startTime: startTime.toString(),
-    //       id: id,
-    //       taskId,
-    //       taskName: roomName,
-    //       userId: staffId,
-    //     })
-    //   );
-    setStartedTime(startTime);
+    await AsyncStorage.setItem(
+      `facilityStartTime_${selectedValue.value}_${timerId}`,
+      JSON.stringify({
+        startTime: startTime.toString(),
+        id: `${selectedValue.value}_${id}`,
+        facility_id: id,
+        userId: staffId,
+      })
+    );
+    setStartedTime((prev) => [
+      ...prev,
+      { startTime, id: `facilityStartTime_${selectedValue.value}_${timerId}` },
+    ]);
     setIsActive(true);
   };
 
@@ -58,49 +78,56 @@ export default function FacilityTimer({ navigation, route }) {
     clearInterval(timerId);
     await AsyncStorage.removeItem(`timerStartTime_${timerId}`);
   };
+  const fetchData = useCallback(async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const keys = await AsyncStorage.getAllKeys();
+      const doneKeys = keys
+        .filter((key) => key.startsWith('facility_done_'))
+        .filter((key) => {
+          const roomId = key.split('_')[1];
+          return roomId == id;
+        });
 
-  //       const doneKeys = keys
-  //         .filter((key) => key.startsWith('done_'))
-  //         .filter((key) => {
-  //           const roomId = key.split('_')[1];
-  //           return roomId == id;
-  //         });
+      if (doneKeys.length) {
+        const data = await AsyncStorage.getItem(doneKeys[0]);
+        setDoneTask(JSON.parse(data).endTime);
+      } else {
+        const timerKeys = keys.filter((key) =>
+          key.startsWith('facilityStartTime_')
+        );
+        for (const timerKey of timerKeys) {
+          const values = await AsyncStorage.getItem(timerKey);
+          const timerId = timerKey.split('_')[2];
+          const startTime = parseInt(JSON.parse(values).startTime);
 
-  //       if (doneKeys.length) {
-  //         const data = await AsyncStorage.getItem(doneKeys[0]);
-  //         setDoneTask(JSON.parse(data).endTime);
-  //       } else {
-  //         const timerKeys = keys.filter((key) =>
-  //           key.startsWith('timerStartTime_')
-  //         );
-  //         for (const timerKey of timerKeys) {
-  //           const values = await AsyncStorage.getItem(timerKey);
-  //           const timerId = timerKey.split('_')[1];
-  //           const startTime = parseInt(JSON.parse(values).startTime);
+          const currentTime = Date.now() - startTime;
 
-  //           const currentTime = Date.now() - startTime;
-  //           console.log(startTime, values, currentTime, 'new');
-  //           if (JSON.parse(values).id == id) {
-  //             setStartedTime(startTime);
-  //             setSeconds(Date.now() - startTime);
-  //             setIsActive(true);
-  //           }
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.log('Error retrieving data:', error);
-  //     }
-  //   };
-  //   fetchData();
-  //   return () => {
-  //     timers.forEach((timer) => clearInterval(timer.intervalId));
-  //   };
-  // }, []);
+          if (JSON.parse(values).id == `${selectedValue.value}_${id}`) {
+            setStartedTime((prev) => [
+              ...prev,
+              {
+                startTime,
+                id: `facilityStartTime_${selectedValue.value}_${timerId}`,
+              },
+            ]);
+            setSeconds(Date.now() - startTime);
+            setIsActive(true);
+          } else {
+            setStartedTime([]);
+          }
+        }
+      }
+    } catch (error) {
+      console.log('Error retrieving data:', error);
+    }
+  }, [selectedValue]);
+  useEffect(() => {
+    fetchData();
+    // return () => {
+    //   timers.forEach((timer) => clearInterval(timer.intervalId));
+    // };
+  }, [fetchData]);
 
   //   ENF OF TIMER LOGIC----------------------------------------------------------------
 
@@ -126,7 +153,10 @@ export default function FacilityTimer({ navigation, route }) {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
   const handleStart = async () => {
-    if (startedTime == 0) {
+    const filtered = startedTime.filter(
+      (time) => time.id == `${selectedValue.value}_${id}`
+    );
+    if (filtered.length == 0) {
       startTimer();
       return;
     }
@@ -169,9 +199,12 @@ export default function FacilityTimer({ navigation, route }) {
 
   useEffect(() => {
     let interval = null;
-    if (startedTime > 0 && isActive) {
+    const filtered = startedTime.filter(
+      (time) => time.id == `${selectedValue.value}_${id}`
+    );
+    if (filtered.length !== 0 && isActive) {
       interval = setInterval(() => {
-        setSeconds((prevSeconds) => new Date().getTime() - startedTime);
+        setSeconds((prevSeconds) => Date.now() - filtered[0].startedTime);
       }, 1000);
     } else {
       clearInterval(interval);
@@ -180,123 +213,109 @@ export default function FacilityTimer({ navigation, route }) {
   }, [isActive]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <TouchableOpacity style={styles.topBar}>
         <ArrowLeftIcon />
-        <Text style={styles.haeding}>Cleaner Timer</Text>
-      </TouchableOpacity>
-      <View
-        style={{
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <AnimatedCircularProgress
-          style={{
-            width: '100%',
-
-            marginTop: 40,
-
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 20,
-          }}
-          size={200}
-          width={5}
-          fill={0}
-          tintColor={colors.blue}
-          onAnimationComplete={() => console.log('onAnimationComplete')}
-          backgroundColor="#E0E8FF"></AnimatedCircularProgress>
-        <Text
-          style={{
-            color: '#000',
-            position: 'absolute',
-            fontSize: 20,
-            fontWeight: 'bold',
-          }}>
-          {startedTime !== 0
-            ? `${formatTimer(seconds)}  Sec`
-            : doneTask
-            ? formatTimer(doneTask)
-            : '0:00 Sec'}
+        <Text style={styles.haeding}>
+          {parsedFacility.facility_id.facility_name}
         </Text>
-      </View>
-
-      {!doneTask && (
-        <View style={styles.buttons}>
-          <View>
-            <TouchableOpacity
-              onPress={handleStart}
-              style={[styles.button, { opacity: startedTime == 0 ? 1 : 0.4 }]}>
-              <PlayIcon />
-            </TouchableOpacity>
-
-            <Text style={{ color: colors.blue, marginTop: 10 }}>
-              Start Timer
+      </TouchableOpacity>
+      <Text style={{ marginVertical: 20, fontWeight: 'bold' }}>
+        Scheduled Date:{' '}
+        {moment(parsedFacility.scheduled_date).format('YYYY-MM-DD')}
+      </Text>
+      <Select
+        initialValue={{
+          value: parsedFacility.stages[0]._id,
+          label: parsedFacility.stages[0].name,
+        }}
+        label={selectedValue.label}
+        options={parsedFacility.stages.map((stage) => {
+          return {
+            value: stage._id,
+            label: stage.name,
+          };
+        })}
+        onSelect={(e) => {
+          setSelectedItem(e.label);
+          setSelectedValue(e);
+        }}
+      />
+      <Timer
+        stages={stages}
+        loadingStages={loadingStages}
+        refetch={refetch}
+        selected={selectedItem}
+        id={id}
+        startedTime={startedTime}
+      />
+      <Text
+        style={{
+          fontWeight: 'bold',
+          color: colors.blue,
+          fontSize: 16,
+        }}>
+        Stages
+      </Text>
+      {stages.map((stage, ind) => (
+        <TouchableOpacity
+          key={ind}
+          activeOpacity={0.8}
+          onPress={() => {
+            console.log(stage);
+          }}
+          style={[
+            styles.container3,
+            {
+              borderWidth: 1,
+              borderColor:
+                stage.actual_stage_start_time == null
+                  ? 'red'
+                  : stage.actual_stage_stop_time == null
+                  ? 'red'
+                  : 'green',
+            },
+          ]}>
+          <View style={{ width: '80%' }}>
+            <Text style={{ color: colors.blue, marginBottom: 5 }}>
+              {stage.name}
+            </Text>
+            <Text>
+              Planned Time: {moment(stage.planned_start_time).format('HH:mm')}
             </Text>
           </View>
 
           <View>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: '#FFE0E0' }]}>
-              <StopIcon />
-            </TouchableOpacity>
-
-            <Text style={{ color: '#6D0808', marginTop: 10 }}>Stop Timer</Text>
+            <Text>
+              {stage.actual_stage_start_time == null
+                ? 'Pending'
+                : stage.actual_stage_stop_time == null
+                ? 'Pending'
+                : 'Done'}
+            </Text>
           </View>
-        </View>
-      )}
-      {doneTask ? (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#075039df',
-            padding: 10,
-            borderRadius: 5,
-          }}>
-          <Text style={{ fontWeight: 'bold', color: '#fff' }}>
-            Task Done in {formatTimer(doneTask)} Sec
-          </Text>
-        </View>
-      ) : null}
+        </TouchableOpacity>
+      ))}
 
-      <ScrollView
-        contentContainerStyle={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, minHeight: 180 }}>
-        <Text>Coming sooon!</Text>
-        {/* {loadingDetails && (
-            <View
-              style={{
-                height: 200,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <ActivityIndicator color={colors.blue} />
-            </View>
-          )} */}
-      </ScrollView>
-
-      <View style={[styles.buttons, { justifyContent: 'space-between' }]}>
+      <View
+        style={[
+          styles.buttons,
+          { justifyContent: 'space-between', paddingBottom: 25 },
+        ]}>
         <Button
-          onPress={async () => {}}
-          style={styles.submit}
-          label="Submit Task"
-        />
-        <Button
-          onPress={() => {
-            navigation.navigate('HomeIndex');
+          isLoading={releasing}
+          onPress={async () => {
+            const released = await releaseFacility(id);
+            if (released) {
+              alert('Successfully Released Facility');
+              navigation.navigate('FacilityHome');
+            }
           }}
-          fontStyle={{ color: colors.blue }}
-          style={{ ...styles.submit, backgroundColor: '#E0E8FF' }}
-          label="Next Task"
+          style={styles.submit}
+          label="Release Facility"
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -353,6 +372,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submit: {
-    width: '45%',
+    width: '100%',
+  },
+  container3: {
+    height: 69,
+    width: '100%',
+    backgroundColor: '#EBF0FF',
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
   },
 });

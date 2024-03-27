@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Dimensions,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -8,7 +9,8 @@ import {
   View,
 } from 'react-native';
 import React, { useContext, useEffect, useMemo } from 'react';
-import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
+// import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
+import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
 import colors from '../../../util/colors';
 import HomeCard from '../../Home/components/HomeCard';
 import {
@@ -28,7 +30,7 @@ export default function Dashboard({ navigation }) {
   const verticalContentInset = { top: 10, bottom: 10 };
   const xAxisHeight = 50;
   const data1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const data2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const data2 = [1, 2, 3, 4, 5, 6, 7, 8];
   const data = [50, 30];
   const fill = 'rgba(17, 28, 178, 0.7)';
   const contentInset = { top: 20, bottom: 20 };
@@ -45,12 +47,11 @@ export default function Dashboard({ navigation }) {
       );
   }, []);
   const pieData = cleanerSummary.map((value, index) => ({
-    value: value.totalRoomsCleaned,
-    svg: {
-      fill: randomColor(),
-      onPress: () => console.log('press', index),
-    },
-    key: `pie-${index}`,
+    name: value.cleanerUsername,
+    population: value.totalRoomsCleaned,
+    color: randomColor(),
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
   }));
   useEffect(() => {
     getCleanerSummary();
@@ -102,45 +103,80 @@ export default function Dashboard({ navigation }) {
           value={allTasks.length}
         />
       </ScrollView>
-      <AppText style={styles.heading}>Total Rooms Cleaned Per Cleaner</AppText>
-      {!isLoading && (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            transform: [{ translateY: 20 }],
-          }}>
-          {cleanerSummary.map((data, index) => (
-            <Text style={{ fontWeight: 'bold' }} key={index}>
-              {data.totalRoomsCleaned}
-            </Text>
-          ))}
-        </View>
-      )}
+      <ScrollView style={{ flex: 1 }}>
+        <AppText style={styles.heading}>
+          Total Rooms Cleaned Per Cleaner
+        </AppText>
 
-      <View style={styles.chartContainer}>
-        {isLoading && (
+        {/* {!isLoading && (
           <View
             style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: 200,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              transform: [{ translateY: 20 }],
             }}>
-            <ActivityIndicator color={colors.blue} />
+            {cleanerSummary.map((data, index) => (
+              <Text style={{ fontWeight: 'bold' }} key={index}>
+                {data.totalRoomsCleaned}
+              </Text>
+            ))}
           </View>
-        )}
-        {!isLoading && (
-          <BarChart
-            style={{ flex: 1 }}
-            data={cleanerSummary.map((data) => data.totalRoomsCleaned)}
-            svg={{ fill }}
-            contentInset={{ top: 30, bottom: 30 }}>
-            <Grid />
-          </BarChart>
-        )}
-      </View>
-      {!isLoading && (
+        )} */}
+
+        <View style={styles.chartContainer}>
+          {isLoading && (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 200,
+              }}>
+              <ActivityIndicator color={colors.blue} />
+            </View>
+          )}
+          {!isLoading && (
+            <BarChart
+              verticalLabelRotation={50}
+              yAxisLabel=""
+              yAxisSuffix=""
+              showValuesOnTopOfBars
+              data={{
+                labels: cleanerSummary.map(
+                  (data, index) => data.cleanerUsername
+                ),
+                datasets: [
+                  {
+                    data: cleanerSummary.map((data) => data.totalRoomsCleaned),
+                  },
+                ],
+              }}
+              width={Dimensions.get('window').width}
+              height={420}
+              chartConfig={{
+                backgroundColor: '#1cc910',
+                backgroundGradientFrom: '#eff3ff',
+                backgroundGradientTo: '#efefef',
+                decimalPlaces: 2,
+                color: (opacity = 1) => colors.blue,
+                style: {
+                  borderRadius: 16,
+                },
+              }}
+              style={{
+                marginVertical: 8,
+              }}
+            />
+            // <BarChart
+            //   style={{ flex: 1 }}
+            //   data={cleanerSummary.map((data) => data.totalRoomsCleaned)}
+            //   svg={{ fill }}
+            //   contentInset={{ top: 30, bottom: 30 }}>
+            //   <Grid />
+            // </BarChart>
+          )}
+        </View>
+        {/* {!isLoading && (
         <View
           style={{
             flexDirection: 'row',
@@ -162,26 +198,27 @@ export default function Dashboard({ navigation }) {
             </Text>
           ))}
         </View>
-      )}
-      <View style={{ padding: 20 }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('MasterSchedule')}
-          style={styles.menuItem}>
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-            Master Sanitation Schedule
-          </Text>
-          <ArrowRightIcon />
-        </TouchableOpacity>
+      )} */}
+        <View style={{ padding: 20 }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MasterSchedule')}
+            style={styles.menuItem}>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+              Master Sanitation Schedule
+            </Text>
+            <ArrowRightIcon />
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AdminTimer')}
-          style={styles.menuItem}>
-          <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-            Facility Cleaner
-          </Text>
-          <ArrowRightIcon />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('AdminTimer')}
+            style={styles.menuItem}>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+              Facility Cleaner
+            </Text>
+            <ArrowRightIcon />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

@@ -121,28 +121,6 @@ export default function InspectorItemsToClean({ navigation, route }) {
                 fontWeight: 'bold',
                 marginTop: 20,
               }}>
-              Planned Time
-            </Text>
-            <Text style={{ color: colors.blue }}>
-              {/* {secondsToHoursMinutes(
-                (Date.now() - new Date(cleaner_time).getMilliseconds()) / 1000
-              )} */}
-              {secondsToHoursMinutes(
-                Number(summary?.taskDetails?.planned_time?.clean_time)
-              )}
-            </Text>
-          </View>
-        )}
-
-        {!loadingSummary && (
-          <View>
-            <Text
-              style={{
-                color: '#999999',
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginTop: 20,
-              }}>
               Assigned Cleaner
             </Text>
             <Text style={{ color: colors.blue }}>

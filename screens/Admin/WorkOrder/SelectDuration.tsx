@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,6 +19,13 @@ import useRoom from '../hooks/useRoom';
 export default function SelectDuration({ navigation, route }) {
   const { facility } = route.params;
   const [itemsToClean, setItemsToClean] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios'); // Keep the picker open on iOS after selection
+    setDate(currentDate);
+  };
   const [clean, setClean] = useState({
     hours: '',
     minutes: '',
@@ -236,7 +244,6 @@ export default function SelectDuration({ navigation, route }) {
               facility,
               selected,
               itemsToClean,
-              
             }),
           });
         }}
@@ -260,5 +267,8 @@ const styles = StyleSheet.create({
   },
   timingInput: {
     width: '45%',
+  },
+  input: {
+    paddingBottom: 20,
   },
 });

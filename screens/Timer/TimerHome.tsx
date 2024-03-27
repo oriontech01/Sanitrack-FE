@@ -80,19 +80,18 @@ export default function TimerHome({ navigation }) {
   );
   return (
     <SafeAreaView style={styles.container}>
-      {role == 'Inspector' && (
-        <Button
-          onPress={() => {
-            navigation.navigate('FacilityTimer');
-          }}
-          style={{
-            marginLeft: 'auto',
-            width: '40%',
-            marginRight: 20,
-          }}
-          label="Facility Timers>"
-        />
-      )}
+      <Button
+        onPress={() => {
+          navigation.navigate('FacilityTimer');
+        }}
+        style={{
+          marginLeft: 'auto',
+          width: '40%',
+          marginRight: 20,
+        }}
+        label="Facility Timers>"
+      />
+
       {timers.length > 0 && (
         <AppText
           style={{

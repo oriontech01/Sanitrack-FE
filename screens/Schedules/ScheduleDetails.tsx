@@ -20,6 +20,7 @@ import {
 } from '../../assets/svg/Index';
 import useGetTaskSummary from '../Home/hooks/useGetTaskSummary';
 import ItemList from '../Home/components/ItemList';
+import Button from '../../components/general/Button';
 
 export default function ScheduleDetails({ navigation, route }) {
   const user = useContext(UserContext);
@@ -67,28 +68,11 @@ export default function ScheduleDetails({ navigation, route }) {
                 styles.haeding,
                 { marginLeft: 0, marginTop: 20, color: '#000' },
               ]}>
-              Planned Time
-            </Text>
-
-            <View style={styles.time}>
-              <Text style={{ color: colors.blue }}>Clean</Text>
-              <Text style={{ color: colors.blue }}>
-                {secondsToHoursMinutes(
-                  Number(summary.taskDetails.planned_time.clean_time)
-                )}
-              </Text>
-            </View>
-
-            <Text
-              style={[
-                styles.haeding,
-                { marginLeft: 0, marginTop: 20, color: '#000' },
-              ]}>
               Items To Clean
             </Text>
             {summary?.taskDetails?.tasks.length > 0 && (
               <>
-                {summary.taskDetails.tasks.map((task, index) => (
+                {summary?.taskDetails?.tasks?.map((task, index) => (
                   <ItemList key={index.toString()} item={task.name} />
                 ))}
               </>
@@ -100,7 +84,7 @@ export default function ScheduleDetails({ navigation, route }) {
               ]}>
               Cleaning Items
             </Text>
-            {summary.cleaningItems.cleaning_items.map((item, index) => (
+            {summary?.cleaningItems?.map((item, index) => (
               <ItemList
                 key={index.toString()}
                 item={item.item_name}

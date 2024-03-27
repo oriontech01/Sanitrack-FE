@@ -81,7 +81,7 @@ export default function Personell({ navigation, route }) {
         onSelect={(e) => {
           selectInspectors(e.values);
         }}
-        label="Select Cleaner"
+        label="Select Inspector"
       />
       <Button
         isLoading={submitting}

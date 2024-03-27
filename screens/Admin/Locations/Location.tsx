@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
+  Text,
+  View,
   useWindowDimensions,
 } from 'react-native';
 import useLocation from '../../../Hooks/useLocation';
@@ -38,15 +40,19 @@ const Location = () => {
     fetchLocations();
   }, []);
   const RenderLocationMapView = () => {
-    return <LocationMapView locationData={allLocations} />;
+    return (
+      <View>
+        <Text>Comming soon</Text>
+      </View>
+    );
   };
   const RenderLocationListView = () => {
     return <LocationListView locationData={allLocations} />;
   };
 
   const renderScene = SceneMap({
-    map: RenderLocationMapView,
     list: RenderLocationListView,
+    map: RenderLocationMapView,
   });
 
   const layout = useWindowDimensions();
@@ -54,15 +60,14 @@ const Location = () => {
   return loading ? (
     <ActivityIndicator size={'large'} color={colors.blue} />
   ) : (
-    <SafeAreaView>
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      />
-    </SafeAreaView>
+    <LocationListView locationData={allLocations} />
+    // <TabView
+    //   navigationState={{ index, routes }}
+    //   renderScene={renderScene}
+    //   renderTabBar={renderTabBar}
+    //   onIndexChange={setIndex}
+    //   initialLayout={{ width: layout.width }}
+    // />
   );
 };
 

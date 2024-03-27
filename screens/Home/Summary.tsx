@@ -68,7 +68,7 @@ export default function Summary({ navigation, route }) {
         )}
         {!loadingSummary && summary && (
           <>
-            <Text
+            {/* <Text
               style={[
                 styles.haeding,
                 { marginLeft: 0, marginTop: 20, color: '#000' },
@@ -83,7 +83,7 @@ export default function Summary({ navigation, route }) {
                   Number(summary?.taskDetails?.planned_time?.clean_time)
                 )}
               </Text>
-            </View>
+            </View> */}
 
             <Text
               style={[
