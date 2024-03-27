@@ -6,7 +6,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   TouchableOpacity
 } from 'react-native';
@@ -88,9 +87,9 @@ export default function WorkOrders({ navigation }) {
         </ScrollView>
       </View>
 
-      <Modal animationType="slide" transparent={true} visible={modalVisible2}>
-        <View style={styles.overLay}>
-          <View style={styles.content}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible2} onRequestClose={() => setModalVisible2(false)}>
+        <TouchableOpacity activeOpacity={1} style={styles.overLay} onPress={() => setModalVisible2(false)}>
+          <TouchableOpacity activeOpacity={1} style={styles.content}>
             <View style={{ flexDirection: 'row', width: '100%' }}>
               <Text
                 style={{

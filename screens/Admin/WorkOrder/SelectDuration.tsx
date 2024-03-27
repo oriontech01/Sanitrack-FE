@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -103,6 +102,7 @@ export default function SelectDuration({ navigation, route }) {
         {isLoading && <ActivityIndicator color={colors.blue} />}
         {!isLoading && (
           <Select
+            initialValue={options[0]}
             options={options}
             onSelect={(e) => {
               setSelected(e);

@@ -58,7 +58,6 @@ const Location = () => {
   const renderScene = SceneMap({
     list: RenderLocationListView,
     map: RenderLocationMapView,
-    map: RenderLocationMapView,
   });
 
   const layout = useWindowDimensions();
