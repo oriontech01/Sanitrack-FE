@@ -121,6 +121,7 @@ const SanitationSchedule = () => {
 
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
+ 
   return (
     <>
       <div className="bg-[#fff] p-5 ">
@@ -150,28 +151,108 @@ const SanitationSchedule = () => {
                     console.log('task', task);
                     console.log('room', room);
                     return (
-                      <Link
-                        key={room?._id}
-                        to={`/dashboard/sanitation-schedule/${room?._id}`}
-                        onClick={() => {
-                          localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
-                          localStorage.setItem('taskDeets', JSON.stringify(room));
-                        }}
-                      >
+                      <>
                         <TableRow>
                           <TableCell>{room?.assigned_room?.roomName}</TableCell>
                           <TableCell>
-                            <span className="flex flex-col gap-y-2 justify-center items-center text-center">
-                              <p>{task.name}</p>
-                            </span>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              {' '}
+                              <span className="flex flex-col gap-y-2 justify-center items-center text-center">
+                                <p>{task.name}</p>
+                              </span>
+                            </Link>
                           </TableCell>
-                          <TableCell>{room?.times_approved}</TableCell>
-                          <TableCell>{room?.tasks[-1]?.last_cleaned ? formatDate(room?.tasks[-1]?.last_cleaned) : '-'}</TableCell>
-                          <TableCell>{room?.scheduled_date ? formatDate(room?.scheduled_date) : '-'}</TableCell>
-                          <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>{room.isSubmitted ? 'No' : 'Yes'}</TableCell>
-                          <TableCell>Sanitation</TableCell>
-                          <TableCell className="capitalize">{room?.task_stage}</TableCell>
-                          <TableCell>{room?._id}</TableCell>
+                          <TableCell>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              {room?.times_approved}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              {task?.last_cleaned ? formatDate(task?.last_cleaned) : 'N/A'}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              { '-'}
+                            </Link>
+                          </TableCell>
+                          <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              {room.isSubmitted ? 'No' : 'Yes'}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              Sanitation
+                            </Link>
+                          </TableCell>
+                          <TableCell className="capitalize">
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              {room?.task_stage}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              key={room?._id}
+                              to={`/dashboard/sanitation-schedule/${room?._id}`}
+                              onClick={() => {
+                                localStorage.setItem('sanitationDeets', JSON.stringify(room?.assigned_room));
+                                localStorage.setItem('taskDeets', JSON.stringify(room));
+                              }}
+                            >
+                              {room?._id}
+                            </Link>
+                          </TableCell>
                           <TableCell style={{ display: 'flex', flexDirection: 'row' }}>
                             {' '}
                             <Accordion>
@@ -189,7 +270,7 @@ const SanitationSchedule = () => {
                             <Button>View Details</Button>
                           </TableCell>
                         </TableRow>
-                      </Link>
+                      </>
                     );
                   })
                 )}

@@ -85,8 +85,9 @@ const SelectInspector = () => {
       stages: [
         { name: 'clean', stage_hour: clean_hours, stage_minute: clean_minutes },
         { name: 'preop', stage_hour: preop_hours, stage_minute: preop_minutes },
+        { name: 'inspect', stage_hour: inspect_hours, stage_minute: inspect_minutes },
         { name: 'release', stage_hour: release_hours, stage_minute: release_minutes },
-        { name: 'inspect', stage_hour: inspect_hours, stage_minute: inspect_minutes }
+       
       ]
     };
     // localStorage.setItem('inspectors', JSON.stringify(inspector));

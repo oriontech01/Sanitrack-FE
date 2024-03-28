@@ -67,7 +67,7 @@ const HistoryDetails = ({ name, detailId, historyData }) => {
           boxShadow: 1,
         }}
       >
-        <Typography variant={isXsScreen ? 'h5' : 'h3'}>{name}</Typography>
+        <Typography variant={isXsScreen ? 'p' : 'p'}>{name}</Typography>
         <Button variant="outlined" onClick={handleOpenModal}>
           View History
         </Button>

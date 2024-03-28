@@ -4,8 +4,8 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useStopwatch, useTimer } from 'react-timer-hook';
 import CleanerItemsUpload from './CleanerItemsUpload';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const CleanerTimer = () => {
   const { submitTask, itemsLoading } = useCleanerHook();

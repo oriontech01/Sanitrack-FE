@@ -34,7 +34,7 @@ const Default = () => {
     };
     fetchData();
   }, []);
-
+console.log("sum sum", cleanerSummary)
   if (isLoading) {
     return <Loader />;
   }
@@ -50,7 +50,7 @@ const Default = () => {
             <ReportCard to='/dashboard/users' primary={activeInspectors} secondary="All Inspectors" color={theme.palette.error.main} iconPrimary={SupervisorAccount} />
           </Grid>
           <Grid item lg={3} md={4} sm={6} xs={12}>
-            <ReportCard to='/dashboard/tasks' primary={everyTask} secondary="All Tasks" color={theme.palette.success.main} iconPrimary={DescriptionTwoTone} />
+            <ReportCard to='/dashboard/work-schedule' primary={everyTask} secondary="All Tasks" color={theme.palette.success.main} iconPrimary={DescriptionTwoTone} />
           </Grid>
           <Grid item lg={3} md={4} sm={6} xs={12}>
             <ReportCard to='/dashboard/rooms' primary={roomsCount} secondary="Total Room Count" color={theme.palette.primary.main} iconPrimary={RoomSharp} />

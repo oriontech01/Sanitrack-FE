@@ -24,7 +24,7 @@ const InspectorDashboard = () => {
     getActiveTask();
     getFacilities();
   }, []);
-  console.log('first', facilities);
+  console.log('first', facility);
   // This data is just for the example and should be fetched from your backend or context
   const tasks = [
     {
@@ -42,14 +42,14 @@ const InspectorDashboard = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h2" color="blue">
+      <Typography variant="h3" color="blue" className='capitalize'>
         Welcome {localStorage.getItem('name')}!
       </Typography>
-      <Typography variant="h4" mt={2}>
+      <Typography variant="p" mt={2} mb={4}>
         Below are the facilities for the tasks of the day.
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} mt={3}>
         {/* You can create a separate component for these cards to avoid repetition */}
         <Grid item lg={4} sm={6} xs={12}>
           <Card style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
@@ -63,7 +63,7 @@ const InspectorDashboard = () => {
               <Typography color="text.secondary" gutterBottom>
                 NUMBER OF ACTIVE TASKS
               </Typography>
-              {activeTask && !activeLoading && <p className="text-2xl text-green-500 font-bold">{activeTask ?? '-'}</p>}
+              {!activeLoading && <p className="text-2xl text-green-500 font-bold">{activeTask ?? '-'}</p>}
               {activeLoading && (
                 <div className="flex items-center justify-center pt-5">
                   <div className="relative">
@@ -86,7 +86,7 @@ const InspectorDashboard = () => {
               <Typography color="text.secondary" gutterBottom>
                 TOTAL FACILITIES CLEANED
               </Typography>
-              {facility && !faciltiyLoading && <p className="text-2xl text-amber-500 font-bold">{facility ?? '-'}</p>}
+              {!faciltiyLoading && <p className="text-2xl text-amber-500 font-bold">{facility ?? '-'}</p>}
               {faciltiyLoading && (
                 <div className="flex items-center justify-center pt-5">
                   <div className="relative">
@@ -150,8 +150,8 @@ const InspectorDashboard = () => {
         {facilitiesLoading && (
           <div className="flex items-center justify-center pt-5">
             <div className="relative">
-              <div className="h-20 w-20 rounded-full border-t-8 border-b-8 border-gray-200"></div>
-              <div className="absolute top-0 left-0 h-20 w-20 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
+              <div className="h-12 w-12 rounded-full border-t-4 border-b-4 border-gray-200"></div>
+              <div className="absolute top-0 left-0 h-12 w-12 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin"></div>
             </div>
           </div>
         )}
