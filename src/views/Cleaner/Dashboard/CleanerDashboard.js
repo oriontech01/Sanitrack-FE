@@ -44,7 +44,7 @@ const CleanerDashboard = () => {
               <Typography color="text.secondary" gutterBottom>
                 NUMBER OF ACTIVE TASKS
               </Typography>
-              {activeTask && !activeLoading && <p className="text-2xl text-green-500 font-bold">{activeTask ?? '-'}</p>}
+              {!activeLoading && <p className="text-2xl text-green-500 font-bold">{activeTask ?? '-'}</p>}
               {activeLoading && (
                 <div className="flex items-center justify-center pt-5">
                   <div className="relative">
