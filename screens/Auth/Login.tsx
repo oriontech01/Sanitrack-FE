@@ -7,19 +7,20 @@ import {
   Text,
   View,
   Image,
-} from "react-native";
-import React, { useContext, useState } from "react";
-import colors from "../../util/colors";
-import AppText from "../../components/AppText";
-import Select from "../../components/general/Select";
-import Input from "../../components/general/Input";
-import Button from "../../components/general/Button";
-import { Decoration } from "../../assets/svg/Index";
-import { AuthContext } from "../../context/AuthContext";
-import { UserContext } from "../../context/UserContext";
-import axios from "axios";
-import Constants from "expo-constants";
-import registerForPushNotificationsAsync from "../../util/notifications";
+} from 'react-native';
+import React, { useContext, useState } from 'react';
+import colors from '../../util/colors';
+import AppText from '../../components/AppText';
+import Select from '../../components/general/Select';
+import Input from '../../components/general/Input';
+import Button from '../../components/general/Button';
+import { Decoration } from '../../assets/svg/Index';
+import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
+import Constants from 'expo-constants';
+import registerForPushNotificationsAsync from '../../util/notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({ navigation }) {
   const { username, password, setPassword, setUserName } =
@@ -30,8 +31,8 @@ export default function Login({ navigation }) {
   const [isLoading2, setIsLoading2] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [options, setOptions] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("");
-  const [token, setToken] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [token, setToken] = useState('');
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -49,7 +50,7 @@ export default function Login({ navigation }) {
       setIsLoading(false); // Stop loading indicator when the request is done
       if (res.status === 200) {
         // Check for status code 200
-        Alert.alert("Auth", "Login successful, redirecting...");
+        Alert.alert('Auth', 'Login successful, redirecting...');
         console.log(res.data.data);
         if (res.data.data.requiredRoleSelection) {
           const options = res.data.data.assignedRoles.map((role) => {
@@ -67,13 +68,14 @@ export default function Login({ navigation }) {
           id: res.data.data.userId,
           role_id: res.data.data.role_id,
           token: res.data.data.token,
-          email: "",
+          email: '',
           secret: res.data.data.username,
-        }); // Set user object value to the user data gotten from the Backend API
-        setPassword(""); // Clear password field
-        setUserName(""); // Clear username field
+        });
+        // Set user object value to the user data gotten from the Backend API
+        setPassword(''); // Clear password field
+        setUserName(''); // Clear username field
         registerForPushNotificationsAsync(res.data.data.token);
-        console.log("WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+
         // if (res.data.data.username === 'manager')
         //   navigation.navigate('AccessDenied');
         // else if (res.data.data.requiredRoleSelection) {
@@ -83,7 +85,7 @@ export default function Login({ navigation }) {
         //     navigation.navigate('Home'); // Take user to WorkOrderSelection page
         // }
       } else {
-        Alert.alert("Error", res.data.message);
+        Alert.alert('Error', res.data.message);
       }
     } catch (error) {
       setIsLoading(false); // Stop loading indicator if there's an error
@@ -91,14 +93,14 @@ export default function Login({ navigation }) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
-      Alert.alert("Error", errorMessage);
+      Alert.alert('Error', errorMessage);
       console.error(error.message);
     }
   };
 
   const handleRoleSelection = async () => {
     setIsLoading2(true);
-    console.log("Base URL", Constants.expoConfig.extra.baseUrl);
+    console.log('Base URL', Constants.expoConfig.extra.baseUrl);
     try {
       const res = await axios.post(
         `${Constants.expoConfig.extra.baseUrl}select-role`,
@@ -114,8 +116,8 @@ export default function Login({ navigation }) {
       setIsLoading2(false); // Stop loading indicator when the request is done
       if (res.status === 200) {
         // Check for status code 200
-        Alert.alert("Auth", "Login successful, redirecting...");
-        console.log("user data", res.data.data);
+        Alert.alert('Auth', 'Login successful, redirecting...');
+        console.log('user data', res.data.data);
         setModalVisible(false);
         setUser({
           name: res.data.data.username,
@@ -123,18 +125,18 @@ export default function Login({ navigation }) {
           id: res.data.data.userId,
           role_id: res.data.data.role_id,
           token: res.data.data.token,
-          email: "",
+          email: '',
         });
 
         // registerForPushNotificationsAsync(res.data.data.token); // Send push notification token to server
         //  Set user object value to the user data gotten from the Backend API
-        setPassword(""); // Clear password field
-        setUserName(""); // Clear username field
-        res.data.data.role_name === "Admin"
-          ? navigation.navigate("AdminHome", { screen: "Admin" })
-          : navigation.navigate("User", { screen: "User" });
+        setPassword(''); // Clear password field
+        setUserName(''); // Clear username field
+        res.data.data.role_name === 'Admin'
+          ? navigation.navigate('AdminHome', { screen: 'Admin' })
+          : navigation.navigate('User', { screen: 'User' });
       } else {
-        Alert.alert("Error", res.data.message);
+        Alert.alert('Error', res.data.message);
       }
     } catch (error) {
       setIsLoading(false); // Stop loading indicator if there's an error
@@ -142,7 +144,7 @@ export default function Login({ navigation }) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
-      Alert.alert("Error", errorMessage);
+      Alert.alert('Error', errorMessage);
       console.error(error.message);
     }
   };
@@ -170,12 +172,11 @@ export default function Login({ navigation }) {
       />
       <Text
         style={{
-          marginLeft: "auto",
+          marginLeft: 'auto',
           color: colors.blue,
-          fontWeight: "bold",
+          fontWeight: 'bold',
           marginTop: 10,
-        }}
-      >
+        }}>
         Forgot Password
       </Text>
       <Button
@@ -188,7 +189,7 @@ export default function Login({ navigation }) {
       <Button
         fontStyle={{ color: colors.blue }}
         style={{
-          backgroundColor: "rgba(224, 232, 255,0.3)",
+          backgroundColor: 'rgba(224, 232, 255,0.3)',
           borderColor: colors.blue,
           borderWidth: 1,
         }}
@@ -198,13 +199,12 @@ export default function Login({ navigation }) {
       <View
         style={{
           padding: 10,
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: 'center',
+          alignItems: 'center',
           paddingTop: 250,
-        }}
-      >
+        }}>
         <Image
-          source={require("../../assets/images/logo2.jpg")}
+          source={require('../../assets/images/logo2.jpg')}
           style={{
             height: 100,
             width: 100,
@@ -226,7 +226,7 @@ export default function Login({ navigation }) {
               isLoading={isLoading2}
               onPress={handleRoleSelection}
               style={{
-                marginTop: "auto",
+                marginTop: 'auto',
                 marginBottom: 30,
               }}
               label="Proceed"
@@ -242,28 +242,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 20,
   },
   haeding: {
     color: colors.darkblue,
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 80,
   },
   subHeader: {
-    color: "#999999",
+    color: '#999999',
     fontSize: 15,
   },
   overlay: {
-    backgroundColor: "rgba(0,0,0,0.5 )",
+    backgroundColor: 'rgba(0,0,0,0.5 )',
     flex: 1,
   },
   selectRole: {
-    width: "100%",
-    height: Dimensions.get("window").height / 2,
-    backgroundColor: "#fff",
-    marginTop: "auto",
+    width: '100%',
+    height: Dimensions.get('window').height / 2,
+    backgroundColor: '#fff',
+    marginTop: 'auto',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     padding: 20,

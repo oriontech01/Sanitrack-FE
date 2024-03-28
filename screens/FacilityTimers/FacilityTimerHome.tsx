@@ -44,19 +44,27 @@ export default function FacilityTimerHome({ navigation }) {
       )}
       {!loadingFacilities && facilities.length > 0 && (
         <>
-          {facilities.map((facility, index) => (
-            <FacilityList
-              onPress={() =>
-                navigation.navigate('FacilityMainTimer', {
-                  facility: JSON.stringify(facility),
-                  id: facility._id,
-                })
-              }
-              title={facility.facility_id.facility_name}
-              detail={facility.facility_id.city}
-              key={index.toString()}
-            />
-          ))}
+          {facilities.map((facility, index) => {
+            if (
+              !facility?.facility_id?.facility_name ||
+              !facility?.facility_id?.city
+            ) {
+              return null;
+            }
+            return (
+              <FacilityList
+                onPress={() =>
+                  navigation.navigate('FacilityMainTimer', {
+                    facility: JSON.stringify(facility),
+                    id: facility._id,
+                  })
+                }
+                title={facility?.facility_id?.facility_name || 'Unavailable'}
+                detail={facility?.facility_id?.city || 'Unavailable'}
+                key={index.toString()}
+              />
+            );
+          })}
         </>
       )}
 
