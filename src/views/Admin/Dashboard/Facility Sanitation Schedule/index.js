@@ -190,7 +190,7 @@ const SanitationSchedule = () => {
                                 localStorage.setItem('taskDeets', JSON.stringify(room));
                               }}
                             >
-                              {room?.tasks[-1]?.last_cleaned ? formatDate(room?.tasks[-1]?.last_cleaned) : '-'}
+                              {task?.last_cleaned ? formatDate(task?.last_cleaned) : 'N/A'}
                             </Link>
                           </TableCell>
                           <TableCell>
@@ -202,7 +202,7 @@ const SanitationSchedule = () => {
                                 localStorage.setItem('taskDeets', JSON.stringify(room));
                               }}
                             >
-                              {room?.scheduled_date ? formatDate(room?.scheduled_date) : '-'}
+                              { '-'}
                             </Link>
                           </TableCell>
                           <TableCell className={`status ${room?.isSubmitted ? 'done' : ''}`}>

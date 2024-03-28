@@ -136,7 +136,7 @@ const CleaningTimer = () => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-    return ` ${hours}hrs: ${minutes} mins: ${seconds}s`;
+    return ` ${hours}: ${minutes < 10 ? `0${minutes}` : minutes} `;
   };
   return (
     <>
@@ -193,7 +193,9 @@ const CleaningTimer = () => {
                             {latest?.map(stage => (
                               <span key={stage?.name} className="flex justify-between items-center space-y-2 pt-2">
                                 <p className="text-blue-500 text-sm capitalize">{`${stage?.name} `}</p>
-                                <p className="text-blue-500 text-sm capitalize">{stage?.start_time ? convertDate(stage?.start_time) : 'N/A'}</p>
+                                <p className="text-blue-500 text-sm capitalize">
+                                  {stage?.start_time ? convertDate(stage?.start_time) : 'N/A'}
+                                </p>
                               </span>
                             ))}
                           </div>
@@ -201,8 +203,8 @@ const CleaningTimer = () => {
                             <h1 className="text-base text-black font-medium ">Actual Time</h1>
                             {actual?.stages?.map(stage => (
                               <span key={stage?.name} className="flex justify-between items-center space-y-2 pt-2">
-                                <p  className="text-blue-500 text-sm capitalize">{`${stage?.name} `}</p>
-                                <p  className="text-blue-500 text-sm capitalize">
+                                <p className="text-blue-500 text-sm capitalize">{`${stage?.name} `}</p>
+                                <p className="text-blue-500 text-sm capitalize">
                                   {stage?.actual_stage_start_time ? convertToHoursMinutesSeconds(stage?.actual_stage_start_time) : 'N/A'}
                                 </p>
                               </span>
