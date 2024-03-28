@@ -39,7 +39,7 @@ const StaffTable = ({ allStaffs }) => {
           {allStaffs.length > 0 ? (
             allStaffs.map((staff) => (
               <TableRow key={staff._id}>
-                <TableCell>
+                <TableCell className="capitalize">
                   {staff.username}
                   {matchesSmallScreen && (
                     <>

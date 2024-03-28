@@ -26,8 +26,8 @@ const CleanerDashboard = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <h2 className="capitalize text-3xl font-bold text-blue-500">Welcome {localStorage.getItem('name')}!</h2>
-      <p className="text-lg pb-5">Below are the facilities for the tasks of the day.</p>
+      <h2 className="capitalize text-2xl font-bold text-blue-500 capitalize">Welcome {localStorage.getItem('name')}!</h2>
+      <p className="text-sm pb-5">Below are the facilities for the tasks of the day.</p>
 
       {/* Cards for summary */}
       <Grid container spacing={3}>
@@ -67,7 +67,7 @@ const CleanerDashboard = () => {
               <Typography color="text.secondary" gutterBottom>
                 TOTAL FACILITIES CLEANED
               </Typography>
-              {facility && !faciltiyLoading && <p className="text-2xl text-amber-500 font-bold">{facility ?? '-'}</p>}
+              {!faciltiyLoading && <p className="text-2xl text-amber-500 font-bold">{facility ?? '-'}</p>}
               {faciltiyLoading && (
                 <div className="flex items-center justify-center pt-5">
                   <div className="relative">
@@ -99,7 +99,7 @@ const CleanerDashboard = () => {
       {/* Locations List */}
 
       <Box sx={{ width: '100%' }}>
-        <h2 className="capitalize text-3xl font-bold text-blue-500 pt-3"> Facilities</h2>
+        <h2 className="capitalize text-2xl font-bold text-blue-500 pt-3"> Facilities</h2>
         <div className="">
           <Grid container spacing={2}>
             {workOrderLocations &&
@@ -144,7 +144,7 @@ const CleanerDashboard = () => {
       </Box>
 
       {/* Active Timer */}
-      <Typography variant="h3" marginTop={3} color="primary">
+      <Typography variant="h4" marginTop={3} color="primary">
         Active Timer
       </Typography>
       <ActiveTimer />

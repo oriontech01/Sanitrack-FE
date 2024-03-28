@@ -80,15 +80,15 @@ const Room = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allRooms.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(item => (
+              {allRooms?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(item => (
                 <TableRow key={item._id}>
                   <TableCell>{item.roomName}</TableCell>
-                  <TableCell>{`${item.location.city}, ${item.location.state}, ${item.location.country}`}</TableCell>
+                  <TableCell>{`${item?.location?.city}, ${item?.location?.state}, ${item?.location?.country}`}</TableCell>
                   <TableCell>
                     <button
                       disabled={isLoading}
                       className="text-white flex justify-center  mb-4 gap-x-2 items-center px-4 py-2 bg-blue-700 w-auto lg:h-[40px] text-base border-t-2 "
-                      onClick={() => handleViewDetails(item._id)}
+                      onClick={() => handleViewDetails(item?._id)}
                     >
                       View Details
                     </button>
@@ -104,7 +104,7 @@ const Room = () => {
           </Table>
           <TablePagination
             component="div"
-            count={allRooms.length}
+            count={allRooms?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
