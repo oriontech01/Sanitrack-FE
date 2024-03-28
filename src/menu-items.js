@@ -145,13 +145,13 @@ const adminSideNavItems = [
         icon: icons['BlockOutlinedIcon'], // Assuming it relates to access control
         url: '/dashboard/roles'
       },
-      {
-        id: 'user roles',
-        title: 'User Roles',
-        type: 'item',
-        icon: icons['BlockOutlinedIcon'], // Assuming it relates to access control
-        url: '/dashboard/roles'
-      }
+      // {
+      //   id: 'user roles',
+      //   title: 'User Roles',
+      //   type: 'item',
+      //   icon: icons['BlockOutlinedIcon'], // Assuming it relates to access control
+      //   url: '/dashboard/roles'
+      // }
     ]
   }
 ];

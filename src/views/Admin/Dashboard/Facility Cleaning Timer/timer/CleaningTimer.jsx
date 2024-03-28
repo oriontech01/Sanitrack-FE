@@ -131,6 +131,13 @@ const CleaningTimer = () => {
       return 'Invalid Date';
     }
   }
+  const convertDate = dateString => {
+    const date = new Date(dateString);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return ` ${hours}hrs: ${minutes} mins: ${seconds}s`;
+  };
   return (
     <>
       {loading && (
@@ -186,7 +193,7 @@ const CleaningTimer = () => {
                             {latest?.map(stage => (
                               <span key={stage?.name} className="flex justify-between items-center space-y-2 pt-2">
                                 <p className="text-blue-500 text-sm capitalize">{`${stage?.name} `}</p>
-                                <p className="text-blue-500 text-sm capitalize">{stage?.start_time ? convertDateFormat(stage?.start_time) : 'N/A'}</p>
+                                <p className="text-blue-500 text-sm capitalize">{stage?.start_time ? convertDate(stage?.start_time) : 'N/A'}</p>
                               </span>
                             ))}
                           </div>
